@@ -3,19 +3,24 @@ import EnsemblesList from "./EnsembleList";
 
 export default function Header (props) {
     return(
-        <div className="header">
+        <div className="page-header">
             <h1>
-                {props.data.name}
+                {
+                    props.name
+                }
             </h1>
             {
-                props.data.details != null &&
+                props.details != null &&
                     <div className="details">
-                        <h3>{props.data.details.location}</h3>
-                        <h4>{props.data.details.time}</h4>
+                        <h3>{props.details.location}</h3>
+                        <h4>{props.details.time}</h4>
                     </div>
             }
             {
-                props.data.ensembles != null && <EnsemblesList ensembles={props.data.ensembles} />
+                props.ensembles != null && <EnsemblesList ensembles={props.ensembles} />
+            }
+            {
+                // add members check for ensemble page
             }
         </div>
     )

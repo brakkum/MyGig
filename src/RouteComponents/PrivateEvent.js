@@ -1,8 +1,8 @@
 import React from "react";
 import Header from "../DisplayComponents/Header";
-import data from "./EventDummy";
+import data from "./PrivateEventDummy";
 
-export default class Event extends React.Component {
+export default class PrivateEvent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +19,7 @@ export default class Event extends React.Component {
         return(
             <div>
                 {
-                    this.state.data && <Header data={this.state.data} />
+                    this.state.data && <Header {...this.state.data} />
                 }
                 <h4>
                     Event Id: {this.props.match.params.eventId}
