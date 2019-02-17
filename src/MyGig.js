@@ -24,94 +24,92 @@ class MyGig extends Component {
 
     render() {
         return (
-            <div>
-                <Router>
-                    <div>
-                        <NavBar />
-                        <div className="body-content">
-                            <Route
-                                exact
-                                path="/"
-                                render={() =>
-                                    <Home
-                                        userData={this.state.userData}
-                                    />
-                                }
-                            />
-                            <Route
-                                path="/account"
-                                render={() =>
-                                    <Account
-                                        userData={this.state.userData}
-                                    />
-                                }
-                            />
-                            <Route
-                                path="/notifications"
-                                render={() =>
-                                    <Notifications
-                                        userData={this.state.userData}
-                                    />
-                                }
-                            />
-                            <Route
-                                path="/connections"
-                                render={() =>
-                                    <Connections
-                                        userData={this.state.userData}
-                                    />
-                                }
-                            />
-                            { /* reference param as this.props.match.params.eventId in component */ }
-                            <Route
-                                path="/public_event/:eventId"
-                                render={(match) =>
-                                    <PublicEvent
-                                        userData={this.state.userData}
-                                        {...match}
-                                    />
-                                }
-                            />
-                            <Route
-                                path="/event/:eventId"
-                                render={(match) =>
-                                    <PrivateEvent
-                                        userData={this.state.userData}
-                                        {...match}
-                                    />
-                                }
-                            />
-                            <Route
-                                path="/ensemble/:ensembleId"
-                                render={(match) =>
-                                    <Ensemble
-                                        userData={this.state.userData}
-                                        {...match}
-                                    />
-                                }
-                            />
-                            <Route
-                                path="/sets/:eventId"
-                                render={(match) =>
-                                    <Sets
-                                        userData={this.state.userData}
-                                        {...match}
-                                    />
-                                }
-                            />
+            <Router>
+                <div>
+                    <NavBar />
+                    <div className="body-content">
+                        <Route
+                            exact
+                            path="/"
+                            render={() =>
+                                <Home
+                                    userData={this.state.userData}
+                                />
+                            }
+                        />
+                        <Route
+                            path="/account"
+                            render={() =>
+                                <Account
+                                    userData={this.state.userData}
+                                />
+                            }
+                        />
+                        <Route
+                            path="/notifications"
+                            render={() =>
+                                <Notifications
+                                    userData={this.state.userData}
+                                />
+                            }
+                        />
+                        <Route
+                            path="/connections"
+                            render={() =>
+                                <Connections
+                                    userData={this.state.userData}
+                                />
+                            }
+                        />
+                        { /* reference param as this.props.match.params.eventId in component */ }
+                        <Route
+                            path="/public_event/:eventId"
+                            render={(match) =>
+                                <PublicEvent
+                                    userData={this.state.userData}
+                                    {...match}
+                                />
+                            }
+                        />
+                        <Route
+                            path="/event/:eventId"
+                            render={(match) =>
+                                <PrivateEvent
+                                    userData={this.state.userData}
+                                    {...match}
+                                />
+                            }
+                        />
+                        <Route
+                            path="/ensemble/:ensembleId"
+                            render={(match) =>
+                                <Ensemble
+                                    userData={this.state.userData}
+                                    {...match}
+                                />
+                            }
+                        />
+                        <Route
+                            path="/sets/:eventId"
+                            render={(match) =>
+                                <Sets
+                                    userData={this.state.userData}
+                                    {...match}
+                                />
+                            }
+                        />
 
-                            <Link to="/">Home</Link>
-                            <Link to="/account">Account</Link>
-                            <Link to="/notifications">Notifications</Link>
-                            <Link to="/public_event/2">Public Event 2</Link>
-                            <Link to="/event/3">Event 3</Link>
-                            <Link to="/ensemble/4">Ensemble 4</Link>
-                            <Link to="/connections">Connections</Link>
-                            <Link to="/sets/24">Sets for Event 24</Link>
-                        </div>
+                        <Link to="/">Home</Link>
+                        <Link to="/account">Account</Link>
+                        <Link to="/notifications">Notifications</Link>
+                        <Link to="/public_event/2">Public Event 2</Link>
+                        <Link to="/event/3">Event 3</Link>
+                        <Link to="/ensemble/4">Ensemble 4</Link>
+                        <Link to="/connections">Connections</Link>
+                        <Link to="/sets/24">Sets for Event 24</Link>
                     </div>
-                </Router>
-            </div>
+                </div>
+            </Router>
         );
     }
 }

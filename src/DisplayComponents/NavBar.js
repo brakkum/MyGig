@@ -29,7 +29,7 @@ export default class NavBar extends React.Component {
         return(
             <div className="navbar">
                 <div className="navbar-left">
-                    <UserPicture onClick={this.toAccount} className="navbar-account-link" />
+                    <UserPicture onClick={this.toAccount} />
                     <div onClick={this.toHome} className="navbar-home-link">Home</div>
                 </div>
             </div>
