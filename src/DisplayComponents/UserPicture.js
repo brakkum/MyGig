@@ -12,7 +12,10 @@ export default class UserPicture extends React.Component {
         height: "50px",
         borderRadius: "100%",
         backgroundColor: "lightblue",
-        transition: ".2s"
+        transition: ".2s",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-evenly"
     };
 
     hasPic = {
@@ -49,7 +52,9 @@ export default class UserPicture extends React.Component {
                 onMouseEnter={this.handleHover}
                 onMouseOut={this.handleLeave}
             >
-
+                {
+                    this.state.hovered ? "edit" : ""
+                }
             </div>
         )
     }
