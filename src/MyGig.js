@@ -99,14 +99,16 @@ class MyGig extends Component {
                             }
                         />
 
-                        <Link to="/">Home</Link>
-                        <Link to="/account">Account</Link>
-                        <Link to="/notifications">Notifications</Link>
-                        <Link to="/public_event/2">Public Event 2</Link>
-                        <Link to="/event/3">Event 3</Link>
-                        <Link to="/ensemble/4">Ensemble 4</Link>
-                        <Link to="/connections">Connections</Link>
-                        <Link to="/sets/24">Sets for Event 24</Link>
+                        <div className="test-nav" style={{backgroundColor: "lightgreen", display: "flex", justifyContent: "space-between"}}>
+                            <Link to="/">Home</Link>
+                            <Link to="/account">Account</Link>
+                            <Link to="/notifications">Notifications</Link>
+                            <Link to="/public_event/2">Public Event 2</Link>
+                            <Link to="/event/3">Private Event 3</Link>
+                            <Link to="/ensemble/4">Ensemble 4</Link>
+                            <Link to="/connections">Connections</Link>
+                            <Link to="/sets/24">Sets for Event 24</Link>
+                        </div>
                     </div>
                 </div>
             </Router>

@@ -15,7 +15,9 @@ export default class UserPicture extends React.Component {
         transition: ".2s",
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-evenly"
+        justifyContent: "space-evenly",
+        cursor: "pointer",
+        border: "2px solid transparent"
     };
 
     hasPic = {
@@ -23,8 +25,7 @@ export default class UserPicture extends React.Component {
     };
 
     hoverStyle = {
-        backgroundColor: "lightgrey",
-
+        border: "2px solid royalblue",
     };
 
     handleClick = () => {
@@ -49,12 +50,9 @@ export default class UserPicture extends React.Component {
                 className="user-pic"
                 style={{...this.baseStyle, ...includePic, ...hoveredStyle}}
                 onClick={this.handleClick}
-                onMouseEnter={this.handleHover}
+                onMouseOver={this.handleHover}
                 onMouseOut={this.handleLeave}
             >
-                {
-                    this.state.hovered ? "edit" : ""
-                }
             </div>
         )
     }

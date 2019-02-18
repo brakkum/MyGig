@@ -1,24 +1,18 @@
 import React from "react";
+import MembersList from "./MembersList";
+import EnsembleName from "./EnsembleName";
 
 export default function EnsembleList (props) {
 
     return(
-        <div className="ensembleList">
+        <div className="ensemble_list">
             With
             {
                 props.ensembles.map((ens, i) => {
                     return(
-                        <div key={i}>
-                            <span className="ensName">
-                                {ens.name}
-                            </span>
-                            <span className="ensMembers">
-                            {
-                                ens.members.map(mem => {
-                                    return mem.name
-                                }).join(", ")
-                            }
-                            </span>
+                        <div key={i} className="ensemble_listing">
+                            <EnsembleName name={ens.ensemble_name} />
+                            <MembersList ensemble_members={ens.ensemble_members} />
                         </div>
                     )
                 })

@@ -1,25 +1,26 @@
 import React from "react";
-import Header from "../DisplayComponents/Header";
-import data from "./PrivateEventDummy";
+import EventHeader from "../DisplayComponents/EventHeader";
+import res from "./PrivateEventMockData";
 
 export default class PrivateEvent extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            "data": null
+            "data": null,
+            "loaded": false
         }
     }
 
     componentWillMount() {
         // api call here
-        this.setState({"data": data.data});
+        this.setState({ "data": res.data, "loaded": true });
     }
 
     render() {
         return(
             <div>
                 {
-                    this.state.data && <Header {...this.state.data} />
+                    this.state.loaded && <EventHeader {...this.state.data} />
                 }
                 <h4>
                     Event Id: {this.props.match.params.eventId}

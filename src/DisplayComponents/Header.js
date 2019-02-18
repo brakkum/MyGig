@@ -1,12 +1,14 @@
 import React from "react";
 import EnsemblesList from "./EnsembleList";
+import MembersList from "./MembersList";
 
 export default function Header (props) {
+
     return(
         <div className="page-header">
             <h1>
                 {
-                    props.name
+                    props.page_header
                 }
             </h1>
             {
@@ -20,7 +22,7 @@ export default function Header (props) {
                 props.ensembles != null && <EnsemblesList ensembles={props.ensembles} />
             }
             {
-                // add members check for ensemble page
+                props.ensemble_members != null && <MembersList ensemble_members={props.ensemble_members} />
             }
         </div>
     )
