@@ -1,7 +1,7 @@
 import React from "react";
 import res from "./EnsembleMockData";
 import EnsembleHeader from "../DisplayComponents/EnsembleHeader";
-import EnsembleName from "../DisplayComponents/EnsembleName";
+import Loading from "../HelperComponents/Loading";
 
 export default class Ensemble extends React.Component {
 
@@ -18,7 +18,13 @@ export default class Ensemble extends React.Component {
         return(
             <div>
                 {
-                    this.state.loaded && <EnsembleHeader {...this.state.data} />
+                    <Loading
+                        loaded={this.state.loaded}
+                        success={
+                            <EnsembleHeader {...this.state.data} />
+                        }
+                        waiting={"loading..."}
+                    />
                 }
                 <h4>
                     Ensemble Id: {this.props.match.params.ensembleId}
