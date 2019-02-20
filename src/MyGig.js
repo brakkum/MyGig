@@ -10,6 +10,8 @@ import Ensemble from "./RouteComponents/Ensemble";
 import Connections from "./RouteComponents/Connections";
 import Sets from "./RouteComponents/Sets";
 import NavBar from "./DisplayComponents/NavBar";
+import Login from "./RouteComponents/Login";
+import ProtectedRoute from "./SecurityComponents/ProtectedRoute";
 
 class MyGig extends Component {
     constructor(props) {
@@ -17,7 +19,8 @@ class MyGig extends Component {
         // store user info here and pass to "page" components
         this.state = {
             "userData": {
-                "id": this.props.userData.id
+                "id": this.props.userData.id,
+                "isLoggedIn": true
             }
         }
     }
@@ -28,42 +31,63 @@ class MyGig extends Component {
                 <div>
                     <NavBar />
                     <div className="body-content">
-                        <Route
+                        <ProtectedRoute
                             exact
                             path="/"
-                            render={() =>
-                                <Home
-                                    userData={this.state.userData}
-                                />
+                            userData={this.state.userData}
+                            component={
+                                Home
                             }
                         />
-                        <Route
+                        <ProtectedRoute
                             path="/account"
-                            render={() =>
-                                <Account
-                                    userData={this.state.userData}
-                                />
+                            userData={this.state.userData}
+                            component={
+                                Account
                             }
                         />
-                        <Route
+                        <ProtectedRoute
                             path="/notifications"
-                            render={() =>
-                                <Notifications
-                                    userData={this.state.userData}
-                                />
+                            userData={this.state.userData}
+                            component={
+                                Notifications
                             }
                         />
-                        <Route
+                        <ProtectedRoute
                             path="/connections"
-                            render={() =>
-                                <Connections
-                                    userData={this.state.userData}
-                                />
+                            userData={this.state.userData}
+                            component={
+                                Connections
                             }
                         />
-                        { /* reference param as this.props.match.params.eventId in component */ }
+                        <ProtectedRoute
+                            path="/event/:eventId"
+                            userData={this.state.userData}
+                            component={
+                                PrivateEvent
+                            }
+                        />
+                        <ProtectedRoute
+                            path="/ensemble/:ensembleId"
+                            userData={this.state.userData}
+                            component={
+                                Ensemble
+                            }
+                        />
+                        <ProtectedRoute
+                            path="/sets/:eventId"
+                            userData={this.state.userData}
+                            component={
+                                Sets
+                            }
+                        />
+                        {
+                            // reference param as this.props.match.params.eventId in component
+                            // remaining components are accessible by anyone
+                        }
                         <Route
                             path="/public_event/:eventId"
+                            userData={this.state.userData}
                             render={(match) =>
                                 <PublicEvent
                                     userData={this.state.userData}
@@ -72,29 +96,10 @@ class MyGig extends Component {
                             }
                         />
                         <Route
-                            path="/event/:eventId"
-                            render={(match) =>
-                                <PrivateEvent
+                            path="/login"
+                            render={() =>
+                                <Login
                                     userData={this.state.userData}
-                                    {...match}
-                                />
-                            }
-                        />
-                        <Route
-                            path="/ensemble/:ensembleId"
-                            render={(match) =>
-                                <Ensemble
-                                    userData={this.state.userData}
-                                    {...match}
-                                />
-                            }
-                        />
-                        <Route
-                            path="/sets/:eventId"
-                            render={(match) =>
-                                <Sets
-                                    userData={this.state.userData}
-                                    {...match}
                                 />
                             }
                         />

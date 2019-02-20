@@ -8,7 +8,9 @@ export default class Home extends React.Component {
             <div>
                 Home
                 <h4>
-                    {this.props.userData.id}
+                    {
+                        this.props.userData.id
+                    }
                 </h4>
             </div>
         )
