@@ -4,6 +4,7 @@ import EventHeader from "../DisplayComponents/EventHeader";
 import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 
 export default class PublicEvent extends React.Component {
+    // top level route component for /public_event/{event_id}
 
     state = {
         loaded: false,

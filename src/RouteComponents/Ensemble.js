@@ -4,6 +4,7 @@ import EnsembleHeader from "../DisplayComponents/EnsembleHeader";
 import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 
 export default class Ensemble extends React.Component {
+    // top level route component for /ensemble/{ensemble_id}
 
     state = {
         loaded: false,
@@ -23,7 +24,6 @@ export default class Ensemble extends React.Component {
                         success={
                             <EnsembleHeader {...this.state.data} />
                         }
-                        waiting={"loading..."}
                     />
                 }
                 <h4>

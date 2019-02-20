@@ -4,13 +4,12 @@ import res from "./PrivateEventMockData";
 import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 
 export default class PrivateEvent extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            "data": null,
-            "loaded": false
-        }
-    }
+    // top level route component for /event/{event_id}
+
+    state = {
+        "data": null,
+        "loaded": false
+    };
 
     componentWillMount() {
         // api call here
@@ -26,7 +25,6 @@ export default class PrivateEvent extends React.Component {
                         success={
                             <EventHeader {...this.state.data} />
                         }
-                        waiting={"loading..."}
                     />
                 }
                 <h4>
