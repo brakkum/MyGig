@@ -1,6 +1,5 @@
 import React from "react";
-import { Redirect } from "react-router";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 
 export default function ProtectedRoute({component: Component, userData, ...rest }) {
     // Redirect user if they're not logged in
@@ -12,7 +11,7 @@ export default function ProtectedRoute({component: Component, userData, ...rest 
                 userData && userData.isLoggedIn ? (
                     <Component userData={userData} match={props.match} />
                 ) : (
-                    <Redirect to="/login" />
+                    <Redirect to={{pathname: "/login", state: { from: props.location.pathname } }} />
                 )
             }
         />

@@ -15,14 +15,29 @@ import ProtectedRoute from "./SecurityComponents/ProtectedRoute";
 
 class MyGig extends Component {
 
-    state = {
-        "userData": null
-    };
+    constructor(props) {
+        super(props);
+        this.loginUser = this.loginUser.bind(this);
+        this.state = {
+            "userData": null
+        };
+    }
 
+    // so logging in isn't necessary right now
     componentWillMount() {
         this.setState({
             "userData": {
                 "id": 1,
+                "isLoggedIn": true
+            }
+        })
+    }
+
+    // this is called from login page
+    loginUser = id => {
+        this.setState({
+            "userData": {
+                "id": id,
                 "isLoggedIn": true
             }
         })
@@ -103,6 +118,7 @@ class MyGig extends Component {
                             render={() =>
                                 <Login
                                     userData={this.state.userData}
+                                    loginUser={this.loginUser}
                                 />
                             }
                         />
