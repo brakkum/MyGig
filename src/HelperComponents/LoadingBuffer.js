@@ -6,7 +6,7 @@ export default class LoadingBuffer extends React.Component {
 
     render() {
         return(
-            <div style={this.divStyle}>
+            <div>
                 {
                     this.props.loaded ? this.props.success : this.props.waiting != null ? this.props.waiting : <Loading />
                 }
