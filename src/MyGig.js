@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
 import './MyGig.css';
 import Home from "./RouteComponents/Home";
 import Notifications from "./RouteComponents/Notifications";
@@ -19,17 +19,18 @@ class MyGig extends Component {
         super(props);
         this.loginUser = this.loginUser.bind(this);
         this.state = {
-            "userData": null
+            userData: null,
+            redirect: null
         };
     };
 
     // so logging in isn't necessary right now
     componentWillMount() {
         this.setState({
-            "userData": {
-                "id": 1,
-                "picUrl": "https://i.imgur.com/pDaRVI5.jpg",
-                "isLoggedIn": true
+            userData: {
+                id: 1,
+                picUrl: "https://i.imgur.com/pDaRVI5.jpg",
+                isLoggedIn: true
             }
         })
     };
@@ -37,18 +38,39 @@ class MyGig extends Component {
     // this is called from login page
     loginUser = id => {
         this.setState({
-            "userData": {
-                "id": id,
-                "isLoggedIn": true
+            userData: {
+                id: id,
+                isLoggedIn: true
             }
         })
     };
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.state.redirect != null) {
+            this.setState({
+                redirect: null
+            });
+        }
+    }
+
+    redirect = (to, from) => {
+        if (to !== from) {
+            this.setState({
+                redirect: to
+            });
+        }
+    };
+
     render() {
+        let redirect = this.state.redirect;
+
         return (
             <Router>
                 <div>
-                    <NavBar userData={this.state.userData} />
+                    {
+                        redirect && <Redirect to={redirect}/>
+                    }
+                    <NavBar userData={this.state.userData} redirect={this.redirect} />
                     <div className="body-content">
                         <ProtectedRoute
                             exact
