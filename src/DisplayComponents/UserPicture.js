@@ -1,6 +1,7 @@
 import React from "react";
 
 export default class UserPicture extends React.Component {
+
     state = {
         pic_url: null,
         user_name: null,
@@ -47,13 +48,11 @@ export default class UserPicture extends React.Component {
         let hoveredStyle = this.state.hovered ? this.hoverStyle : {} ;
         return(
             <div
-                className="user-pic"
                 style={{...this.baseStyle, ...includePic, ...hoveredStyle}}
                 onClick={this.handleClick}
                 onMouseOver={this.handleHover}
                 onMouseOut={this.handleLeave}
-            >
-            </div>
+            />
         )
     }
 }

@@ -1,12 +1,30 @@
 import React from "react";
 import { Redirect } from "react-router";
-import "./NavBar.css";
 import UserPicture from "./UserPicture";
 
 export default class NavBar extends React.Component {
+
     state = {
         toHome: false,
         toAccount: false,
+    };
+
+    navbarStyle = {
+        maxWidth: "1300px",
+        margin: "auto",
+        height: "75px"
+    };
+
+    navbarLeftStyle = {
+        height: "100%",
+        maxWidth: "150px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-evenly"
+    };
+
+    navbarHomeLinkStyle = {
+        cursor: "pointer"
     };
 
     toAccount = () => {
@@ -27,10 +45,10 @@ export default class NavBar extends React.Component {
         }
 
         return(
-            <div className="navbar">
-                <div className="navbar-left">
+            <div style={this.navbarStyle}>
+                <div style={this.navbarLeftStyle}>
                     <UserPicture onClick={this.toAccount} />
-                    <div onClick={this.toHome} className="navbar-home-link">Home</div>
+                    <div onClick={this.toHome} style={this.navbarHomeLinkStyle}>Home</div>
                 </div>
             </div>
         )
