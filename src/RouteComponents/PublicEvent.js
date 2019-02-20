@@ -1,7 +1,7 @@
 import React from "react";
 import res from "./PublicEventMockData";
 import EventHeader from "../DisplayComponents/EventHeader";
-import Loading from "../HelperComponents/Loading";
+import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 
 export default class PublicEvent extends React.Component {
 
@@ -11,25 +11,24 @@ export default class PublicEvent extends React.Component {
     };
 
     componentDidMount() {
-        this.setState({ data: res.data, loaded: true });
+        setTimeout(() => {
+            this.setState({ data: res.data, loaded: true });
+        }, 2000);
     }
 
     render() {
         return(
-            <div>
-                {
-                    <Loading
-                        loaded={this.state.loaded}
-                        success={
-                            <EventHeader {...this.state.data} />
-                        }
-                        waiting={"loading..."}
-                    />
+            <LoadingBuffer
+                loaded={this.state.loaded}
+                success={
+                    <div>
+                        <EventHeader {...this.state.data} />
+                        <h4>
+                            Id: {this.props.match.params.eventId}
+                        </h4>
+                    </div>
                 }
-                <h4>
-                    Id: {this.props.match.params.eventId}
-                </h4>
-            </div>
+            />
         )
     }
 }

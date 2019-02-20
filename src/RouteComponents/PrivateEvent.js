@@ -1,7 +1,7 @@
 import React from "react";
 import EventHeader from "../DisplayComponents/EventHeader";
 import res from "./PrivateEventMockData";
-import Loading from "../HelperComponents/Loading";
+import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 
 export default class PrivateEvent extends React.Component {
     constructor(props) {
@@ -21,7 +21,7 @@ export default class PrivateEvent extends React.Component {
         return(
             <div>
                 {
-                    <Loading
+                    <LoadingBuffer
                         loaded={this.state.loaded}
                         success={
                             <EventHeader {...this.state.data} />

@@ -1,7 +1,7 @@
 import React from "react";
 import res from "./EnsembleMockData";
 import EnsembleHeader from "../DisplayComponents/EnsembleHeader";
-import Loading from "../HelperComponents/Loading";
+import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 
 export default class Ensemble extends React.Component {
 
@@ -18,7 +18,7 @@ export default class Ensemble extends React.Component {
         return(
             <div>
                 {
-                    <Loading
+                    <LoadingBuffer
                         loaded={this.state.loaded}
                         success={
                             <EnsembleHeader {...this.state.data} />
