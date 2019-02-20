@@ -9,7 +9,7 @@ export default function ProtectedRoute({component: Component, userData, ...rest 
         <Route
             {...rest}
             render={(props) =>
-                userData.isLoggedIn ? (
+                userData && userData.isLoggedIn ? (
                     <Component userData={userData} match={props.match} />
                 ) : (
                     <Redirect to="/login" />

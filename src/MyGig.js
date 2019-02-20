@@ -22,7 +22,7 @@ class MyGig extends Component {
     componentWillMount() {
         this.setState({
             "userData": {
-                "id": this.props.userData.id,
+                "id": 1,
                 "isLoggedIn": true
             }
         })
