@@ -5,7 +5,8 @@ export default class UserPicture extends React.Component {
     state = {
         pic_url: null,
         user_name: null,
-        hovered: false
+        hovered: false,
+        innerHtml: null
     };
 
     baseStyle = {
@@ -21,7 +22,7 @@ export default class UserPicture extends React.Component {
         border: "2px solid transparent"
     };
 
-    hasPic = {
+    hasPicStyle = {
         backgroundImage: this.state.pic_url,
     };
 
@@ -36,23 +37,27 @@ export default class UserPicture extends React.Component {
     };
 
     handleHover = () => {
-        this.setState({ hovered: true });
+        this.setState({ hovered: true, innerHtml: this.props.innerHtml || "edit" });
     };
 
     handleLeave = () => {
-        this.setState({ hovered: false });
+        this.setState({ hovered: false, innerHtml: "" });
     };
 
     render() {
-        let includePic = this.state.pic_url ? this.hasPic : {};
-        let hoveredStyle = this.state.hovered ? this.hoverStyle : {} ;
+        let includePic = this.state.pic_url ? this.hasPicStyle : {};
+        let hoveredStyle = this.state.hovered ? this.hoverStyle : {};
         return(
             <div
                 style={{...this.baseStyle, ...includePic, ...hoveredStyle}}
                 onClick={this.handleClick}
                 onMouseOver={this.handleHover}
                 onMouseOut={this.handleLeave}
-            />
+            >
+                {
+                    this.state.innerHtml
+                }
+            </div>
         )
     }
 }
