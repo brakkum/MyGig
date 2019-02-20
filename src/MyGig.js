@@ -14,15 +14,18 @@ import Login from "./RouteComponents/Login";
 import ProtectedRoute from "./SecurityComponents/ProtectedRoute";
 
 class MyGig extends Component {
-    constructor(props) {
-        super(props);
-        // store user info here and pass to "page" components
-        this.state = {
+
+    state = {
+        "userData": null
+    };
+
+    componentWillMount() {
+        this.setState({
             "userData": {
                 "id": this.props.userData.id,
                 "isLoggedIn": true
             }
-        }
+        })
     }
 
     render() {
