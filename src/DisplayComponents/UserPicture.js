@@ -3,10 +3,11 @@ import React from "react";
 export default class UserPicture extends React.Component {
 
     state = {
-        pic_url: null,
-        user_name: null,
+        picUrl: this.props.picUrl,
+        username: null,
         hovered: false,
-        innerHtml: null
+        innerHtml: null,
+        color: this.props.color || "azure"
     };
 
     baseStyle = {
@@ -14,26 +15,25 @@ export default class UserPicture extends React.Component {
         height: "50px",
         borderRadius: "100%",
         backgroundColor: "lightblue",
-        transition: ".2s",
+        transition: ".3s",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-evenly",
         cursor: "pointer",
-        border: "2px solid transparent"
+        boxShadow: "0 0 1pt transparent",
+        color: this.state.color,
+        textShadow: "1px 1px black"
     };
 
     hasPicStyle = {
-        backgroundImage: this.state.pic_url,
+        backgroundImage: `url(${this.state.picUrl})`,
+        backgroundSize: "150% auto",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center"
     };
 
     hoverStyle = {
-        border: "2px solid royalblue",
-    };
-
-    handleClick = () => {
-        if (this.props.onClick) {
-            this.props.onClick();
-        }
+        boxShadow: "0 0 0 3pt royalblue"
     };
 
     handleHover = () => {
@@ -45,12 +45,12 @@ export default class UserPicture extends React.Component {
     };
 
     render() {
-        let includePic = this.state.pic_url ? this.hasPicStyle : {};
+        let includePic = this.state.picUrl ? this.hasPicStyle : {};
         let hoveredStyle = this.state.hovered ? this.hoverStyle : {};
         return(
             <div
                 style={{...this.baseStyle, ...includePic, ...hoveredStyle}}
-                onClick={this.handleClick}
+                onClick={this.props.onClick}
                 onMouseOver={this.handleHover}
                 onMouseOut={this.handleLeave}
             >

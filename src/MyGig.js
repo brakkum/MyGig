@@ -21,17 +21,18 @@ class MyGig extends Component {
         this.state = {
             "userData": null
         };
-    }
+    };
 
     // so logging in isn't necessary right now
     componentWillMount() {
         this.setState({
             "userData": {
                 "id": 1,
+                "picUrl": "https://i.imgur.com/pDaRVI5.jpg",
                 "isLoggedIn": true
             }
         })
-    }
+    };
 
     // this is called from login page
     loginUser = id => {
@@ -41,13 +42,13 @@ class MyGig extends Component {
                 "isLoggedIn": true
             }
         })
-    }
+    };
 
     render() {
         return (
             <Router>
                 <div>
-                    <NavBar />
+                    <NavBar userData={this.state.userData} />
                     <div className="body-content">
                         <ProtectedRoute
                             exact

@@ -5,17 +5,16 @@ import UserPicture from "./UserPicture";
 export default class NavBar extends React.Component {
 
     state = {
-        toHome: false,
-        toAccount: false,
+        redirect: null
     };
 
-    navbarStyle = {
+    navStyle = {
         maxWidth: "1300px",
         margin: "auto",
         height: "75px"
     };
 
-    navbarLeftStyle = {
+    navLeftStyle = {
         height: "100%",
         maxWidth: "150px",
         display: "flex",
@@ -23,32 +22,33 @@ export default class NavBar extends React.Component {
         justifyContent: "space-evenly"
     };
 
-    navbarHomeLinkStyle = {
+    navHomeLinkStyle = {
         cursor: "pointer"
     };
 
-    toAccount = () => {
-        this.setState({ toAccount: true });
-    };
-
-    toHome = () => {
-        this.setState({ toHome: true });
+    redirect = to => {
+      this.setState({ redirect: to });
     };
 
     render() {
-        if (this.state.toAccount) {
-            this.setState({ toAccount: false });
-            return <Redirect to="/account" />
-        } else if (this.state.toHome) {
-            this.setState({ toHome: false });
-            return <Redirect to="/" />
+        let redirect = this.state.redirect;
+        if (redirect) {
+            this.setState({ redirect: null });
+            return <Redirect to={this.state.redirect} />
         }
-
         return(
-            <div style={this.navbarStyle}>
-                <div style={this.navbarLeftStyle}>
-                    <UserPicture onClick={this.toAccount} />
-                    <div onClick={this.toHome} style={this.navbarHomeLinkStyle}>Home</div>
+            <div style={this.navStyle}>
+                <div style={this.navLeftStyle}>
+                    <UserPicture
+                        onClick={() => this.redirect("/account")}
+                        picUrl={this.props.userData.picUrl}
+                    />
+                    <div
+                        onClick={() => this.redirect("/")}
+                        style={this.navHomeLinkStyle}
+                    >
+                        Home
+                    </div>
                 </div>
             </div>
         )
