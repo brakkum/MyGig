@@ -3,9 +3,9 @@ import React from "react";
 export default function MembersList(props) {
 
     return(
-        <div className="ensemble_members">
+        <div className="ensembleMembers">
             {
-                props.ensemble_members.map(mem => {
+                props.ensembleMembers.map(mem => {
                     return mem.name
                 }).join(", ")
             }

@@ -5,7 +5,7 @@ export default class EventHeader extends React.Component {
 
     render() {
         return(
-            <Header page_header={this.props.name} details={this.props.details} ensembles={this.props.ensembles} />
+            <Header pageHeader={this.props.name} details={this.props.details} ensembles={this.props.ensembles} />
         )
     }
 }

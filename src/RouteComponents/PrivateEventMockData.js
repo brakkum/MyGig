@@ -41,34 +41,44 @@ export default {
         "name": "the show!",
         "ensembles": [
             {
-                "ensemble_name": "Some Guys",
-                "ensemble_set_length": 45,
-                "ensemble_members": [
+                "ensembleName": "Some Guys",
+                "ensembleSetLength": 45,
+                "ensembleMembers": [
                     {
                         "name": "Joe Jackson",
-                        "id": 1
+                        "id": 1,
+                        "photoUrl": "https://memberdata.s3.amazonaws.com/jo/joejackson/photos/joejackson_photo_gal_37255_photo_35883055_lr.jpg",
+                        "connectedToUser": true
                     },
                     {
                         "name": "Jimmy Page",
-                        "id": 2
+                        "id": 2,
+                        "photoUrl": "https://m.media-amazon.com/images/M/MV5BMTQ1NzI1MDM5MV5BMl5BanBnXkFtZTcwNDUwMTI2Mg@@._V1_UX214_CR0,0,214,317_AL_.jpg",
+                        "connectedToUser": false
                     },
                     {
                         "name": "Mark Twain",
-                        "id": 3
+                        "id": 3,
+                        "photoUrl": "https://www.biography.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cg_face%2Cq_auto:good%2Cw_300/MTE5NDg0MDU1MTUzNTA5OTAz/mark-twain-9512564-1-402.jpg",
+                        "connectedToUser": true
                     }
                 ]
             },
             {
-                "ensemble_name": "Cool Dads",
-                "ensemble_set_length": 90,
-                "ensemble_members": [
+                "ensembleName": "Cool Dads",
+                "ensembleSetLength": 90,
+                "ensembleMembers": [
                     {
                         "name": "Joe Jackson",
-                        "id": 1
+                        "id": 1,
+                        "photoUrl": "https://memberdata.s3.amazonaws.com/jo/joejackson/photos/joejackson_photo_gal_37255_photo_35883055_lr.jpg",
+                        "connectedToUser": true
                     },
                     {
                         "name": "Jimmy Page",
-                        "id": 2
+                        "id": 2,
+                        "photoUrl": "https://m.media-amazon.com/images/M/MV5BMTQ1NzI1MDM5MV5BMl5BanBnXkFtZTcwNDUwMTI2Mg@@._V1_UX214_CR0,0,214,317_AL_.jpg",
+                        "connectedToUser": false
                     }
                 ]
             }
@@ -84,7 +94,9 @@ export default {
                 "comment_user": {
                     "name": "Joe Jackson",
                     "id": 1,
-                    "comment_time": "2019-02-13 10:30:27"
+                    "comment_time": "2019-02-13 10:30:27",
+                    "photoUrl": "https://memberdata.s3.amazonaws.com/jo/joejackson/photos/joejackson_photo_gal_37255_photo_35883055_lr.jpg",
+                    "connectedToUser": true
                 }
             },
             {
@@ -93,7 +105,9 @@ export default {
                 "comment_user": {
                     "name": "Jimmy Page",
                     "id": 2,
-                    "comment_time": "2019-02-13 10:45:21"
+                    "comment_time": "2019-02-13 10:45:21",
+                    "photoUrl": "https://m.media-amazon.com/images/M/MV5BMTQ1NzI1MDM5MV5BMl5BanBnXkFtZTcwNDUwMTI2Mg@@._V1_UX214_CR0,0,214,317_AL_.jpg",
+                    "connectedToUser": false
                 }
             }
         ],

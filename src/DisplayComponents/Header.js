@@ -8,7 +8,7 @@ export default function Header (props) {
         <div className="page-header">
             <h1>
                 {
-                    props.page_header
+                    props.pageHeader
                 }
             </h1>
             {
@@ -22,7 +22,7 @@ export default function Header (props) {
                 props.ensembles != null && <EnsemblesList ensembles={props.ensembles} />
             }
             {
-                props.ensemble_members != null && <MembersList ensemble_members={props.ensemble_members} />
+                props.ensembleMembers != null && <MembersList ensemble_members={props.ensembleMembers} />
             }
         </div>
     )

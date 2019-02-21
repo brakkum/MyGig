@@ -10,9 +10,9 @@ export default function EnsembleList (props) {
             {
                 props.ensembles.map((ens, i) => {
                     return(
-                        <div key={i} className="ensemble_listing">
-                            <EnsembleName name={ens.ensemble_name} />
-                            <MembersList ensemble_members={ens.ensemble_members} />
+                        <div key={i} className="ensembleListing">
+                            <EnsembleName name={ens.ensembleName} />
+                            <MembersList ensembleMembers={ens.ensembleMembers} />
                         </div>
                     )
                 })
