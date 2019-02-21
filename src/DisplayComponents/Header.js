@@ -1,6 +1,6 @@
 import React from "react";
 import EnsemblesList from "./EnsembleList";
-import MembersList from "./MembersList";
+import EnsembleMembersList from "./EnsembleMembersList";
 
 export default function Header (props) {
 
@@ -22,7 +22,7 @@ export default function Header (props) {
                 props.ensembles != null && <EnsemblesList ensembles={props.ensembles} />
             }
             {
-                props.ensembleMembers != null && <MembersList ensemble_members={props.ensembleMembers} />
+                props.ensembleMembers != null && <EnsembleMembersList ensemble_members={props.ensembleMembers} />
             }
         </div>
     )

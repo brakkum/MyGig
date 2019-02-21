@@ -37,7 +37,7 @@ export default class UserPicture extends React.Component {
     };
 
     handleHover = () => {
-        this.setState({ hovered: true, innerHtml: this.props.innerHtml || "edit" });
+        this.setState({ hovered: true, innerHtml: this.props.innerHtml || null });
     };
 
     handleLeave = () => {
