@@ -1,17 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Redirect } from 'react-router-dom';
 import './MyGig.css';
-import Home from "./RouteComponents/Home";
-import Notifications from "./RouteComponents/Notifications";
-import Account from "./RouteComponents/Account";
-import PublicEvent from "./RouteComponents/PublicEvent";
-import PrivateEvent from "./RouteComponents/PrivateEvent";
-import Ensemble from "./RouteComponents/Ensemble";
-import Connections from "./RouteComponents/Connections";
-import Sets from "./RouteComponents/Sets";
 import NavBar from "./DisplayComponents/NavBar";
-import Login from "./RouteComponents/Login";
-import ProtectedRoute from "./SecurityComponents/ProtectedRoute";
+import MyGigRouter from "./RouteComponents/MyGigRouter";
 
 class MyGig extends Component {
 
@@ -22,6 +13,24 @@ class MyGig extends Component {
             userData: null,
             redirect: null
         };
+    };
+
+    // this is called from login page
+    loginUser = id => {
+        this.setState({
+            userData: {
+                id: id,
+                isLoggedIn: true
+            }
+        })
+    };
+
+    redirect = (to, from) => {
+        if (to !== from) {
+            this.setState({
+                redirect: to
+            });
+        }
     };
 
     // so logging in isn't necessary right now
@@ -35,16 +44,6 @@ class MyGig extends Component {
         })
     };
 
-    // this is called from login page
-    loginUser = id => {
-        this.setState({
-            userData: {
-                id: id,
-                isLoggedIn: true
-            }
-        })
-    };
-
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.redirect != null) {
             this.setState({
@@ -52,14 +51,6 @@ class MyGig extends Component {
             });
         }
     }
-
-    redirect = (to, from) => {
-        if (to !== from) {
-            this.setState({
-                redirect: to
-            });
-        }
-    };
 
     render() {
         let redirect = this.state.redirect;
@@ -72,80 +63,7 @@ class MyGig extends Component {
                     }
                     <NavBar userData={this.state.userData} redirect={this.redirect} />
                     <div className="body-content">
-                        <ProtectedRoute
-                            exact
-                            path="/"
-                            userData={this.state.userData}
-                            component={
-                                Home
-                            }
-                        />
-                        <ProtectedRoute
-                            path="/account"
-                            userData={this.state.userData}
-                            component={
-                                Account
-                            }
-                        />
-                        <ProtectedRoute
-                            path="/notifications"
-                            userData={this.state.userData}
-                            component={
-                                Notifications
-                            }
-                        />
-                        <ProtectedRoute
-                            path="/connections"
-                            userData={this.state.userData}
-                            component={
-                                Connections
-                            }
-                        />
-                        <ProtectedRoute
-                            path="/event/:eventId"
-                            userData={this.state.userData}
-                            component={
-                                PrivateEvent
-                            }
-                        />
-                        <ProtectedRoute
-                            path="/ensemble/:ensembleId"
-                            userData={this.state.userData}
-                            component={
-                                Ensemble
-                            }
-                        />
-                        <ProtectedRoute
-                            path="/sets/:eventId"
-                            userData={this.state.userData}
-                            component={
-                                Sets
-                            }
-                        />
-                        {
-                            // reference param as this.props.match.params.eventId in component
-                            // remaining components are accessible by anyone
-                        }
-                        <Route
-                            path="/public_event/:eventId"
-                            userData={this.state.userData}
-                            render={(match) =>
-                                <PublicEvent
-                                    userData={this.state.userData}
-                                    {...match}
-                                />
-                            }
-                        />
-                        <Route
-                            path="/login"
-                            render={() =>
-                                <Login
-                                    userData={this.state.userData}
-                                    loginUser={this.loginUser}
-                                />
-                            }
-                        />
-
+                        <MyGigRouter userData={this.state.userData} loginUser={this.loginUser} />
                         <div className="test-nav" style={{backgroundColor: "lightgreen", display: "flex", justifyContent: "space-between"}}>
                             <Link to="/">Home</Link>
                             <Link to="/account">Account</Link>
