@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import UserPicture from "./UserPicture";
-import Modal from "./Modal";
 
 export default class UserNameDisplay extends React.Component {
 
@@ -18,22 +17,24 @@ export default class UserNameDisplay extends React.Component {
     };
 
     modalHidden = {
+        width: "0px",
         height: "0px",
     };
 
     modalShown = {
-        height: this.props.height || "100px"
+        height: this.props.height || "100px",
+        width: this.props.width || "100px"
     };
 
     modalDefaultStyle = {
         position: "absolute",
         // backgroundColor: "red",
-        border: "1px solid red",
+        // border: "1px solid red",
         justifyContent: "center",
     };
 
     transitionStyle = {
-        transition: "height 1s",
+        transition: "all 1s",
     };
 
     containerStyle = {
@@ -43,7 +44,7 @@ export default class UserNameDisplay extends React.Component {
         flexDirection: "column",
         justifyContent: "space-around",
         alignItems: "center",
-        overflow: "hidden"
+        overflow: "hidden",
     };
 
     handleMouseOver = () => {
@@ -81,7 +82,7 @@ export default class UserNameDisplay extends React.Component {
         let modalStyle = this.state.showModal ? this.modalShown : this.modalHidden;
         return(
             <span onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
-                <div style={{...this.modalDefaultStyle, ...modalStyle, ...this.transitionStyle, top: this.state.modalTop + "px", left: this.state.modalLeft + "px", width: this.state.modalWidth}}>
+                <div style={{...this.modalDefaultStyle, ...modalStyle, ...this.transitionStyle, top: this.state.modalTop + "px", left: this.state.modalLeft + "px"}}>
                     <div className="pic-container" style={this.containerStyle}>
                         <UserPicture photoUrl={this.props.memberData.photoUrl} />
                     </div>
