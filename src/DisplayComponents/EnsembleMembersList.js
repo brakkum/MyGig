@@ -8,7 +8,7 @@ export default class EnsembleMembersList extends React.Component {
             <div className="ensembleMembers">
                 {
                     this.props.ensembleMembers.map((mem, i) => {
-                        return <UserNameDisplay userData={mem} key={i} />
+                        return <UserNameDisplay memberData={mem} key={i} />
                     })
                 }
             </div>

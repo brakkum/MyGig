@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import UserPicture from "./UserPicture";
-
+import Modal from "./Modal";
 
 export default class UserNameDisplay extends React.Component {
 
@@ -17,28 +17,33 @@ export default class UserNameDisplay extends React.Component {
         margin: "10px"
     };
 
-    modalDefault = {
-        position: "absolute",
-        // backgroundColor: "red",
-        justifyContent: "center",
-        transition: "all 1s",
-    };
-
     modalHidden = {
         height: "0px",
     };
 
     modalShown = {
-        height: "100px"
+        height: this.props.height || "100px"
     };
 
-    picContainerStyle = {
+    modalDefaultStyle = {
+        position: "absolute",
+        // backgroundColor: "red",
+        border: "1px solid red",
+        justifyContent: "center",
+    };
+
+    transitionStyle = {
+        transition: "height 1s",
+    };
+
+    containerStyle = {
         width: "100%",
         height: "100%",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-around",
-        alignItems: "center"
+        alignItems: "center",
+        overflow: "hidden"
     };
 
     handleMouseOver = () => {
@@ -74,18 +79,16 @@ export default class UserNameDisplay extends React.Component {
 
     render() {
         let modalStyle = this.state.showModal ? this.modalShown : this.modalHidden;
-
         return(
             <span onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
-                <div style={{...this.modalDefault, ...modalStyle, top: this.state.modalTop + "px", left: this.state.modalLeft + "px", width: this.state.modalWidth}}>
-                    <div className="pic-container" style={this.picContainerStyle}>
-                        <UserPicture picUrl={this.props.userData.photoUrl} />
+                <div style={{...this.modalDefaultStyle, ...modalStyle, ...this.transitionStyle, top: this.state.modalTop + "px", left: this.state.modalLeft + "px", width: this.state.modalWidth}}>
+                    <div className="pic-container" style={this.containerStyle}>
+                        <UserPicture photoUrl={this.props.memberData.photoUrl} />
                     </div>
                 </div>
-
                 <span style={this.memberStyle}>
                     {
-                        this.props.userData.name
+                        this.props.memberData.name
                     }
                 </span>
             </span>

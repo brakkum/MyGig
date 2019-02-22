@@ -2,21 +2,23 @@ import React from "react";
 import EnsembleMembersList from "./EnsembleMembersList";
 import EnsembleName from "./EnsembleName";
 
-export default function EnsembleList (props) {
+export default class EnsembleList extends React.Component {
 
-    return(
-        <div className="ensemble_list">
-            With
-            {
-                props.ensembles.map((ens, i) => {
-                    return(
-                        <div key={i} className="ensembleListing">
-                            <EnsembleName name={ens.ensembleName} />
-                            <EnsembleMembersList ensembleMembers={ens.ensembleMembers} />
-                        </div>
-                    )
-                })
-            }
-        </div>
-    )
+    render() {
+        return(
+            <div className="ensemble_list">
+                With
+                {
+                    this.props.ensembles.map((ens, i) => {
+                        return(
+                            <div key={i} className="ensembleListing">
+                                <EnsembleName name={ens.ensembleName} />
+                                <EnsembleMembersList ensembleMembers={ens.ensembleMembers} />
+                            </div>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
 }

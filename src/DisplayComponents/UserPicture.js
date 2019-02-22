@@ -3,11 +3,11 @@ import React from "react";
 export default class UserPicture extends React.Component {
 
     state = {
-        picUrl: this.props.picUrl,
         username: null,
         hovered: false,
         innerHtml: null,
-        color: this.props.color || "azure"
+        color: this.props.color || "azure",
+        photoUrl: this.props.photoUrl
     };
 
     baseStyle = {
@@ -26,7 +26,7 @@ export default class UserPicture extends React.Component {
     };
 
     hasPicStyle = {
-        backgroundImage: `url(${this.state.picUrl})`,
+        backgroundImage: `url(${this.props.photoUrl})`,
         backgroundSize: "150% auto",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center"
@@ -41,11 +41,11 @@ export default class UserPicture extends React.Component {
     };
 
     handleLeave = () => {
-        this.setState({ hovered: false, innerHtml: "" });
+        this.setState({ hovered: false, innerHtml: null });
     };
 
     render() {
-        let includePic = this.state.picUrl ? this.hasPicStyle : {};
+        let includePic = this.props.photoUrl ? this.hasPicStyle : {};
         let hoveredStyle = this.state.hovered ? this.hoverStyle : {};
         return(
             <div
