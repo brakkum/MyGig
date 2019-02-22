@@ -18,19 +18,14 @@ export default class PrivateEvent extends React.Component {
 
     render() {
         return(
-            <div>
-                {
-                    <LoadingBuffer
-                        loaded={this.state.loaded}
-                        success={
-                            <EventHeader {...this.state.data} />
-                        }
-                    />
-                }
+            <LoadingBuffer
+                loaded={this.state.loaded}
+            >
+                <EventHeader {...this.state.data} />
                 <h4>
                     Event Id: {this.props.match.params.eventId}
                 </h4>
-            </div>
+            </LoadingBuffer>
         )
     }
 }

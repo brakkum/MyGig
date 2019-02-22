@@ -21,15 +21,12 @@ export default class PublicEvent extends React.Component {
         return(
             <LoadingBuffer
                 loaded={this.state.loaded}
-                success={
-                    <div>
-                        <EventHeader {...this.state.data} />
-                        <h4>
-                            Id: {this.props.match.params.eventId}
-                        </h4>
-                    </div>
-                }
-            />
+            >
+                <EventHeader {...this.state.data} />
+                <h4>
+                    Id: {this.props.match.params.eventId}
+                </h4>
+            </LoadingBuffer>
         )
     }
 }
