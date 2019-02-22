@@ -34,6 +34,7 @@ export default withRouter(
                         <UserPicture
                             onClick={() => this.props.redirect("/account", this.props.location.pathname)}
                             picUrl={this.props.userData.picUrl}
+                            highlight={true}
                         />
                         <div
                             onClick={() => this.props.redirect("/", this.props.location.pathname)}

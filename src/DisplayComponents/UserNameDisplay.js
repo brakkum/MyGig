@@ -69,6 +69,10 @@ export default class UserNameDisplay extends React.Component {
         });
     };
 
+    connectWithUser = id => {
+        console.log("connectMethod ", id)
+    };
+
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateLocation);
     }
@@ -80,11 +84,17 @@ export default class UserNameDisplay extends React.Component {
 
     render() {
         let modalStyle = this.state.showModal ? this.modalShown : this.modalHidden;
+        let notConnectedToUser = !this.props.memberData.connectedToUser;
         return(
             <span onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
                 <div style={{...this.modalDefaultStyle, ...modalStyle, ...this.transitionStyle, top: this.state.modalTop + "px", left: this.state.modalLeft + "px"}}>
                     <div className="pic-container" style={this.containerStyle}>
-                        <UserPicture photoUrl={this.props.memberData.photoUrl} />
+                        <UserPicture
+                            photoUrl={this.props.memberData.photoUrl}
+                            innerHtml={notConnectedToUser ? "Add" : ""}
+                            onClick={notConnectedToUser ? () => this.connectWithUser(this.props.memberData.id) : null}
+                            highlight={notConnectedToUser}
+                        />
                     </div>
                 </div>
                 <span style={this.memberStyle}>

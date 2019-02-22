@@ -5,7 +5,6 @@ import EnsembleMembersList from "./EnsembleMembersList";
 export default class Header extends React.Component {
 
     render() {
-        console.log(this.props)
         return (
             <div className="page-header">
                 <h1>

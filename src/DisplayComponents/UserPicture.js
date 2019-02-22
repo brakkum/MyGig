@@ -46,7 +46,7 @@ export default class UserPicture extends React.Component {
 
     render() {
         let includePic = this.props.photoUrl ? this.hasPicStyle : {};
-        let hoveredStyle = this.state.hovered ? this.hoverStyle : {};
+        let hoveredStyle = this.state.hovered && this.props.highlight ? this.hoverStyle : {};
         return(
             <div
                 style={{...this.baseStyle, ...includePic, ...hoveredStyle}}
