@@ -1,13 +1,21 @@
 import React from "react";
 
 export default class UserPicture extends React.Component {
+    // displays users picture, or default
+    // TODO: have actual default image
+    // props:
+    // color: background color if no photoUrl
+    // photoUrl: url for photo to display
+    // innerHtml: text to show on hover, defaults null
+    // highlightOnHover: surround pic with border on hover
+    // highlightColor: color to use if highlighting
 
     state = {
         username: null,
         hovered: false,
         innerHtml: null,
         color: this.props.color || "azure",
-        photoUrl: this.props.photoUrl
+        photoUrl: this.props.picUrl
     };
 
     baseStyle = {
@@ -26,14 +34,15 @@ export default class UserPicture extends React.Component {
     };
 
     hasPicStyle = {
-        backgroundImage: `url(${this.props.photoUrl})`,
+        backgroundImage: `url(${this.props.picUrl})`,
         backgroundSize: "150% auto",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center"
     };
 
     hoverStyle = {
-        boxShadow: "0 0 0 3pt royalblue"
+        // if highlight on hover, but no color provided, default royalblue
+        boxShadow: "0 0 0 3pt " + (this.props.highlightColor || "royalblue")
     };
 
     handleHover = () => {
@@ -45,8 +54,10 @@ export default class UserPicture extends React.Component {
     };
 
     render() {
-        let includePic = this.props.photoUrl ? this.hasPicStyle : {};
-        let hoveredStyle = this.state.hovered && this.props.highlight ? this.hoverStyle : {};
+        // use pic as background if supplied
+        let includePic = this.props.picUrl ? this.hasPicStyle : {};
+        // is it hovered, and should it be highlighted
+        let hoveredStyle = (this.state.hovered && this.props.highlightOnHover) ? this.hoverStyle : {};
         return(
             <div
                 style={{...this.baseStyle, ...includePic, ...hoveredStyle}}
@@ -55,6 +66,8 @@ export default class UserPicture extends React.Component {
                 onMouseOut={this.handleLeave}
             >
                 {
+                    // innerHtml displayed on hover
+                    // if provided
                     this.state.innerHtml
                 }
             </div>

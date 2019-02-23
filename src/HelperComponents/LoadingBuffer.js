@@ -2,7 +2,8 @@ import React from "react";
 import Loading from "./Loading";
 
 export default class LoadingBuffer extends React.Component {
-    // Generates loading screen (props.waiting, or default) while status of props.loaded is false.
+    // Generates loading screen (props.waiting if supplied, otherwise default)
+    // while status of props.loaded is false.
 
     render() {
         return(

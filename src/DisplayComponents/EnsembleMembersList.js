@@ -2,6 +2,7 @@ import React from "react";
 import UserNameDisplay from "./UserNameDisplay";
 
 export default class EnsembleMembersList extends React.Component {
+    // map props.ensembleMembers into UserNameDisplay components
 
     render() {
         return(

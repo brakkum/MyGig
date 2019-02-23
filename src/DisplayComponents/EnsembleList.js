@@ -3,6 +3,8 @@ import EnsembleMembersList from "./EnsembleMembersList";
 import EnsembleName from "./EnsembleName";
 
 export default class EnsembleList extends React.Component {
+    // maps an array of ensembles by using
+    // EnsembleName and EnsembleMembersList components
 
     render() {
         return(
@@ -12,7 +14,7 @@ export default class EnsembleList extends React.Component {
                     this.props.ensembles.map((ens, i) => {
                         return(
                             <div key={i} className="ensembleListing">
-                                <EnsembleName name={ens.ensembleName} />
+                                <EnsembleName ensembleName={ens.ensembleName} />
                                 <EnsembleMembersList ensembleMembers={ens.ensembleMembers} />
                             </div>
                         )

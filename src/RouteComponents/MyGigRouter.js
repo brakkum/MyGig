@@ -12,6 +12,10 @@ import PublicEvent from "./PublicEvent";
 import Login from "./Login";
 
 export default class MyGigRouter extends React.Component {
+    // All routing logic for pages in MyGig
+    // props:
+    // userData: userData object passed to each page to populate data
+    // loginUser: method of MyGig used to set userData in MyGig state
 
     render() {
         return(

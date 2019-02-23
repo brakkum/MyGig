@@ -3,12 +3,21 @@ import Popup from "./Popup";
 import UserPicture from "./UserPicture";
 
 export default class UserNamePopup extends React.Component {
+    // Popup for below username displays
+    // props:
+    // showPopup: boolean
+    // width: popup width
+    // top: how far from top of window to appear
+    // left: how far from left of window to appear
+    // memberData: memberData object for displayed user
 
+    // method called on click of user picture
     connectWithUser = id => {
         console.log("connectMethod ", id)
     };
 
     render() {
+        // is logged in user connected with user being displayed?
         let notConnectedToUser = !this.props.memberData.connectedToUser;
         return(
             <Popup
@@ -21,7 +30,7 @@ export default class UserNamePopup extends React.Component {
                     photoUrl={this.props.memberData.photoUrl}
                     innerHtml={notConnectedToUser ? "Add" : ""}
                     onClick={notConnectedToUser ? () => this.connectWithUser(this.props.memberData.id) : null}
-                    highlight={notConnectedToUser}
+                    highlightOnHover={notConnectedToUser}
                 />
             </Popup>
         )

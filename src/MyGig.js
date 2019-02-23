@@ -5,26 +5,54 @@ import NavBar from "./DisplayComponents/NavBar";
 import MyGigRouter from "./RouteComponents/MyGigRouter";
 
 class MyGig extends Component {
+    // Parent of all components
+    // userData stored in state controls all page population
+    // TODO: check localstorage in componentDidMount for JWT
 
-    constructor(props) {
-        super(props);
-        this.loginUser = this.loginUser.bind(this);
-        this.state = {
-            userData: null,
-            redirect: null
-        };
+    state = {
+        // userData contains:
+        // eventually: JWT string
+        // isLoggedIn boolean
+        // photoUrl string
+        userData: null,
+        // if redirect is not null
+        // page will redirect there
+        // and then be reset to null
+        redirect: null
     };
 
     // this is called from login page
+    // to store necessary userData
+    // necessary here for app scope
+    // TODO: set localstorage on login
     loginUser = id => {
         this.setState({
             userData: {
+                // JWT: "", <- this will replace any references to userId eventually
+                // photoUrl: "",
                 id: id,
                 isLoggedIn: true
             }
         })
     };
 
+    // clear user info on logout
+    // TODO: remove local storage info
+    logoutUser = () => {
+        this.setState({
+            userData: {
+                isLoggedIn: false,
+                id: null,
+                picUrl: null,
+                // JWT: null
+            },
+        })
+    };
+
+    // called for page redirects
+    // used to redirect to login
+    // and then upon success
+    // forward to requested route
     redirect = (to, from) => {
         if (to !== from) {
             this.setState({
@@ -44,6 +72,8 @@ class MyGig extends Component {
         })
     };
 
+    // set redirect back to null
+    // immediately after redirect
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.state.redirect != null) {
             this.setState({
@@ -53,17 +83,23 @@ class MyGig extends Component {
     }
 
     render() {
+        // check for redirect
         let redirect = this.state.redirect;
-
         return (
+            // entire application lives inside router
             <Router>
                 <div>
                     {
+                        // redirect if set
                         redirect && <Redirect to={redirect}/>
                     }
+                    {/* NavBar for application */}
                     <NavBar userData={this.state.userData} redirect={this.redirect} />
+                    {/* all body content contained here */}
                     <div className="body-content">
+                        {/* contains all the routing logic */}
                         <MyGigRouter userData={this.state.userData} loginUser={this.loginUser} />
+                        {/* navigation for testing */}
                         <div className="test-nav" style={{backgroundColor: "lightgreen", display: "flex", justifyContent: "space-between"}}>
                             <Link to="/">Home</Link>
                             <Link to="/account">Account</Link>
