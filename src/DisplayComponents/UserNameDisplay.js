@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import UserPicture from "./UserPicture";
-import Popup from "./Popup";
+import UserNamePopup from "./UserNamePopup";
 
 export default class UserNameDisplay extends React.Component {
 
@@ -39,10 +38,6 @@ export default class UserNameDisplay extends React.Component {
         });
     };
 
-    connectWithUser = id => {
-        console.log("connectMethod ", id)
-    };
-
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateLocation);
     }
@@ -53,7 +48,6 @@ export default class UserNameDisplay extends React.Component {
     }
 
     render() {
-        let notConnectedToUser = !this.props.memberData.connectedToUser;
         return(
             <span onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
                 <span style={this.memberStyle}>
@@ -61,19 +55,13 @@ export default class UserNameDisplay extends React.Component {
                         this.props.memberData.name
                     }
                 </span>
-                    <Popup
-                        showPopup={this.state.showPopup}
-                        width={this.state.popupWidth}
-                        top={this.state.popupTop}
-                        left={this.state.popupLeft}
-                    >
-                        <UserPicture
-                            photoUrl={this.props.memberData.photoUrl}
-                            innerHtml={notConnectedToUser ? "Add" : ""}
-                            onClick={notConnectedToUser ? () => this.connectWithUser(this.props.memberData.id) : null}
-                            highlight={notConnectedToUser}
-                        />
-                    </Popup>
+                <UserNamePopup
+                    showPopup={this.state.showPopup}
+                    width={this.state.popupWidth}
+                    top={this.state.popupTop}
+                    left={this.state.popupLeft}
+                    memberData={this.props.memberData}
+                />
             </span>
         )
     }
