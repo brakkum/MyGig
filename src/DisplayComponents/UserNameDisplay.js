@@ -1,61 +1,31 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import UserPicture from "./UserPicture";
+import Popup from "./Popup";
 
 export default class UserNameDisplay extends React.Component {
 
     state = {
-        showModal: false,
+        showPopup: false,
         location: null,
-        modalTop: null,
-        modalLeft: null,
-        modalWidth: null
+        popupTop: null,
+        popupLeft: null,
+        popupWidth: null
     };
 
     memberStyle = {
         margin: "10px"
     };
 
-    modalHidden = {
-        width: "0px",
-        height: "0px",
-    };
-
-    modalShown = {
-        height: this.props.height || "100px",
-        width: this.props.width || "100px"
-    };
-
-    modalDefaultStyle = {
-        position: "absolute",
-        // backgroundColor: "red",
-        // border: "1px solid red",
-        justifyContent: "center",
-    };
-
-    transitionStyle = {
-        transition: "all 1s",
-    };
-
-    containerStyle = {
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-around",
-        alignItems: "center",
-        overflow: "hidden",
-    };
-
     handleMouseOver = () => {
         this.setState({
-           showModal: true
+           showPopup: true
         });
     };
 
     handleMouseLeave = () => {
         this.setState({
-           showModal: false
+           showPopup: false
         });
     };
 
@@ -63,9 +33,9 @@ export default class UserNameDisplay extends React.Component {
         let rect = ReactDOM.findDOMNode(this).getBoundingClientRect();
         this.setState({
             location: rect,
-            modalTop: rect.bottom,
-            modalLeft: rect.left,
-            modalWidth: rect.width
+            popupTop: rect.bottom,
+            popupLeft: rect.left,
+            popupWidth: rect.width
         });
     };
 
@@ -83,25 +53,27 @@ export default class UserNameDisplay extends React.Component {
     }
 
     render() {
-        let modalStyle = this.state.showModal ? this.modalShown : this.modalHidden;
         let notConnectedToUser = !this.props.memberData.connectedToUser;
         return(
             <span onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
-                <div style={{...this.modalDefaultStyle, ...modalStyle, ...this.transitionStyle, top: this.state.modalTop + "px", left: this.state.modalLeft + "px"}}>
-                    <div className="pic-container" style={this.containerStyle}>
+                <span style={this.memberStyle}>
+                    {
+                        this.props.memberData.name
+                    }
+                </span>
+                    <Popup
+                        showPopup={this.state.showPopup}
+                        width={this.state.popupWidth}
+                        top={this.state.popupTop}
+                        left={this.state.popupLeft}
+                    >
                         <UserPicture
                             photoUrl={this.props.memberData.photoUrl}
                             innerHtml={notConnectedToUser ? "Add" : ""}
                             onClick={notConnectedToUser ? () => this.connectWithUser(this.props.memberData.id) : null}
                             highlight={notConnectedToUser}
                         />
-                    </div>
-                </div>
-                <span style={this.memberStyle}>
-                    {
-                        this.props.memberData.name
-                    }
-                </span>
+                    </Popup>
             </span>
         )
     }
