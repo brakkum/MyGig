@@ -7,6 +7,8 @@ import { Redirect } from "react-router-dom";
 export default class PublicEvent extends React.Component {
     // top level route component for /public_event/{event_id}
 
+    _isMounted = false;
+
     state = {
         loaded: false,
         data: null,
@@ -18,9 +20,16 @@ export default class PublicEvent extends React.Component {
         // check that user is allowed
         // redirect if they're not
         // setTimeout to mimic data load
+        this._isMounted = true;
         setTimeout(() => {
-            this.setState({ data: res.data, loaded: true });
+            if (this._isMounted) {
+                this.setState({ data: res.data, loaded: true });
+            }
         }, 2000);
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render() {
