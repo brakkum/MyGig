@@ -37,8 +37,8 @@ export default withRouter(
                         <UserPicture
                             // redirect passed from MyGig component for app redirects
                             onClick={() => this.props.redirect("/account", this.props.location.pathname)}
-                            // picUrl for user
-                            picUrl={this.props.userData.picUrl}
+                            // photoUrl for user
+                            photoUrl={this.props.userData.photoUrl}
                             // highlight pic on hover
                             highlightOnHover={true}
                         />

@@ -43,7 +43,7 @@ class MyGig extends Component {
             userData: {
                 isLoggedIn: false,
                 id: null,
-                picUrl: null,
+                photoUrl: null,
                 // JWT: null
             },
         })
@@ -66,7 +66,7 @@ class MyGig extends Component {
         this.setState({
             userData: {
                 id: 1,
-                picUrl: "https://i.imgur.com/pDaRVI5.jpg",
+                photoUrl: "https://i.imgur.com/pDaRVI5.jpg",
                 isLoggedIn: true
             }
         })

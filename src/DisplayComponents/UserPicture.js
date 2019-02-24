@@ -15,7 +15,7 @@ export default class UserPicture extends React.Component {
         hovered: false,
         innerHtml: null,
         color: this.props.color || "azure",
-        photoUrl: this.props.picUrl
+        photoUrl: this.props.photoUrl
     };
 
     baseStyle = {
@@ -34,7 +34,7 @@ export default class UserPicture extends React.Component {
     };
 
     hasPicStyle = {
-        backgroundImage: `url(${this.props.picUrl})`,
+        backgroundImage: `url(${this.props.photoUrl})`,
         backgroundSize: "150% auto",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center"
@@ -55,7 +55,7 @@ export default class UserPicture extends React.Component {
 
     render() {
         // use pic as background if supplied
-        let includePic = this.props.picUrl ? this.hasPicStyle : {};
+        let includePic = this.props.photoUrl ? this.hasPicStyle : {};
         // is it hovered, and should it be highlighted
         let hoveredStyle = (this.state.hovered && this.props.highlightOnHover) ? this.hoverStyle : {};
         return(
