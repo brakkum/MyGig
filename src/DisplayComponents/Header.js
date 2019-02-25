@@ -1,6 +1,7 @@
 import React from "react";
 import EnsemblesList from "./EnsembleList";
 import EnsembleMembersList from "./EnsembleMembersList";
+import DateDisplay from "./DateDisplay";
 
 export default class Header extends React.Component {
     // Reusable header
@@ -21,7 +22,7 @@ export default class Header extends React.Component {
                     this.props.details &&
                     <div className="details">
                         <h3>{this.props.details.location}</h3>
-                        <h4>{this.props.details.time}</h4>
+                        <DateDisplay datetime={this.props.details.time} />
                     </div>
                 }
                 {
