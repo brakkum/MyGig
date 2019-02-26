@@ -15,13 +15,14 @@ export default class DisplayCase extends React.Component {
 
     containerStyle = {
         width: "90%",
+        maxWidth: "600px",
         height: "300px",
         margin: "auto"
     };
 
     render() {
         return(
-            <div className={"DisplayCase"} style={{margin: "20px auto 20px auto"}}>
+            <div className={"DisplayCase"} style={{padding: "20px auto 20px auto"}}>
                 <div style={this.containerStyle}>
                     <div style={{fontSize: "28px", margin: "5px"}}>
                         {

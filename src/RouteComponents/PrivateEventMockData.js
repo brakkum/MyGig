@@ -87,30 +87,30 @@ export default {
             "time": "2019-05-13 19:30:00",
             "location": "Some Venue"
         },
-        "event_comments": [
+        "eventComments": [
             {
-                "comment_id": 1,
-                "comment_text": "Test comment text, it's very cool.",
-                "comment_user": {
+                "commentId": 1,
+                "commentText": "Test comment text, it's very cool.",
+                "commentTime": "2019-02-13 10:30:27",
+                "commentUser": {
                     "name": "Joe Jackson",
                     "id": 1,
-                    "comment_time": "2019-02-13 10:30:27",
                     "photoUrl": "https://memberdata.s3.amazonaws.com/jo/joejackson/photos/joejackson_photo_gal_37255_photo_35883055_lr.jpg",
                     "connectedToUser": true
                 }
             },
             {
-                "comment_id": 2,
-                "comment_text": "More test comment text",
-                "comment_user": {
+                "commentId": 2,
+                "commentText": "More test comment text",
+                "commentTime": "2019-02-13 10:45:21",
+                "commentUser": {
                     "name": "Jimmy Page",
                     "id": 2,
-                    "comment_time": "2019-02-13 10:45:21",
                     "photoUrl": "https://m.media-amazon.com/images/M/MV5BMTQ1NzI1MDM5MV5BMl5BanBnXkFtZTcwNDUwMTI2Mg@@._V1_UX214_CR0,0,214,317_AL_.jpg",
                     "connectedToUser": false
                 }
             }
         ],
-        "user_is_owner": true
+        "userIsOwner": true
     }
 };
