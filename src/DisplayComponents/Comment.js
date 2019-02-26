@@ -1,5 +1,6 @@
 import React from "react";
-import UserPicture from "./UserPicture";
+import UserPictureConnect from "./UserPictureConnect";
+import UserNameDisplay from "./UserNameDisplay";
 
 export default class Comment extends React.Component {
 
@@ -18,26 +19,17 @@ export default class Comment extends React.Component {
         gridGap: "10px"
     };
 
-    connectWithUser = () => {
-        console.log("connectMethod ", this.props.data.commentUser.id);
-    };
-
     render() {
-        let notConnectedToUser = !(this.props.data.commentUser.connectedToUser);
         return(
             <div style={{padding: "4px"}}>
                 <div style={this.commentStyle}>
                     <div style={{gridArea: "photo", alignSelf: "center", justifySelf: "center"}}>
-                        <UserPicture
-                            photoUrl={this.props.data.commentUser.photoUrl}
-                            innerHtml={notConnectedToUser && "Add"}
-                            highlightOnHover={notConnectedToUser}
-                            onClick={notConnectedToUser ?
-                                () => this.connectWithUser() : null}
+                        <UserPictureConnect
+                            memberData={this.props.data.commentUser}
                         />
                     </div>
                     <div style={{gridArea: "username"}}>
-                        {this.props.data.commentUser.name}
+                        <UserNameDisplay memberData={this.props.data.commentUser} />
                     </div>
                     <div style={{gridArea: "comment"}}>
                         {this.props.data.commentText}

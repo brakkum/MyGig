@@ -28,7 +28,6 @@ export default class UserPicture extends React.Component {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-evenly",
-        cursor: "pointer",
         boxShadow: "0 0 1pt transparent",
         color: this.state.color,
         textShadow: "1px 1px black"
