@@ -3,6 +3,7 @@ import EventHeader from "../DisplayComponents/EventHeader";
 import res from "./PrivateEventMockData";
 import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 import { Redirect } from "react-router-dom";
+import DisplayCase from "../DisplayComponents/DisplayCase";
 
 export default class PrivateEvent extends React.Component {
     // top level route component for /event/{event_id}
@@ -31,6 +32,10 @@ export default class PrivateEvent extends React.Component {
                 loaded={this.state.loaded}
             >
                 <EventHeader {...this.state.data} />
+                <DisplayCase>
+                    <h1>hello</h1>
+                    <h1>there</h1>
+                </DisplayCase>
                 <h4>
                     Event Id: {this.props.match.params.eventId}
                 </h4>
