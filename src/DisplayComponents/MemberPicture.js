@@ -65,11 +65,13 @@ export default class MemberPicture extends React.Component {
                 onMouseOver={this.handleHover}
                 onMouseOut={this.handleLeave}
             >
-                {
-                    // innerHtml displayed on hover
-                    // if provided
-                    this.state.innerHtml
-                }
+                <span style={{cursor: "pointer"}}>
+                    {
+                        // innerHtml displayed on hover
+                        // if provided
+                        this.state.innerHtml
+                    }
+                </span>
             </div>
         )
     }
