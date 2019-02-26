@@ -1,7 +1,7 @@
 import React from "react";
-import UserPicture from "./UserPicture";
+import MemberPicture from "./MemberPicture";
 
-export default class UserPictureConnect extends React.Component {
+export default class MemberPictureConnect extends React.Component {
 
     connectWithUser = () => {
         console.log("connectMethod ", this.props.memberData.id);
@@ -10,7 +10,7 @@ export default class UserPictureConnect extends React.Component {
     render() {
         let notConnectedToUser = !(this.props.memberData.connectedToUser);
         return(
-            <UserPicture
+            <MemberPicture
                 photoUrl={this.props.memberData.photoUrl}
                 innerHtml={notConnectedToUser ? "Add" : null}
                 highlightOnHover={notConnectedToUser}

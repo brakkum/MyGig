@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
-import UserPicture from "./UserPicture";
+import MemberPicture from "./MemberPicture";
 
 export default withRouter(
     class NavBar extends React.Component {
@@ -34,7 +34,7 @@ export default withRouter(
             return(
                 <div style={this.navStyle}>
                     <div style={this.navLeftStyle}>
-                        <UserPicture
+                        <MemberPicture
                             // redirect passed from MyGig component for app redirects
                             onClick={() => this.props.redirect("/account", this.props.location.pathname)}
                             // photoUrl for user

@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class UserPicture extends React.Component {
+export default class MemberPicture extends React.Component {
     // displays users picture, or default
     // TODO: have actual default image
     // props:

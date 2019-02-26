@@ -1,6 +1,6 @@
 import React from "react";
-import UserPictureConnect from "./UserPictureConnect";
-import UserNameDisplay from "./UserNameDisplay";
+import MemberPictureConnect from "./MemberPictureConnect";
+import MemberNameDisplay from "./MemberNameDisplay";
 
 export default class Comment extends React.Component {
 
@@ -24,12 +24,12 @@ export default class Comment extends React.Component {
             <div style={{padding: "4px"}}>
                 <div style={this.commentStyle}>
                     <div style={{gridArea: "photo", alignSelf: "center", justifySelf: "center"}}>
-                        <UserPictureConnect
+                        <MemberPictureConnect
                             memberData={this.props.data.commentUser}
                         />
                     </div>
                     <div style={{gridArea: "username"}}>
-                        <UserNameDisplay memberData={this.props.data.commentUser} />
+                        <MemberNameDisplay memberData={this.props.data.commentUser} />
                     </div>
                     <div style={{gridArea: "comment"}}>
                         {this.props.data.commentText}

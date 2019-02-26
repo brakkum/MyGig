@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import UserNamePopup from "./UserNamePopup";
+import MemberNamePopup from "./MemberNamePopup";
 
-export default class UserNameDisplay extends React.Component {
+export default class MemberNameDisplay extends React.Component {
     // Used when username is rendered
-    // includes UserNamePopup
+    // includes MemberNamePopup
     // with shortcut for user connection
 
     // initial state
@@ -65,7 +65,7 @@ export default class UserNameDisplay extends React.Component {
                     }
                 </span>
                 {/* popup for user being hovered over */}
-                <UserNamePopup
+                <MemberNamePopup
                     showPopup={this.state.showPopup}
                     width={this.state.popupWidth}
                     top={this.state.popupTop}

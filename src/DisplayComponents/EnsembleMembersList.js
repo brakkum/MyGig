@@ -1,15 +1,15 @@
 import React from "react";
-import UserNameDisplay from "./UserNameDisplay";
+import MemberNameDisplay from "./MemberNameDisplay";
 
 export default class EnsembleMembersList extends React.Component {
-    // map props.ensembleMembers into UserNameDisplay components
+    // map props.ensembleMembers into MemberNameDisplay components
 
     render() {
         return(
             <div className="ensembleMembers">
                 {
                     this.props.ensembleMembers.map((mem, i) => {
-                        return <UserNameDisplay memberData={mem} key={i} />
+                        return <MemberNameDisplay memberData={mem} key={i} />
                     })
                 }
             </div>

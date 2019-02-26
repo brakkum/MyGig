@@ -1,8 +1,8 @@
 import React from "react";
 import Popup from "./Popup";
-import UserPictureConnect from "./UserPictureConnect";
+import MemberPictureConnect from "./MemberPictureConnect";
 
-export default class UserNamePopup extends React.Component {
+export default class MemberNamePopup extends React.Component {
     // Popup for below username displays
     // props:
     // showPopup: boolean
@@ -19,7 +19,7 @@ export default class UserNamePopup extends React.Component {
                 top={this.props.top}
                 left={this.props.left}
             >
-                <UserPictureConnect
+                <MemberPictureConnect
                     memberData={this.props.memberData}
                 />
             </Popup>
