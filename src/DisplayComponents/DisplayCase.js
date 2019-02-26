@@ -7,17 +7,18 @@ export default class DisplayCase extends React.Component {
     // label: words to appear above box
     // children: elements inside display
 
-    boxStyle = {
-        backgroundColor: "darkgrey",
-        borderRadius: "4px",
-        maxHeight: "90%"
-    };
-
     containerStyle = {
         width: "90%",
         maxWidth: "600px",
         height: "300px",
         margin: "auto"
+    };
+
+    boxStyle = {
+        backgroundColor: "darkgrey",
+        borderRadius: "4px",
+        maxHeight: "90%",
+        overflow: "scroll"
     };
 
     render() {

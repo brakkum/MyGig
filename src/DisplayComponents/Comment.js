@@ -1,6 +1,5 @@
 import React from "react";
 import MemberPictureConnect from "./MemberPictureConnect";
-import MemberNameDisplay from "./MemberNameDisplay";
 
 export default class Comment extends React.Component {
 
@@ -29,7 +28,9 @@ export default class Comment extends React.Component {
                         />
                     </div>
                     <div style={{gridArea: "username"}}>
-                        <MemberNameDisplay memberData={this.props.data.commentUser} />
+                        {
+                            this.props.data.commentUser.name
+                        }
                     </div>
                     <div style={{gridArea: "comment"}}>
                         {this.props.data.commentText}
