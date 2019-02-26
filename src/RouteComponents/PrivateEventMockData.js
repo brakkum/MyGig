@@ -108,8 +108,19 @@ export default {
                     "id": 2,
                     "photoUrl": "https://m.media-amazon.com/images/M/MV5BMTQ1NzI1MDM5MV5BMl5BanBnXkFtZTcwNDUwMTI2Mg@@._V1_UX214_CR0,0,214,317_AL_.jpg",
                     "connectedToUser": false
+                },
+            },
+            {
+                "commentId": 1,
+                "commentText": "Test comment text, it's very cool. so cool in fact, that I believe there should be more of it. So much in fact, that it gets quite tedious to read. Wouldn't that be wonderful? I feel as though it's quite marvelous how far this little string goes.",
+                "commentTime": "2019-02-14 10:30:27",
+                "commentUser": {
+                    "name": "Joe Jackson",
+                    "id": 1,
+                    "photoUrl": "https://memberdata.s3.amazonaws.com/jo/joejackson/photos/joejackson_photo_gal_37255_photo_35883055_lr.jpg",
+                    "connectedToUser": true
                 }
-            }
+            },
         ],
         "userIsOwner": true
     }

@@ -9,6 +9,7 @@ export default class UserPicture extends React.Component {
     // innerHtml: text to show on hover, defaults null
     // highlightOnHover: surround pic with border on hover
     // highlightColor: color to use if highlighting
+    // onClick: what to do on click of photo
 
     state = {
         username: null,

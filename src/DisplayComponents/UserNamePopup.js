@@ -12,8 +12,8 @@ export default class UserNamePopup extends React.Component {
     // memberData: memberData object for displayed user
 
     // method called on click of user picture
-    connectWithUser = id => {
-        console.log("connectMethod ", id)
+    connectWithUser = () => {
+        console.log("connectMethod ", this.props.memberData.id)
     };
 
     render() {
@@ -29,7 +29,7 @@ export default class UserNamePopup extends React.Component {
                 <UserPicture
                     photoUrl={this.props.memberData.photoUrl}
                     innerHtml={notConnectedToUser ? "Add" : ""}
-                    onClick={notConnectedToUser ? () => this.connectWithUser(this.props.memberData.id) : null}
+                    onClick={notConnectedToUser ? () => this.connectWithUser() : null}
                     highlightOnHover={notConnectedToUser}
                 />
             </Popup>
