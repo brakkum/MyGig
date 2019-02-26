@@ -32,7 +32,9 @@ export default class PrivateEvent extends React.Component {
                 loaded={this.state.loaded}
             >
                 <EventHeader {...this.state.data} />
-                <CommentSection comments={this.state.data && this.state.data.eventComments} />
+                <CommentSection
+                    comments={this.state.data && this.state.data.eventComments}
+                />
                 <h4>
                     Event Id: {this.props.match.params.eventId}
                 </h4>

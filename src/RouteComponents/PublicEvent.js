@@ -3,6 +3,7 @@ import res from "./PublicEventMockData";
 import EventHeader from "../DisplayComponents/EventHeader";
 import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 import { Redirect } from "react-router-dom";
+import CommentSection from "../DisplayComponents/CommentSection";
 
 export default class PublicEvent extends React.Component {
     // top level route component for /public_event/{event_id}
@@ -43,6 +44,9 @@ export default class PublicEvent extends React.Component {
                 loaded={this.state.loaded}
             >
                 <EventHeader {...this.state.data} />
+                <CommentSection
+                    comments={this.state.data && this.state.data.eventComments}
+                />
                 <h4>
                     Id: {this.props.match.params.eventId}
                 </h4>

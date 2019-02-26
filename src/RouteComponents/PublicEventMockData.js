@@ -112,7 +112,7 @@ export default {
                 }
             },
             {
-                "commentId": 2,
+                "commentId": 3,
                 "commentText": "More test comment text",
                 "commentUser": {
                     "name": "Mark Twain",
