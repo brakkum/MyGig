@@ -1,5 +1,5 @@
 import React from "react";
-import Popup from "./Popup";
+import Popup from "./Containers/Popup";
 import MemberPictureConnect from "./MemberPictureConnect";
 
 export default class MemberNamePopup extends React.Component {

@@ -1,7 +1,7 @@
 import React from "react";
 import EnsemblesList from "./EnsembleList";
 import EnsembleMembersList from "./EnsembleMembersList";
-import DateDisplay from "./DateDisplay";
+import DateDisplay from "../HelperComponents/DateDisplay";
 
 export default class Header extends React.Component {
     // Reusable header

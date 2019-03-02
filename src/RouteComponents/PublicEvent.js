@@ -1,5 +1,5 @@
 import React from "react";
-import res from "./PublicEventMockData";
+import res from "../MockData/PublicEventMockData";
 import EventHeader from "../DisplayComponents/EventHeader";
 import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 import { Redirect } from "react-router-dom";

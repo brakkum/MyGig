@@ -1,6 +1,6 @@
 import React from "react";
 import MemberPictureConnect from "./MemberPictureConnect";
-import TimeSince from "./TimeSince";
+import TimeSince from "../HelperComponents/TimeSince";
 
 export default class Comment extends React.Component {
 

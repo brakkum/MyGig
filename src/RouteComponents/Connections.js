@@ -1,5 +1,5 @@
 import React from "react";
-import res from "./ConnectionsMockData";
+import res from "../MockData/ConnectionsMockData";
 import ConnectionsDisplay from "../DisplayComponents/ConnectionsDisplay";
 
 export default class Connections extends React.Component {

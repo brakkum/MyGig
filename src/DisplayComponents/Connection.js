@@ -1,5 +1,5 @@
 import React from "react";
-import HasBeenSeen from "./HasBeenSeen";
+import HasBeenSeen from "./Containers/HasBeenSeen";
 import MemberPicture from "./MemberPicture";
 import Button from "../HelperComponents/Button";
 

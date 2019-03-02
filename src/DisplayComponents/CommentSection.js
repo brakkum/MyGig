@@ -1,5 +1,5 @@
 import React from "react";
-import DisplayCase from "./DisplayCase";
+import DisplayCase from "./Containers/DisplayCase";
 import Comment from "./Comment";
 
 export default class CommentSection extends React.Component {

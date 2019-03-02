@@ -1,5 +1,5 @@
 import React from "react";
-import DisplayCase from "./DisplayCase";
+import DisplayCase from "./Containers/DisplayCase";
 import Connection from "./Connection";
 
 export default class ConnectionsDisplay extends React.Component {

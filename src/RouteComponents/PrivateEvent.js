@@ -1,6 +1,6 @@
 import React from "react";
 import EventHeader from "../DisplayComponents/EventHeader";
-import res from "./PrivateEventMockData";
+import res from "../MockData/PrivateEventMockData";
 import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 import { Redirect } from "react-router-dom";
 import CommentSection from "../DisplayComponents/CommentSection";
