@@ -12,7 +12,7 @@ export default class ConnectionsDisplay extends React.Component {
             <DisplayCase label={this.props.label}>
                 {
                     this.props.connections && this.props.connections.map((conn, i) => {
-                        return <Connection {...conn} key={i} removeConnection={this.props.removeConnection} />
+                        return <Connection memberData={conn} key={i} removeConnection={this.props.removeConnection} />
                     })
                 }
             </DisplayCase>
