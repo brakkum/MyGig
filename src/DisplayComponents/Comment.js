@@ -1,5 +1,6 @@
 import React from "react";
 import MemberPictureConnect from "./MemberPictureConnect";
+import TimeSince from "./TimeSince";
 
 export default class Comment extends React.Component {
 
@@ -13,8 +14,8 @@ export default class Comment extends React.Component {
         backgroundColor: "coral",
         display: "grid",
         gridTemplateColumns: "60px auto",
-        gridTemplateRows: "10px auto auto",
-        gridTemplateAreas: "'photo username' 'photo comment' 'photo comment'",
+        gridTemplateRows: "10px auto auto 20px",
+        gridTemplateAreas: "'photo username' 'photo comment' 'photo comment' 'photo time'",
         gridGap: "10px"
     };
 
@@ -32,8 +33,11 @@ export default class Comment extends React.Component {
                             this.props.data.commentUser.name
                         }
                     </div>
-                    <div style={{gridArea: "comment"}}>
+                    <div style={{gridArea: "comment", margin: "5px"}}>
                         {this.props.data.commentText}
+                    </div>
+                    <div style={{gridArea: "time", textAlign: "right"}}>
+                        <TimeSince time={this.props.data.commentTime} />
                     </div>
                 </div>
             </div>
