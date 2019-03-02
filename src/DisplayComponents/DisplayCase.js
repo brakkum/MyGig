@@ -10,14 +10,14 @@ export default class DisplayCase extends React.Component {
     containerStyle = {
         width: "90%",
         maxWidth: "600px",
-        height: "300px",
+        maxHeight: "300px",
         margin: "auto"
     };
 
     boxStyle = {
         backgroundColor: "darkgrey",
         borderRadius: "4px",
-        maxHeight: "90%",
+        maxHeight: "280px",
         overflow: "scroll"
     };
 

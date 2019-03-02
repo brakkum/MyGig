@@ -7,7 +7,6 @@ export default class Comment extends React.Component {
     commentStyle = {
         width: "90%",
         minHeight: "60px",
-        maxHeight: "250px",
         overflow: "scroll",
         margin: "auto",
         border: "1px solid blue",
