@@ -10,6 +10,7 @@ export default class MemberPicture extends React.Component {
     // highlightOnHover: surround pic with border on hover
     // highlightColor: color to use if highlighting
     // onClick: what to do on click of photo
+    // size: width/height
 
     state = {
         username: null,
@@ -20,8 +21,8 @@ export default class MemberPicture extends React.Component {
     };
 
     baseStyle = {
-        width: "50px",
-        height: "50px",
+        width: this.props.size || "50px",
+        height: this.props.size || "50px",
         borderRadius: "100%",
         backgroundColor: "lightblue",
         transition: ".3s",

@@ -26,7 +26,9 @@ export default class HasBeenSeen extends React.Component {
                         borderRadius: "100px",
                         border: "2px solid grey",
                         backgroundColor: status ? "grey" : "lightblue",
-                    }} />
+                    }}
+                    onClick={this.props.circleClick ? this.props.circleClick : null}
+                    />
                 </div>
                 <div style={{gridArea: "children", display: "flex", alignItems: "center", justifyContent: "center"}}>
                     {
