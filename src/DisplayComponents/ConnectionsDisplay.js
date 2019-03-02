@@ -7,6 +7,10 @@ export default class ConnectionsDisplay extends React.Component {
     // props
     // connections: the list of users to display
 
+    shouldComponentUpdate(nextProps) {
+        return (JSON.stringify(this.props.connections) !== JSON.stringify(nextProps.connections));
+    }
+
     render() {
         return(
             <DisplayCase label={this.props.label}>
