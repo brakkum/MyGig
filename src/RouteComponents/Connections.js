@@ -5,6 +5,8 @@ import ConnectionsDisplay from "../DisplayComponents/ConnectionsDisplay";
 export default class Connections extends React.Component {
     // top level route component for /connections
 
+    _isMounted = false;
+
     state = {
         requests: null,
         connections: null,
@@ -13,25 +15,29 @@ export default class Connections extends React.Component {
 
     confirmConnectionRequest = id => {
         // TODO: send confirmation of request
-        let result = this.state.requests.filter(con =>
-            con.id !== id
-        );
-        this.setState({
-            requests: result
-        });
-        console.log("confirmed ", id);
+        if (this._isMounted) {
+            let result = this.state.requests.filter(con =>
+                con.id !== id
+            );
+            this.setState({
+                requests: result
+            });
+            console.log("confirmed ", id);
+        }
         // TODO: on success, update connections display
     };
 
     denyConnectionRequest = id => {
         // TODO: send denial of request
-        let result = this.state.requests.filter(con =>
-            con.id !== id
-        );
-        this.setState({
-            requests: result
-        });
-        console.log("denied ", id);
+        if (this._isMounted) {
+            let result = this.state.requests.filter(con =>
+                con.id !== id
+            );
+            this.setState({
+                requests: result
+            });
+            console.log("denied ", id);
+        }
         // TODO: on success, update connections display
     };
 
@@ -40,7 +46,12 @@ export default class Connections extends React.Component {
             requests: res.data.requests,
             connections: res.data.connections
         });
+        this._isMounted = true;
     };
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     render() {
         return(
