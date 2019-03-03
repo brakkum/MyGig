@@ -19,6 +19,19 @@ export default class Connections extends React.Component {
         this.setState({
             requests: result
         });
+        console.log("confirmed ", id);
+        // TODO: on success, update connections display
+    };
+
+    denyConnectionRequest = id => {
+        // TODO: send denial of request
+        let result = this.state.requests.filter(con =>
+            con.id !== id
+        );
+        this.setState({
+            requests: result
+        });
+        console.log("denied ", id);
         // TODO: on success, update connections display
     };
 
@@ -40,6 +53,7 @@ export default class Connections extends React.Component {
                             label={"Requests"}
                             connections={this.state.requests}
                             confirmConnectionRequest={this.confirmConnectionRequest}
+                            denyConnectionRequest={this.denyConnectionRequest}
                         />
                 }
                 {

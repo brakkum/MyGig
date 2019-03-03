@@ -23,6 +23,15 @@ export default class Connection extends React.Component {
         }, 1000)
     };
 
+    denyConnectionRequest = () => {
+        this.setState({
+            sendingRequest: true
+        });
+        setTimeout(() => {
+            this.props.denyConnectionRequest(this.props.memberData.id);
+        }, 1000)
+    };
+
     render() {
         let connectedToUser = this.props.memberData.connectedToUser;
         let notConnectedToUser = !connectedToUser;
@@ -32,11 +41,20 @@ export default class Connection extends React.Component {
                     {this.props.memberData.name}
                     {
                         notConnectedToUser &&
-                        <Button
-                            onClick={this.confirmConnectionRequest}
-                            preClickText={"Confirm"}
-                            sendingRequest={this.state.sendingRequest}
-                        />
+                            <div>
+                                <Button
+                                    onClick={this.confirmConnectionRequest}
+                                    preClickText={"Confirm"}
+                                    sendingRequest={this.state.sendingRequest}
+                                />
+                                <Button
+                                    onClick={this.denyConnectionRequest}
+                                    preClickText={"Deny"}
+                                    sendingRequest={this.state.sendingRequest}
+                                    type={"danger"}
+                                />
+                            </div>
+
                     }
                     <MemberPicture photoUrl={this.props.memberData.photoUrl} size={"30px"} />
                 </div>
