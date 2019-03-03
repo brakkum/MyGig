@@ -22,7 +22,8 @@ export default class Button extends React.Component {
 
     mouseLeaveButton = () => {
         this.setState({
-            hovered: false
+            hovered: false,
+            clicked: false
         });
     };
 
