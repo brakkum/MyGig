@@ -11,12 +11,13 @@ export default class Connection extends React.Component {
     //                   update connection request display box
 
     state = {
-        sendingRequest: false
+        sendingConfirmRequest: false,
+        sendingDenyRequest: false
     };
 
     confirmConnectionRequest = () => {
         this.setState({
-            sendingRequest: true
+            sendingConfirmRequest: true
         });
         setTimeout(() => {
             this.props.confirmConnectionRequest(this.props.memberData.id);
@@ -25,7 +26,7 @@ export default class Connection extends React.Component {
 
     denyConnectionRequest = () => {
         this.setState({
-            sendingRequest: true
+            sendingDenyRequest: true
         });
         setTimeout(() => {
             this.props.denyConnectionRequest(this.props.memberData.id);
@@ -45,12 +46,12 @@ export default class Connection extends React.Component {
                                 <Button
                                     onClick={this.confirmConnectionRequest}
                                     preClickText={"Confirm"}
-                                    sendingRequest={this.state.sendingRequest}
+                                    sendingRequest={this.state.sendingConfirmRequest}
                                 />
                                 <Button
                                     onClick={this.denyConnectionRequest}
                                     preClickText={"Deny"}
-                                    sendingRequest={this.state.sendingRequest}
+                                    sendingRequest={this.state.sendingDenyRequest}
                                     type={"danger"}
                                 />
                             </div>

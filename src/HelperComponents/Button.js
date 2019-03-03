@@ -51,7 +51,7 @@ export default class Button extends React.Component {
         "danger": "#ff919f",
     };
 
-    defaultButtonColor = "whitesmoke";
+    defaultButtonColor = "transparent";
 
     render() {
         let hovered = this.state.hovered;
@@ -64,6 +64,8 @@ export default class Button extends React.Component {
                     backgroundColor: clicked ? this.clickColors[type] : hovered ? this.hoverColors[type] : this.defaultButtonColor,
                     border: "none",
                     outline: "none",
+                    boxShadow: "0 0 2pt black",
+                    outlineRadius: "4px",
                     borderRadius: "4px",
                     padding: "5px 10px",
                     transition: ".2s",
