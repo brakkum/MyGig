@@ -25,7 +25,7 @@ export default class HasBeenSeen extends React.Component {
                         height: "50%",
                         borderRadius: "100px",
                         border: "2px solid grey",
-                        backgroundColor: status ? "grey" : "lightblue",
+                        backgroundColor: status ? "transparent" : "lightblue",
                     }}
                     onClick={this.props.circleClick ? this.props.circleClick : null}
                     />
