@@ -14,12 +14,12 @@ export default class Connection extends React.Component {
         sendingRequest: false
     };
 
-    confirmRequest = () => {
+    confirmConnectionRequest = () => {
         this.setState({
             sendingRequest: true
         });
         setTimeout(() => {
-            this.props.removeConnection(this.props.memberData.id);
+            this.props.confirmConnectionRequest(this.props.memberData.id);
         }, 1000)
     };
 
@@ -33,7 +33,7 @@ export default class Connection extends React.Component {
                     {
                         notConnectedToUser &&
                         <Button
-                            onClick={this.confirmRequest}
+                            onClick={this.confirmConnectionRequest}
                             preClickText={"Confirm"}
                             sendingRequest={this.state.sendingRequest}
                         />

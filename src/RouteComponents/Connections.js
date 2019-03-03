@@ -11,7 +11,7 @@ export default class Connections extends React.Component {
         loaded: false
     };
 
-    removeConnection = id => {
+    confirmConnectionRequest = id => {
         // TODO: send confirmation of request
         let result = this.state.requests.filter(con =>
             con.id !== id
@@ -19,7 +19,7 @@ export default class Connections extends React.Component {
         this.setState({
             requests: result
         });
-        // TODO: on success, update connections
+        // TODO: on success, update connections display
     };
 
     componentDidMount() {
@@ -33,15 +33,17 @@ export default class Connections extends React.Component {
         return(
             <div>
                 {
+                    // Show requests display if there are requests
                     (this.state.requests && this.state.requests.length > 0) &&
                         // Connection Requests
                         <ConnectionsDisplay
                             label={"Requests"}
                             connections={this.state.requests}
-                            removeConnection={this.removeConnection}
+                            confirmConnectionRequest={this.confirmConnectionRequest}
                         />
                 }
                 {
+                    // Show connections or message if no connections
                     (this.state.connections && this.state.connections.length > 0)
                     ?
                         // Connections

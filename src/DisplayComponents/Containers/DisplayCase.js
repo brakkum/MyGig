@@ -6,28 +6,28 @@ export default class DisplayCase extends React.Component {
     // props:
     // label: words to appear above box
     // children: elements inside display
+    // maxHeight: int, max height of container
 
     containerStyle = {
         width: "90%",
         maxWidth: "600px",
-        maxHeight: "300px",
         margin: "auto"
     };
 
     boxStyle = {
         backgroundColor: "darkgrey",
         borderRadius: "4px",
-        maxHeight: "280px",
+        maxHeight: this.props.maxHeight ? this.props.maxHeight + "px" : "280px",
         overflow: "scroll"
     };
 
     render() {
         return(
-            <div className={"DisplayCase"} style={{padding: "20px auto 20px auto"}}>
+            <div className={"DisplayCase"}>
                 <div style={this.containerStyle}>
                     <div style={{fontSize: "28px", margin: "5px"}}>
                         {
-                            this.props.label || "displayBox!"
+                            this.props.label
                         }
                     </div>
                     <div style={this.boxStyle}>
