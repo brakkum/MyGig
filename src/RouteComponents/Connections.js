@@ -13,7 +13,7 @@ export default class Connections extends React.Component {
         loaded: false
     };
 
-    confirmConnectionRequest = id => {
+    acceptConnectionRequest = (accept, id) => {
         // TODO: send confirmation of request
         if (this._isMounted) {
             let result = this.state.requests.filter(con =>
@@ -22,21 +22,7 @@ export default class Connections extends React.Component {
             this.setState({
                 requests: result
             });
-            console.log("confirmed ", id);
-        }
-        // TODO: on success, update connections display
-    };
-
-    denyConnectionRequest = id => {
-        // TODO: send denial of request
-        if (this._isMounted) {
-            let result = this.state.requests.filter(con =>
-                con.id !== id
-            );
-            this.setState({
-                requests: result
-            });
-            console.log("denied ", id);
+            console.log(accept ? "confirmed " : "denied ", id);
         }
         // TODO: on success, update connections display
     };
@@ -63,8 +49,7 @@ export default class Connections extends React.Component {
                         <ConnectionsDisplay
                             label={"Requests"}
                             connections={this.state.requests}
-                            confirmConnectionRequest={this.confirmConnectionRequest}
-                            denyConnectionRequest={this.denyConnectionRequest}
+                            acceptConnectionRequest={this.acceptConnectionRequest}
                         />
                 }
                 {

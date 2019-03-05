@@ -16,7 +16,7 @@ export default class ConnectionsDisplay extends React.Component {
             <DisplayCase label={this.props.label}>
                 {
                     this.props.connections && this.props.connections.map((conn, i) => {
-                        return <Connection memberData={conn} key={i} confirmConnectionRequest={this.props.confirmConnectionRequest} denyConnectionRequest={this.props.denyConnectionRequest} />
+                        return <Connection memberData={conn} key={i} acceptConnectionRequest={this.props.acceptConnectionRequest} />
                     })
                 }
             </DisplayCase>
