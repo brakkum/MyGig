@@ -2,6 +2,7 @@ import React from "react";
 import HasBeenSeen from "./Containers/HasBeenSeen";
 import MemberPicture from "./MemberPicture";
 import Button from "../HelperComponents/Button";
+import TimeSince from "../HelperComponents/TimeSince";
 
 export default class Connection extends React.Component {
     // Represents a connection or connection request for user
@@ -32,6 +33,8 @@ export default class Connection extends React.Component {
                 <div style={{width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                     {this.props.memberData.name}
                     {
+                        // If not connected to user, and not sending
+                        // request accept/deny, show buttons
                         (notConnectedToUser && !sendingRequest) ?
                             <div>
                                 <Button
@@ -46,10 +49,19 @@ export default class Connection extends React.Component {
                                     type={"danger"}
                                 />
                             </div> :
-                            sendingRequest ? <div>One moment....</div> : null
-
+                            // Otherwise if a request is sending
+                            sendingRequest &&
+                                // let user know
+                                <div>One moment....</div>
+                    }
+                    <div style={{display: "flex", alignItems: "center"}}>
+                    {
+                        // show how long users have been connected
+                        this.props.memberData.connectedToUser &&
+                            <TimeSince time={this.props.memberData.connectedSince} size={"12px"} />
                     }
                     <MemberPicture photoUrl={this.props.memberData.photoUrl} size={"30px"} />
+                    </div>
                 </div>
             </HasBeenSeen>
         )

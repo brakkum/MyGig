@@ -1,6 +1,9 @@
 import React from "react";
 
 export default class TimeSince extends React.Component {
+    // shows formatted time since something occurred
+    // props:
+    // time: the event that happened
 
     millisecondsToSeconds = time => {
         return Math.floor(time / 1000);
@@ -37,7 +40,7 @@ export default class TimeSince extends React.Component {
 
     render() {
         return(
-            <div style={{marginRight: "10px"}}>
+            <div style={{marginRight: "10px", fontSize: this.props.size}}>
                 {this.formatTime()} ago
             </div>
         )
