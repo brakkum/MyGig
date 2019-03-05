@@ -26,7 +26,7 @@ export default class TimeSince extends React.Component {
         let yearsSince = Math.floor(difference / yearSeconds);
         if (yearsSince >= 1) { return `${yearsSince}y`; }
         let monthsSince = Math.floor(difference / monthSeconds);
-        if (monthsSince >= 1) { return `${monthsSince}m`; }
+        if (monthsSince >= 1) { return `${monthsSince}mo`; }
         let weeksSince = Math.floor(difference / weekSeconds);
         if (weeksSince >= 1) { return `${weeksSince}w`; }
         let daysSince = Math.floor(difference / daySeconds);
