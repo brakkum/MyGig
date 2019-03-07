@@ -1,12 +1,16 @@
 import React from "react";
 import { withRouter, Redirect } from "react-router-dom";
+import Button from "../HelperComponents/Button";
+import Input from "../HelperComponents/Input";
 
 export default withRouter(
     class Login extends React.Component {
         // TODO: create registration component
 
         state = {
-            redirect: false
+            redirect: false,
+            showLogin: true,
+            sendingRequest: false,
         };
 
         handleLogin = () => {
@@ -20,6 +24,12 @@ export default withRouter(
             });
         };
 
+        switchForm = () => {
+            this.setState({
+               showLogin: !this.state.showLogin
+            });
+        };
+
         render() {
             // if no redirect value, take back home
             const { from } = this.props.location.state || "/";
@@ -30,9 +40,9 @@ export default withRouter(
             return(
                 <div>
                     Login Route
-                    <button onClick={this.handleLogin}>
-                        login
-                    </button>
+                    <Button onClick={this.handleLogin} innerText={"Login"} />
+                    {/* Button to switch form view */}
+                    <Button onClick={this.switchForm} innerText={this.state.showLogin ? "Sign Up" : "Login"} />
                 </div>
             )
         }

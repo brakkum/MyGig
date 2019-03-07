@@ -8,6 +8,7 @@ export default class Button extends React.Component {
     // sendingRequest: if true, component updates
     // preClickText: button display text
     // type: string, type of button, ie success, danger
+    // postClickText: string to be displayed after click
 
     state = {
         hovered: false,
@@ -78,7 +79,7 @@ export default class Button extends React.Component {
                 onMouseUp={this.mouseUp}
             >
                 {
-                    this.props.sendingRequest ? "One moment.." : this.props.preClickText || "Click"
+                    this.props.sendingRequest ? (this.props.postClickText || "One moment..") : this.props.innerText || "Click"
                 }
             </button>
         )
