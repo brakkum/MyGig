@@ -10,10 +10,12 @@ export default class Input extends React.Component {
     // onChange: function from parent for on change state handling
     // regex: regex input must match
     // error: message to display on regex fail
+    // errorOverride error supplied from parent
 
     state = {
         value: "",
         error: "",
+        valid: true,
     };
 
     onChange = event => {
@@ -24,11 +26,13 @@ export default class Input extends React.Component {
         if (this.props.regex) {
             if (!new RegExp(this.props.regex).test(newVal)) {
                 this.setState({
-                    error: this.props.error || "Invalid"
+                    error: this.props.error || "Invalid",
+                    valid: false
                 });
             } else {
                 this.setState({
-                   error: ""
+                    error: "",
+                    valid: true
                 });
             }
         }
@@ -36,12 +40,13 @@ export default class Input extends React.Component {
     };
 
     render() {
+        let validStyle = this.state.valid ? {border: "2px solid transparent"} : {border: "2px solid #b73300"};
         return(
             <div style={{width: "90%", margin: "auto"}}>
                 <div style={{margin: "10px", fontSize: "15px"}}>
                     {this.props.for}
                     <span style={{color: "darkred", float: "right"}}>
-                        {this.state.error}
+                        {this.props.errorOverride || this.state.error}
                     </span>
                 </div>
                 <input
@@ -53,7 +58,8 @@ export default class Input extends React.Component {
                         width: "100%",
                         borderRadius: "4px",
                         height: "20px",
-                        fontSize: "18px"
+                        fontSize: "18px",
+                        ...validStyle
                     }}
                 />
             </div>

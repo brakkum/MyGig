@@ -37,9 +37,8 @@ export default class LoginForm extends React.Component {
             <DisplayCase>
                 <Input
                     for={"Email"}
-                    cvalue={this.state.username}
+                    value={this.state.username}
                     name={"email"}
-                    type={"email"}
                     onChange={username => this.updateUsername(username)}
                 />
                 <Input
@@ -47,8 +46,6 @@ export default class LoginForm extends React.Component {
                     value={this.state.password}
                     name={"password"}
                     type={"password"}
-                    regex={"^[a-zA-Z0-9_]{8,50}$"}
-                    error={"Invalid Password"}
                     onChange={password => this.updatePassword(password)}
                 />
                 <Button
