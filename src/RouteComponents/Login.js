@@ -1,7 +1,8 @@
 import React from "react";
 import { withRouter, Redirect } from "react-router-dom";
 import Button from "../HelperComponents/Button";
-import Input from "../HelperComponents/Input";
+import LoginForm from "../FormComponents/LoginForm";
+import SignUpForm from "../FormComponents/SignUpForm";
 
 export default withRouter(
     class Login extends React.Component {
@@ -13,7 +14,7 @@ export default withRouter(
             sendingRequest: false,
         };
 
-        handleLogin = () => {
+        redirectOnLogin = () => {
             // check user credentials
             // handle user login
             // sent from MyGig component
@@ -32,15 +33,17 @@ export default withRouter(
 
         render() {
             // if no redirect value, take back home
-            const { from } = this.props.location.state || "/";
+            let from = (this.props.location && this.props.location.state) ? this.props.location.state.from : "/";
             // if redirect is true, user logged in
             if (this.state.redirect) {
                 return <Redirect to={{ pathname: from }} />
             }
             return(
                 <div>
-                    Login Route
-                    <Button onClick={this.handleLogin} innerText={"Login"} />
+                    {
+                        this.state.showLogin ?
+                            <LoginForm redirectOnLogin={this.redirectOnLogin} /> : <SignUpForm />
+                    }
                     {/* Button to switch form view */}
                     <Button onClick={this.switchForm} innerText={this.state.showLogin ? "Sign Up" : "Login"} />
                 </div>

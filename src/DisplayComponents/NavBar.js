@@ -6,7 +6,7 @@ export default withRouter(
     class NavBar extends React.Component {
         // MyGig page top navbar
         // TODO: add login/logout button to right side
-        // TODO: check user login status for account/home links
+        // TODO: check user login status for account/home links/photo
 
         state = {
             redirect: null

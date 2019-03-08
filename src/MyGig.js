@@ -63,13 +63,13 @@ class MyGig extends Component {
 
     // so logging in isn't necessary right now
     componentWillMount() {
-        this.setState({
-            userData: {
-                id: 1,
-                photoUrl: "https://i.imgur.com/pDaRVI5.jpg",
-                isLoggedIn: true
-            }
-        })
+        // this.setState({
+        //     userData: {
+        //         id: 1,
+        //         photoUrl: "https://i.imgur.com/pDaRVI5.jpg",
+        //         isLoggedIn: true
+        //     }
+        // })
     };
 
     // set redirect back to null
@@ -94,7 +94,9 @@ class MyGig extends Component {
                         redirect && <Redirect to={redirect}/>
                     }
                     {/* NavBar for application */}
-                    <NavBar userData={this.state.userData} redirect={this.redirect} />
+                    {
+                        this.state.userData && <NavBar userData={this.state.userData} redirect={this.redirect} />
+                    }
                     {/* all body content contained here */}
                     <div className="body-content">
                         {/* contains all the routing logic */}
