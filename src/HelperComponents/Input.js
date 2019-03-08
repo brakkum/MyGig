@@ -8,16 +8,30 @@ export default class Input extends React.Component {
     // value: current value of input
     // name: name to be supplied to input
     // onChange: function from parent for on change state handling
+    // regex: regex input must match
+    // error: message to display on regex fail
 
     state = {
         value: "",
-        error: "an error",
+        error: "",
     };
 
     onChange = event => {
+        let newVal = event.target.value;
         this.setState({
-           value: event.target.value
+           value: newVal
         });
+        if (this.props.regex) {
+            if (!new RegExp(this.props.regex).test(newVal)) {
+                this.setState({
+                    error: this.props.error || "Invalid"
+                });
+            } else {
+                this.setState({
+                   error: ""
+                });
+            }
+        }
         this.props.onChange(event.target.value);
     };
 

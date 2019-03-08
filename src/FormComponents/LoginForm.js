@@ -7,6 +7,7 @@ export default class LoginForm extends React.Component {
     // login form for /login
     // attemptLogin tries to verify user input
     // on successful login, props.handleLogin
+    // TODO: tell user what password requirements are
 
     state = {
         username: "",
@@ -38,6 +39,7 @@ export default class LoginForm extends React.Component {
                     for={"Email"}
                     cvalue={this.state.username}
                     name={"email"}
+                    type={"email"}
                     onChange={username => this.updateUsername(username)}
                 />
                 <Input
@@ -45,6 +47,8 @@ export default class LoginForm extends React.Component {
                     value={this.state.password}
                     name={"password"}
                     type={"password"}
+                    regex={"^[a-zA-Z0-9_]{8,50}$"}
+                    error={"Invalid Password"}
                     onChange={password => this.updatePassword(password)}
                 />
                 <Button
