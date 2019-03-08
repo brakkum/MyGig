@@ -9,6 +9,7 @@ export default class Button extends React.Component {
     // preClickText: button display text
     // type: string, type of button, ie success, danger
     // postClickText: string to be displayed after click
+    // style: added style, ie for floats
 
     state = {
         hovered: false,
@@ -71,7 +72,8 @@ export default class Button extends React.Component {
                     padding: "5px 10px",
                     transition: ".2s",
                     cursor: "pointer",
-                    margin: "10px"
+                    margin: "10px",
+                    ...this.props.style
                 }}
                 onMouseOver={this.mouseOverButton}
                 onMouseLeave={this.mouseLeaveButton}
