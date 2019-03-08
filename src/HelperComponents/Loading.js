@@ -6,7 +6,6 @@ export default class Loading extends React.Component {
 
     loadingStyle = {
         width: "100%",
-        height: "80vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center"
@@ -15,7 +14,7 @@ export default class Loading extends React.Component {
     render() {
         return(
             <div className="loading-container" style={this.loadingStyle}>
-                <Spinner name={"wave"} fadeIn={"half"} color={"darkgrey"} />
+                <Spinner name={"wave"} fadeIn={"half"} color={this.props.color || "darkgrey"} />
             </div>
         )
     }

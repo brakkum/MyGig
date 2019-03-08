@@ -17,8 +17,7 @@ export default withRouter(
         redirectOnLogin = () => {
             // check user credentials
             // handle user login
-            // sent from MyGig component
-            this.props.loginUser(1);
+
             // they logged in, now redirect
             this.setState({
                 redirect: true
@@ -42,7 +41,7 @@ export default withRouter(
                 <div>
                     {
                         this.state.showLogin ?
-                            <LoginForm redirectOnLogin={this.redirectOnLogin} /> : <SignUpForm />
+                            <LoginForm redirectOnLogin={this.redirectOnLogin} loginUser={this.props.loginUser} /> : <SignUpForm />
                     }
                     {/* Button to switch form view */}
                     <Button onClick={this.switchForm} innerText={this.state.showLogin ? "Sign Up" : "Login"} />
