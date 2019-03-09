@@ -3,6 +3,8 @@ import { withRouter } from "react-router-dom";
 import Button from "../HelperComponents/Button";
 import LoginForm from "../FormComponents/LoginForm";
 import SignUpForm from "../FormComponents/SignUpForm";
+import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
+import "./Login.css";
 
 export default withRouter(
     class Login extends React.Component {
@@ -37,20 +39,24 @@ export default withRouter(
         }
 
         render() {
-            // if no redirect value, take back home
             return(
                 <div className={"login-signup-box"}>
-                    {
-                        this.state.showLogin ?
-                            <LoginForm redirectOnLogin={this.redirectOnLogin} loginUser={this.props.loginUser} /> : <SignUpForm />
-                    }
                     {/* Button to switch form view */}
-                    <Button
-                        onClick={this.switchForm}
-                        innerText={this.state.showLogin ? "Sign Up" : "Login"}
-                        size={"lg"}
-                        style={{margin: "auto"}}
-                    />
+                    <div className={"form-switch"} style={{padding: "10px", display: "flex", justifyContent: "center"}}>
+                        <Button
+                            onClick={this.switchForm}
+                            innerText={this.state.showLogin ? "Sign Up" : "Login"}
+                            size={"lg"}
+                        />
+                    </div>
+                    <DisplayCase boxStyle={{position: "relative", height: "900px", overflow: "visible"}} backgroundColor={"transparent"}>
+                        <div className={`login login-${this.state.showLogin ? "show" : "hide"}`}>
+                            <LoginForm redirectOnLogin={this.redirectOnLogin} loginUser={this.props.loginUser} />
+                        </div>
+                        <div className={`login login-${!this.state.showLogin ? "show" : "hide"}`}>
+                            <SignUpForm />
+                        </div>
+                    </DisplayCase>
                 </div>
             )
         }

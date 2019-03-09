@@ -1,7 +1,6 @@
 import React from "react";
 import Button from "../HelperComponents/Button";
 import Input from "../HelperComponents/Input";
-import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
 
 export default class LoginForm extends React.Component {
     // login form for /login
@@ -40,7 +39,7 @@ export default class LoginForm extends React.Component {
 
     render() {
         return(
-            <DisplayCase>
+            <div>
                 <Input
                     for={"Email"}
                     value={this.state.username}
@@ -61,7 +60,7 @@ export default class LoginForm extends React.Component {
                     type={"success"}
                     sendingRequest={this.state.sendingRequest}
                 />
-            </DisplayCase>
+            </div>
         )
     }
 }
