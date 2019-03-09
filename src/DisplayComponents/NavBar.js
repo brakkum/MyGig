@@ -1,6 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router";
 import MemberPicture from "./MemberPicture";
+import Constants from "../Constants/Constants";
 
 export default withRouter(
     class NavBar extends React.Component {
@@ -15,7 +16,7 @@ export default withRouter(
         navStyle = {
             maxWidth: "1100px",
             margin: "auto",
-            height: "75px"
+            height: Constants.navBarHeight
         };
 
         navLeftStyle = {

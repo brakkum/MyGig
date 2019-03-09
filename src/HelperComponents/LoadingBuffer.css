@@ -1,0 +1,20 @@
+
+.loader.hide {
+    opacity: 0;
+}
+
+.loader.hidden {
+    display: none;
+}
+
+.loader.show {
+    opacity: 1;
+}
+
+.loader {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    right: 0;
+}

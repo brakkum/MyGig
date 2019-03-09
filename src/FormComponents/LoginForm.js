@@ -2,7 +2,6 @@ import React from "react";
 import Button from "../HelperComponents/Button";
 import Input from "../HelperComponents/Input";
 import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
-import Loading from "../HelperComponents/Loading";
 
 export default class LoginForm extends React.Component {
     // login form for /login

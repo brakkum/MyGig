@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Link, Redirect } from 'react-router-dom';
 import './MyGig.css';
 import NavBar from "./DisplayComponents/NavBar";
 import MyGigRouter from "./RouteComponents/MyGigRouter";
+import Constants from "./Constants/Constants";
 
 class MyGig extends Component {
     // Parent of all components
@@ -63,13 +64,13 @@ class MyGig extends Component {
 
     // so logging in isn't necessary right now
     componentWillMount() {
-        // this.setState({
-        //     userData: {
-        //         id: 1,
-        //         photoUrl: "https://i.imgur.com/pDaRVI5.jpg",
-        //         isLoggedIn: true
-        //     }
-        // })
+        this.setState({
+            userData: {
+                id: 1,
+                photoUrl: "https://i.imgur.com/pDaRVI5.jpg",
+                isLoggedIn: true
+            }
+        })
     };
 
     // set redirect back to null
@@ -88,7 +89,7 @@ class MyGig extends Component {
         return (
             // entire application lives inside router
             <Router>
-                <div>
+                <div style={{backgroundColor: Constants.backgroundColor}}>
                     {
                         // redirect if set
                         redirect && <Redirect to={redirect}/>
@@ -98,7 +99,7 @@ class MyGig extends Component {
                         this.state.userData && <NavBar userData={this.state.userData} redirect={this.redirect} />
                     }
                     {/* all body content contained here */}
-                    <div className="body-content">
+                    <div className="body-content" style={{backgroundColor: Constants.backgroundColor}}>
                         {/* contains all the routing logic */}
                         <MyGigRouter userData={this.state.userData} loginUser={this.loginUser} />
                         {/* navigation for testing */}
