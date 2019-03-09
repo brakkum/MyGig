@@ -49,7 +49,7 @@ export default withRouter(
                             size={"lg"}
                         />
                     </div>
-                    <DisplayCase boxStyle={{position: "relative", height: "900px", overflow: "visible"}} backgroundColor={"transparent"}>
+                    <DisplayCase boxStyle={{position: "relative", overflow: "visible"}} containerStyle={{height: "70vh"}} backgroundColor={"transparent"}>
                         <div className={`login login-${this.state.showLogin ? "show" : "hide"}`}>
                             <LoginForm redirectOnLogin={this.redirectOnLogin} loginUser={this.props.loginUser} />
                         </div>

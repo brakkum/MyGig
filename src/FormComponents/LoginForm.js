@@ -9,7 +9,7 @@ export default class LoginForm extends React.Component {
     // TODO: tell user what password requirements are
 
     state = {
-        username: "",
+        email: "",
         password: "",
         sendingRequest: false
     };
@@ -25,15 +25,9 @@ export default class LoginForm extends React.Component {
         }, 3000);
     };
 
-    updateUsername = username => {
+    updateValue = (name, value) => {
         this.setState({
-            username: username
-        });
-    };
-
-    updatePassword = password => {
-        this.setState({
-            username: password
+            [name]: value
         });
     };
 
@@ -44,14 +38,14 @@ export default class LoginForm extends React.Component {
                     for={"Email"}
                     value={this.state.username}
                     name={"email"}
-                    onChange={username => this.updateUsername(username)}
+                    onChange={email => this.updateValue("email", email)}
                 />
                 <Input
                     for={"Password"}
                     value={this.state.password}
                     name={"password"}
                     type={"password"}
-                    onChange={password => this.updatePassword(password)}
+                    onChange={password => this.updateValue("password", password)}
                 />
                 <Button
                     onClick={this.attemptLogin}
