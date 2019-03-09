@@ -116,9 +116,7 @@ export default class MyGig extends Component {
                         redirect && <Redirect to={redirect}/>
                     }
                     {/* NavBar for application */}
-                    {
-                        this.state.userData && <NavBar userData={this.state.userData} redirect={this.redirect} />
-                    }
+                    <NavBar userData={this.state.userData} redirect={this.redirect} />
                     {
                         <LoadingBuffer loaded={this.state.loaded} leaving={this.state.leaving} />
                     }

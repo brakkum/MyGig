@@ -17,6 +17,7 @@ export default withRouter(
         // props:
         // userData: userData object passed to each page to populate data
         // loginUser: method of MyGig used to set userData in MyGig state
+        // TODO: add logout route
 
         render() {
             return(
