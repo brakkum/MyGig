@@ -70,11 +70,11 @@ export default withRouter(
                     <div style={this.navRightStyle}>
                         {
                             this.props.userData ?
-                                <div onClick={() => this.props.redirect("logout", this.props.location.pathname)}>
+                                <div onClick={() => this.props.redirect("/logout", this.props.location.pathname)}>
                                     Logout
                                 </div>
                                     :
-                                <div onClick={() => this.props.redirect("login", this.props.location.pathname)}>
+                                <div onClick={() => this.props.redirect("/login", this.props.location.pathname)}>
                                     Login
                                 </div>
                         }
