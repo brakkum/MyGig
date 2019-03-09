@@ -39,13 +39,18 @@ export default withRouter(
         render() {
             // if no redirect value, take back home
             return(
-                <div>
+                <div className={"login-signup-box"}>
                     {
                         this.state.showLogin ?
                             <LoginForm redirectOnLogin={this.redirectOnLogin} loginUser={this.props.loginUser} /> : <SignUpForm />
                     }
                     {/* Button to switch form view */}
-                    <Button onClick={this.switchForm} innerText={this.state.showLogin ? "Sign Up" : "Login"} />
+                    <Button
+                        onClick={this.switchForm}
+                        innerText={this.state.showLogin ? "Sign Up" : "Login"}
+                        size={"lg"}
+                        style={{margin: "auto"}}
+                    />
                 </div>
             )
         }

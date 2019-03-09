@@ -10,6 +10,7 @@ export default class Button extends React.Component {
     // type: string, type of button, ie success, danger
     // postClickText: string to be displayed after click
     // style: added style, ie for floats
+    // size: sm, md, lg
 
     state = {
         hovered: false,
@@ -53,12 +54,25 @@ export default class Button extends React.Component {
         "danger": "#ff919f",
     };
 
+    btnPadding = {
+        "sm": "3px 5px",
+        "md": "5px 10px",
+        "lg": "8px 13px"
+    };
+
+    btnFontSize = {
+        "sm": "11px",
+        "md": "12px",
+        "lg": "15px"
+    };
+
     defaultButtonColor = "transparent";
 
     render() {
         let hovered = this.state.hovered;
         let clicked = this.state.clicked;
         let type = this.props.type || "neutral";
+        let size = this.props.size || "md";
         return(
             <button
                 onClick={this.props.onClick}
@@ -69,7 +83,8 @@ export default class Button extends React.Component {
                     boxShadow: "0 0 2pt black",
                     outlineRadius: "4px",
                     borderRadius: "4px",
-                    padding: "5px 10px",
+                    padding: this.btnPadding[size],
+                    fontSize: this.btnFontSize[size],
                     transition: ".2s",
                     cursor: "pointer",
                     margin: "10px",
