@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter, Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import Button from "../HelperComponents/Button";
 import LoginForm from "../FormComponents/LoginForm";
 import SignUpForm from "../FormComponents/SignUpForm";
@@ -9,9 +9,9 @@ export default withRouter(
         // TODO: create registration component
 
         state = {
-            redirect: false,
             showLogin: true,
             sendingRequest: false,
+            redirectedFrom: null
         };
 
         redirectOnLogin = () => {
@@ -19,9 +19,9 @@ export default withRouter(
             // handle user login
 
             // they logged in, now redirect
-            this.setState({
-                redirect: true
-            });
+            // if no redirect value, take back home
+            let to = (this.props.location && this.props.location.state) ? this.props.location.state.from : "/";
+            this.props.redirect(to, this.props.location.pathname);
         };
 
         switchForm = () => {
@@ -30,13 +30,14 @@ export default withRouter(
             });
         };
 
+        componentDidMount() {
+            setTimeout(() => {
+                this.props.pageLoaded();
+            }, 100);
+        }
+
         render() {
             // if no redirect value, take back home
-            let from = (this.props.location && this.props.location.state) ? this.props.location.state.from : "/";
-            // if redirect is true, user logged in
-            if (this.state.redirect) {
-                return <Redirect to={{ pathname: from }} />
-            }
             return(
                 <div>
                     {

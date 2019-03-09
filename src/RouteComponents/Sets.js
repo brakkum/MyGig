@@ -4,6 +4,12 @@ import React from "react";
 export default class Sets extends React.Component {
     // top level route component for /sets/{event_id}
 
+    componentDidMount() {
+        setTimeout(() => {
+            this.props.pageLoaded();
+        }, 100);
+    }
+
     render() {
         return(
             <div>

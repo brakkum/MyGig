@@ -1,7 +1,6 @@
 import React from "react";
 import res from "../MockData/EnsembleMockData";
 import EnsembleHeader from "../DisplayComponents/EnsembleHeader";
-import LoadingBuffer from "../HelperComponents/LoadingBuffer";
 import { Redirect } from "react-router-dom";
 import CommentSection from "../DisplayComponents/CommentSection";
 
@@ -25,7 +24,10 @@ export default class Ensemble extends React.Component {
             if (this._isMounted) {
                 this.setState({ data: res.data, loaded: true });
             }
-        }, 2000)
+        }, 2000);
+        setTimeout(() => {
+            this.props.pageLoaded();
+        }, 100);
     }
 
     componentWillUnmount() {
@@ -38,19 +40,16 @@ export default class Ensemble extends React.Component {
             return <Redirect to={"/"} />
         }
         return(
-            <div>
-                <LoadingBuffer
-                    loaded={this.state.loaded}
-                >
+            this.state.data &&
+                <div>
                     <EnsembleHeader {...this.state.data} />
                     <CommentSection
                         comments={this.state.data && this.state.data.ensembleComments}
                     />
-                </LoadingBuffer>
-                <h4>
-                    Ensemble Id: {this.props.match.params.ensembleId}
-                </h4>
-            </div>
+                    <h4>
+                        Ensemble Id: {this.props.match.params.ensembleId}
+                    </h4>
+                </div>
         )
     }
 }

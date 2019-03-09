@@ -33,6 +33,9 @@ export default class Connections extends React.Component {
             connections: res.data.connections
         });
         this._isMounted = true;
+        setTimeout(() => {
+            this.props.pageLoaded();
+        }, 100);
     };
 
     componentWillUnmount() {

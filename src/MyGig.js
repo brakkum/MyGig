@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Redirect } from 'react-router-dom';
 import './MyGig.css';
 import NavBar from "./DisplayComponents/NavBar";
 import MyGigRouter from "./RouteComponents/MyGigRouter";
 import Constants from "./Constants/Constants";
+import LoadingBuffer from "./HelperComponents/LoadingBuffer";
 
-class MyGig extends Component {
+export default class MyGig extends Component {
     // Parent of all components
     // userData stored in state controls all page population
     // TODO: check localstorage in componentDidMount for JWT
@@ -19,7 +20,9 @@ class MyGig extends Component {
         // if redirect is not null
         // page will redirect there
         // and then be reset to null
-        redirect: null
+        redirect: null,
+        leaving: false,
+        loaded: false
     };
 
     // this is called from login page
@@ -57,20 +60,38 @@ class MyGig extends Component {
     redirect = (to, from) => {
         if (to !== from) {
             this.setState({
-                redirect: to
+                leaving: true
             });
+            setTimeout(() => {
+                this.setState({
+                    redirect: to,
+                    loaded: false
+                });
+            }, Constants.loaderTransitionTimeMs);
         }
+    };
+
+    pageLoaded = () => {
+        this.setState({
+            loaded: true
+        });
+        setTimeout(() => {
+            this.setState({
+                leaving: false
+            });
+        }, Constants.loaderTransitionTimeMs);
     };
 
     // so logging in isn't necessary right now
     componentWillMount() {
-        this.setState({
-            userData: {
-                id: 1,
-                photoUrl: "https://i.imgur.com/pDaRVI5.jpg",
-                isLoggedIn: true
-            }
-        })
+        // this.setState({
+        //     userData: {
+        //         id: 1,
+        //         photoUrl: "https://i.imgur.com/pDaRVI5.jpg",
+        //         isLoggedIn: true,
+        //         loaded: true
+        //     }
+        // })
     };
 
     // set redirect back to null
@@ -98,26 +119,21 @@ class MyGig extends Component {
                     {
                         this.state.userData && <NavBar userData={this.state.userData} redirect={this.redirect} />
                     }
+                    {
+                        <LoadingBuffer loaded={this.state.loaded} leaving={this.state.leaving} />
+                    }
                     {/* all body content contained here */}
                     <div className="body-content" style={{backgroundColor: Constants.backgroundColor}}>
                         {/* contains all the routing logic */}
-                        <MyGigRouter userData={this.state.userData} loginUser={this.loginUser} />
-                        {/* navigation for testing */}
-                        <div className="test-nav" style={{backgroundColor: "lightgreen", display: "flex", justifyContent: "space-between"}}>
-                            <Link to="/">Home</Link>
-                            <Link to="/account">Account</Link>
-                            <Link to="/notifications">Notifications</Link>
-                            <Link to="/public_event/2">Public Event 2</Link>
-                            <Link to="/event/3">Private Event 3</Link>
-                            <Link to="/ensemble/4">Ensemble 4</Link>
-                            <Link to="/connections">Connections</Link>
-                            <Link to="/sets/24">Sets for Event 24</Link>
-                        </div>
+                        <MyGigRouter
+                            userData={this.state.userData}
+                            loginUser={this.loginUser}
+                            redirect={this.redirect}
+                            pageLoaded={this.pageLoaded}
+                        />
                     </div>
                 </div>
             </Router>
         );
     }
 }
-
-export default MyGig;

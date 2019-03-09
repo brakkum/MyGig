@@ -1,10 +1,15 @@
 
+.loader.fadein {
+    opacity: 1;
+}
+
 .loader.hide {
     opacity: 0;
 }
 
 .loader.hidden {
-    display: none;
+    z-index: -999;
+    opacity: 0;
 }
 
 .loader.show {

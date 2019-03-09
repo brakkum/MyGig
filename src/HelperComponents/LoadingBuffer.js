@@ -9,21 +9,26 @@ export default class LoadingBuffer extends React.Component {
     // while status of props.loaded is false.
 
     state = {
-        transitionDone: false,
-        className: "show"
+        className: "hidden"
     };
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.loaded === false && this.props.loaded === true && this.state.transitionDone !== true) {
+        if ((prevProps.loaded === true && prevProps.leaving === false)
+            && (this.props.loaded === true && this.props.leaving === true)) {
+            // we are now changing pages
+            this.setState({
+                className: "fadein"
+            })
+        } else if ((prevProps.loaded === false && this.props.leaving === true)
+            && (this.props.loaded === true && this.props.leaving === true)) {
             this.setState({
                 className: "hide"
             });
             setTimeout(() => {
                 this.setState({
-                    transitionDone: true,
                     className: "hidden"
                 });
-            }, Constants.loaderTransitionTimeMs);
+            }, Constants.loaderTransitionTimeMs)
         }
     };
 
@@ -37,14 +42,11 @@ export default class LoadingBuffer extends React.Component {
                         top: Constants.navBarHeight,
                         height: "90vh",
                         backgroundColor: Constants.backgroundColor,
-                        transition: Constants.loaderTransitionTimeSe
+                        transition: "opacity " + Constants.loaderTransitionTimeSe
                     }}
                 >
                     <Loading/>
                 </div>
-                {
-                    this.props.loaded && this.props.children
-                }
             </div>
         )
     }
