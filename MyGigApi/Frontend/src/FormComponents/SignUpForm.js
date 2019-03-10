@@ -38,6 +38,10 @@ export default class SignUpForm extends React.Component {
                 sendingRequest: true
             });
         }
+        fetch("/api/values", {
+            method: "post"
+        }).then(res => res.json())
+            .then(json => console.log(json))
     };
 
     render() {
@@ -46,13 +50,13 @@ export default class SignUpForm extends React.Component {
                 <Input
                     for={"First Name"}
                     value={this.state.firstName}
-                    name={"firstname"}
+                    name={"firstName"}
                     onChange={firstName => this.updateValue("firstName", firstName)}
                 />
                 <Input
                     for={"Last Name"}
                     value={this.state.lastName}
-                    name={"lastname"}
+                    name={"lastName"}
                     onChange={lastname => this.updateValue("lastName", lastname)}
                 />
                 <Input
@@ -72,7 +76,7 @@ export default class SignUpForm extends React.Component {
                 <Input
                     for={"Confirm Password"}
                     value={this.state.passwordConfirm}
-                    name={"passwordconfirm"}
+                    name={"passwordConfirm"}
                     type={"password"}
                     errorOverride={this.state.passwordError && "Passwords do not match"}
                     onChange={password => this.updateValue("passwordConfirm", password)}
