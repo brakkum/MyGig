@@ -1,2 +1,7 @@
+build/
+bin/
+obj/Debug/
+appsettings**
 .idea/*
 MyGigApi.sln.DotSettings.user
+
