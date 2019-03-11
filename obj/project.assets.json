@@ -12262,11 +12262,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/DanielBrakke/dev/MyGig/MyGigApi/MyGigApi.csproj",
+      "projectUniqueName": "/Users/DanielBrakke/dev/MyGig/MyGigApi.csproj",
       "projectName": "MyGigApi",
-      "projectPath": "/Users/DanielBrakke/dev/MyGig/MyGigApi/MyGigApi.csproj",
+      "projectPath": "/Users/DanielBrakke/dev/MyGig/MyGigApi.csproj",
       "packagesPath": "/Users/DanielBrakke/.nuget/packages/",
-      "outputPath": "/Users/DanielBrakke/dev/MyGig/MyGigApi/obj/",
+      "outputPath": "/Users/DanielBrakke/dev/MyGig/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"

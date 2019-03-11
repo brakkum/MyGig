@@ -1,10 +1,10 @@
 ﻿{
   "version": "1.0.0",
   "restore": {
-    "projectUniqueName": "/Users/DanielBrakke/dev/MyGig/MyGigApi/MyGigApi.csproj",
+    "projectUniqueName": "/Users/DanielBrakke/dev/MyGig/MyGigApi.csproj",
     "projectName": "MyGigApi",
-    "projectPath": "/Users/DanielBrakke/dev/MyGig/MyGigApi/MyGigApi.csproj",
-    "outputPath": "/Users/DanielBrakke/dev/MyGig/MyGigApi/obj/",
+    "projectPath": "/Users/DanielBrakke/dev/MyGig/MyGigApi.csproj",
+    "outputPath": "/Users/DanielBrakke/dev/MyGig/obj/",
     "projectStyle": "PackageReference",
     "fallbackFolders": [
       "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
