@@ -11,6 +11,7 @@ export default class Button extends React.Component {
     // postClickText: string to be displayed after click
     // style: added style, ie for floats
     // size: sm, md, lg
+    // buttonType: ie, button/submit
 
     state = {
         hovered: false,
@@ -71,7 +72,7 @@ export default class Button extends React.Component {
     render() {
         let hovered = this.state.hovered;
         let clicked = this.state.clicked;
-        let type = this.props.type || "neutral";
+        let type = this.props.colorType || "neutral";
         let size = this.props.size || "md";
         return(
             <button
@@ -94,6 +95,7 @@ export default class Button extends React.Component {
                 onMouseLeave={this.mouseLeaveButton}
                 onMouseDown={this.mouseDown}
                 onMouseUp={this.mouseUp}
+                type={this.props.buttonType || "button"}
             >
                 {
                     this.props.sendingRequest ? (this.props.postClickText || "One moment..") : this.props.innerText || "Click"

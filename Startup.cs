@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using MyGigApi.Context;
 
 namespace MyGigApi
 {
@@ -33,6 +35,9 @@ namespace MyGigApi
                         .AllowAnyHeader()
                 )
             );
+
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<MyGigContext>(options => options.UseMySQL(connection));
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
@@ -67,6 +72,7 @@ namespace MyGigApi
                 
                 if (env.IsDevelopment())
                 {
+//                    spa.UseReactDevelopmentServer("npm start");
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:3000");
                 }
             });

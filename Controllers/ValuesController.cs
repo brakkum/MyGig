@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MyGigApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("values")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ValuesController : ApiBaseController
     {
         // GET api/values
         [HttpPost]

@@ -1,0 +1,16 @@
+﻿<Properties StartupConfiguration="{3FB211AB-5C4C-417F-A759-07F2717BE335}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Entities/UserPhoto.cs">
+    <Files>
+      <File FileName="Context/MyGigContext.cs" Line="13" Column="13" />
+      <File FileName="Entities/UserPhoto.cs" Line="11" Column="1" />
+      <File FileName="Entities/User.cs" Line="25" Column="19" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.MyGigApi PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

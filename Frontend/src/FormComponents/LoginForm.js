@@ -14,7 +14,9 @@ export default class LoginForm extends React.Component {
         sendingRequest: false
     };
 
-    attemptLogin = () => {
+    attemptLogin = event => {
+        event.preventDefault();
+        
         // login call
         this.setState({
             sendingRequest: true
@@ -33,7 +35,7 @@ export default class LoginForm extends React.Component {
 
     render() {
         return(
-            <div>
+            <form onSubmit={this.attemptLogin}>
                 <Input
                     for={"Email"}
                     value={this.state.username}
@@ -54,7 +56,7 @@ export default class LoginForm extends React.Component {
                     type={"success"}
                     sendingRequest={this.state.sendingRequest}
                 />
-            </div>
+            </form>
         )
     }
 }

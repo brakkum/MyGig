@@ -20,9 +20,11 @@ export default class SignUpForm extends React.Component {
         });
     };
 
-    attemptSignUp = () => {
+    attemptSignUp = event => {
+        event.preventDefault();
+        
         let formValid = true;
-        if (this.state.password !== this.state.passwordConfirm) {
+        if (this.state.password !== this.state.passwordConfirm || this.state.password.length === 0) {
             this.setState({
                 passwordError: true
             });
@@ -37,16 +39,25 @@ export default class SignUpForm extends React.Component {
             this.setState({
                 sendingRequest: true
             });
+            fetch("/api/users/newuser", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json"  
+                },
+                body: JSON.stringify({
+                    FirstName: this.state.firstName,
+                    LastName: this.state.lastName,
+                    Email: this.state.email,
+                    Password: this.state.password
+                })
+            }).then(res => res.json())
+                .then(json => console.log(json))
         }
-        fetch("/api/values", {
-            method: "post"
-        }).then(res => res.json())
-            .then(json => console.log(json))
     };
 
     render() {
         return(
-            <div>
+            <form onSubmit={this.attemptSignUp}>
                 <Input
                     for={"First Name"}
                     value={this.state.firstName}
@@ -85,10 +96,11 @@ export default class SignUpForm extends React.Component {
                     onClick={this.attemptSignUp}
                     innerText={"Submit"}
                     style={{float: "right"}}
-                    type={"success"}
+                    colorType={"success"}
+                    buttonType={"submit"}
                     sendingRequest={this.state.sendingRequest}
                 />
-            </div>
+            </form>
         )
     }
 }
