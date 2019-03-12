@@ -10,15 +10,15 @@ namespace MyGigApi.Entities
         {
             IsActive = true;
         }
-        
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("UserId")]
         [Key]
         public int Id { get; set; }
-        
+
         [Required]
         public string FirstName { get; set; }
-        
+
         [Required]
         public string LastName { get; set; }
 
@@ -28,18 +28,24 @@ namespace MyGigApi.Entities
         public string Password
         {
             get => _password;
-            // TODO: BCrypt
-            set => _password = value;
+            set => _password = BCrypt.Net.BCrypt.HashPassword(value);
         }
+
+        private string _passwordConfirm;
+
+        [Required]
+        [NotMapped]
+        public string PasswordConfirm { get; set; }
 
         [Required]
         public string Email { get; set; }
 
-        // TODO: set default to true
         [Required]
         public bool IsActive { get; set; }
 
-        [NotMapped] 
+        [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
+
+
     }
 }

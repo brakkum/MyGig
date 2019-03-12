@@ -9,7 +9,7 @@ namespace MyGigApi.Controllers
     {
         private readonly MyGigContext _context;
         private const string RoutePrefix = "users";
-        
+
         public UserController(MyGigContext context)
         {
             _context = context;
@@ -20,13 +20,17 @@ namespace MyGigApi.Controllers
         [EnableCors("MyGigCors")]
         public JsonResult NewUser([FromBody] User user)
         {
+            if (!BCrypt.Net.BCrypt.Verify(user.PasswordConfirm, user.Password))
+            {
+                ModelState.AddModelError("Password", "Password does not match");
+            }
             if (ModelState.IsValid)
             {
                 _context.Users.Add(user);
                 _context.SaveChanges();
                 return new JsonResult(Json(new {success = true, user}));
-            }    
-            return new JsonResult(Json(new {success = false, ModelState}));
+            }
+            return new JsonResult(Json(new {success = false, ModelState, user}));
         }
 
         [HttpPost]

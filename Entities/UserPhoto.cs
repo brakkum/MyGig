@@ -16,5 +16,7 @@ namespace MyGigApi.Entities
 
         [Required]
         public DateTime UploadedAt { get; set; }
+
+        // TODO: Add User field
     }
 }
