@@ -14,7 +14,7 @@ namespace MyGigApi.Controllers
         {
             _context = context;
         }
-        
+
         [HttpPost]
         [Route(RoutePrefix + "/newuser")]
         [EnableCors("MyGigCors")]
@@ -26,6 +26,20 @@ namespace MyGigApi.Controllers
                 _context.SaveChanges();
                 return new JsonResult(Json(new {success = true, user}));
             }    
+            return new JsonResult(Json(new {success = false, ModelState}));
+        }
+
+        [HttpPost]
+        [Route(RoutePrefix + "/newuserphoto")]
+        [EnableCors("MyGigCors")]
+        public JsonResult NewUserPhoto([FromBody] UserPhoto userPhoto)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.UserPhotos.Add(userPhoto);
+                _context.SaveChanges();
+                return new JsonResult(Json(new {success = true, userPhoto}));
+            }
             return new JsonResult(Json(new {success = false, ModelState}));
         }
     }

@@ -31,7 +31,7 @@ namespace MyGigApi.Entities
             // TODO: BCrypt
             set => _password = value;
         }
-        
+
         [Required]
         public string Email { get; set; }
 

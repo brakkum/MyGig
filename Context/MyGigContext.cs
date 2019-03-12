@@ -13,7 +13,11 @@ namespace MyGigApi.Context
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // User
             modelBuilder.Entity<User>().Property(u => u.IsActive).HasColumnType("bit");
+
+            // UserPhoto
+            modelBuilder.Entity<UserPhoto>().Property(u => u.UploadedAt).HasDefaultValueSql("CURRENT_TIMESTAMP()");
         }
     }
 }
