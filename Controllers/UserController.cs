@@ -20,6 +20,9 @@ namespace MyGigApi.Controllers
         [EnableCors("MyGigCors")]
         public JsonResult NewUser([FromBody] User user)
         {
+            // Main sign up point for new users
+            // TODO: implement JWT stuff.
+
             if (!BCrypt.Net.BCrypt.Verify(user.PasswordConfirm, user.Password))
             {
                 ModelState.AddModelError("Password", "Password does not match");

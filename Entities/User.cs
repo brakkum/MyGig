@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection.Metadata.Ecma335;
 
 namespace MyGigApi.Entities
 {
@@ -30,8 +29,6 @@ namespace MyGigApi.Entities
             get => _password;
             set => _password = BCrypt.Net.BCrypt.HashPassword(value);
         }
-
-        private string _passwordConfirm;
 
         [Required]
         [NotMapped]

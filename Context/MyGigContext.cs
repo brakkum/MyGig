@@ -12,7 +12,9 @@ namespace MyGigApi.Context
         public DbSet<UserPhoto> UserPhotos { get; set; }
         public DbSet<Ensemble> Ensembles { get; set; }
         public DbSet<Notification> Notifications { get; set; }
+        public DbSet<Event> Events { get; set; }
 
+        // Configure Entity properties, keys, etc.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // User
@@ -22,9 +24,12 @@ namespace MyGigApi.Context
             // Ensemble
             modelBuilder.Entity<Ensemble>().Property(e => e.IsActive).HasColumnType("bit");
             modelBuilder.Entity<Ensemble>().Property(e => e.CreatedOn).HasDefaultValueSql("CURRENT_TIMESTAMP()");
-
             // Notification
             modelBuilder.Entity<Notification>().Property(n => n.Timestamp).HasDefaultValueSql("CURRENT_TIMESTAMP()");
+            // Event
+            modelBuilder.Entity<Event>().Property(e => e.IsPublic).HasColumnType("bit");
+            modelBuilder.Entity<Event>().Property(e => e.CreatedOn).HasDefaultValueSql("CURRENT_TIMESTAMP()");
+
         }
     }
 }
