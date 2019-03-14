@@ -13,13 +13,11 @@ namespace MyGigApi.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("UserId")]
         [Key]
-        public int Id { get; set; }
+        public int UserId { get; set; }
 
-        [Required]
-        public string FirstName { get; set; }
+        [Required] public string FirstName { get; set; }
 
-        [Required]
-        public string LastName { get; set; }
+        [Required] public string LastName { get; set; }
 
         private string _password;
 
@@ -40,9 +38,12 @@ namespace MyGigApi.Entities
         [Required]
         public bool IsActive { get; set; }
 
+//        public int UserPhotoId { get; set; }
+//
+//        [ForeignKey("UserPhotoId")]
+//        public UserPhoto UserPhoto { get; set; }
+
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
-
-
     }
 }

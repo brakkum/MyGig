@@ -6,17 +6,15 @@ namespace MyGigApi.Entities
 {
     public class UserPhoto
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("UserPhotoId")]
         [Key]
-        public int Id { get; set; }
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int UserPhotoId { get; set; }
 
         [Required]
         public string Url  { get; set; }
 
         [Required]
         public DateTime UploadedAt { get; set; }
-
-        // TODO: Add User field
     }
 }

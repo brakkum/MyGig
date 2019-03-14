@@ -18,7 +18,7 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.Ensemble", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("EnsembleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("EnsembleId");
 
@@ -32,7 +32,7 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("EnsembleId");
 
                     b.ToTable("Ensembles");
                 });
@@ -84,7 +84,7 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("UserId");
 
@@ -103,16 +103,15 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("MyGigApi.Entities.UserPhoto", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("UserPhotoId");
+                    b.Property<int>("UserPhotoId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("UploadedAt")
                         .ValueGeneratedOnAdd()
@@ -121,7 +120,7 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Url")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("UserPhotoId");
 
                     b.ToTable("UserPhotos");
                 });

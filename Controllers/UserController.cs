@@ -37,6 +37,19 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Route(RoutePrefix + "/getuser")]
+        [EnableCors("MyGigCors")]
+        public JsonResult GetUser([FromBody] int userId)
+        {
+            User user = _context.Users.Find(userId);
+            if (user == null)
+            {
+                return new JsonResult(Json(new {success = false}));
+            }
+            return new JsonResult(Json(new {success = true, user}));
+        }
+
+        [HttpPost]
         [Route(RoutePrefix + "/newuserphoto")]
         [EnableCors("MyGigCors")]
         public JsonResult NewUserPhoto([FromBody] UserPhoto userPhoto)

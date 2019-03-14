@@ -1,12 +1,18 @@
-using System.Security.Cryptography.X509Certificates;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using MyGigApi.DbInterceptors;
 using MyGigApi.Entities;
 
 namespace MyGigApi.Context
 {
     public class MyGigContext : DbContext
     {
-        public MyGigContext(DbContextOptions<MyGigContext> options) : base(options) {}
+        public MyGigContext(DbContextOptions<MyGigContext> options) : base(options)
+        {
+            var listener = this.GetService<DiagnosticSource>();
+            (listener as DiagnosticListener).SubscribeWithAdapter(new QueryInterceptor());
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserPhoto> UserPhotos { get; set; }
@@ -29,7 +35,6 @@ namespace MyGigApi.Context
             // Event
             modelBuilder.Entity<Event>().Property(e => e.IsPublic).HasColumnType("bit");
             modelBuilder.Entity<Event>().Property(e => e.CreatedOn).HasDefaultValueSql("CURRENT_TIMESTAMP()");
-
         }
     }
 }

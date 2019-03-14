@@ -10,8 +10,10 @@
         <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+        <PackageReference Include="Microsoft.Extensions.DiagnosticAdapter" Version="3.0.0-preview3.19153.1" />
         <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.15" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+        <PackageReference Include="System.Console" Version="4.3.1" />
     </ItemGroup>
 
     <ItemGroup>

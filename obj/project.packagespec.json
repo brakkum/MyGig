@@ -45,6 +45,10 @@
           "target": "Package",
           "version": "[2.2.0, )"
         },
+        "Microsoft.Extensions.DiagnosticAdapter": {
+          "target": "Package",
+          "version": "[3.0.0-preview3.19153.1, )"
+        },
         "Microsoft.NETCore.App": {
           "suppressParent": "All",
           "target": "Package",
@@ -58,6 +62,10 @@
         "Newtonsoft.Json": {
           "target": "Package",
           "version": "[12.0.1, )"
+        },
+        "System.Console": {
+          "target": "Package",
+          "version": "[4.3.1, )"
         }
       },
       "imports": [

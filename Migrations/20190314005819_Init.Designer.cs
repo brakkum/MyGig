@@ -9,8 +9,8 @@ using MyGigApi.Context;
 namespace MyGigApi.Migrations
 {
     [DbContext(typeof(MyGigContext))]
-    [Migration("20190312210303_NotifEnsemble")]
-    partial class NotifEnsemble
+    [Migration("20190314005819_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.Ensemble", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("EnsembleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("EnsembleId");
 
@@ -34,9 +34,36 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("EnsembleId");
 
                     b.ToTable("Ensembles");
+                });
+
+            modelBuilder.Entity("MyGigApi.Entities.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP()");
+
+                    b.Property<DateTime>("DateAndTime");
+
+                    b.Property<short>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("MyGigApi.Entities.Notification", b =>
@@ -59,7 +86,7 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("UserId");
 
@@ -78,16 +105,15 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("MyGigApi.Entities.UserPhoto", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("UserPhotoId");
+                    b.Property<int>("UserPhotoId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("UploadedAt")
                         .ValueGeneratedOnAdd()
@@ -96,7 +122,7 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Url")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("UserPhotoId");
 
                     b.ToTable("UserPhotos");
                 });

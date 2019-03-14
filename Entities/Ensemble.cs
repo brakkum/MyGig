@@ -14,7 +14,7 @@ namespace MyGigApi.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("EnsembleId")]
         [Key]
-        public int Id { get; set; }
+        public int EnsembleId { get; set; }
 
         [Required]
         public string Name { get; set; }

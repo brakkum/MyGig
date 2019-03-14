@@ -2012,10 +2012,10 @@
           "lib/netstandard1.6/Microsoft.Extensions.DependencyModel.dll": {}
         }
       },
-      "Microsoft.Extensions.DiagnosticAdapter/2.2.0": {
+      "Microsoft.Extensions.DiagnosticAdapter/3.0.0-preview3.19153.1": {
         "type": "package",
         "dependencies": {
-          "System.Diagnostics.DiagnosticSource": "4.5.0"
+          "System.Diagnostics.DiagnosticSource": "4.6.0-preview3.19128.7"
         },
         "compile": {
           "lib/netcoreapp2.0/Microsoft.Extensions.DiagnosticAdapter.dll": {}
@@ -3141,11 +3141,11 @@
           "lib/netstandard2.0/System.Configuration.ConfigurationManager.dll": {}
         }
       },
-      "System.Console/4.3.0": {
+      "System.Console/4.3.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.NETCore.Platforms": "1.1.0",
-          "Microsoft.NETCore.Targets": "1.1.0",
+          "Microsoft.NETCore.Targets": "1.1.2",
           "System.IO": "4.3.0",
           "System.Runtime": "4.3.0",
           "System.Text.Encoding": "4.3.0"
@@ -3202,7 +3202,7 @@
           "ref/netstandard1.3/System.Diagnostics.Debug.dll": {}
         }
       },
-      "System.Diagnostics.DiagnosticSource/4.5.0": {
+      "System.Diagnostics.DiagnosticSource/4.6.0-preview3.19128.7": {
         "type": "package",
         "compile": {
           "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.dll": {}
@@ -6343,10 +6343,10 @@
         "microsoft.extensions.dependencymodel.nuspec"
       ]
     },
-    "Microsoft.Extensions.DiagnosticAdapter/2.2.0": {
-      "sha512": "Vy+NDLJHnena9L2l135BDHzWNAkEvi9mb11oVsZC6K5v9ClPxzNvplV7qJstpK9/Rdpulcz7E7yTamHLU8zMtg==",
+    "Microsoft.Extensions.DiagnosticAdapter/3.0.0-preview3.19153.1": {
+      "sha512": "Pyeub35suiM+9J0QfauNdnLS4XMuepk7x7FAeklHLLozG8F+W75hvqS32Yeq412n3hdVQysDA1E2EeHeePpbBw==",
       "type": "package",
-      "path": "microsoft.extensions.diagnosticadapter/2.2.0",
+      "path": "microsoft.extensions.diagnosticadapter/3.0.0-preview3.19153.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -6356,7 +6356,7 @@
         "lib/netcoreapp2.0/Microsoft.Extensions.DiagnosticAdapter.xml",
         "lib/netstandard2.0/Microsoft.Extensions.DiagnosticAdapter.dll",
         "lib/netstandard2.0/Microsoft.Extensions.DiagnosticAdapter.xml",
-        "microsoft.extensions.diagnosticadapter.2.2.0.nupkg.sha512",
+        "microsoft.extensions.diagnosticadapter.3.0.0-preview3.19153.1.nupkg.sha512",
         "microsoft.extensions.diagnosticadapter.nuspec"
       ]
     },
@@ -8253,12 +8253,13 @@
         "version.txt"
       ]
     },
-    "System.Console/4.3.0": {
-      "sha512": "DHDrIxiqk1h03m6khKWV2X8p/uvN79rgSqpilL6uzpmSfxfU5ng8VcPtW4qsDsQDHiTv6IPV9TmD5M/vElPNLg==",
+    "System.Console/4.3.1": {
+      "sha512": "9UmbU3wMBfG9wuRD+lDSbl9p7ljvQWwqSBPzOY4h2eQi0js4oHFbi/axJy0EhZxpaQOfMyNy+o358/IJRTJ4Aw==",
       "type": "package",
-      "path": "system.console/4.3.0",
+      "path": "system.console/4.3.1",
       "files": [
         ".nupkg.metadata",
+        ".signature.p7s",
         "ThirdPartyNotices.txt",
         "dotnet_library_license.txt",
         "lib/MonoAndroid10/_._",
@@ -8286,7 +8287,7 @@
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._",
-        "system.console.4.3.0.nupkg.sha512",
+        "system.console.4.3.1.nupkg.sha512",
         "system.console.nuspec"
       ]
     },
@@ -8490,10 +8491,10 @@
         "system.diagnostics.debug.nuspec"
       ]
     },
-    "System.Diagnostics.DiagnosticSource/4.5.0": {
-      "sha512": "UumL3CJklk5WyEt0eImPmjeuyY1JgJ7Thmg2hAeZGKCv+9iuuAsoc2wcXjypdo3J8VNEmVCH2Bgn/kIw8NI2bA==",
+    "System.Diagnostics.DiagnosticSource/4.6.0-preview3.19128.7": {
+      "sha512": "EjUCJNI1i2DjmFzwU9DalwWwAwrmkU8PSQmXOy86ZsyWQ1IWBZ5ULYt+RdCflZxJx4Wak78cIZGmw6Ih0uhVXw==",
       "type": "package",
-      "path": "system.diagnostics.diagnosticsource/4.5.0",
+      "path": "system.diagnostics.diagnosticsource/4.6.0-preview3.19128.7",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -8509,7 +8510,7 @@
         "lib/netstandard1.3/System.Diagnostics.DiagnosticSource.xml",
         "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.dll",
         "lib/portable-net45+win8+wpa81/System.Diagnostics.DiagnosticSource.xml",
-        "system.diagnostics.diagnosticsource.4.5.0.nupkg.sha512",
+        "system.diagnostics.diagnosticsource.4.6.0-preview3.19128.7.nupkg.sha512",
         "system.diagnostics.diagnosticsource.nuspec",
         "useSharedDesignerContext.txt",
         "version.txt"
@@ -12290,9 +12291,11 @@
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Cors >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
+      "Microsoft.Extensions.DiagnosticAdapter >= 3.0.0-preview3.19153.1",
       "Microsoft.NETCore.App >= 2.2.0",
       "MySql.Data.EntityFrameworkCore >= 8.0.15",
-      "Newtonsoft.Json >= 12.0.1"
+      "Newtonsoft.Json >= 12.0.1",
+      "System.Console >= 4.3.1"
     ]
   },
   "packageFolders": {
@@ -12353,6 +12356,10 @@
             "target": "Package",
             "version": "[2.2.0, )"
           },
+          "Microsoft.Extensions.DiagnosticAdapter": {
+            "target": "Package",
+            "version": "[3.0.0-preview3.19153.1, )"
+          },
           "Microsoft.NETCore.App": {
             "suppressParent": "All",
             "target": "Package",
@@ -12366,6 +12373,10 @@
           "Newtonsoft.Json": {
             "target": "Package",
             "version": "[12.0.1, )"
+          },
+          "System.Console": {
+            "target": "Package",
+            "version": "[4.3.1, )"
           }
         },
         "imports": [
@@ -12375,5 +12386,17 @@
         "warn": true
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1608",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package version outside of dependency constraint: Microsoft.AspNetCore.App 2.2.0 requires Microsoft.Extensions.DiagnosticAdapter (>= 2.2.0 && < 2.3.0) but version Microsoft.Extensions.DiagnosticAdapter 3.0.0-preview3.19153.1 was resolved.",
+      "libraryId": "Microsoft.Extensions.DiagnosticAdapter",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v2.2"
+      ]
+    }
+  ]
 }
