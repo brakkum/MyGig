@@ -103,9 +103,7 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.Property<int?>("UserPhotoId")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(null);
+                    b.Property<int?>("UserPhotoId");
 
                     b.HasKey("UserId");
 
@@ -126,7 +124,11 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Url")
                         .IsRequired();
 
+                    b.Property<int>("UserId");
+
                     b.HasKey("UserPhotoId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserPhotos");
                 });
@@ -136,6 +138,14 @@ namespace MyGigApi.Migrations
                     b.HasOne("MyGigApi.Entities.UserPhoto", "UserPhoto")
                         .WithMany()
                         .HasForeignKey("UserPhotoId");
+                });
+
+            modelBuilder.Entity("MyGigApi.Entities.UserPhoto", b =>
+                {
+                    b.HasOne("MyGigApi.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

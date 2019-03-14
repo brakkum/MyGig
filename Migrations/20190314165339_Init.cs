@@ -53,20 +53,6 @@ namespace MyGigApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserPhotos",
-                columns: table => new
-                {
-                    UserPhotoId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    Url = table.Column<string>(nullable: false),
-                    UploadedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserPhotos", x => x.UserPhotoId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -82,22 +68,54 @@ namespace MyGigApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Users_UserPhotos_UserPhotoId",
-                        column: x => x.UserPhotoId,
-                        principalTable: "UserPhotos",
-                        principalColumn: "UserPhotoId",
-                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "UserPhotos",
+                columns: table => new
+                {
+                    UserPhotoId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    Url = table.Column<string>(nullable: false),
+                    UploadedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserPhotos", x => x.UserPhotoId);
+                    table.ForeignKey(
+                        name: "FK_UserPhotos_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserPhotos_UserId",
+                table: "UserPhotos",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_UserPhotoId",
                 table: "Users",
                 column: "UserPhotoId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Users_UserPhotos_UserPhotoId",
+                table: "Users",
+                column: "UserPhotoId",
+                principalTable: "UserPhotos",
+                principalColumn: "UserPhotoId",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_UserPhotos_Users_UserId",
+                table: "UserPhotos");
+
             migrationBuilder.DropTable(
                 name: "Ensembles");
 

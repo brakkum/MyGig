@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyGigApi.Context;
+using Newtonsoft.Json;
 
 namespace MyGigApi
 {
@@ -35,7 +36,12 @@ namespace MyGigApi
                 options.UseMySQL(connection)
             );
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+                .AddJsonOptions(options => {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                }
+            );
 
             services.AddSpaStaticFiles(configuration =>
             {

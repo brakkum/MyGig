@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyGigApi.Context;
 using MyGigApi.Entities;
+using Newtonsoft.Json.Linq;
 
 namespace MyGigApi.Controllers
 {
@@ -42,9 +43,9 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Route(RoutePrefix + "/getuser")]
         [EnableCors("MyGigCors")]
-        public JsonResult GetUser([FromBody] dynamic body)
+        public JsonResult GetUser([FromBody] JObject body)
         {
-            int userId = body.UserId;
+            int userId = (int)body["UserId"];
 
             User user = _context.Users
                 .Include(u => u.UserPhoto)
@@ -62,6 +63,7 @@ namespace MyGigApi.Controllers
         [EnableCors("MyGigCors")]
         public JsonResult NewUserPhoto([FromBody] UserPhoto userPhoto)
         {
+            // TODO: Update User Entity with UserPhotoId
             if (ModelState.IsValid)
             {
                 _context.UserPhotos.Add(userPhoto);

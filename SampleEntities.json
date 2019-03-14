@@ -1,0 +1,13 @@
+{
+    "User": {
+        "FirstName": "d",
+        "LastName": "b",
+        "Email": "e@e.e",
+        "Password": "p",
+        "PasswordConfirm": "p"
+    },
+    "UserPhoto": {
+        "Url": "url",
+        "UserId": 1
+    }
+}
