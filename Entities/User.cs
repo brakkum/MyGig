@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MyGigApi.Entities
 {
@@ -55,6 +56,11 @@ namespace MyGigApi.Entities
 
         public ICollection<EnsembleModerator> EnsemblesModerated { get; set; }
 
-        public ICollection<Connection> Connections { get; set; }
+        private ICollection<Connection> ConPoolA { get; set; }
+
+        private ICollection<Connection> ConPoolB { get; set; }
+
+        [NotMapped]
+        public IEnumerable<Connection> Connections => ConPoolA.Concat(ConPoolB).Distinct();
     }
 }

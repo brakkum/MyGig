@@ -6,16 +6,18 @@ namespace MyGigApi.Entities
 {
     public class Connection
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ConnectionId { get; set; }
+
         [Required]
         public int UserIdA { get; set; }
 
-        [ForeignKey("UserIdA")]
         public User UserA { get; set; }
 
         [Required]
         public int UserIdB { get; set; }
 
-        [ForeignKey("UserIdB")]
         public User UserB { get; set; }
 
         [Required]
