@@ -1,5 +1,7 @@
+using System.Linq;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyGigApi.Context;
 using MyGigApi.Entities;
 
@@ -41,7 +43,9 @@ namespace MyGigApi.Controllers
         [EnableCors("MyGigCors")]
         public JsonResult GetUser([FromBody] int userId)
         {
-            User user = _context.Users.Find(userId);
+            User user = _context.Users
+                .Include(u => u.UserPhoto)
+                .Single(u => u.UserId == userId);
             if (user == null)
             {
                 return new JsonResult(Json(new {success = false}));
