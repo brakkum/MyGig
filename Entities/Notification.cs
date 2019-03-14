@@ -7,15 +7,17 @@ namespace MyGigApi.Entities
     {
         [Required]
         [MaxLength(100)]
-        [Key]
         public string Url { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+
+        public User User { get; set; }
 
         [Required]
         public string DisplayMessage { get; set; }
 
         [Required]
         public DateTime Timestamp { get; set; }
-
-        // TODO: add User field as key
     }
 }

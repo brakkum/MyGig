@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,9 +11,9 @@ namespace MyGigApi.Entities
             IsActive = true;
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("UserId")]
         [Key]
+        [Column("UserId")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
 
         [Required] public string FirstName { get; set; }
@@ -45,5 +46,15 @@ namespace MyGigApi.Entities
 
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
+
+        public ICollection<Notification> Notifications { get; set; }
+
+        public ICollection<EnsembleMember> Ensembles { get; set; }
+
+        public ICollection<EventModerator> EventsModerated { get; set; }
+
+        public ICollection<EnsembleModerator> EnsemblesModerated { get; set; }
+
+        public ICollection<Connection> Connections { get; set; }
     }
 }

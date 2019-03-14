@@ -1,15 +1,17 @@
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace MyGigApi.Entities
 {
     public class Event
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Required]
         [Key]
+        [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -29,7 +31,20 @@ namespace MyGigApi.Entities
         [Required]
         public DateTime CreatedOn { get; set; }
 
-        // TODO: Created by User
-        // TODO: Add Groups involved
+        [Required]
+        public int CreatedByUserId { get; set; }
+
+        [ForeignKey("CreatedByUserId")]
+        public User CreatedByUser { get; set; }
+
+        public ICollection<Booking> Ensembles { get; set; }
+
+        public ICollection<PublicEventComment> PublicEventComments { get; set; }
+
+        public ICollection<PrivateEventComment> PrivateEventComments { get; set; }
+
+        public ICollection<EventSetlist> EventSetlists { get; set; }
+
+        public ICollection<EventModerator> Moderators { get; set; }
     }
 }

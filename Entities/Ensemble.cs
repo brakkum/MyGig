@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,9 +12,9 @@ namespace MyGigApi.Entities
             IsActive = true;
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Column("EnsembleId")]
         [Key]
+        [Column("EnsembleId")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EnsembleId { get; set; }
 
         [Required]
@@ -25,6 +26,10 @@ namespace MyGigApi.Entities
         [Required]
         public DateTime CreatedOn { get; set; }
 
-        // TODO: Add Users field for members
+        public ICollection<EnsembleMember> Members { get; set; }
+
+        public ICollection<EnsembleModerator> Moderators { get; set; }
+
+        public ICollection<Booking> Bookings { get; set; }
     }
 }

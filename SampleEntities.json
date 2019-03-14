@@ -7,7 +7,7 @@
         "PasswordConfirm": "p"
     },
     "UserPhoto": {
-        "Url": "url",
+        "Url": "url@url.com",
         "UserId": 1
     }
 }
