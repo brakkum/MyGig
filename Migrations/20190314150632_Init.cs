@@ -76,12 +76,24 @@ namespace MyGigApi.Migrations
                     LastName = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    IsActive = table.Column<short>(type: "bit", nullable: false)
+                    IsActive = table.Column<short>(type: "bit", nullable: false),
+                    UserPhotoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Users_UserPhotos_UserPhotoId",
+                        column: x => x.UserPhotoId,
+                        principalTable: "UserPhotos",
+                        principalColumn: "UserPhotoId",
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_UserPhotoId",
+                table: "Users",
+                column: "UserPhotoId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -96,10 +108,10 @@ namespace MyGigApi.Migrations
                 name: "Notifications");
 
             migrationBuilder.DropTable(
-                name: "UserPhotos");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "UserPhotos");
         }
     }
 }

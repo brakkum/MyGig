@@ -103,7 +103,9 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.Property<int>("UserPhotoId");
+                    b.Property<int?>("UserPhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(null);
 
                     b.HasKey("UserId");
 
@@ -133,8 +135,7 @@ namespace MyGigApi.Migrations
                 {
                     b.HasOne("MyGigApi.Entities.UserPhoto", "UserPhoto")
                         .WithMany()
-                        .HasForeignKey("UserPhotoId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserPhotoId");
                 });
 #pragma warning restore 612, 618
         }

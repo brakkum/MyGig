@@ -9,8 +9,8 @@ using MyGigApi.Context;
 namespace MyGigApi.Migrations
 {
     [DbContext(typeof(MyGigContext))]
-    [Migration("20190314031630_PhotoKey")]
-    partial class PhotoKey
+    [Migration("20190314150632_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -105,7 +105,9 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
-                    b.Property<int>("UserPhotoId");
+                    b.Property<int?>("UserPhotoId")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(null);
 
                     b.HasKey("UserId");
 
@@ -135,8 +137,7 @@ namespace MyGigApi.Migrations
                 {
                     b.HasOne("MyGigApi.Entities.UserPhoto", "UserPhoto")
                         .WithMany()
-                        .HasForeignKey("UserPhotoId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserPhotoId");
                 });
 #pragma warning restore 612, 618
         }

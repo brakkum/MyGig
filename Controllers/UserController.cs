@@ -25,30 +25,34 @@ namespace MyGigApi.Controllers
             // Main sign up point for new users
             // TODO: implement JWT stuff.
 
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(Json(new {success = false, ModelState.Keys}));
+            }
             if (!BCrypt.Net.BCrypt.Verify(user.PasswordConfirm, user.Password))
             {
-                ModelState.AddModelError("Password", "Password does not match");
+                ModelState.AddModelError("PasswordConfirm", "Password does not match");
+                return new JsonResult(Json(new {success = false, ModelState.Keys}));
             }
-            if (ModelState.IsValid)
-            {
-                _context.Users.Add(user);
-                _context.SaveChanges();
-                return new JsonResult(Json(new {success = true, user}));
-            }
-            return new JsonResult(Json(new {success = false, ModelState, user}));
+            _context.Users.Add(user);
+            _context.SaveChanges();
+            return new JsonResult(Json(new {success = true, user}));
         }
 
         [HttpPost]
         [Route(RoutePrefix + "/getuser")]
         [EnableCors("MyGigCors")]
-        public JsonResult GetUser([FromBody] int userId)
+        public JsonResult GetUser([FromBody] dynamic body)
         {
+            int userId = body.UserId;
+
             User user = _context.Users
                 .Include(u => u.UserPhoto)
-                .Single(u => u.UserId == userId);
+                .FirstOrDefault(u => u.UserId == userId);
+
             if (user == null)
             {
-                return new JsonResult(Json(new {success = false}));
+                return new JsonResult(Json(new {success = false, userId}));
             }
             return new JsonResult(Json(new {success = true, user}));
         }

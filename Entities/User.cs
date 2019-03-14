@@ -38,7 +38,7 @@ namespace MyGigApi.Entities
         [Required]
         public bool IsActive { get; set; }
 
-        public int UserPhotoId { get; set; }
+        public int? UserPhotoId { get; set; }
 
         [ForeignKey("UserPhotoId")]
         public UserPhoto UserPhoto { get; set; }
