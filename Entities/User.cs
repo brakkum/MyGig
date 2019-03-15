@@ -30,8 +30,6 @@ namespace MyGigApi.Entities
         private string _password;
 
         [Required]
-        [MinLength(6)]
-        [MaxLength(50)]
         public string Password
         {
             get => _password;
@@ -45,7 +43,6 @@ namespace MyGigApi.Entities
         public string PasswordConfirm { get; set; }
 
         [Required]
-        [MinLength(6)]
         [MaxLength(50)]
         public string Email { get; set; }
 
@@ -68,9 +65,9 @@ namespace MyGigApi.Entities
 
         public ICollection<EnsembleModerator> EnsemblesModerated { get; set; }
 
-        private ICollection<Connection> ConPoolA { get; set; }
+        private ICollection<Connection> ConPoolA { get; set; } = new Connection[] { };
 
-        private ICollection<Connection> ConPoolB { get; set; }
+        private ICollection<Connection> ConPoolB { get; set; } = new Connection[] { };
 
         [NotMapped]
         public IEnumerable<Connection> Connections => ConPoolA.Concat(ConPoolB).Distinct();

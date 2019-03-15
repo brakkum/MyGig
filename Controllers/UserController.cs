@@ -28,12 +28,12 @@ namespace MyGigApi.Controllers
 
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState.Keys}));
+                return new JsonResult(Json(new {success = false, ModelState}));
             }
             if (!BCrypt.Net.BCrypt.Verify(user.PasswordConfirm, user.Password))
             {
                 ModelState.AddModelError("PasswordConfirm", "Password does not match");
-                return new JsonResult(Json(new {success = false, ModelState.Keys}));
+                return new JsonResult(Json(new {success = false, ModelState}));
             }
             _context.Users.Add(user);
             _context.SaveChanges();

@@ -9,5 +9,8 @@
     "UserPhoto": {
         "Url": "url@url.com",
         "UserId": 1
+    },
+    "Ensemble": {
+        "Name": "Test Ensemble"
     }
 }
