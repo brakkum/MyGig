@@ -1,7 +1,7 @@
 import json
 import requests
 
-json_file = open("SampleEntities.json").read()
+json_file = open("RoutesAndValidObjects.json").read()
 data = json.loads(json_file)
 base_url = "http://localhost:5000"
 
