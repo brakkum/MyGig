@@ -96,5 +96,38 @@ namespace MyGigApi.Controllers
             _context.SaveChanges();
             return new JsonResult(Json(new {success = true, connection}));
         }
+
+        [HttpPost]
+        [EnableCors("MyGigCors")]
+        [Route(RoutePrefix + "/confirmconnection")]
+        public JsonResult ConfirmConnection([FromBody] Connection connection)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(Json(new {success = false, ModelState}));
+            }
+
+            var conn = _context.Connections
+                .Find(connection.UserIdRequester, connection.UserIdRecipient);
+            conn.Status = ConnectionStatus.Accepted;
+            _context.SaveChanges();
+            return new JsonResult(Json(new {success = true}));
+        }
+
+        [HttpPost]
+        [EnableCors("MyGigCors")]
+        [Route(RoutePrefix + "/denyconnection")]
+        public JsonResult DenyConnection([FromBody] Connection connection)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(Json(new {success = false, ModelState}));
+            }
+            var conn = _context.Connections
+                .Find(connection.UserIdRequester, connection.UserIdRecipient);
+            conn.Status = ConnectionStatus.Declined;
+            _context.SaveChanges();
+            return new JsonResult(Json(new {success = true}));
+        }
     }
 }

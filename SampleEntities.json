@@ -13,6 +13,13 @@
             "Email": "e2@e.e",
             "Password": "password2",
             "PasswordConfirm": "password2"
+        },
+        {
+            "FirstName": "d3",
+            "LastName": "b3",
+            "Email": "e3@e.e",
+            "Password": "password3",
+            "PasswordConfirm": "password3"
         }
     ],
     "/api/users/newuserphoto": [
@@ -30,6 +37,22 @@
         {
             "UserIdRequester": 1,
             "UserIdRecipient": 2
+        },
+        {
+            "UserIdRequester": 2,
+            "UserIdRecipient": 3
+        }
+    ],
+    "/api/users/confirmconnection": [
+        {
+            "UserIdRequester": 1,
+            "UserIdRecipient": 2
+        }
+    ],
+    "/api/users/denyconnection": [
+        {
+            "UserIdRequester": 2,
+            "UserIdRecipient": 3
         }
     ]
 }
