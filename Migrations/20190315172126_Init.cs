@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MyGigApi.Migrations
@@ -12,9 +13,9 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     EnsembleId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    Name = table.Column<string>(nullable: false),
-                    IsActive = table.Column<short>(type: "bit", nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(maxLength: 500, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
                 },
                 constraints: table =>
@@ -27,7 +28,7 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     SetlistId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     EnsembleId = table.Column<int>(nullable: false)
                 },
@@ -47,12 +48,12 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     SongId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     SetlistPosition = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    YouTubeUrl = table.Column<string>(nullable: true),
-                    PdfUrl = table.Column<string>(nullable: true),
-                    Artist = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(maxLength: 50, nullable: false),
+                    YouTubeUrl = table.Column<string>(maxLength: 200, nullable: true),
+                    PdfUrl = table.Column<string>(maxLength: 200, nullable: true),
+                    Artist = table.Column<string>(maxLength: 50, nullable: true),
                     SetlistId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -90,7 +91,7 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     EnsembleCommentId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Text = table.Column<string>(maxLength: 500, nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     EnsembleId = table.Column<int>(nullable: false),
@@ -114,7 +115,7 @@ namespace MyGigApi.Migrations
                     UserId = table.Column<int>(nullable: false),
                     EnsembleId = table.Column<int>(nullable: false),
                     JoinedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
-                    IsCurrent = table.Column<short>(type: "bit", nullable: false)
+                    IsCurrent = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -183,7 +184,7 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     PrivateEventCommentId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Text = table.Column<string>(maxLength: 500, nullable: false),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
                     UserId = table.Column<int>(nullable: false),
@@ -199,7 +200,7 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     PublicEventCommentId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Text = table.Column<string>(maxLength: 500, nullable: false),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
                     UserId = table.Column<int>(nullable: false),
@@ -215,9 +216,10 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     SetlistCommentId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     SetlistId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
+                    Text = table.Column<string>(maxLength: 500, nullable: false),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
                 },
                 constraints: table =>
@@ -236,9 +238,10 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     SongCommentId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     SongId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
+                    Text = table.Column<string>(maxLength: 500, nullable: false),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
                 },
                 constraints: table =>
@@ -257,12 +260,12 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    FirstName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    FirstName = table.Column<string>(maxLength: 20, nullable: false),
+                    LastName = table.Column<string>(maxLength: 20, nullable: false),
                     Password = table.Column<string>(nullable: false),
-                    Email = table.Column<string>(nullable: false),
-                    IsActive = table.Column<short>(type: "bit", nullable: false),
+                    Email = table.Column<string>(maxLength: 50, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     UserPhotoId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -274,25 +277,23 @@ namespace MyGigApi.Migrations
                 name: "Connections",
                 columns: table => new
                 {
-                    ConnectionId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    UserIdA = table.Column<int>(nullable: false),
-                    UserIdB = table.Column<int>(nullable: false),
+                    UserIdRequester = table.Column<int>(nullable: false),
+                    UserIdRecipient = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false, defaultValue: 0),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Connections", x => x.ConnectionId);
+                    table.PrimaryKey("PK_Connections", x => new { x.UserIdRequester, x.UserIdRecipient });
                     table.ForeignKey(
-                        name: "FK_Connections_Users_UserIdA",
-                        column: x => x.UserIdA,
+                        name: "FK_Connections_Users_UserIdRecipient",
+                        column: x => x.UserIdRecipient,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Connections_Users_UserIdB",
-                        column: x => x.UserIdB,
+                        name: "FK_Connections_Users_UserIdRequester",
+                        column: x => x.UserIdRequester,
                         principalTable: "Users",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
@@ -303,11 +304,11 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     DateAndTime = table.Column<DateTime>(nullable: false),
                     Location = table.Column<string>(maxLength: 50, nullable: false),
-                    IsPublic = table.Column<short>(type: "bit", nullable: false),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
                     CreatedByUserId = table.Column<int>(nullable: false)
                 },
@@ -328,7 +329,7 @@ namespace MyGigApi.Migrations
                 {
                     Url = table.Column<string>(maxLength: 100, nullable: false),
                     UserId = table.Column<int>(nullable: false),
-                    DisplayMessage = table.Column<string>(nullable: false),
+                    DisplayMessage = table.Column<string>(maxLength: 100, nullable: false),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
                 },
                 constraints: table =>
@@ -347,7 +348,7 @@ namespace MyGigApi.Migrations
                 columns: table => new
                 {
                     UserPhotoId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Url = table.Column<string>(nullable: false),
                     UploadedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
                     UserId = table.Column<int>(nullable: false)
@@ -369,14 +370,9 @@ namespace MyGigApi.Migrations
                 column: "EnsembleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Connections_UserIdA",
+                name: "IX_Connections_UserIdRecipient",
                 table: "Connections",
-                column: "UserIdA");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Connections_UserIdB",
-                table: "Connections",
-                column: "UserIdB");
+                column: "UserIdRecipient");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EnsembleComments_EnsembleId",

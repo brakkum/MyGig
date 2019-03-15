@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -32,8 +33,11 @@ namespace MyGigApi
             );
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<MyGigContext>(options =>
-                options.UseMySQL(connection)
+            services.AddDbContextPool<MyGigContext>(options =>
+                options.UseMySql(connection, mySqlOptions =>
+                    {
+                        mySqlOptions.ServerVersion(new Version(5,5), ServerType.MySql);
+                    })
             );
 
             services.AddMvc()

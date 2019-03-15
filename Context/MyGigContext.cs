@@ -50,6 +50,8 @@ namespace MyGigApi.Context
                 .WithMany(b => b.Bookings);
             // Connection
             modelBuilder.Entity<Connection>()
+                .HasKey(c => new {c.UserIdRequester, c.UserIdRecipient});
+            modelBuilder.Entity<Connection>()
                 .Property(c => c.Timestamp)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             modelBuilder.Entity<Connection>()
@@ -58,11 +60,11 @@ namespace MyGigApi.Context
             modelBuilder.Entity<Connection>()
                 .HasOne(c => c.UserA)
                 .WithMany("ConPoolA")
-                .HasForeignKey(c => c.UserIdA);
+                .HasForeignKey(c => c.UserIdRequester);
             modelBuilder.Entity<Connection>()
                 .HasOne(c => c.UserB)
                 .WithMany("ConPoolB")
-                .HasForeignKey(c => c.UserIdB);
+                .HasForeignKey(c => c.UserIdRecipient);
             // Ensemble
             modelBuilder.Entity<Ensemble>()
                 .Property(e => e.IsActive)

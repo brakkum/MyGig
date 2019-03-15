@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -19,8 +20,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
-        [Route(RoutePrefix + "/newuser")]
         [EnableCors("MyGigCors")]
+        [Route(RoutePrefix + "/newuser")]
         public JsonResult NewUser([FromBody] User user)
         {
             // Main sign up point for new users
@@ -41,8 +42,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
-        [Route(RoutePrefix + "/getuser")]
         [EnableCors("MyGigCors")]
+        [Route(RoutePrefix + "/getuser")]
         public JsonResult GetUser([FromBody] JObject body)
         {
             int userId = (int)body["UserId"];
@@ -59,18 +60,41 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
-        [Route(RoutePrefix + "/newuserphoto")]
         [EnableCors("MyGigCors")]
+        [Route(RoutePrefix + "/newuserphoto")]
         public JsonResult NewUserPhoto([FromBody] UserPhoto userPhoto)
         {
-            // TODO: Update User Entity with UserPhotoId
             if (ModelState.IsValid)
             {
                 _context.UserPhotos.Add(userPhoto);
+                var user = _context.Users.Find(userPhoto.UserId);
+                user.UserPhotoId = userPhoto.UserPhotoId;
                 _context.SaveChanges();
                 return new JsonResult(Json(new {success = true, userPhoto}));
             }
             return new JsonResult(Json(new {success = false, ModelState}));
+        }
+
+        [HttpPost]
+        [EnableCors("MyGigCors")]
+        [Route(RoutePrefix + "/newconnection")]
+        public JsonResult NewConnection([FromBody] Connection connection)
+        {
+            var alreadyRequested = _context.Connections
+                .Any(c => c.UserIdRecipient == connection.UserIdRequester &&
+                          c.UserIdRequester == connection.UserIdRecipient);
+            if (alreadyRequested)
+            {
+                ModelState.AddModelError("Key", "Request exists from opposite party");
+            }
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(Json(new {success = false, connection, ModelState}));
+            }
+
+            _context.Connections.Add(connection);
+            _context.SaveChanges();
+            return new JsonResult(Json(new {success = true, connection}));
         }
     }
 }

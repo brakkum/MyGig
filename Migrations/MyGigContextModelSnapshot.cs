@@ -14,7 +14,8 @@ namespace MyGigApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
+                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("MyGigApi.Entities.Booking", b =>
                 {
@@ -35,8 +36,9 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.Connection", b =>
                 {
-                    b.Property<int>("ConnectionId")
-                        .ValueGeneratedOnAdd();
+                    b.Property<int>("UserIdRequester");
+
+                    b.Property<int>("UserIdRecipient");
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
@@ -46,15 +48,9 @@ namespace MyGigApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
-                    b.Property<int>("UserIdA");
+                    b.HasKey("UserIdRequester", "UserIdRecipient");
 
-                    b.Property<int>("UserIdB");
-
-                    b.HasKey("ConnectionId");
-
-                    b.HasIndex("UserIdA");
-
-                    b.HasIndex("UserIdB");
+                    b.HasIndex("UserIdRecipient");
 
                     b.ToTable("Connections");
                 });
@@ -69,7 +65,7 @@ namespace MyGigApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
-                    b.Property<short>("IsActive")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -113,7 +109,7 @@ namespace MyGigApi.Migrations
 
                     b.Property<int>("EnsembleId");
 
-                    b.Property<short>("IsCurrent")
+                    b.Property<bool>("IsCurrent")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("JoinedOn")
@@ -157,7 +153,7 @@ namespace MyGigApi.Migrations
 
                     b.Property<DateTime>("DateAndTime");
 
-                    b.Property<short>("IsPublic")
+                    b.Property<bool>("IsPublic")
                         .HasColumnType("bit");
 
                     b.Property<string>("Location")
@@ -392,7 +388,7 @@ namespace MyGigApi.Migrations
                         .IsRequired()
                         .HasMaxLength(20);
 
-                    b.Property<short>("IsActive")
+                    b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
@@ -447,14 +443,14 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.Connection", b =>
                 {
-                    b.HasOne("MyGigApi.Entities.User", "UserA")
-                        .WithMany("ConPoolA")
-                        .HasForeignKey("UserIdA")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("MyGigApi.Entities.User", "UserB")
                         .WithMany("ConPoolB")
-                        .HasForeignKey("UserIdB")
+                        .HasForeignKey("UserIdRecipient")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyGigApi.Entities.User", "UserA")
+                        .WithMany("ConPoolA")
+                        .HasForeignKey("UserIdRequester")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

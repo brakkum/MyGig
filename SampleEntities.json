@@ -1,16 +1,35 @@
 {
-    "User": {
-        "FirstName": "d",
-        "LastName": "b",
-        "Email": "e@e.e",
-        "Password": "p",
-        "PasswordConfirm": "p"
-    },
-    "UserPhoto": {
-        "Url": "url@url.com",
-        "UserId": 1
-    },
-    "Ensemble": {
-        "Name": "Test Ensemble"
-    }
+    "/api/users/newuser": [
+        {
+            "FirstName": "d",
+            "LastName": "b",
+            "Email": "e@e.e",
+            "Password": "password",
+            "PasswordConfirm": "password"
+        },
+        {
+            "FirstName": "d2",
+            "LastName": "b2",
+            "Email": "e2@e.e",
+            "Password": "password2",
+            "PasswordConfirm": "password2"
+        }
+    ],
+    "/api/users/newuserphoto": [
+        {
+            "Url": "url@url.com",
+            "UserId": 1
+        }
+    ],
+    "/api/ensembles/newensemble": [
+        {
+            "Name": "Test Ensemble"
+        }
+    ],
+    "/api/users/newconnection": [
+        {
+            "UserIdRequester": 1,
+            "UserIdRecipient": 2
+        }
+    ]
 }
