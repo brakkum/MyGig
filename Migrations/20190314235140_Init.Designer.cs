@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyGigApi.Context;
 
 namespace MyGigApi.Migrations
 {
     [DbContext(typeof(MyGigContext))]
-    partial class MyGigContextModelSnapshot : ModelSnapshot
+    [Migration("20190314235140_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,8 +75,7 @@ namespace MyGigApi.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(500);
+                        .IsRequired();
 
                     b.HasKey("EnsembleId");
 
@@ -215,8 +216,7 @@ namespace MyGigApi.Migrations
                         .HasMaxLength(100);
 
                     b.Property<string>("DisplayMessage")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                        .IsRequired();
 
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
@@ -304,10 +304,6 @@ namespace MyGigApi.Migrations
 
                     b.Property<int>("SetlistId");
 
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(500);
-
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");
@@ -328,22 +324,18 @@ namespace MyGigApi.Migrations
                     b.Property<int>("SongId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Artist")
-                        .HasMaxLength(50);
+                    b.Property<string>("Artist");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                        .IsRequired();
 
-                    b.Property<string>("PdfUrl")
-                        .HasMaxLength(200);
+                    b.Property<string>("PdfUrl");
 
                     b.Property<int>("SetlistId");
 
                     b.Property<int>("SetlistPosition");
 
-                    b.Property<string>("YouTubeUrl")
-                        .HasMaxLength(200);
+                    b.Property<string>("YouTubeUrl");
 
                     b.HasKey("SongId");
 
@@ -358,10 +350,6 @@ namespace MyGigApi.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("SongId");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(500);
 
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
@@ -385,23 +373,19 @@ namespace MyGigApi.Migrations
                         .HasColumnName("UserId");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                        .IsRequired();
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(20);
+                        .IsRequired();
 
                     b.Property<short>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(20);
+                        .IsRequired();
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(50);
+                        .IsRequired();
 
                     b.Property<int?>("UserPhotoId");
 

@@ -18,6 +18,8 @@ namespace MyGigApi.Entities
         public int EnsembleId { get; set; }
 
         [Required]
+        [MinLength(1)]
+        [MaxLength(500)]
         public string Name { get; set; }
 
         [Required]

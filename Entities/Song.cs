@@ -16,12 +16,20 @@ namespace MyGigApi.Entities
         public int SetlistPosition { get; set; }
 
         [Required]
+        [MinLength(1)]
+        [MaxLength(50)]
         public string Name { get; set; }
 
+        [MinLength(1)]
+        [MaxLength(200)]
         public string YouTubeUrl { get; set; }
 
+        [MinLength(1)]
+        [MaxLength(200)]
         public string PdfUrl { get; set; }
 
+        [MinLength(1)]
+        [MaxLength(50)]
         public string Artist { get; set; }
 
         public ICollection<SongComment> SongComments { get; set; }

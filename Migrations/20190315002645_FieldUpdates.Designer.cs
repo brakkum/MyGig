@@ -9,8 +9,8 @@ using MyGigApi.Context;
 namespace MyGigApi.Migrations
 {
     [DbContext(typeof(MyGigContext))]
-    [Migration("20190314233022_Init")]
-    partial class Init
+    [Migration("20190315002645_FieldUpdates")]
+    partial class FieldUpdates
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,7 +75,8 @@ namespace MyGigApi.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(500);
 
                     b.HasKey("EnsembleId");
 
@@ -216,7 +217,8 @@ namespace MyGigApi.Migrations
                         .HasMaxLength(100);
 
                     b.Property<string>("DisplayMessage")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(100);
 
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
@@ -299,22 +301,26 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.SetlistComment", b =>
                 {
-                    b.Property<int>("SongCommentId")
+                    b.Property<int>("SetlistCommentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("SetlistId");
+                    b.Property<int>("SetlistId");
 
-                    b.Property<int>("SongId");
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(500);
 
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
-                    b.HasKey("SongCommentId");
+                    b.Property<int>("UserId");
+
+                    b.HasKey("SetlistCommentId");
 
                     b.HasIndex("SetlistId");
 
-                    b.HasIndex("SongId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("SetlistComments");
                 });
@@ -324,18 +330,22 @@ namespace MyGigApi.Migrations
                     b.Property<int>("SongId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Artist");
+                    b.Property<string>("Artist")
+                        .HasMaxLength(50);
 
                     b.Property<string>("Name")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(50);
 
-                    b.Property<string>("PdfUrl");
+                    b.Property<string>("PdfUrl")
+                        .HasMaxLength(200);
 
                     b.Property<int>("SetlistId");
 
                     b.Property<int>("SetlistPosition");
 
-                    b.Property<string>("YouTubeUrl");
+                    b.Property<string>("YouTubeUrl")
+                        .HasMaxLength(200);
 
                     b.HasKey("SongId");
 
@@ -351,13 +361,21 @@ namespace MyGigApi.Migrations
 
                     b.Property<int>("SongId");
 
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(500);
+
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
+                    b.Property<int>("UserId");
+
                     b.HasKey("SongCommentId");
 
                     b.HasIndex("SongId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("SongComments");
                 });
@@ -369,19 +387,23 @@ namespace MyGigApi.Migrations
                         .HasColumnName("UserId");
 
                     b.Property<string>("Email")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("FirstName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<short>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(20);
 
                     b.Property<string>("Password")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<int?>("UserPhotoId");
 
@@ -556,13 +578,14 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.SetlistComment", b =>
                 {
-                    b.HasOne("MyGigApi.Entities.Setlist")
+                    b.HasOne("MyGigApi.Entities.Setlist", "Setlist")
                         .WithMany("SetlistComments")
-                        .HasForeignKey("SetlistId");
+                        .HasForeignKey("SetlistId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyGigApi.Entities.Song", "Song")
+                    b.HasOne("MyGigApi.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("SongId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -579,6 +602,11 @@ namespace MyGigApi.Migrations
                     b.HasOne("MyGigApi.Entities.Song", "Song")
                         .WithMany("SongComments")
                         .HasForeignKey("SongId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyGigApi.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

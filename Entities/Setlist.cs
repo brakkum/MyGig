@@ -12,7 +12,7 @@ namespace MyGigApi.Entities
         public int SetlistId { get; set; }
 
         [Required]
-        [MinLength(5)]
+        [MinLength(1)]
         [MaxLength(50)]
         public string Name { get; set; }
 

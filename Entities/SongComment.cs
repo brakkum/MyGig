@@ -17,6 +17,17 @@ namespace MyGigApi.Entities
         [ForeignKey("SongId")]
         public Song Song { get; set; }
 
+        [Required]
+        public int UserId { get; set; }
+
+        [ForeignKey("UserId")]
+        public User User { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(500)]
+        public string Text { get; set; }
+
         public DateTime Timestamp { get; set; }
     }
 }

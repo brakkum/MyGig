@@ -67,53 +67,6 @@ namespace MyGigApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SetlistComments",
-                columns: table => new
-                {
-                    SongCommentId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    SongId = table.Column<int>(nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
-                    SetlistId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SetlistComments", x => x.SongCommentId);
-                    table.ForeignKey(
-                        name: "FK_SetlistComments_Setlists_SetlistId",
-                        column: x => x.SetlistId,
-                        principalTable: "Setlists",
-                        principalColumn: "SetlistId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SetlistComments_Songs_SongId",
-                        column: x => x.SongId,
-                        principalTable: "Songs",
-                        principalColumn: "SongId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SongComments",
-                columns: table => new
-                {
-                    SongCommentId = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:AutoIncrement", true),
-                    SongId = table.Column<int>(nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SongComments", x => x.SongCommentId);
-                    table.ForeignKey(
-                        name: "FK_SongComments_Songs_SongId",
-                        column: x => x.SongId,
-                        principalTable: "Songs",
-                        principalColumn: "SongId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Bookings",
                 columns: table => new
                 {
@@ -255,6 +208,48 @@ namespace MyGigApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PublicEventComments", x => x.PublicEventCommentId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SetlistComments",
+                columns: table => new
+                {
+                    SetlistCommentId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    SetlistId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SetlistComments", x => x.SetlistCommentId);
+                    table.ForeignKey(
+                        name: "FK_SetlistComments_Setlists_SetlistId",
+                        column: x => x.SetlistId,
+                        principalTable: "Setlists",
+                        principalColumn: "SetlistId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SongComments",
+                columns: table => new
+                {
+                    SongCommentId = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    SongId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
+                    Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SongComments", x => x.SongCommentId);
+                    table.ForeignKey(
+                        name: "FK_SongComments_Songs_SongId",
+                        column: x => x.SongId,
+                        principalTable: "Songs",
+                        principalColumn: "SongId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -444,9 +439,9 @@ namespace MyGigApi.Migrations
                 column: "SetlistId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SetlistComments_SongId",
+                name: "IX_SetlistComments_UserId",
                 table: "SetlistComments",
-                column: "SongId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Setlists_EnsembleId",
@@ -457,6 +452,11 @@ namespace MyGigApi.Migrations
                 name: "IX_SongComments_SongId",
                 table: "SongComments",
                 column: "SongId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SongComments_UserId",
+                table: "SongComments",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Songs_SetlistId",
@@ -556,6 +556,22 @@ namespace MyGigApi.Migrations
             migrationBuilder.AddForeignKey(
                 name: "FK_PublicEventComments_Users_UserId",
                 table: "PublicEventComments",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "UserId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_SetlistComments_Users_UserId",
+                table: "SetlistComments",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "UserId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_SongComments_Users_UserId",
+                table: "SongComments",
                 column: "UserId",
                 principalTable: "Users",
                 principalColumn: "UserId",

@@ -9,13 +9,23 @@ namespace MyGigApi.Entities
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int SongCommentId { get; set; }
+        public int SetlistCommentId { get; set; }
+
+        public int SetlistId { get; set; }
+
+        [ForeignKey("SetlistId")]
+        public Setlist Setlist { get; set; }
 
         [Required]
-        public int SongId { get; set; }
+        public int UserId { get; set; }
 
-        [ForeignKey("SongId")]
-        public Song Song { get; set; }
+        [ForeignKey("UserId")]
+        public User User { get; set; }
+
+        [Required]
+        [MinLength(1)]
+        [MaxLength(500)]
+        public string Text { get; set; }
 
         public DateTime Timestamp { get; set; }
     }

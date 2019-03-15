@@ -15,6 +15,7 @@ namespace MyGigApi.Entities
         public User User { get; set; }
 
         [Required]
+        [MaxLength(100)]
         public string DisplayMessage { get; set; }
 
         [Required]

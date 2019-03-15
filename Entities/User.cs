@@ -17,13 +17,21 @@ namespace MyGigApi.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
 
-        [Required] public string FirstName { get; set; }
+        [Required]
+        [MinLength(1)]
+        [MaxLength(20)]
+        public string FirstName { get; set; }
 
-        [Required] public string LastName { get; set; }
+        [Required]
+        [MinLength(1)]
+        [MaxLength(20)]
+        public string LastName { get; set; }
 
         private string _password;
 
         [Required]
+        [MinLength(6)]
+        [MaxLength(50)]
         public string Password
         {
             get => _password;
@@ -32,9 +40,13 @@ namespace MyGigApi.Entities
 
         [Required]
         [NotMapped]
+        [MinLength(6)]
+        [MaxLength(50)]
         public string PasswordConfirm { get; set; }
 
         [Required]
+        [MinLength(6)]
+        [MaxLength(50)]
         public string Email { get; set; }
 
         [Required]
