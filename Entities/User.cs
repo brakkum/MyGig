@@ -85,7 +85,7 @@ namespace MyGigApi.Entities
         {
             get
             {
-                return ConnectionsByUser?.Where(c => c.Status == ConnectionStatus.Pending);
+                return ConnectionsByOther?.Where(c => c.Status == ConnectionStatus.Pending);
             }
         }
     }
