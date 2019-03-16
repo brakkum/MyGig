@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -65,11 +66,27 @@ namespace MyGigApi.Entities
 
         public ICollection<EnsembleModerator> EnsemblesModerated { get; set; }
 
-        private ICollection<Connection> ConPoolA { get; set; } = new Connection[] { };
+        public ICollection<Connection> ConnectionsByUser { get; set; }
 
-        private ICollection<Connection> ConPoolB { get; set; } = new Connection[] { };
+        public ICollection<Connection> ConnectionsByOther { get; set; }
 
         [NotMapped]
-        public IEnumerable<Connection> Connections => ConPoolA.Concat(ConPoolB).Distinct();
+        public IEnumerable<Connection> Connections
+        {
+            get
+            {
+                return ConnectionsByUser?.Concat(ConnectionsByOther)
+                    .Where(c => c.Status == ConnectionStatus.Accepted);
+            }
+        }
+
+        [NotMapped]
+        public IEnumerable<Connection> PendingConnections
+        {
+            get
+            {
+                return ConnectionsByUser?.Where(c => c.Status == ConnectionStatus.Pending);
+            }
+        }
     }
 }

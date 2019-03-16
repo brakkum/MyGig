@@ -13,12 +13,14 @@ namespace MyGigApi.Entities
         [Required]
         public int UserIdRequester { get; set; }
 
-        public User UserA { get; set; }
+        [ForeignKey("UserIdRequester")]
+        public User UserRequester { get; set; }
 
         [Required]
         public int UserIdRecipient { get; set; }
 
-        public User UserB { get; set; }
+        [ForeignKey("UserIdRecipient")]
+        public User UserRecipient { get; set; }
 
         [Required]
         public ConnectionStatus Status { get; set; }

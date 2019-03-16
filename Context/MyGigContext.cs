@@ -57,14 +57,6 @@ namespace MyGigApi.Context
             modelBuilder.Entity<Connection>()
                 .Property(c => c.Status)
                 .HasDefaultValue(ConnectionStatus.Pending);
-            modelBuilder.Entity<Connection>()
-                .HasOne(c => c.UserA)
-                .WithMany("ConPoolA")
-                .HasForeignKey(c => c.UserIdRequester);
-            modelBuilder.Entity<Connection>()
-                .HasOne(c => c.UserB)
-                .WithMany("ConPoolB")
-                .HasForeignKey(c => c.UserIdRecipient);
             // Ensemble
             modelBuilder.Entity<Ensemble>()
                 .Property(e => e.IsActive)
@@ -165,6 +157,12 @@ namespace MyGigApi.Context
             modelBuilder.Entity<User>()
                 .Property(u => u.IsActive)
                 .HasColumnType("bit");
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.ConnectionsByUser)
+                .WithOne(c => c.UserRequester);
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.ConnectionsByOther)
+                .WithOne(c => c.UserRecipient);
             // UserPhoto
             modelBuilder.Entity<UserPhoto>()
                 .Property(u => u.UploadedAt)

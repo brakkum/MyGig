@@ -27,7 +27,14 @@ namespace MyGigApi.Controllers
             }
 
             _context.Ensembles.Add(ensemble);
-            _context.EnsembleModerators.Add(new EnsembleModerator()
+            // Make ensemble creator Mod
+            _context.EnsembleModerators.Add(new EnsembleModerator
+            {
+                EnsembleId = ensemble.EnsembleId,
+                UserId = 1 // TODO: Change UserId to JWT bearer
+            });
+            // Make ensemble creator Member
+            _context.EnsembleMembers.Add(new EnsembleMember
             {
                 EnsembleId = ensemble.EnsembleId,
                 UserId = 1 // TODO: Change UserId to JWT bearer

@@ -449,13 +449,13 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.Connection", b =>
                 {
-                    b.HasOne("MyGigApi.Entities.User", "UserB")
-                        .WithMany("ConPoolB")
+                    b.HasOne("MyGigApi.Entities.User", "UserRecipient")
+                        .WithMany("ConnectionsByOther")
                         .HasForeignKey("UserIdRecipient")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyGigApi.Entities.User", "UserA")
-                        .WithMany("ConPoolA")
+                    b.HasOne("MyGigApi.Entities.User", "UserRequester")
+                        .WithMany("ConnectionsByUser")
                         .HasForeignKey("UserIdRequester")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

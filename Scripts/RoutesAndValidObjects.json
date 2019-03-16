@@ -20,6 +20,20 @@
             "Email": "e3@e.e",
             "Password": "password3",
             "PasswordConfirm": "password3"
+        },
+        {
+            "FirstName": "d4",
+            "LastName": "b4",
+            "Email": "e4@e.e",
+            "Password": "password4",
+            "PasswordConfirm": "password4"
+        },
+        {
+            "FirstName": "d5",
+            "LastName": "b5",
+            "Email": "e5@e.e",
+            "Password": "password5",
+            "PasswordConfirm": "password5"
         }
     ],
     "/api/users/newuserphoto": [
@@ -40,6 +54,18 @@
         {
             "UserIdRequester": 2,
             "UserIdRecipient": 3
+        },
+        {
+            "UserIdRequester": 4,
+            "UserIdRecipient": 1
+        },
+        {
+            "UserIdRequester": 4,
+            "UserIdRecipient": 2
+        },
+        {
+            "UserIdRequester": 3,
+            "UserIdRecipient": 4
         }
     ],
     "/api/users/confirmconnection": [
@@ -169,6 +195,7 @@
             "Name": "The First Event",
             "DateAndTime": "2019-05-13 19:30:00",
             "IsPublic": true,
+            "Location": "First Avenue, or something.",
             "CreatedByUserId": 1
         }
     ],

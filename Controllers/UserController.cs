@@ -45,10 +45,18 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/getuser")]
         public JsonResult GetUser([FromBody] JObject body)
         {
-            int userId = (int)body["UserId"];
+            var userId = (int)body["UserId"];
 
-            User user = _context.Users
+            var user = _context.Users
                 .Include(u => u.UserPhoto)
+                .Include(u => u.ConnectionsByUser)
+                .Include(u => u.ConnectionsByOther)
+                .Include(u => u.Ensembles)
+                .Include(u => u.EventsModerated)
+                .ThenInclude(em => em.Event)
+                .Include(u => u.EnsemblesModerated)
+                .ThenInclude(em => em.Ensemble)
+                .Include(u => u.Notifications)
                 .FirstOrDefault(u => u.UserId == userId);
 
             if (user == null)
