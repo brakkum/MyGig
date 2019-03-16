@@ -16,15 +16,15 @@ namespace MyGigApi.Entities
         [MaxLength(50)]
         public string Name { get; set; }
 
-         public ICollection<SetlistComment> SetlistComments { get; set; }
+        public ICollection<SetlistComment> SetlistComments { get; set; }
 
-         public ICollection<Song> Songs { get; set; }
+        public ICollection<Song> Songs { get; set; }
 
-         public int EnsembleId { get; set; }
+        public int EnsembleId { get; set; }
 
-         [ForeignKey("EnsembleId")]
-         public Ensemble Ensemble { get; set; }
+        [ForeignKey("EnsembleId")]
+        public Ensemble Ensemble { get; set; }
 
-         public ICollection<EventSetlist> EventSetlists { get; set; }
+        public ICollection<EventSetlist> EventSetlists { get; set; }
     }
 }

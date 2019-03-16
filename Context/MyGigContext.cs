@@ -95,6 +95,9 @@ namespace MyGigApi.Context
             modelBuilder.Entity<EnsembleModerator>()
                 .HasKey(em => new { em.UserId, em.EnsembleId });
             modelBuilder.Entity<EnsembleModerator>()
+                .Property(em => em.IsActive)
+                .HasColumnType("bit");
+            modelBuilder.Entity<EnsembleModerator>()
                 .Property(em => em.AssignedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             modelBuilder.Entity<EnsembleModerator>()
@@ -113,6 +116,9 @@ namespace MyGigApi.Context
             // EventModerator
             modelBuilder.Entity<EventModerator>()
                 .HasKey(em => new { em.UserId, em.EventId });
+            modelBuilder.Entity<EventModerator>()
+                .Property(em => em.IsActive)
+                .HasColumnType("bit");
             modelBuilder.Entity<EventModerator>()
                 .Property(em => em.AssignedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");

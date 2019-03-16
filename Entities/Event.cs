@@ -12,7 +12,7 @@ namespace MyGigApi.Entities
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int EventId { get; set; }
 
         [Required]
         [MinLength(1)]

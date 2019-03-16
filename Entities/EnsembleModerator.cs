@@ -6,6 +6,11 @@ namespace MyGigApi.Entities
 {
     public class EnsembleModerator
     {
+        public EnsembleModerator()
+        {
+            IsActive = true;
+        }
+
         [Required]
         public int EnsembleId { get; set; }
 
@@ -19,5 +24,7 @@ namespace MyGigApi.Entities
         public User User { get; set; }
 
         public DateTime AssignedAt { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

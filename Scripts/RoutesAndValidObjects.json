@@ -28,15 +28,14 @@
             "UserId": 1
         }
     ],
-    "/api/ensembles/newensemble": [
-        {
-            "Name": "Test Ensemble"
-        }
-    ],
     "/api/users/newconnection": [
         {
             "UserIdRequester": 1,
             "UserIdRecipient": 2
+        },
+        {
+            "UserIdRequester": 1,
+            "UserIdRecipient": 3
         },
         {
             "UserIdRequester": 2,
@@ -47,12 +46,166 @@
         {
             "UserIdRequester": 1,
             "UserIdRecipient": 2
-        }
-    ],
-    "/api/users/denyconnection": [
+        },
+        {
+            "UserIdRequester": 1,
+            "UserIdRecipient": 3
+        },
         {
             "UserIdRequester": 2,
             "UserIdRecipient": 3
+        }
+    ],
+    "/api/ensembles/newensemble": [
+        {
+            "Name": "Test Ensemble"
+        }
+    ],
+    "/api/ensembles/adduser": [
+        {
+            "EnsembleId": 1,
+            "UserId": 2
+        },
+        {
+            "EnsembleId": 1,
+            "UserId": 3
+        }
+    ],
+    "/api/ensembles/addcomment": [
+        {
+            "UserId": 1,
+            "EnsembleId": 1,
+            "Text": "A cool thing!"
+        },
+        {
+            "UserId": 2,
+            "EnsembleId": 1,
+            "Text": "Wow! An ensemble!"
+        },
+        {
+            "UserId": 3,
+            "EnsembleId": 1,
+            "Text": "We did it!"
+        }
+    ],
+    "/api/setlists/newsetlist": [
+        {
+            "Name": "My First Setlist",
+            "EnsembleId": 1
+        }
+    ],
+    "/api/setlists/newsong": [
+        {
+            "SetlistId": 1,
+            "SetlistPosition": 1,
+            "Name": "First Song",
+            "YouTubeUrl": "http://youtube.com",
+            "PdfUrl": "http://pdf.com",
+            "Artist": "My Band"
+        },
+        {
+            "SetlistId": 1,
+            "SetlistPosition": 2,
+            "Name": "Second Song",
+            "YouTubeUrl": "http://youtube.com",
+            "PdfUrl": "http://pdf.com",
+            "Artist": "My Band"
+        },
+        {
+            "SetlistId": 1,
+            "SetlistPosition": 3,
+            "Name": "Third Song",
+            "YouTubeUrl": "http://youtube.com",
+            "PdfUrl": "http://pdf.com",
+            "Artist": "My Band"
+        }
+    ],
+    "/api/setlists/newsongcomment": [
+        {
+            "SongId": 1,
+            "UserId": 1,
+            "Text": "I like this song"
+        },
+        {
+            "SongId": 1,
+            "UserId": 2,
+            "Text": "I like this song too!"
+        },
+        {
+            "SongId": 3,
+            "UserId": 3,
+            "Text": "I guess this ones ok."
+        },
+        {
+            "SongId": 2,
+            "UserId": 3,
+            "Text": "This is the best one!"
+        },
+        {
+            "SongId": 3,
+            "UserId": 2,
+            "Text": "I quite enjoy it."
+        }
+    ],
+    "/api/setlists/newsetlistcomment": [
+        {
+            "SetlistId": 1,
+            "UserId": 1,
+            "Text": "What do y'all think?"
+        },
+        {
+            "SetlistId": 1,
+            "UserId": 3,
+            "Text": "Seems alright."
+        },
+        {
+            "SetlistId": 1,
+            "UserId": 2,
+            "Text": "Agreed."
+        }
+    ],
+    "/api/events/newevent": [
+        {
+            "Name": "The First Event",
+            "DateAndTime": "2019-05-13 19:30:00",
+            "IsPublic": true,
+            "CreatedByUserId": 1
+        }
+    ],
+    "/api/events/newbooking": [
+        {
+            "EnsembleId": 1,
+            "EventId": 1
+        }
+    ],
+    "/api/events/newpubliccomment": [
+        {
+            "UserId": 1,
+            "EventId": 1,
+            "Text": "Public comment!"
+        },
+        {
+            "UserId": 2,
+            "EventId": 1,
+            "Text": "Public comment again!"
+        }
+    ],
+    "/api/events/newprivatecomment": [
+        {
+            "UserId": 2,
+            "EventId": 1,
+            "Text": "Private comment!"
+        },
+        {
+            "UserId": 3,
+            "EventId": 1,
+            "Text": "Private comment again!"
+        }
+    ],
+    "/api/events/addsetlist": [
+        {
+            "EventId": 1,
+            "SetlistId": 1
         }
     ]
 }
