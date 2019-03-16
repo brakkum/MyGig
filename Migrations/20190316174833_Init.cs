@@ -134,7 +134,8 @@ namespace MyGigApi.Migrations
                 {
                     EnsembleId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
-                    AssignedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
+                    AssignedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -153,7 +154,8 @@ namespace MyGigApi.Migrations
                 {
                     EventId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
-                    AssignedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
+                    AssignedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -303,7 +305,7 @@ namespace MyGigApi.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    EventId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     DateAndTime = table.Column<DateTime>(nullable: false),
@@ -314,7 +316,7 @@ namespace MyGigApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.PrimaryKey("PK_Events", x => x.EventId);
                     table.ForeignKey(
                         name: "FK_Events_Users_CreatedByUserId",
                         column: x => x.CreatedByUserId,
@@ -474,7 +476,7 @@ namespace MyGigApi.Migrations
                 table: "Bookings",
                 column: "EventId",
                 principalTable: "Events",
-                principalColumn: "Id",
+                principalColumn: "EventId",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -506,7 +508,7 @@ namespace MyGigApi.Migrations
                 table: "EventModerators",
                 column: "EventId",
                 principalTable: "Events",
-                principalColumn: "Id",
+                principalColumn: "EventId",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -522,7 +524,7 @@ namespace MyGigApi.Migrations
                 table: "EventSetlists",
                 column: "EventId",
                 principalTable: "Events",
-                principalColumn: "Id",
+                principalColumn: "EventId",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -530,7 +532,7 @@ namespace MyGigApi.Migrations
                 table: "PrivateEventComments",
                 column: "EventId",
                 principalTable: "Events",
-                principalColumn: "Id",
+                principalColumn: "EventId",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -546,7 +548,7 @@ namespace MyGigApi.Migrations
                 table: "PublicEventComments",
                 column: "EventId",
                 principalTable: "Events",
-                principalColumn: "Id",
+                principalColumn: "EventId",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(

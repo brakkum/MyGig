@@ -133,6 +133,9 @@ namespace MyGigApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("UserId", "EnsembleId");
 
                     b.HasIndex("EnsembleId");
@@ -142,7 +145,7 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.Event", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("EventId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("CreatedByUserId");
@@ -164,7 +167,7 @@ namespace MyGigApi.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.HasKey("Id");
+                    b.HasKey("EventId");
 
                     b.HasIndex("CreatedByUserId");
 
@@ -180,6 +183,9 @@ namespace MyGigApi.Migrations
                     b.Property<DateTime>("AssignedAt")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.HasKey("UserId", "EventId");
 
