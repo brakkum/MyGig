@@ -109,12 +109,13 @@ namespace MyGigApi.Migrations
 
                     b.Property<int>("EnsembleId");
 
-                    b.Property<bool>("IsCurrent")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("JoinedOn")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
 
                     b.HasKey("UserId", "EnsembleId");
 

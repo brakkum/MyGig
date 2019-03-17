@@ -115,7 +115,7 @@ namespace MyGigApi.Migrations
                     UserId = table.Column<int>(nullable: false),
                     EnsembleId = table.Column<int>(nullable: false),
                     JoinedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
-                    IsCurrent = table.Column<bool>(type: "bit", nullable: false)
+                    Status = table.Column<int>(nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {

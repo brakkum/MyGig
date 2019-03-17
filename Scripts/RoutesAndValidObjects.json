@@ -80,6 +80,14 @@
         {
             "UserIdRequester": 2,
             "UserIdRecipient": 3
+        },
+        {
+            "UserIdRequester": 4,
+            "UserIdRecipient": 2
+        },
+        {
+            "UserIdRequester": 4,
+            "UserIdRecipient": 1
         }
     ],
     "/api/ensembles/newensemble": [
@@ -95,6 +103,32 @@
         {
             "EnsembleId": 1,
             "UserId": 3
+        },
+        {
+            "EnsembleId": 1,
+            "UserId": 4
+        }
+    ],
+    "/api/ensembles/addmod": [
+        {
+            "EnsembleId": 1,
+            "UserId": 2
+        }
+    ],
+    "/api/ensembles/confirmmembership": [
+        {
+            "EnsembleId": 1,
+            "UserId": 2
+        },
+        {
+            "EnsembleId": 1,
+            "UserId": 3
+        }
+    ],
+    "/api/ensembles/denymembership": [
+        {
+            "EnsembleId": 1,
+            "UserId": 4
         }
     ],
     "/api/ensembles/addcomment": [

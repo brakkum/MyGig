@@ -37,7 +37,8 @@ namespace MyGigApi.Controllers
             _context.EnsembleMembers.Add(new EnsembleMember
             {
                 EnsembleId = ensemble.EnsembleId,
-                UserId = 1 // TODO: Change UserId to JWT bearer
+                UserId = 1, // TODO: Change UserId to JWT bearer
+                Status = MemberStatus.Active
             });
             _context.SaveChanges();
             return new JsonResult(Json(new {success = true, ensemble}));
@@ -62,6 +63,45 @@ namespace MyGigApi.Controllers
             }
 
             _context.EnsembleMembers.Add(ensembleMember);
+            _context.SaveChanges();
+
+            return new JsonResult(Json(new {success = true, ensembleMember}));
+        }
+
+        [HttpPost]
+        [Route(RoutePrefix + "/confirmmembership")]
+        [EnableCors("MyGigCors")]
+        public JsonResult ConfirmEnsembleMembership([FromBody] EnsembleMember ensembleMember)
+        {
+            ensembleMember.Status = MemberStatus.Active;
+
+            _context.EnsembleMembers.Update(ensembleMember);
+            _context.SaveChanges();
+
+            return new JsonResult(Json(new {success = true, ensembleMember}));
+        }
+
+        [HttpPost]
+        [Route(RoutePrefix + "/denymembership")]
+        [EnableCors("MyGigCors")]
+        public JsonResult DenyEnsembleMembership([FromBody] EnsembleMember ensembleMember)
+        {
+            ensembleMember.Status = MemberStatus.Declined;
+
+            _context.EnsembleMembers.Update(ensembleMember);
+            _context.SaveChanges();
+
+            return new JsonResult(Json(new {success = true, ensembleMember}));
+        }
+
+        [HttpPost]
+        [Route(RoutePrefix + "/inactivatemembership")]
+        [EnableCors("MyGigCors")]
+        public JsonResult InactivateEnsembleMembership([FromBody] EnsembleMember ensembleMember)
+        {
+            ensembleMember.Status = MemberStatus.Inactive;
+
+            _context.EnsembleMembers.Update(ensembleMember);
             _context.SaveChanges();
 
             return new JsonResult(Json(new {success = true, ensembleMember}));

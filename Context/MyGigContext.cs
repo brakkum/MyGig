@@ -70,8 +70,8 @@ namespace MyGigApi.Context
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // EnsembleMember
             modelBuilder.Entity<EnsembleMember>()
-                .Property(em => em.IsCurrent)
-                .HasColumnType("bit");
+                .Property(em => em.Status)
+                .HasDefaultValue(MemberStatus.Pending);
             modelBuilder.Entity<EnsembleMember>()
                 .Property(em => em.JoinedOn)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");

@@ -5,11 +5,6 @@ namespace MyGigApi.Entities
 {
     public class EnsembleMember
     {
-        public EnsembleMember()
-        {
-            IsCurrent = true;
-        }
-
         [Required]
         public int UserId { get; set; }
 
@@ -23,6 +18,14 @@ namespace MyGigApi.Entities
         [Required]
         public DateTime JoinedOn { get; set; }
 
-        public bool IsCurrent { get; set; }
+        public MemberStatus Status { get; set; }
+    }
+
+    public enum MemberStatus
+    {
+        Pending = 0,
+        Active = 1,
+        Declined = 2,
+        Inactive = 3
     }
 }
