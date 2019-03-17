@@ -18,10 +18,10 @@ namespace MyGigApi.Entities
         [Required]
         public DateTime JoinedOn { get; set; }
 
-        public MemberStatus Status { get; set; }
+        public EnsembleMemberStatus Status { get; set; }
     }
 
-    public enum MemberStatus
+    public enum EnsembleMemberStatus
     {
         Pending = 0,
         Active = 1,

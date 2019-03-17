@@ -6,11 +6,6 @@ namespace MyGigApi.Entities
 {
     public class EventModerator
     {
-        public EventModerator()
-        {
-            IsActive = true;
-        }
-
         [Required]
         public int EventId { get; set; }
 
@@ -25,6 +20,14 @@ namespace MyGigApi.Entities
 
         public DateTime AssignedAt { get; set; }
 
-        public bool IsActive { get; set; }
+        public EventModeratorStatus Status { get; set; }
+    }
+
+    public enum EventModeratorStatus
+    {
+        Pending = 0,
+        Active = 1,
+        Declined = 2,
+        Inactive = 3
     }
 }

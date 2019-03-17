@@ -49,6 +49,57 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Route(RoutePrefix + "/acceptmod")]
+        [EnableCors("MyGigCors")]
+        public JsonResult AcceptEventModerator([FromBody] EventModerator eventModerator)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(Json(new {success = false, ModelState}));
+            }
+
+            eventModerator.Status = EventModeratorStatus.Active;
+            _context.EventModerators.Update(eventModerator);
+            _context.SaveChanges();
+
+            return new JsonResult(Json(new {success = true, eventModerator}));
+        }
+
+        [HttpPost]
+        [Route(RoutePrefix + "/denymod")]
+        [EnableCors("MyGigCors")]
+        public JsonResult DenyEventModerator([FromBody] EventModerator eventModerator)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(Json(new {success = false, ModelState}));
+            }
+
+            eventModerator.Status = EventModeratorStatus.Declined;
+            _context.EventModerators.Update(eventModerator);
+            _context.SaveChanges();
+
+            return new JsonResult(Json(new {success = true, eventModerator}));
+        }
+
+        [HttpPost]
+        [Route(RoutePrefix + "/invalidatemod")]
+        [EnableCors("MyGigCors")]
+        public JsonResult InvalidateEventModerator([FromBody] EventModerator eventModerator)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(Json(new {success = false, ModelState}));
+            }
+
+            eventModerator.Status = EventModeratorStatus.Inactive;
+            _context.EventModerators.Update(eventModerator);
+            _context.SaveChanges();
+
+            return new JsonResult(Json(new {success = true, eventModerator}));
+        }
+
+        [HttpPost]
         [Route(RoutePrefix + "/newpubliccomment")]
         [EnableCors("MyGigCors")]
         public JsonResult NewPublicEventComment([FromBody] PublicEventComment publicEventComment)

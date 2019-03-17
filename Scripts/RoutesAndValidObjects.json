@@ -95,7 +95,7 @@
             "Name": "Test Ensemble"
         }
     ],
-    "/api/ensembles/adduser": [
+    "/api/ensembles/newmember": [
         {
             "EnsembleId": 1,
             "UserId": 2
@@ -129,6 +129,12 @@
         {
             "EnsembleId": 1,
             "UserId": 4
+        }
+    ],
+    "/api/ensembles/confirmmod": [
+        {
+            "EnsembleId": 1,
+            "UserId": 2
         }
     ],
     "/api/ensembles/addcomment": [

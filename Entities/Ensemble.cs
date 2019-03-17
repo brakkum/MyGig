@@ -7,11 +7,6 @@ namespace MyGigApi.Entities
 {
     public class Ensemble
     {
-        public Ensemble()
-        {
-            IsActive = true;
-        }
-
         [Key]
         [Column("EnsembleId")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -23,9 +18,6 @@ namespace MyGigApi.Entities
         public string Name { get; set; }
 
         [Required]
-        public bool IsActive { get; set; }
-
-        [Required]
         public DateTime CreatedOn { get; set; }
 
         public ICollection<EnsembleMember> Members { get; set; }
@@ -34,5 +26,13 @@ namespace MyGigApi.Entities
         public ICollection<EnsembleModerator> Moderators { get; set; }
 
         public ICollection<Booking> Bookings { get; set; }
+
+        public EnsembleStatus Status { get; set; }
+    }
+
+    public enum EnsembleStatus
+    {
+        Inactive = 0,
+        Active = 1
     }
 }

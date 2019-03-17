@@ -42,6 +42,23 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [EnableCors("MyGigCors")]
+        [Route(RoutePrefix + "/inactivateuser")]
+        public JsonResult InactivateUser([FromBody] User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(Json(new {success = false, ModelState}));
+            }
+
+            user.Status = UserStatus.Inactive;
+            _context.Users.Update(user);
+            _context.SaveChanges();
+
+            return new JsonResult(Json(new {success = true, user}));
+        }
+
+        [HttpPost]
+        [EnableCors("MyGigCors")]
         [Route(RoutePrefix + "/getuser")]
         public JsonResult GetUser([FromBody] JObject body)
         {

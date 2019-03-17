@@ -59,8 +59,8 @@ namespace MyGigApi.Context
                 .HasDefaultValue(ConnectionStatus.Pending);
             // Ensemble
             modelBuilder.Entity<Ensemble>()
-                .Property(e => e.IsActive)
-                .HasColumnType("bit");
+                .Property(e => e.Status)
+                .HasDefaultValue(EnsembleStatus.Active);
             modelBuilder.Entity<Ensemble>()
                 .Property(e => e.CreatedOn)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
@@ -71,7 +71,7 @@ namespace MyGigApi.Context
             // EnsembleMember
             modelBuilder.Entity<EnsembleMember>()
                 .Property(em => em.Status)
-                .HasDefaultValue(MemberStatus.Pending);
+                .HasDefaultValue(EnsembleMemberStatus.Pending);
             modelBuilder.Entity<EnsembleMember>()
                 .Property(em => em.JoinedOn)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
@@ -87,8 +87,8 @@ namespace MyGigApi.Context
             modelBuilder.Entity<EnsembleModerator>()
                 .HasKey(em => new { em.UserId, em.EnsembleId });
             modelBuilder.Entity<EnsembleModerator>()
-                .Property(em => em.IsActive)
-                .HasColumnType("bit");
+                .Property(em => em.Status)
+                .HasDefaultValue(EnsembleModeratorStatus.Pending);
             modelBuilder.Entity<EnsembleModerator>()
                 .Property(em => em.AssignedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
@@ -109,8 +109,8 @@ namespace MyGigApi.Context
             modelBuilder.Entity<EventModerator>()
                 .HasKey(em => new { em.UserId, em.EventId });
             modelBuilder.Entity<EventModerator>()
-                .Property(em => em.IsActive)
-                .HasColumnType("bit");
+                .Property(em => em.Status)
+                .HasDefaultValue(EventModeratorStatus.Pending);
             modelBuilder.Entity<EventModerator>()
                 .Property(em => em.AssignedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
@@ -155,8 +155,8 @@ namespace MyGigApi.Context
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // User
             modelBuilder.Entity<User>()
-                .Property(u => u.IsActive)
-                .HasColumnType("bit");
+                .Property(u => u.Status)
+                .HasDefaultValue(UserStatus.Active);
             modelBuilder.Entity<User>()
                 .HasMany(u => u.ConnectionsByUser)
                 .WithOne(c => c.UserRequester);

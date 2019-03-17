@@ -31,16 +31,34 @@ namespace MyGigApi.Controllers
             _context.EnsembleModerators.Add(new EnsembleModerator
             {
                 EnsembleId = ensemble.EnsembleId,
-                UserId = 1 // TODO: Change UserId to JWT bearer
+                UserId = 1, // TODO: Change UserId to JWT bearer
+                Status = EnsembleModeratorStatus.Active
             });
             // Make ensemble creator Member
             _context.EnsembleMembers.Add(new EnsembleMember
             {
                 EnsembleId = ensemble.EnsembleId,
                 UserId = 1, // TODO: Change UserId to JWT bearer
-                Status = MemberStatus.Active
+                Status = EnsembleMemberStatus.Active
             });
             _context.SaveChanges();
+            return new JsonResult(Json(new {success = true, ensemble}));
+        }
+
+        [HttpPost]
+        [Route(RoutePrefix + "/inactivateensemble")]
+        [EnableCors("MyGigCors")]
+        public JsonResult InactivateEnsemble([FromBody] Ensemble ensemble)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new JsonResult(Json(new {success = false, ModelState.Keys}));
+            }
+
+            ensemble.Status = EnsembleStatus.Inactive;
+            _context.Ensembles.Update(ensemble);
+            _context.SaveChanges();
+
             return new JsonResult(Json(new {success = true, ensemble}));
         }
 
@@ -53,9 +71,9 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
-        [Route(RoutePrefix + "/adduser")]
+        [Route(RoutePrefix + "/newmember")]
         [EnableCors("MyGigCors")]
-        public JsonResult AddUserToEnsemble([FromBody] EnsembleMember ensembleMember)
+        public JsonResult NewEnsembleMember([FromBody] EnsembleMember ensembleMember)
         {
             if (!ModelState.IsValid)
             {
@@ -73,7 +91,7 @@ namespace MyGigApi.Controllers
         [EnableCors("MyGigCors")]
         public JsonResult ConfirmEnsembleMembership([FromBody] EnsembleMember ensembleMember)
         {
-            ensembleMember.Status = MemberStatus.Active;
+            ensembleMember.Status = EnsembleMemberStatus.Active;
 
             _context.EnsembleMembers.Update(ensembleMember);
             _context.SaveChanges();
@@ -86,7 +104,7 @@ namespace MyGigApi.Controllers
         [EnableCors("MyGigCors")]
         public JsonResult DenyEnsembleMembership([FromBody] EnsembleMember ensembleMember)
         {
-            ensembleMember.Status = MemberStatus.Declined;
+            ensembleMember.Status = EnsembleMemberStatus.Declined;
 
             _context.EnsembleMembers.Update(ensembleMember);
             _context.SaveChanges();
@@ -99,7 +117,7 @@ namespace MyGigApi.Controllers
         [EnableCors("MyGigCors")]
         public JsonResult InactivateEnsembleMembership([FromBody] EnsembleMember ensembleMember)
         {
-            ensembleMember.Status = MemberStatus.Inactive;
+            ensembleMember.Status = EnsembleMemberStatus.Inactive;
 
             _context.EnsembleMembers.Update(ensembleMember);
             _context.SaveChanges();
@@ -118,6 +136,45 @@ namespace MyGigApi.Controllers
             }
 
             _context.EnsembleModerators.Add(ensembleModerator);
+            _context.SaveChanges();
+
+            return new JsonResult(Json(new {success = true, ensembleModerator}));
+        }
+
+        [HttpPost]
+        [Route(RoutePrefix + "/confirmmod")]
+        [EnableCors("MyGigCors")]
+        public JsonResult ConfirmEnsembleModerator([FromBody] EnsembleModerator ensembleModerator)
+        {
+            ensembleModerator.Status = EnsembleModeratorStatus.Active;
+
+            _context.EnsembleModerators.Update(ensembleModerator);
+            _context.SaveChanges();
+
+            return new JsonResult(Json(new {success = true, ensembleModerator}));
+        }
+
+        [HttpPost]
+        [Route(RoutePrefix + "/denymod")]
+        [EnableCors("MyGigCors")]
+        public JsonResult DenyEnsembleModerator([FromBody] EnsembleModerator ensembleModerator)
+        {
+            ensembleModerator.Status = EnsembleModeratorStatus.Declined;
+
+            _context.EnsembleModerators.Update(ensembleModerator);
+            _context.SaveChanges();
+
+            return new JsonResult(Json(new {success = true, ensembleModerator}));
+        }
+
+        [HttpPost]
+        [Route(RoutePrefix + "/inactivatemod")]
+        [EnableCors("MyGigCors")]
+        public JsonResult InactivateEnsembleMembership([FromBody] EnsembleModerator ensembleModerator)
+        {
+            ensembleModerator.Status = EnsembleModeratorStatus.Inactive;
+
+            _context.EnsembleModerators.Update(ensembleModerator);
             _context.SaveChanges();
 
             return new JsonResult(Json(new {success = true, ensembleModerator}));

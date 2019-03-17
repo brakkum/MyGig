@@ -8,11 +8,6 @@ namespace MyGigApi.Entities
 {
     public class User
     {
-        public User()
-        {
-            IsActive = true;
-        }
-
         [Key]
         [Column("UserId")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -46,9 +41,6 @@ namespace MyGigApi.Entities
         [Required]
         [MaxLength(50)]
         public string Email { get; set; }
-
-        [Required]
-        public bool IsActive { get; set; }
 
         public int? UserPhotoId { get; set; }
 
@@ -88,5 +80,13 @@ namespace MyGigApi.Entities
                 return ConnectionsByOther?.Where(c => c.Status == ConnectionStatus.Pending);
             }
         }
+
+        public UserStatus Status { get; set; }
+    }
+
+    public enum UserStatus
+    {
+        Inactive = 0,
+        Active = 1
     }
 }

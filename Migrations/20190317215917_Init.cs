@@ -15,8 +15,8 @@ namespace MyGigApi.Migrations
                     EnsembleId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(maxLength: 500, nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
+                    CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
+                    Status = table.Column<int>(nullable: false, defaultValue: 1)
                 },
                 constraints: table =>
                 {
@@ -135,7 +135,7 @@ namespace MyGigApi.Migrations
                     EnsembleId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     AssignedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Status = table.Column<int>(nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -155,7 +155,7 @@ namespace MyGigApi.Migrations
                     EventId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     AssignedAt = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    Status = table.Column<int>(nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -267,8 +267,8 @@ namespace MyGigApi.Migrations
                     LastName = table.Column<string>(maxLength: 20, nullable: false),
                     Password = table.Column<string>(nullable: false),
                     Email = table.Column<string>(maxLength: 50, nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    UserPhotoId = table.Column<int>(nullable: true)
+                    UserPhotoId = table.Column<int>(nullable: true),
+                    Status = table.Column<int>(nullable: false, defaultValue: 1)
                 },
                 constraints: table =>
                 {
