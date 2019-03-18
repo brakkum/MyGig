@@ -17,10 +17,15 @@ export default class LoginForm extends React.Component {
 
     attemptLogin = event => {
         event.preventDefault();
-        
+
+        if (!this.state.email || !this.state.password) {
+            return;
+        }
+
         // login call
         this.setState({
-            sendingRequest: true
+            sendingRequest: true,
+            loginError: false
         });
         fetch("/api/users/login", {
             method: "post",
