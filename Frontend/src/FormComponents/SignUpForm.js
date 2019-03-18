@@ -59,6 +59,10 @@ export default class SignUpForm extends React.Component {
                         this.props.redirectOnLogin();
                     } else {
                         console.log("signup failed: ", json);
+                        alert("Something went wrong, please try again.");
+                        this.setState({
+                            sendingRequest: false
+                        });
                     }
                 }
             )

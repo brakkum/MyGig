@@ -11,7 +11,8 @@ export default class LoginForm extends React.Component {
     state = {
         email: "",
         password: "",
-        sendingRequest: false
+        sendingRequest: false,
+        loginError: false
     };
 
     attemptLogin = event => {
@@ -37,9 +38,10 @@ export default class LoginForm extends React.Component {
                     this.props.loginUser(json.data);
                     this.props.redirectOnLogin();
                 } else {
-                    console.log("signup failed: ", json);
+                    console.log("login failed: ", json);
                     this.setState({
-                        sendingRequest: false
+                        sendingRequest: false,
+                        loginError: true
                     });
                 }
             }
@@ -55,6 +57,9 @@ export default class LoginForm extends React.Component {
     render() {
         return(
             <form onSubmit={this.attemptLogin}>
+                <h3>
+                    {this.state.loginError && "Invalid login"}
+                </h3>
                 <Input
                     for={"Email"}
                     value={this.state.username}
