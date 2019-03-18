@@ -26,6 +26,7 @@ export default withRouter(
                         exact
                         path="/"
                         userData={this.props.userData}
+                        loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}
                         pageLoaded={this.props.pageLoaded}
                         component={
@@ -35,6 +36,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/account"
                         userData={this.props.userData}
+                        loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}
                         pageLoaded={this.props.pageLoaded}
                         component={
@@ -44,6 +46,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/notifications"
                         userData={this.props.userData}
+                        loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}
                         pageLoaded={this.props.pageLoaded}
                         component={
@@ -53,6 +56,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/connections"
                         userData={this.props.userData}
+                        loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}
                         pageLoaded={this.props.pageLoaded}
                         component={
@@ -62,6 +66,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/event/:eventId"
                         userData={this.props.userData}
+                        loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}
                         pageLoaded={this.props.pageLoaded}
                         component={
@@ -71,6 +76,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/ensemble/:ensembleId"
                         userData={this.props.userData}
+                        loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}
                         pageLoaded={this.props.pageLoaded}
                         component={
@@ -80,6 +86,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/sets/:eventId"
                         userData={this.props.userData}
+                        loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}
                         pageLoaded={this.props.pageLoaded}
                         component={

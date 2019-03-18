@@ -48,10 +48,20 @@ export default class SignUpForm extends React.Component {
                     FirstName: this.state.firstName,
                     LastName: this.state.lastName,
                     Email: this.state.email,
-                    Password: this.state.password
+                    Password: this.state.password,
+                    PasswordConfirm: this.state.passwordConfirm
                 })
             }).then(res => res.json())
-                .then(json => console.log(json))
+                .then(json => {
+                    if (json.success){
+                        console.log("signup successful");
+                        this.props.loginUser(json.data);
+                        this.props.redirectOnLogin();
+                    } else {
+                        console.log("signup failed: ", json);
+                    }
+                }
+            )
         }
     };
 

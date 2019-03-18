@@ -21,10 +21,29 @@ export default class LoginForm extends React.Component {
         this.setState({
             sendingRequest: true
         });
-        setTimeout(() => {
-            this.props.loginUser(1);
-            this.props.redirectOnLogin();
-        }, 3000);
+        fetch("/api/users/login", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                Email: this.state.email,
+                Password: this.state.password
+            })
+        }).then(res => res.json())
+            .then(json => {
+                if (json.success){
+                    console.log("login successful");
+                    this.props.loginUser(json.data);
+                    this.props.redirectOnLogin();
+                } else {
+                    console.log("signup failed: ", json);
+                    this.setState({
+                        sendingRequest: false
+                    });
+                }
+            }
+        );
     };
 
     updateValue = (name, value) => {
@@ -53,7 +72,8 @@ export default class LoginForm extends React.Component {
                     onClick={this.attemptLogin}
                     innerText={"Login"}
                     style={{float: "right"}}
-                    type={"success"}
+                    colorType={"success"}
+                    buttonType={"submit"}
                     sendingRequest={this.state.sendingRequest}
                 />
             </form>

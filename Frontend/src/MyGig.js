@@ -14,12 +14,13 @@ export default class MyGig extends Component {
     state = {
         // userData contains:
         // eventually: JWT string
-        // isLoggedIn boolean
         // photoUrl string
         userData: null,
+        // loggedIn boolean
         // if redirect is not null
         // page will redirect there
         // and then be reset to null
+        loggedIn: false,
         redirect: null,
         leaving: false,
         loaded: false
@@ -29,14 +30,10 @@ export default class MyGig extends Component {
     // to store necessary userData
     // necessary here for app scope
     // TODO: set localstorage on login
-    loginUser = id => {
+    loginUser = user => {
         this.setState({
-            userData: {
-                // JWT: "", <- this will replace any references to userId eventually
-                // photoUrl: "",
-                id: id,
-                isLoggedIn: true
-            }
+            userData: user,
+            loggedIn: true
         })
     };
 
@@ -44,12 +41,8 @@ export default class MyGig extends Component {
     // TODO: remove local storage info
     logoutUser = () => {
         this.setState({
-            userData: {
-                isLoggedIn: false,
-                id: null,
-                photoUrl: null,
-                // JWT: null
-            },
+            userData: null,
+            isLoggedIn: false,
         })
     };
 
@@ -125,6 +118,7 @@ export default class MyGig extends Component {
                         {/* contains all the routing logic */}
                         <MyGigRouter
                             userData={this.state.userData}
+                            loggedIn={this.state.loggedIn}
                             loginUser={this.loginUser}
                             redirect={this.redirect}
                             pageLoaded={this.pageLoaded}

@@ -1,6 +1,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using MyGigApi.Context;
 using MyGigApi.Entities;
@@ -21,46 +23,69 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [EnableCors("MyGigCors")]
         [Route(RoutePrefix + "/newuser")]
-        public JsonResult NewUser([FromBody] User user)
+        public OkObjectResult NewUser([FromBody] User user)
         {
             // Main sign up point for new users
             // TODO: implement JWT stuff.
+            // TODO: Check if email already in use
 
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, error = "Model Invalid"});
             }
             if (!BCrypt.Net.BCrypt.Verify(user.PasswordConfirm, user.Password))
             {
-                ModelState.AddModelError("PasswordConfirm", "Password does not match");
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, error = "Password does not match"});
             }
+
             _context.Users.Add(user);
             _context.SaveChanges();
-            return new JsonResult(Json(new {success = true, user}));
+
+            return new OkObjectResult(new {success = true, data = user, JWT = "FAKEJWT"});
+        }
+
+        [HttpPost]
+        [EnableCors("MyGigCors")]
+        [Route(RoutePrefix + "/login")]
+        public OkObjectResult Login([FromBody] Login login)
+        {
+            if (!ModelState.IsValid)
+            {
+                return new OkObjectResult(new {success = false, error = "Model Invalid"});
+            }
+
+            var user = _context.Users
+                .FirstOrDefault(u => u.Email == login.Email && BCrypt.Net.BCrypt.Verify(login.Password, u.Password));
+
+            if (user == null)
+            {
+                return new OkObjectResult(new {success = false, error = "No User"});
+            }
+
+            return new OkObjectResult(new {success = true, data = user, JWT = "FAKEJWT"});
         }
 
         [HttpPost]
         [EnableCors("MyGigCors")]
         [Route(RoutePrefix + "/inactivateuser")]
-        public JsonResult InactivateUser([FromBody] User user)
+        public OkObjectResult InactivateUser([FromBody] User user)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             user.Status = UserStatus.Inactive;
             _context.Users.Update(user);
             _context.SaveChanges();
 
-            return new JsonResult(Json(new {success = true, user}));
+            return new OkObjectResult(new {success = true, user});
         }
 
         [HttpPost]
         [EnableCors("MyGigCors")]
         [Route(RoutePrefix + "/getuser")]
-        public JsonResult GetUser([FromBody] JObject body)
+        public OkObjectResult GetUser([FromBody] JObject body)
         {
             var userId = (int)body["UserId"];
 
@@ -78,15 +103,15 @@ namespace MyGigApi.Controllers
 
             if (user == null)
             {
-                return new JsonResult(Json(new {success = false, userId}));
+                return new OkObjectResult(new {success = false, userId});
             }
-            return new JsonResult(Json(new {success = true, user}));
+            return new OkObjectResult(new {success = true, user});
         }
 
         [HttpPost]
         [EnableCors("MyGigCors")]
         [Route(RoutePrefix + "/newuserphoto")]
-        public JsonResult NewUserPhoto([FromBody] UserPhoto userPhoto)
+        public OkObjectResult NewUserPhoto([FromBody] UserPhoto userPhoto)
         {
             if (ModelState.IsValid)
             {
@@ -94,15 +119,15 @@ namespace MyGigApi.Controllers
                 var user = _context.Users.Find(userPhoto.UserId);
                 user.UserPhotoId = userPhoto.UserPhotoId;
                 _context.SaveChanges();
-                return new JsonResult(Json(new {success = true, userPhoto}));
+                return new OkObjectResult(new {success = true, userPhoto});
             }
-            return new JsonResult(Json(new {success = false, ModelState}));
+            return new OkObjectResult(new {success = false, ModelState});
         }
 
         [HttpPost]
         [EnableCors("MyGigCors")]
         [Route(RoutePrefix + "/newconnection")]
-        public JsonResult NewConnection([FromBody] Connection connection)
+        public OkObjectResult NewConnection([FromBody] Connection connection)
         {
             var alreadyRequested = _context.Connections
                 .Any(c => c.UserIdRecipient == connection.UserIdRequester &&
@@ -113,45 +138,45 @@ namespace MyGigApi.Controllers
             }
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, connection, ModelState}));
+                return new OkObjectResult(new {success = false, connection, ModelState});
             }
 
             _context.Connections.Add(connection);
             _context.SaveChanges();
-            return new JsonResult(Json(new {success = true, connection}));
+            return new OkObjectResult(new {success = true, connection});
         }
 
         [HttpPost]
         [EnableCors("MyGigCors")]
         [Route(RoutePrefix + "/confirmconnection")]
-        public JsonResult ConfirmConnection([FromBody] Connection connection)
+        public OkObjectResult ConfirmConnection([FromBody] Connection connection)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             var conn = _context.Connections
                 .Find(connection.UserIdRequester, connection.UserIdRecipient);
             conn.Status = ConnectionStatus.Accepted;
             _context.SaveChanges();
-            return new JsonResult(Json(new {success = true}));
+            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [EnableCors("MyGigCors")]
         [Route(RoutePrefix + "/denyconnection")]
-        public JsonResult DenyConnection([FromBody] Connection connection)
+        public OkObjectResult DenyConnection([FromBody] Connection connection)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
             var conn = _context.Connections
                 .Find(connection.UserIdRequester, connection.UserIdRecipient);
             conn.Status = ConnectionStatus.Declined;
             _context.SaveChanges();
-            return new JsonResult(Json(new {success = true}));
+            return new OkObjectResult(new {success = true});
         }
     }
 }

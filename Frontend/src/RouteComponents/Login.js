@@ -54,7 +54,7 @@ export default withRouter(
                             <LoginForm redirectOnLogin={this.redirectOnLogin} loginUser={this.props.loginUser} />
                         </div>
                         <div className={`login login-${!this.state.showLogin ? "show" : "hide"}`}>
-                            <SignUpForm />
+                            <SignUpForm redirectOnLogin={this.redirectOnLogin} loginUser={this.props.loginUser} />
                         </div>
                     </DisplayCase>
                 </div>

@@ -18,149 +18,149 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Route(RoutePrefix + "/newevent")]
         [EnableCors("MyGigCors")]
-        public JsonResult NewEvent([FromBody] Event ev)
+        public OkObjectResult NewEvent([FromBody] Event ev)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             _context.Events.Add(ev);
             _context.EventModerators.Add(new EventModerator(){EventId = ev.EventId, UserId = ev.CreatedByUserId});
             _context.SaveChanges();
 
-            return new JsonResult(Json(new {success = true, ev}));
+            return new OkObjectResult(new {success = true, ev});
         }
 
         [HttpPost]
         [Route(RoutePrefix + "/newmod")]
         [EnableCors("MyGigCors")]
-        public JsonResult NewEventModerator([FromBody] EventModerator eventModerator)
+        public OkObjectResult NewEventModerator([FromBody] EventModerator eventModerator)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             _context.EventModerators.Add(eventModerator);
             _context.SaveChanges();
 
-            return new JsonResult(Json(new {success = true, eventModerator}));
+            return new OkObjectResult(new {success = true, eventModerator});
         }
 
         [HttpPost]
         [Route(RoutePrefix + "/acceptmod")]
         [EnableCors("MyGigCors")]
-        public JsonResult AcceptEventModerator([FromBody] EventModerator eventModerator)
+        public OkObjectResult AcceptEventModerator([FromBody] EventModerator eventModerator)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             eventModerator.Status = EventModeratorStatus.Active;
             _context.EventModerators.Update(eventModerator);
             _context.SaveChanges();
 
-            return new JsonResult(Json(new {success = true, eventModerator}));
+            return new OkObjectResult(new {success = true, eventModerator});
         }
 
         [HttpPost]
         [Route(RoutePrefix + "/denymod")]
         [EnableCors("MyGigCors")]
-        public JsonResult DenyEventModerator([FromBody] EventModerator eventModerator)
+        public OkObjectResult DenyEventModerator([FromBody] EventModerator eventModerator)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             eventModerator.Status = EventModeratorStatus.Declined;
             _context.EventModerators.Update(eventModerator);
             _context.SaveChanges();
 
-            return new JsonResult(Json(new {success = true, eventModerator}));
+            return new OkObjectResult(new {success = true, eventModerator});
         }
 
         [HttpPost]
         [Route(RoutePrefix + "/invalidatemod")]
         [EnableCors("MyGigCors")]
-        public JsonResult InvalidateEventModerator([FromBody] EventModerator eventModerator)
+        public OkObjectResult InvalidateEventModerator([FromBody] EventModerator eventModerator)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             eventModerator.Status = EventModeratorStatus.Inactive;
             _context.EventModerators.Update(eventModerator);
             _context.SaveChanges();
 
-            return new JsonResult(Json(new {success = true, eventModerator}));
+            return new OkObjectResult(new {success = true, eventModerator});
         }
 
         [HttpPost]
         [Route(RoutePrefix + "/newpubliccomment")]
         [EnableCors("MyGigCors")]
-        public JsonResult NewPublicEventComment([FromBody] PublicEventComment publicEventComment)
+        public OkObjectResult NewPublicEventComment([FromBody] PublicEventComment publicEventComment)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             _context.PublicEventComments.Add(publicEventComment);
             _context.SaveChanges();
 
-            return new JsonResult(Json(new {success = true, publicEventComment}));
+            return new OkObjectResult(new {success = true, publicEventComment});
         }
 
         [HttpPost]
         [Route(RoutePrefix + "/newprivatecomment")]
         [EnableCors("MyGigCors")]
-        public JsonResult NewPrivateEventComment([FromBody] PrivateEventComment privateEventComment)
+        public OkObjectResult NewPrivateEventComment([FromBody] PrivateEventComment privateEventComment)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             _context.PrivateEventComments.Add(privateEventComment);
             _context.SaveChanges();
 
-            return new JsonResult(Json(new {success = true, privateEventComment}));
+            return new OkObjectResult(new {success = true, privateEventComment});
         }
 
         [HttpPost]
         [Route(RoutePrefix + "/newbooking")]
         [EnableCors("MyGigCors")]
-        public JsonResult NewBooking([FromBody] Booking booking)
+        public OkObjectResult NewBooking([FromBody] Booking booking)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             _context.Bookings.Add(booking);
             _context.SaveChanges();
 
-            return new JsonResult(Json(new {success = true, booking}));
+            return new OkObjectResult(new {success = true, booking});
         }
 
         [HttpPost]
         [Route(RoutePrefix + "/addsetlist")]
         [EnableCors("MyGigCors")]
-        public JsonResult AddSetlistToEvent([FromBody] EventSetlist eventSetlist)
+        public OkObjectResult AddSetlistToEvent([FromBody] EventSetlist eventSetlist)
         {
             if (!ModelState.IsValid)
             {
-                return new JsonResult(Json(new {success = false, ModelState}));
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
             _context.EventSetlists.Add(eventSetlist);
             _context.SaveChanges();
 
-            return new JsonResult(Json(new {success = true, eventSetlist}));
+            return new OkObjectResult(new {success = true, eventSetlist});
         }
     }
 }
