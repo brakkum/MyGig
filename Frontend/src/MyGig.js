@@ -55,7 +55,7 @@ export default class MyGig extends Component {
         localStorage.setItem("jwt", jwt);
     };
 
-    getJwtFromLocalStorage = () => {
+    getJwtInLocalStorage = () => {
         return localStorage.getItem("jwt");
     };
 
