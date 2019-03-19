@@ -6,10 +6,6 @@ namespace MyGigApi.Entities
 {
     public class Connection
     {
-//        [Key]
-//        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-//        public int ConnectionId { get; set; }
-
         [Required]
         public int UserIdRequester { get; set; }
 
