@@ -11,6 +11,8 @@ namespace MyGigApi.DbInterceptors
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandExecuting")]
         public void OnCommandExecuting(DbCommand command, DbCommandMethod executeMethod, Guid commandId, Guid connectionId, bool async, DateTimeOffset startTime)
         {
+            // Section to catch create table queries
+            // Append ENGINE=INNODB so constraints work properly
             var dbString = new Regex(@"^CREATE TABLE");
             var cmdString = command.CommandText;
             Console.ForegroundColor = ConsoleColor.Blue;
@@ -21,7 +23,7 @@ namespace MyGigApi.DbInterceptors
                 Console.WriteLine(cmdString);
                 int place = cmdString.LastIndexOf(";", StringComparison.Ordinal);
 
-                command.CommandText = cmdString.Remove(place, "/".Length).Insert(place, " ENGINE=INNODB;");
+                command.CommandText = cmdString.Remove(place, ";".Length).Insert(place, " ENGINE=INNODB;");
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(command.CommandText);
             }
