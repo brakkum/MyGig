@@ -8,18 +8,13 @@ import "./Login.css";
 
 export default withRouter(
     class Login extends React.Component {
-        // TODO: create registration component
 
         state = {
             showLogin: true,
-            sendingRequest: false,
-            redirectedFrom: null
+            sendingRequest: false
         };
 
         redirectOnLogin = () => {
-            // check user credentials
-            // handle user login
-
             // they logged in, now redirect
             // if no redirect value, take back home
             let to = (this.props.location && this.props.location.state) ? this.props.location.state.from : "/";
@@ -42,19 +37,36 @@ export default withRouter(
             return(
                 <div className={"login-signup-box"}>
                     {/* Button to switch form view */}
-                    <div className={"form-switch"} style={{padding: "10px", display: "flex", justifyContent: "center"}}>
+                    <div
+                        className={"form-switch"}
+                        style={{
+                            padding: "10px",
+                            display: "flex",
+                            justifyContent: "center"
+                        }}
+                    >
                         <Button
                             onClick={this.switchForm}
                             innerText={this.state.showLogin ? "Sign Up" : "Login"}
                             size={"lg"}
                         />
                     </div>
-                    <DisplayCase boxStyle={{position: "relative", overflow: "visible"}} containerStyle={{height: "70vh"}} backgroundColor={"transparent"}>
+                    <DisplayCase
+                        boxStyle={{position: "relative", overflow: "visible"}}
+                        containerStyle={{height: "70vh"}}
+                        backgroundColor={"transparent"}
+                    >
                         <div className={`login login-${this.state.showLogin ? "show" : "hide"}`}>
-                            <LoginForm redirectOnLogin={this.redirectOnLogin} loginUser={this.props.loginUser} />
+                            <LoginForm
+                                redirectOnLogin={this.redirectOnLogin}
+                                loginUser={this.props.loginUser}
+                            />
                         </div>
                         <div className={`login login-${!this.state.showLogin ? "show" : "hide"}`}>
-                            <SignUpForm redirectOnLogin={this.redirectOnLogin} loginUser={this.props.loginUser} />
+                            <SignUpForm
+                                redirectOnLogin={this.redirectOnLogin}
+                                loginUser={this.props.loginUser}
+                            />
                         </div>
                     </DisplayCase>
                 </div>
