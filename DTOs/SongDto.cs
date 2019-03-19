@@ -13,5 +13,7 @@ namespace MyGigApi.DTOs
         public string PdfUrl { get; set; }
 
         public int SetlistPosition { get; set; }
+
+        public ICollection<SongCommentDto> SongComments { get; set; }
     }
 }
