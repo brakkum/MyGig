@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MyGigApi.Context;
@@ -16,8 +17,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newevent")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewEvent([FromBody] Event ev)
         {
             if (!ModelState.IsValid)
@@ -33,8 +34,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newmod")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewEventModerator([FromBody] EventModerator eventModerator)
         {
             if (!ModelState.IsValid)
@@ -49,8 +50,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/acceptmod")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult AcceptEventModerator([FromBody] EventModerator eventModerator)
         {
             if (!ModelState.IsValid)
@@ -66,8 +67,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/denymod")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult DenyEventModerator([FromBody] EventModerator eventModerator)
         {
             if (!ModelState.IsValid)
@@ -83,8 +84,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/invalidatemod")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult InvalidateEventModerator([FromBody] EventModerator eventModerator)
         {
             if (!ModelState.IsValid)
@@ -100,8 +101,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newpubliccomment")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewPublicEventComment([FromBody] PublicEventComment publicEventComment)
         {
             if (!ModelState.IsValid)
@@ -116,8 +117,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newprivatecomment")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewPrivateEventComment([FromBody] PrivateEventComment privateEventComment)
         {
             if (!ModelState.IsValid)
@@ -132,8 +133,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newbooking")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewBooking([FromBody] Booking booking)
         {
             if (!ModelState.IsValid)
@@ -148,8 +149,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/addsetlist")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult AddSetlistToEvent([FromBody] EventSetlist eventSetlist)
         {
             if (!ModelState.IsValid)

@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MyGigApi.Context;
@@ -17,8 +18,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newensemble")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewEnsemble([FromBody] Ensemble ensemble)
         {
             if (!ModelState.IsValid)
@@ -47,8 +48,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/inactivateensemble")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult InactivateEnsemble([FromBody] Ensemble ensemble)
         {
             if (!ModelState.IsValid)
@@ -64,16 +65,16 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/getensembles")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult GetEnsembles()
         {
             return new OkObjectResult(new {success = true, _context.Ensembles});
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newmember")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewEnsembleMember([FromBody] EnsembleMember ensembleMember)
         {
             if (!ModelState.IsValid)
@@ -88,8 +89,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/confirmmembership")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult ConfirmEnsembleMembership([FromBody] EnsembleMember ensembleMember)
         {
             ensembleMember.Status = EnsembleMemberStatus.Active;
@@ -101,8 +102,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/denymembership")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult DenyEnsembleMembership([FromBody] EnsembleMember ensembleMember)
         {
             ensembleMember.Status = EnsembleMemberStatus.Declined;
@@ -114,8 +115,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/inactivatemembership")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult InactivateEnsembleMembership([FromBody] EnsembleMember ensembleMember)
         {
             ensembleMember.Status = EnsembleMemberStatus.Inactive;
@@ -127,8 +128,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/addmod")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult AddEnsembleModerator([FromBody] EnsembleModerator ensembleModerator)
         {
             if (!ModelState.IsValid)
@@ -143,8 +144,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/confirmmod")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult ConfirmEnsembleModerator([FromBody] EnsembleModerator ensembleModerator)
         {
             ensembleModerator.Status = EnsembleModeratorStatus.Active;
@@ -156,8 +157,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/denymod")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult DenyEnsembleModerator([FromBody] EnsembleModerator ensembleModerator)
         {
             ensembleModerator.Status = EnsembleModeratorStatus.Declined;
@@ -169,8 +170,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/inactivatemod")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult InactivateEnsembleMembership([FromBody] EnsembleModerator ensembleModerator)
         {
             ensembleModerator.Status = EnsembleModeratorStatus.Inactive;
@@ -182,8 +183,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/addcomment")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult AddEnsembleModerator([FromBody] EnsembleComment ensembleComment)
         {
             if (!ModelState.IsValid)

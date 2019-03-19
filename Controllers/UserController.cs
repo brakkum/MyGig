@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,52 +22,7 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
-        [EnableCors("MyGigCors")]
-        [Route(RoutePrefix + "/newuser")]
-        public OkObjectResult NewUser([FromBody] User user)
-        {
-            // Main sign up point for new users
-            // TODO: implement JWT stuff.
-            // TODO: Check if email already in use
-
-            if (!ModelState.IsValid)
-            {
-                return new OkObjectResult(new {success = false, error = "Model Invalid"});
-            }
-            if (!BCrypt.Net.BCrypt.Verify(user.PasswordConfirm, user.Password))
-            {
-                return new OkObjectResult(new {success = false, error = "Password does not match"});
-            }
-
-            _context.Users.Add(user);
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true, data = user, JWT = "FAKEJWT"});
-        }
-
-        [HttpPost]
-        [EnableCors("MyGigCors")]
-        [Route(RoutePrefix + "/login")]
-        public OkObjectResult Login([FromBody] Login login)
-        {
-            if (!ModelState.IsValid)
-            {
-                return new OkObjectResult(new {success = false, error = "Model Invalid"});
-            }
-
-            var user = _context.Users
-                .FirstOrDefault(u => u.Email == login.Email && BCrypt.Net.BCrypt.Verify(login.Password, u.Password));
-
-            if (user == null)
-            {
-                return new OkObjectResult(new {success = false, error = "No User"});
-            }
-
-            return new OkObjectResult(new {success = true, data = user, JWT = "FAKEJWT"});
-        }
-
-        [HttpPost]
-        [EnableCors("MyGigCors")]
+        [Authorize]
         [Route(RoutePrefix + "/inactivateuser")]
         public OkObjectResult InactivateUser([FromBody] User user)
         {
@@ -83,7 +39,7 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
-        [EnableCors("MyGigCors")]
+        [Authorize]
         [Route(RoutePrefix + "/getuser")]
         public OkObjectResult GetUser([FromBody] JObject body)
         {
@@ -109,7 +65,7 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
-        [EnableCors("MyGigCors")]
+        [Authorize]
         [Route(RoutePrefix + "/newuserphoto")]
         public OkObjectResult NewUserPhoto([FromBody] UserPhoto userPhoto)
         {
@@ -125,7 +81,7 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
-        [EnableCors("MyGigCors")]
+        [Authorize]
         [Route(RoutePrefix + "/newconnection")]
         public OkObjectResult NewConnection([FromBody] Connection connection)
         {
@@ -147,7 +103,7 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
-        [EnableCors("MyGigCors")]
+        [Authorize]
         [Route(RoutePrefix + "/confirmconnection")]
         public OkObjectResult ConfirmConnection([FromBody] Connection connection)
         {
@@ -164,7 +120,7 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
-        [EnableCors("MyGigCors")]
+        [Authorize]
         [Route(RoutePrefix + "/denyconnection")]
         public OkObjectResult DenyConnection([FromBody] Connection connection)
         {

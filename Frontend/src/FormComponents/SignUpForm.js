@@ -55,7 +55,7 @@ export default class SignUpForm extends React.Component {
                 .then(json => {
                     if (json.success){
                         console.log("signup successful");
-                        this.props.loginUser(json.data);
+                        this.props.loginUser(json);
                         this.props.redirectOnLogin();
                     } else {
                         console.log("signup failed: ", json);

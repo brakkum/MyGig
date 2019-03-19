@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using MyGigApi.Context;
@@ -16,8 +17,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newsetlist")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewSetlist([FromBody] Setlist setlist)
         {
             if (!ModelState.IsValid)
@@ -32,8 +33,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/updatesetlist")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult UpdateSetlist([FromBody] Setlist setlist)
         {
             if (!ModelState.IsValid)
@@ -48,8 +49,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newsetlistcomment")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewSetlistComment([FromBody] SetlistComment setlistComment)
         {
             if (!ModelState.IsValid)
@@ -64,8 +65,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newsong")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewSetlist([FromBody] Song song)
         {
             if (!ModelState.IsValid)
@@ -80,8 +81,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/updatesong")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult UpdateSong([FromBody] Song song)
         {
             if (!ModelState.IsValid)
@@ -96,8 +97,8 @@ namespace MyGigApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/newsongcomment")]
-        [EnableCors("MyGigCors")]
         public OkObjectResult NewSongComment([FromBody] SongComment songComment)
         {
             if (!ModelState.IsValid)

@@ -30,11 +30,15 @@ export default class MyGig extends Component {
     // to store necessary userData
     // necessary here for app scope
     // TODO: set localstorage on login
-    loginUser = user => {
+    loginUser = data => {
+        let userData = {...data.user};
+        userData.jwt = data.jwt;
         this.setState({
-            userData: user,
+            userData: userData,
             loggedIn: true
-        })
+        });
+        console.log(userData);
+        this.setJwtInLocalStorage(data.jwt);
     };
 
     // clear user info on logout
@@ -43,7 +47,20 @@ export default class MyGig extends Component {
         this.setState({
             userData: null,
             isLoggedIn: false,
-        })
+        });
+        this.deleteJwtInLocalStorage();
+    };
+
+    setJwtInLocalStorage = jwt => {
+        localStorage.setItem("jwt", jwt);
+    };
+
+    getJwtFromLocalStorage = () => {
+        return localStorage.getItem("jwt");
+    };
+
+    deleteJwtInLocalStorage = () => {
+        localStorage.removeItem("jwt");
     };
 
     // called for page redirects
