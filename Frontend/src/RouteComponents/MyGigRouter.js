@@ -10,6 +10,7 @@ import Ensemble from "./Ensemble";
 import Sets from "./Sets";
 import PublicEvent from "./PublicEvent";
 import Login from "./Login";
+import Logout from "./Logout";
 
 export default withRouter(
     class MyGigRouter extends React.Component {
@@ -116,6 +117,16 @@ export default withRouter(
                                 loginUser={this.props.loginUser}
                                 redirect={this.props.redirect}
                                 pageLoaded={this.props.pageLoaded}
+                                loggedIn={this.props.loggedIn}
+                            />
+                        }
+                    />
+                    <Route
+                        path="/logout"
+                        render={() =>
+                            <Logout
+                                logoutUser={this.props.logoutUser}
+                                redirect={this.props.redirect}
                             />
                         }
                     />

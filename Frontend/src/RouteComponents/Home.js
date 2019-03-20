@@ -7,7 +7,7 @@ export default class Home extends React.Component {
         // api call
         setTimeout(() => {
             this.props.pageLoaded();
-        }, 1000);
+        }, 2000);
     }
 
     render() {
@@ -16,7 +16,7 @@ export default class Home extends React.Component {
                 Home
                 <h4>
                     {
-                        this.props.userData.id
+                        this.props.userData && this.props.userData.id
                     }
                 </h4>
             </div>

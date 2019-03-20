@@ -22,8 +22,7 @@ export default class MyGig extends Component {
         // and then be reset to null
         loggedIn: false,
         redirect: null,
-        leaving: false,
-        loaded: false
+        showBuffer: true
     };
 
     // this is called from login page
@@ -37,26 +36,21 @@ export default class MyGig extends Component {
             userData: userData,
             loggedIn: true
         });
-        console.log(userData);
         this.setJwtInLocalStorage(data.jwt);
     };
 
     // clear user info on logout
     // TODO: remove local storage info
     logoutUser = () => {
+        this.deleteJwtInLocalStorage();
         this.setState({
             userData: null,
-            isLoggedIn: false,
+            loggedIn: false,
         });
-        this.deleteJwtInLocalStorage();
     };
 
     setJwtInLocalStorage = jwt => {
         localStorage.setItem("jwt", jwt);
-    };
-
-    getJwtInLocalStorage = () => {
-        return localStorage.getItem("jwt");
     };
 
     deleteJwtInLocalStorage = () => {
@@ -70,12 +64,11 @@ export default class MyGig extends Component {
     redirect = (to, from) => {
         if (to !== from) {
             this.setState({
-                leaving: true
+                showBuffer: true
             });
             setTimeout(() => {
                 this.setState({
-                    redirect: to,
-                    loaded: false
+                    redirect: to
                 });
             }, Constants.loaderTransitionTimeMs);
         }
@@ -83,25 +76,16 @@ export default class MyGig extends Component {
 
     pageLoaded = () => {
         this.setState({
-            loaded: true
+            showBuffer: false
         });
-        setTimeout(() => {
-            this.setState({
-                leaving: false
-            });
-        }, Constants.loaderTransitionTimeMs);
     };
 
-    // so logging in isn't necessary right now
-    componentWillMount() {
-        // this.setState({
-        //     userData: {
-        //         id: 1,
-        //         photoUrl: "https://i.imgur.com/pDaRVI5.jpg",
-        //         isLoggedIn: true,
-        //         loaded: true
-        //     }
-        // })
+    componentDidMount() {
+        // this is necessary to show loading
+        // screen on app load
+        this.setState({
+            showBuffer: true
+        })
     };
 
     // set redirect back to null
@@ -126,9 +110,9 @@ export default class MyGig extends Component {
                         redirect && <Redirect to={redirect}/>
                     }
                     {/* NavBar for application */}
-                    <NavBar userData={this.state.userData} redirect={this.redirect} />
+                    <NavBar userData={this.state.userData} redirect={this.redirect} logoutUser={this.logoutUser} />
                     {
-                        <LoadingBuffer loaded={this.state.loaded} leaving={this.state.leaving} />
+                        <LoadingBuffer showBuffer={this.state.showBuffer} />
                     }
                     {/* all body content contained here */}
                     <div className="body-content" style={{backgroundColor: Constants.backgroundColor}}>
@@ -139,6 +123,7 @@ export default class MyGig extends Component {
                             loginUser={this.loginUser}
                             redirect={this.redirect}
                             pageLoaded={this.pageLoaded}
+                            logoutUser={this.logoutUser}
                         />
                     </div>
                 </div>

@@ -70,7 +70,7 @@ export default withRouter(
                     <div style={this.navRightStyle}>
                         {
                             this.props.userData ?
-                                <div onClick={() => this.props.redirect("/logout", this.props.location.pathname)}>
+                                <div onClick={() => this.props.redirect("/logout")}>
                                     Logout
                                 </div>
                                     :

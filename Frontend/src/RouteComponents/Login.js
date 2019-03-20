@@ -21,6 +21,18 @@ export default withRouter(
             this.props.redirect(to, this.props.location.pathname);
         };
 
+        setJwtInLocalStorage = jwt => {
+            localStorage.setItem("jwt", jwt);
+        };
+
+        getJwtInLocalStorage = () => {
+            return localStorage.getItem("jwt");
+        };
+
+        deleteJwtInLocalStorage = () => {
+            localStorage.removeItem("jwt");
+        };
+
         switchForm = () => {
             this.setState({
                showLogin: !this.state.showLogin
@@ -28,9 +40,34 @@ export default withRouter(
         };
 
         componentDidMount() {
-            setTimeout(() => {
-                this.props.pageLoaded();
-            }, 100);
+            let jwt = this.getJwtInLocalStorage();
+            if (jwt) {
+                fetch("/api/users/getuserfromtoken", {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + jwt
+                    },
+                    body: JSON.stringify({
+                        Jwt: jwt
+                    })
+                }).then(res => res.json())
+                    .then(json => {
+                        if (json.success){
+                            this.props.loginUser(json);
+                            this.redirectOnLogin();
+                        } else {
+                            console.log("validation by jwt failed: ", json);
+                            this.props.pageLoaded();
+                        }
+                    }
+                ).catch(e => {console.log(e)});
+            } else {
+                // This is necessary to work correctly
+                setTimeout(() => {
+                    this.props.pageLoaded();
+                }, 1500);
+            }
         }
 
         render() {

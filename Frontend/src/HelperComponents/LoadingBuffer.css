@@ -1,5 +1,5 @@
 
-.loader.fadein {
+.loader.show {
     opacity: 1;
 }
 
@@ -12,7 +12,7 @@
     opacity: 0;
 }
 
-.loader.show {
+.loader.shown {
     opacity: 1;
 }
 

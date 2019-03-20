@@ -9,18 +9,11 @@ export default class LoadingBuffer extends React.Component {
     // while status of props.loaded is false.
 
     state = {
-        className: "hidden"
+        className: "show"
     };
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if ((prevProps.loaded === true && prevProps.leaving === false)
-            && (this.props.loaded === true && this.props.leaving === true)) {
-            // we are now changing pages
-            this.setState({
-                className: "fadein"
-            })
-        } else if ((prevProps.loaded === false && this.props.leaving === true)
-            && (this.props.loaded === true && this.props.leaving === true)) {
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.showBuffer === true && this.props.showBuffer === false) {
             this.setState({
                 className: "hide"
             });
@@ -28,11 +21,21 @@ export default class LoadingBuffer extends React.Component {
                 this.setState({
                     className: "hidden"
                 });
-            }, Constants.loaderTransitionTimeMs)
+            }, Constants.loaderTransitionTimeMs);
+        } else if (prevProps.showBuffer === false && this.props.showBuffer === true) {
+            this.setState({
+                className: "show"
+            });
+            setTimeout(() => {
+                this.setState({
+                    className: "shown"
+                });
+            }, Constants.loaderTransitionTimeMs);
         }
     };
 
     render() {
+        let noTransitionOnFirstLoad = this.state.spaFirstLoad ? {} : {transition: "opacity " + Constants.loaderTransitionTimeSe};
         let show = this.state.className;
         return(
             <div>
@@ -42,7 +45,7 @@ export default class LoadingBuffer extends React.Component {
                         top: Constants.navBarHeight,
                         height: "90vh",
                         backgroundColor: Constants.backgroundColor,
-                        transition: "opacity " + Constants.loaderTransitionTimeSe
+                        ...noTransitionOnFirstLoad
                     }}
                 >
                     <Loading/>

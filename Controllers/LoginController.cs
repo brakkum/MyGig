@@ -4,11 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MyGigApi.Context;
+using MyGigApi.DTOs;
 using MyGigApi.Entities;
 
 namespace MyGigApi.Controllers
@@ -137,6 +137,24 @@ namespace MyGigApi.Controllers
                 user,
                 jwt = jwtToken
             });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/getuserfromtoken")]
+        public OkObjectResult GetUserFromToken([FromBody] JwtToken jwtToken)
+        {
+            var userId = User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(x => x.Value)
+                .SingleOrDefault();
+
+            if (userId == null)
+            {
+                return new OkObjectResult(new { success = false, jwtToken, user = User.Claims });
+            }
+
+            return new OkObjectResult(new { success = true, user = _context.Users.Find(int.Parse(userId)), jwt = jwtToken.Jwt });
         }
     }
 }

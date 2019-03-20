@@ -1,8 +1,6 @@
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MyGigApi.Entities
+namespace MyGigApi.DTOs
 {
-    [NotMapped]
     public class Login
     {
         public string Email { get; set; }
