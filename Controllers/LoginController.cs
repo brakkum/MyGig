@@ -27,7 +27,7 @@ namespace MyGigApi.Controllers
             _context = context;
         }
 
-        private User GetLoginUser(Login user)
+        private User GetLoginUser(LoginDto user)
         {
             return _context.Users
                 .Include(u => u.UserPhoto)
@@ -120,7 +120,7 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route(RoutePrefix + "/login")]
-        public OkObjectResult Login([FromBody] Login login)
+        public OkObjectResult Login([FromBody] LoginDto login)
         {
             if (!ModelState.IsValid)
             {
@@ -163,7 +163,7 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/getuserfromtoken")]
-        public OkObjectResult GetUserFromToken([FromBody] JwtToken jwtToken)
+        public OkObjectResult GetUserFromToken([FromBody] JwtTokenDto jwtTokenDto)
         {
             var userId = User.Claims
                 .Where(c => c.Type == "UserId")
@@ -191,7 +191,7 @@ namespace MyGigApi.Controllers
                     PhotoUrl = userObj.UserPhoto.Url,
                     FullName = userObj.FullName
                 },
-                jwt = jwtToken.Jwt
+                jwt = jwtTokenDto.Jwt
             });
         }
     }

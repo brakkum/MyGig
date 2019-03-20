@@ -1,7 +1,7 @@
 
 namespace MyGigApi.DTOs
 {
-    public class JwtToken
+    public class JwtTokenDto
     {
         public string Jwt { get; set; }
     }

@@ -1,7 +1,7 @@
 
 namespace MyGigApi.DTOs
 {
-    public class Login
+    public class LoginDto
     {
         public string Email { get; set; }
 
