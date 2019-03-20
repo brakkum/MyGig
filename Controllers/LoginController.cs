@@ -27,30 +27,19 @@ namespace MyGigApi.Controllers
             _context = context;
         }
 
-        private object GetLoginUser(Login user)
+        private User GetLoginUser(Login user)
         {
-            var userObj = _context.Users
+            return _context.Users
                 .Include(u => u.UserPhoto)
                 .SingleOrDefault(u => u.Email == user.Email &&
                     BCrypt.Net.BCrypt.Verify(user.Password, u.Password));
-
-            if (userObj == null)
-            {
-                return null;
-            }
-
-            return new UserDto
-                {
-                    FullName = userObj.FullName,
-                    PhotoUrl = userObj.UserPhoto.Url,
-                    UserId = userObj.UserId
-                }
-            ;
         }
 
-        private string GenerateJwtToken(User user)
+        private string GenerateJwtToken(UserDto user)
         {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine(_config["Jwt:Key"]);
+
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -76,7 +65,6 @@ namespace MyGigApi.Controllers
         public OkObjectResult NewUser([FromBody] User user)
         {
             // Main sign up point for new users
-            // TODO: implement JWT stuff.
 
             if (!ModelState.IsValid)
             {
@@ -110,12 +98,21 @@ namespace MyGigApi.Controllers
 
             _context.Users.Add(user);
             _context.SaveChanges();
-            string jwtToken = GenerateJwtToken(user);
+
+            string jwtToken = GenerateJwtToken(new UserDto
+            {
+                UserId = user.UserId
+            });
 
             return new OkObjectResult(new
             {
                 success = true,
-                user,
+                user = new UserDto
+                {
+                    UserId = user.UserId,
+                    FullName = user.FullName,
+                    PhotoUrl = null
+                },
                 jwt = jwtToken
             });
         }
@@ -145,12 +142,20 @@ namespace MyGigApi.Controllers
                 });
             }
 
-            string jwtToken = GenerateJwtToken(user);
+            string jwtToken = GenerateJwtToken(new UserDto
+            {
+                UserId = user.UserId
+            });
 
             return new OkObjectResult(new
             {
                 success = true,
-                user,
+                user = new UserDto
+                {
+                    FullName = user.FullName,
+                    UserId = user.UserId,
+                    PhotoUrl = user.UserPhoto.Url
+                },
                 jwt = jwtToken
             });
         }
@@ -167,10 +172,27 @@ namespace MyGigApi.Controllers
 
             if (userId == null)
             {
-                return new OkObjectResult(new { success = false, jwtToken, user = User.Claims });
+                return new OkObjectResult(new { success = false, error = "User not found with Claims provided" });
             }
 
-            return new OkObjectResult(new { success = true, user = _context.Users.Find(int.Parse(userId)), jwt = jwtToken.Jwt });
+            var userObj = _context.Users
+                .Find(int.Parse(userId));
+
+            if (userObj == null)
+            {
+                return new OkObjectResult(new { success = false, error = "User not found by Id" });
+            }
+
+            return new OkObjectResult(new {
+                success = true,
+                user = new UserDto
+                {
+                    UserId = userObj.UserId,
+                    PhotoUrl = userObj.UserPhoto.Url,
+                    FullName = userObj.FullName
+                },
+                jwt = jwtToken.Jwt
+            });
         }
     }
 }
