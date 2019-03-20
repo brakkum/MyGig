@@ -163,7 +163,7 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/getuserfromtoken")]
-        public OkObjectResult GetUserFromToken([FromBody] JwtTokenDto jwtTokenDto)
+        public OkObjectResult GetUserFromToken([FromBody] JwtTokenDto jwtToken)
         {
             var userId = User.Claims
                 .Where(c => c.Type == "UserId")
@@ -191,7 +191,7 @@ namespace MyGigApi.Controllers
                     PhotoUrl = userObj.UserPhoto.Url,
                     FullName = userObj.FullName
                 },
-                jwt = jwtTokenDto.Jwt
+                jwt = jwtToken.Jwt
             });
         }
     }
