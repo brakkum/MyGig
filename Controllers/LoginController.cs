@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using MyGigApi.Context;
@@ -15,8 +17,8 @@ namespace MyGigApi.Controllers
 {
     public class LoginController : ApiBaseController
     {
-        private MyGigContext _context;
-        private IConfiguration _config;
+        private readonly MyGigContext _context;
+        private readonly IConfiguration _config;
         private const string RoutePrefix = "users";
 
         public LoginController(IConfiguration config, MyGigContext context)
@@ -25,11 +27,25 @@ namespace MyGigApi.Controllers
             _context = context;
         }
 
-        private User GetLoginUser(Login user)
+        private object GetLoginUser(Login user)
         {
-            return _context.Users
+            var userObj = _context.Users
+                .Include(u => u.UserPhoto)
                 .SingleOrDefault(u => u.Email == user.Email &&
                     BCrypt.Net.BCrypt.Verify(user.Password, u.Password));
+
+            if (userObj == null)
+            {
+                return null;
+            }
+
+            return new UserDto
+                {
+                    FullName = userObj.FullName,
+                    PhotoUrl = userObj.UserPhoto.Url,
+                    UserId = userObj.UserId
+                }
+            ;
         }
 
         private string GenerateJwtToken(User user)

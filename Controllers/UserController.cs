@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using MyGigApi.Context;
+using MyGigApi.DTOs;
 using MyGigApi.Entities;
 using Newtonsoft.Json.Linq;
 
@@ -43,25 +44,44 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/getuser")]
         public OkObjectResult GetUser([FromBody] JObject body)
         {
-            var userId = (int)body["UserId"];
+            var requestedUserId = (int)body["UserId"];
+            var userId = int.Parse(
+                User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(x => x.Value)
+                .SingleOrDefault()
+            );
 
-            var user = _context.Users
-                .Include(u => u.UserPhoto)
-                .Include(u => u.ConnectionsByUser)
-                .Include(u => u.ConnectionsByOther)
-                .Include(u => u.Ensembles)
-                .Include(u => u.EventsModerated)
-                .ThenInclude(em => em.Event)
-                .Include(u => u.EnsemblesModerated)
-                .ThenInclude(em => em.Ensemble)
-                .Include(u => u.Notifications)
-                .FirstOrDefault(u => u.UserId == userId);
+            var requestedUser = _context.Users
+                .Include(us => us.UserPhoto)
+                .Select(us => new UserDto
+                {
+                    UserId = us.UserId,
+                    FullName = us.FullName,
+                    PhotoUrl = us.UserPhoto.Url,
+                    ConnectedToUser =
+                        _context.Users
+                        .Find(us.UserId)
+                        .Connections
+                        .Any(u =>
+                            // Is this user connected successfully to user?
+                            (
+                                (
+                                    (u.UserIdRecipient == requestedUserId && u.UserIdRequester == userId) ||
+                                    (u.UserIdRecipient == userId && u.UserIdRequester == requestedUserId)
+                                )
+                                && u.Status == ConnectionStatus.Accepted
+                            )
+                            // Or are we looking at this logged in user?
+                            || requestedUserId == userId
+                        )
+                }).SingleOrDefault(us => us.UserId == requestedUserId);
 
-            if (user == null)
+            if (requestedUser == null)
             {
                 return new OkObjectResult(new {success = false, userId});
             }
-            return new OkObjectResult(new {success = true, user});
+            return new OkObjectResult(new {success = true, user = requestedUser});
         }
 
         [HttpPost]
