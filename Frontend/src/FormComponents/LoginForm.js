@@ -12,7 +12,7 @@ export default class LoginForm extends React.Component {
         email: "",
         password: "",
         sendingRequest: false,
-        loginError: false
+        loginError: null
     };
 
     attemptLogin = event => {
@@ -22,11 +22,11 @@ export default class LoginForm extends React.Component {
             return;
         }
 
-        // login call
         this.setState({
             sendingRequest: true,
             loginError: false
         });
+        // login call
         fetch("/api/users/login", {
             method: "post",
             headers: {
@@ -46,7 +46,7 @@ export default class LoginForm extends React.Component {
                     console.log("login failed: ", json);
                     this.setState({
                         sendingRequest: false,
-                        loginError: true
+                        loginError: "Invalid login."
                     });
                 }
             }
@@ -62,9 +62,6 @@ export default class LoginForm extends React.Component {
     render() {
         return(
             <form onSubmit={this.attemptLogin}>
-                <h3>
-                    {this.state.loginError && "Invalid login"}
-                </h3>
                 <Input
                     for={"Email"}
                     value={this.state.username}
@@ -78,6 +75,9 @@ export default class LoginForm extends React.Component {
                     type={"password"}
                     onChange={password => this.updateValue("password", password)}
                 />
+                <h3>
+                    {this.state.loginError}
+                </h3>
                 <Button
                     onClick={this.attemptLogin}
                     innerText={"Login"}

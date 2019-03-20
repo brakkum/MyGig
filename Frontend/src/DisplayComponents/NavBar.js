@@ -17,6 +17,7 @@ export default withRouter(
             height: Constants.navBarHeight,
             display: "flex",
             justifyContent: "space-between"
+            // TODO: Transition
         };
 
         navSectionStyle = {
