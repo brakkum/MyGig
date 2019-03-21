@@ -39,16 +39,12 @@ namespace MyGigApi.Context
         {
             // Booking
             modelBuilder.Entity<Booking>()
-                .HasKey(b => new { b.EventId, b.EnsembleId });
-            modelBuilder.Entity<Booking>()
                 .HasOne(b => b.Event)
                 .WithMany(b => b.Ensembles);
             modelBuilder.Entity<Booking>()
                 .HasOne(b => b.Ensemble)
                 .WithMany(b => b.Bookings);
             // Connection
-            modelBuilder.Entity<Connection>()
-                .HasKey(c => new {c.UserIdRequester, c.UserIdRecipient});
             modelBuilder.Entity<Connection>()
                 .Property(c => c.Timestamp)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
@@ -74,18 +70,12 @@ namespace MyGigApi.Context
                 .Property(em => em.JoinedOn)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             modelBuilder.Entity<EnsembleMember>()
-                .HasOne(em => em.UserRecipient)
-                .WithMany(e => e.Ensembles);
-            modelBuilder.Entity<EnsembleMember>()
                 .HasOne(em => em.Ensemble)
                 .WithMany(m => m.Members);
             // EnsembleModerator
             modelBuilder.Entity<EnsembleModerator>()
                 .Property(em => em.Status)
                 .HasDefaultValue(RequestStatus.Pending);
-            modelBuilder.Entity<EnsembleModerator>()
-                .HasOne(em => em.UserRecipient)
-                .WithMany(m => m.EnsemblesModerated);
             modelBuilder.Entity<EnsembleModerator>()
                 .HasOne(em => em.Ensemble)
                 .WithMany(e => e.Moderators);
@@ -100,9 +90,6 @@ namespace MyGigApi.Context
             modelBuilder.Entity<EventModerator>()
                 .Property(em => em.Status)
                 .HasDefaultValue(RequestStatus.Pending);
-            modelBuilder.Entity<EventModerator>()
-                .HasOne(em => em.UserRecipient)
-                .WithMany(m => m.EventsModerated);
             modelBuilder.Entity<EventModerator>()
                 .HasOne(em => em.Event)
                 .WithMany(e => e.Moderators);
@@ -150,12 +137,6 @@ namespace MyGigApi.Context
             modelBuilder.Entity<User>()
                 .Property(u => u.Status)
                 .HasDefaultValue(UserStatus.Active);
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.ConnectionsByUser)
-                .WithOne(c => c.UserRequester);
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.ConnectionsByOther)
-                .WithOne(c => c.UserRecipient);
             // UserPhoto
             modelBuilder.Entity<UserPhoto>()
                 .Property(u => u.UploadedAt)

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyGigApi.Entities
 {
-    public class Request
+    public abstract class Request
     {
         [Key]
         [Required]

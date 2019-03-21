@@ -49,37 +49,6 @@ namespace MyGigApi.Entities
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
 
-        public ICollection<Notification> Notifications { get; set; }
-
-        public ICollection<EnsembleMember> Ensembles { get; set; }
-
-        public ICollection<EventModerator> EventsModerated { get; set; }
-
-        public ICollection<EnsembleModerator> EnsemblesModerated { get; set; }
-
-        public ICollection<Connection> ConnectionsByUser { get; set; }
-
-        public ICollection<Connection> ConnectionsByOther { get; set; }
-
-        [NotMapped]
-        public IEnumerable<Connection> Connections
-        {
-            get
-            {
-                return ConnectionsByUser?.Concat(ConnectionsByOther)
-                    .Where(c => c.Status == RequestStatus.Accepted);
-            }
-        }
-
-        [NotMapped]
-        public IEnumerable<Connection> PendingConnections
-        {
-            get
-            {
-                return ConnectionsByOther?.Where(c => c.Status == RequestStatus.Pending);
-            }
-        }
-
         public UserStatus Status { get; set; }
     }
 

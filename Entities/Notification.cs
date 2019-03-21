@@ -16,7 +16,7 @@ namespace MyGigApi.Entities
 
         [Required]
         [MaxLength(100)]
-        public string DisplayMessage { get; set; }
+        public string Text { get; set; }
 
         [Required]
         public DateTime Timestamp { get; set; }

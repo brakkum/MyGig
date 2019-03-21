@@ -30,17 +30,16 @@ namespace MyGigApi.Controllers
             );
 
             var ensembles = _context.EnsembleMembers
-                .Include(em => em.Ensemble)
-                .ThenInclude(e => new {e.Name, e.EnsembleId})
-                .Select(e => e.UserIdRecipient == userId && e.Status == RequestStatus.Accepted)
-                .DefaultIfEmpty();
+                .Include(em => em.Ensemble.Name)
+                .Include(em => em.Ensemble.EnsembleId)
+                .Select(e => e.UserIdRecipient == userId && e.Status == RequestStatus.Accepted);
 
             var notifications = _context.Notifications
                 .Where(n => n.UserId == userId && n.Status == NotificationStatus.Unseen)
                 .Select(n => new NotificationDto
                 {
                     Url = n.Url,
-                    DisplayMessage = n.DisplayMessage,
+                    DisplayMessage = n.Text,
                     Timestamp = n.Timestamp
                 });
 

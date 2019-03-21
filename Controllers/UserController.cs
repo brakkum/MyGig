@@ -57,9 +57,7 @@ namespace MyGigApi.Controllers
                     FullName = us.FullName,
                     PhotoUrl = us.UserPhoto.Url,
                     ConnectedToUser =
-                        _context.Users
-                        .Find(us.UserId)
-                        .Connections
+                        _context.Connections
                         .Any(u =>
                             // Is this user connected successfully to user?
                             (
