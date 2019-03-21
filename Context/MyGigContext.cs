@@ -26,6 +26,7 @@ namespace MyGigApi.Context
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<PrivateEventComment> PrivateEventComments { get; set; }
         public DbSet<PublicEventComment> PublicEventComments { get; set; }
+        public DbSet<Request> Requests { get; set; }
         public DbSet<Setlist> Setlists { get; set; }
         public DbSet<SetlistComment> SetlistComments { get; set; }
         public DbSet<Song> Songs { get; set; }
@@ -56,7 +57,7 @@ namespace MyGigApi.Context
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             modelBuilder.Entity<Connection>()
                 .Property(c => c.Status)
-                .HasDefaultValue(ConnectionStatus.Pending);
+                .HasDefaultValue(RequestStatus.Pending);
             // Ensemble
             modelBuilder.Entity<Ensemble>()
                 .Property(e => e.Status)
@@ -71,7 +72,7 @@ namespace MyGigApi.Context
             // EnsembleMember
             modelBuilder.Entity<EnsembleMember>()
                 .Property(em => em.Status)
-                .HasDefaultValue(EnsembleMemberStatus.Pending);
+                .HasDefaultValue(RequestStatus.Pending);
             modelBuilder.Entity<EnsembleMember>()
                 .Property(em => em.JoinedOn)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
@@ -88,7 +89,7 @@ namespace MyGigApi.Context
                 .HasKey(em => new { em.UserId, em.EnsembleId });
             modelBuilder.Entity<EnsembleModerator>()
                 .Property(em => em.Status)
-                .HasDefaultValue(EnsembleModeratorStatus.Pending);
+                .HasDefaultValue(RequestStatus.Pending);
             modelBuilder.Entity<EnsembleModerator>()
                 .Property(em => em.AssignedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
@@ -110,7 +111,7 @@ namespace MyGigApi.Context
                 .HasKey(em => new { em.UserId, em.EventId });
             modelBuilder.Entity<EventModerator>()
                 .Property(em => em.Status)
-                .HasDefaultValue(EventModeratorStatus.Pending);
+                .HasDefaultValue(RequestStatus.Pending);
             modelBuilder.Entity<EventModerator>()
                 .Property(em => em.AssignedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
@@ -137,6 +138,9 @@ namespace MyGigApi.Context
             modelBuilder.Entity<Notification>()
                 .Property(n => n.Timestamp)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
+            modelBuilder.Entity<Notification>()
+                .Property(n => n.Status)
+                .HasDefaultValue(NotificationStatus.Unseen);
             // PrivateEventComment
             modelBuilder.Entity<PrivateEventComment>()
                 .Property(p => p.Timestamp)

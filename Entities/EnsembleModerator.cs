@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyGigApi.Entities
 {
-    public class EnsembleModerator
+    public class EnsembleModerator : Request
     {
         [Required]
         public int EnsembleId { get; set; }
@@ -19,15 +19,5 @@ namespace MyGigApi.Entities
         public User User { get; set; }
 
         public DateTime AssignedAt { get; set; }
-
-        public EnsembleModeratorStatus Status { get; set; }
-    }
-
-    public enum EnsembleModeratorStatus
-    {
-        Pending = 0,
-        Active = 1,
-        Declined = 2,
-        Inactive = 3
     }
 }

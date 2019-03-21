@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyGigApi.Entities
 {
-    public class Booking
+    public class Booking : Request
     {
         [Required]
         public int EventId { get; set; }

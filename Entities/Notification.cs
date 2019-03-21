@@ -20,5 +20,13 @@ namespace MyGigApi.Entities
 
         [Required]
         public DateTime Timestamp { get; set; }
+
+        public NotificationStatus Status { get; set; }
+    }
+
+    public enum NotificationStatus
+    {
+        Unseen = 0,
+        Seen = 1
     }
 }

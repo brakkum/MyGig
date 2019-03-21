@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyGigApi.Entities
 {
-    public class EventModerator
+    public class EventModerator : Request
     {
         [Required]
         public int EventId { get; set; }
@@ -19,15 +19,5 @@ namespace MyGigApi.Entities
         public User User { get; set; }
 
         public DateTime AssignedAt { get; set; }
-
-        public EventModeratorStatus Status { get; set; }
-    }
-
-    public enum EventModeratorStatus
-    {
-        Pending = 0,
-        Active = 1,
-        Declined = 2,
-        Inactive = 3
     }
 }

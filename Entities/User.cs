@@ -67,7 +67,7 @@ namespace MyGigApi.Entities
             get
             {
                 return ConnectionsByUser?.Concat(ConnectionsByOther)
-                    .Where(c => c.Status == ConnectionStatus.Accepted);
+                    .Where(c => c.Status == RequestStatus.Accepted);
             }
         }
 
@@ -76,7 +76,7 @@ namespace MyGigApi.Entities
         {
             get
             {
-                return ConnectionsByOther?.Where(c => c.Status == ConnectionStatus.Pending);
+                return ConnectionsByOther?.Where(c => c.Status == RequestStatus.Pending);
             }
         }
 

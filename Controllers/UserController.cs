@@ -67,7 +67,7 @@ namespace MyGigApi.Controllers
                                     (u.UserIdRecipient == requestedUserId && u.UserIdRequester == userId) ||
                                     (u.UserIdRecipient == userId && u.UserIdRequester == requestedUserId)
                                 )
-                                && u.Status == ConnectionStatus.Accepted
+                                && u.Status == RequestStatus.Accepted
                             )
                             // Or are we looking at this logged in user?
                             || requestedUserId == userId
@@ -131,7 +131,7 @@ namespace MyGigApi.Controllers
 
             var conn = _context.Connections
                 .Find(connection.UserIdRequester, connection.UserIdRecipient);
-            conn.Status = ConnectionStatus.Accepted;
+            conn.Status = RequestStatus.Accepted;
             _context.SaveChanges();
             return new OkObjectResult(new {success = true});
         }
@@ -147,7 +147,7 @@ namespace MyGigApi.Controllers
             }
             var conn = _context.Connections
                 .Find(connection.UserIdRequester, connection.UserIdRecipient);
-            conn.Status = ConnectionStatus.Declined;
+            conn.Status = RequestStatus.Accepted;
             _context.SaveChanges();
             return new OkObjectResult(new {success = true});
         }

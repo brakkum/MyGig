@@ -58,7 +58,7 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, ModelState});
             }
 
-            eventModerator.Status = EventModeratorStatus.Active;
+            eventModerator.Status = RequestStatus.Accepted;
             _context.EventModerators.Update(eventModerator);
             _context.SaveChanges();
 
@@ -75,7 +75,7 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, ModelState});
             }
 
-            eventModerator.Status = EventModeratorStatus.Declined;
+            eventModerator.Status = RequestStatus.Denied;
             _context.EventModerators.Update(eventModerator);
             _context.SaveChanges();
 
@@ -92,7 +92,7 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, ModelState});
             }
 
-            eventModerator.Status = EventModeratorStatus.Inactive;
+            eventModerator.Status = RequestStatus.Inactive;
             _context.EventModerators.Update(eventModerator);
             _context.SaveChanges();
 

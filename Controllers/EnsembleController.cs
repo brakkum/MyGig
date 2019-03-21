@@ -31,14 +31,14 @@ namespace MyGigApi.Controllers
             {
                 EnsembleId = ensemble.EnsembleId,
                 UserId = 1, // TODO: Change UserId to JWT bearer
-                Status = EnsembleModeratorStatus.Active
+                Status = RequestStatus.Accepted
             });
             // Make ensemble creator Member
             _context.EnsembleMembers.Add(new EnsembleMember
             {
                 EnsembleId = ensemble.EnsembleId,
                 UserId = 1, // TODO: Change UserId to JWT bearer
-                Status = EnsembleMemberStatus.Active
+                Status = RequestStatus.Accepted
             });
             _context.SaveChanges();
 
@@ -91,7 +91,7 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/confirmmembership")]
         public OkObjectResult ConfirmEnsembleMembership([FromBody] EnsembleMember ensembleMember)
         {
-            ensembleMember.Status = EnsembleMemberStatus.Active;
+            ensembleMember.Status = RequestStatus.Accepted;
 
             _context.EnsembleMembers.Update(ensembleMember);
             _context.SaveChanges();
@@ -104,7 +104,7 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/denymembership")]
         public OkObjectResult DenyEnsembleMembership([FromBody] EnsembleMember ensembleMember)
         {
-            ensembleMember.Status = EnsembleMemberStatus.Declined;
+            ensembleMember.Status = RequestStatus.Denied;
 
             _context.EnsembleMembers.Update(ensembleMember);
             _context.SaveChanges();
@@ -117,7 +117,7 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/inactivatemembership")]
         public OkObjectResult InactivateEnsembleMembership([FromBody] EnsembleMember ensembleMember)
         {
-            ensembleMember.Status = EnsembleMemberStatus.Inactive;
+            ensembleMember.Status = RequestStatus.Inactive;
 
             _context.EnsembleMembers.Update(ensembleMember);
             _context.SaveChanges();
@@ -146,7 +146,7 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/confirmmod")]
         public OkObjectResult ConfirmEnsembleModerator([FromBody] EnsembleModerator ensembleModerator)
         {
-            ensembleModerator.Status = EnsembleModeratorStatus.Active;
+            ensembleModerator.Status = RequestStatus.Accepted;
 
             _context.EnsembleModerators.Update(ensembleModerator);
             _context.SaveChanges();
@@ -159,7 +159,7 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/denymod")]
         public OkObjectResult DenyEnsembleModerator([FromBody] EnsembleModerator ensembleModerator)
         {
-            ensembleModerator.Status = EnsembleModeratorStatus.Declined;
+            ensembleModerator.Status = RequestStatus.Denied;
 
             _context.EnsembleModerators.Update(ensembleModerator);
             _context.SaveChanges();
@@ -172,7 +172,7 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/inactivatemod")]
         public OkObjectResult InactivateEnsembleMembership([FromBody] EnsembleModerator ensembleModerator)
         {
-            ensembleModerator.Status = EnsembleModeratorStatus.Inactive;
+            ensembleModerator.Status = RequestStatus.Inactive;
 
             _context.EnsembleModerators.Update(ensembleModerator);
             _context.SaveChanges();

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MyGigApi.Entities
 {
-    public class EnsembleMember
+    public class EnsembleMember : Request
     {
         [Required]
         public int UserId { get; set; }
@@ -17,15 +17,5 @@ namespace MyGigApi.Entities
 
         [Required]
         public DateTime JoinedOn { get; set; }
-
-        public EnsembleMemberStatus Status { get; set; }
-    }
-
-    public enum EnsembleMemberStatus
-    {
-        Pending = 0,
-        Active = 1,
-        Declined = 2,
-        Inactive = 3
     }
 }
