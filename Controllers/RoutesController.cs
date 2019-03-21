@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyGigApi.Context;
+using MyGigApi.DTOs;
 using MyGigApi.Entities;
 
 namespace MyGigApi.Controllers
@@ -35,7 +36,13 @@ namespace MyGigApi.Controllers
                 .DefaultIfEmpty();
 
             var notifications = _context.Notifications
-                .Select(n => n.UserId == userId && n.Status == NotificationStatus.Unseen);
+                .Where(n => n.UserId == userId && n.Status == NotificationStatus.Unseen)
+                .Select(n => new NotificationDto
+                {
+                    Url = n.Url,
+                    DisplayMessage = n.DisplayMessage,
+                    Timestamp = n.Timestamp
+                });
 
             var requests = _context.Requests
                 .OrderBy(r => r.Timestamp)
