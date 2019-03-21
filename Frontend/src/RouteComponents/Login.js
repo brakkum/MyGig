@@ -54,6 +54,7 @@ export default withRouter(
                 }).then(res => res.json())
                     .then(json => {
                         if (json.success){
+                            json.jwt = jwt;
                             this.props.loginUser(json);
                             this.redirectOnLogin();
                         } else {

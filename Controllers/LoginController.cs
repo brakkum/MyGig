@@ -36,9 +36,6 @@ namespace MyGigApi.Controllers
 
         private string GenerateJwtToken(UserDto user)
         {
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine(_config["Jwt:Key"]);
-
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -110,7 +107,8 @@ namespace MyGigApi.Controllers
                 {
                     UserId = user.UserId,
                     FullName = user.FullName,
-                    PhotoUrl = null
+                    PhotoUrl = null,
+                    ConnectedToUser = true
                 },
                 jwt = jwtToken
             });
@@ -153,7 +151,8 @@ namespace MyGigApi.Controllers
                 {
                     FullName = user.FullName,
                     UserId = user.UserId,
-                    PhotoUrl = user.UserPhoto.Url
+                    PhotoUrl = user.UserPhoto?.Url,
+                    ConnectedToUser = true
                 },
                 jwt = jwtToken
             });
@@ -162,7 +161,7 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/getuserfromtoken")]
-        public OkObjectResult GetUserFromToken([FromBody] JwtTokenDto jwtToken)
+        public OkObjectResult GetUserFromToken()
         {
             var userId = User.Claims
                 .Where(c => c.Type == "UserId")
@@ -175,7 +174,8 @@ namespace MyGigApi.Controllers
             }
 
             var userObj = _context.Users
-                .Find(int.Parse(userId));
+                .Include(u => u.UserPhoto)
+                .SingleOrDefault(u => u.UserId == int.Parse(userId));
 
             if (userObj == null)
             {
@@ -187,10 +187,10 @@ namespace MyGigApi.Controllers
                 user = new UserDto
                 {
                     UserId = userObj.UserId,
-                    PhotoUrl = userObj.UserPhoto.Url,
-                    FullName = userObj.FullName
-                },
-                jwt = jwtToken.Jwt
+                    PhotoUrl = userObj.UserPhoto?.Url,
+                    FullName = userObj.FullName,
+                    ConnectedToUser = true
+                }
             });
         }
     }
