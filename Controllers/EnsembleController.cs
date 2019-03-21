@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGigApi.Context;
@@ -25,19 +26,27 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, ModelState.Keys});
             }
 
+            var userId = int.Parse(User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(x => x.Value)
+                .SingleOrDefault()
+            );
+
             _context.Ensembles.Add(ensemble);
             // Make ensemble creator Mod
             _context.EnsembleModerators.Add(new EnsembleModerator
             {
                 EnsembleId = ensemble.EnsembleId,
-                UserId = 1, // TODO: Change UserId to JWT bearer
+                UserIdRecipient = userId,
+                UserIdRequester = userId,
                 Status = RequestStatus.Accepted
             });
             // Make ensemble creator Member
             _context.EnsembleMembers.Add(new EnsembleMember
             {
                 EnsembleId = ensemble.EnsembleId,
-                UserId = 1, // TODO: Change UserId to JWT bearer
+                UserIdRecipient = userId,
+                UserIdRequester = userId,
                 Status = RequestStatus.Accepted
             });
             _context.SaveChanges();

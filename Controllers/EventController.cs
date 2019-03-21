@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGigApi.Context;
@@ -25,8 +26,19 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, ModelState});
             }
 
+            var userId = int.Parse(User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(x => x.Value)
+                .SingleOrDefault()
+            );
+
             _context.Events.Add(ev);
-            _context.EventModerators.Add(new EventModerator(){EventId = ev.EventId, UserId = ev.CreatedByUserId});
+            _context.EventModerators.Add(new EventModerator
+            {
+                EventId = ev.EventId,
+                UserIdRecipient = userId,
+                UserIdRequester = userId
+            });
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true, ev});

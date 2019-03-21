@@ -1,14 +1,14 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 namespace MyGigApi.Entities
 {
     public class Connection : Request
     {
-        [Required]
-        public int UserIdRecipient { get; set; }
+        public Connection()
+        {
+            Text = $"{UserRequester.FullName} would like to connect with you";
+        }
 
-        [ForeignKey("UserIdRecipient")]
-        public User UserRecipient { get; set; }
+        public DateTime? ConfirmedAt { get; set; }
     }
 }

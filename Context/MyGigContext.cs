@@ -74,21 +74,17 @@ namespace MyGigApi.Context
                 .Property(em => em.JoinedOn)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             modelBuilder.Entity<EnsembleMember>()
-                .HasKey(em => new { em.UserId, em.EnsembleId });
-            modelBuilder.Entity<EnsembleMember>()
-                .HasOne(em => em.User)
+                .HasOne(em => em.UserRecipient)
                 .WithMany(e => e.Ensembles);
             modelBuilder.Entity<EnsembleMember>()
                 .HasOne(em => em.Ensemble)
                 .WithMany(m => m.Members);
             // EnsembleModerator
             modelBuilder.Entity<EnsembleModerator>()
-                .HasKey(em => new { em.UserId, em.EnsembleId });
-            modelBuilder.Entity<EnsembleModerator>()
                 .Property(em => em.Status)
                 .HasDefaultValue(RequestStatus.Pending);
             modelBuilder.Entity<EnsembleModerator>()
-                .HasOne(em => em.User)
+                .HasOne(em => em.UserRecipient)
                 .WithMany(m => m.EnsemblesModerated);
             modelBuilder.Entity<EnsembleModerator>()
                 .HasOne(em => em.Ensemble)
@@ -102,12 +98,10 @@ namespace MyGigApi.Context
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // EventModerator
             modelBuilder.Entity<EventModerator>()
-                .HasKey(em => new { em.UserId, em.EventId });
-            modelBuilder.Entity<EventModerator>()
                 .Property(em => em.Status)
                 .HasDefaultValue(RequestStatus.Pending);
             modelBuilder.Entity<EventModerator>()
-                .HasOne(em => em.User)
+                .HasOne(em => em.UserRecipient)
                 .WithMany(m => m.EventsModerated);
             modelBuilder.Entity<EventModerator>()
                 .HasOne(em => em.Event)

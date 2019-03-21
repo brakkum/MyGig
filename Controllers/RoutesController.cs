@@ -31,7 +31,7 @@ namespace MyGigApi.Controllers
             var ensembles = _context.EnsembleMembers
                 .Include(em => em.Ensemble)
                 .ThenInclude(e => new {e.Name, e.EnsembleId})
-                .Select(e => e.UserId == userId && e.Status == RequestStatus.Accepted)
+                .Select(e => e.UserIdRecipient == userId && e.Status == RequestStatus.Accepted)
                 .DefaultIfEmpty();
 
             var notifications = _context.Notifications

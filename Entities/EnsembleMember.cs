@@ -5,10 +5,10 @@ namespace MyGigApi.Entities
 {
     public class EnsembleMember : Request
     {
-        [Required]
-        public int UserId { get; set; }
-
-        public User User { get; set; }
+        public EnsembleMember()
+        {
+            Text = $"{UserRequester.FullName} has asked you to join ${Ensemble.Name}";
+        }
 
         [Required]
         public int EnsembleId { get; set; }
