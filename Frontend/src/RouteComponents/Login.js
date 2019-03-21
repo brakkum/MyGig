@@ -61,7 +61,12 @@ export default withRouter(
                             this.props.pageLoaded();
                         }
                     }
-                ).catch(e => {console.log(e)});
+                ).catch(e => {
+                    console.log(e);
+                    setTimeout(() => {
+                        this.props.pageLoaded();
+                    }, 1500);
+                });
             } else {
                 // This is necessary to work correctly
                 setTimeout(() => {
