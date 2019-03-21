@@ -51,7 +51,7 @@ namespace MyGigApi.Controllers
 
             var requestedUser = _context.Users
                 .Include(us => us.UserPhoto)
-                .Select(us => new UserDto
+                .Select(us => new MemberDto
                 {
                     UserId = us.UserId,
                     FullName = us.FullName,
