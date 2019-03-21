@@ -17,8 +17,5 @@ namespace MyGigApi.Entities
 
         [ForeignKey("UserIdRecipient")]
         public User UserRecipient { get; set; }
-
-        [Required]
-        public DateTime Timestamp { get; set; }
     }
 }

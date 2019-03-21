@@ -14,8 +14,5 @@ namespace MyGigApi.Entities
         public int EnsembleId { get; set; }
 
         public Ensemble Ensemble { get; set; }
-
-        [Required]
-        public DateTime BookedOn { get; set; }
     }
 }

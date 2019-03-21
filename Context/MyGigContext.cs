@@ -41,9 +41,6 @@ namespace MyGigApi.Context
             modelBuilder.Entity<Booking>()
                 .HasKey(b => new { b.EventId, b.EnsembleId });
             modelBuilder.Entity<Booking>()
-                .Property(b => b.BookedOn)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
-            modelBuilder.Entity<Booking>()
                 .HasOne(b => b.Event)
                 .WithMany(b => b.Ensembles);
             modelBuilder.Entity<Booking>()
@@ -91,9 +88,6 @@ namespace MyGigApi.Context
                 .Property(em => em.Status)
                 .HasDefaultValue(RequestStatus.Pending);
             modelBuilder.Entity<EnsembleModerator>()
-                .Property(em => em.AssignedAt)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
-            modelBuilder.Entity<EnsembleModerator>()
                 .HasOne(em => em.User)
                 .WithMany(m => m.EnsemblesModerated);
             modelBuilder.Entity<EnsembleModerator>()
@@ -112,9 +106,6 @@ namespace MyGigApi.Context
             modelBuilder.Entity<EventModerator>()
                 .Property(em => em.Status)
                 .HasDefaultValue(RequestStatus.Pending);
-            modelBuilder.Entity<EventModerator>()
-                .Property(em => em.AssignedAt)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             modelBuilder.Entity<EventModerator>()
                 .HasOne(em => em.User)
                 .WithMany(m => m.EventsModerated);
@@ -148,6 +139,10 @@ namespace MyGigApi.Context
             // PublicEventComment
             modelBuilder.Entity<PublicEventComment>()
                 .Property(p => p.Timestamp)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
+            // Request
+            modelBuilder.Entity<Request>()
+                .Property(r => r.Timestamp)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // SetlistComment
             modelBuilder.Entity<SetlistComment>()

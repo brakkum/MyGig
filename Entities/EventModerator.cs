@@ -17,7 +17,5 @@ namespace MyGigApi.Entities
 
         [ForeignKey("UserId")]
         public User User { get; set; }
-
-        public DateTime AssignedAt { get; set; }
     }
 }

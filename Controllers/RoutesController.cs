@@ -38,6 +38,7 @@ namespace MyGigApi.Controllers
                 .Select(n => n.UserId == userId && n.Status == NotificationStatus.Unseen);
 
             var requests = _context.Requests
+                .OrderBy(r => r.Timestamp)
                 .Select(r => r.Status == RequestStatus.Pending);
 
             return new OkObjectResult(new

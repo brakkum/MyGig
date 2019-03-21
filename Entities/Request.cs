@@ -1,8 +1,12 @@
+using System;
+
 namespace MyGigApi.Entities
 {
     public class Request
     {
         public RequestStatus Status { get; set; }
+
+        public DateTime Timestamp { get; set; }
     }
 
     public enum RequestStatus
