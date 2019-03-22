@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,13 @@ namespace MyGigApi.Controllers
                 .Select(x => x.Value)
                 .SingleOrDefault()
             );
+
+            var userExists = _context.Users.Any(u => u.UserId == userId);
+
+            if (!userExists)
+            {
+                return new OkObjectResult(new {success = false, error = "No User"});
+            }
 
             var ensembles = _context.EnsembleMembers
                 .Include(em => em.Ensemble.Name)

@@ -5,11 +5,6 @@ namespace MyGigApi.Entities
 {
     public class EnsembleModerator : Request
     {
-        public EnsembleModerator()
-        {
-            Text = $"{UserRequester.FullName} has asked you to moderate {Ensemble.Name}";
-        }
-
         [Required]
         public int EnsembleId { get; set; }
 

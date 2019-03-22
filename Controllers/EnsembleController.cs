@@ -1,7 +1,9 @@
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGigApi.Context;
+using MyGigApi.DTOs;
 using MyGigApi.Entities;
 
 namespace MyGigApi.Controllers
@@ -19,7 +21,7 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/newensemble")]
-        public OkObjectResult NewEnsemble([FromBody] Ensemble ensemble)
+        public OkObjectResult NewEnsemble([FromBody] NewEnsembleDto ensDto)
         {
             if (!ModelState.IsValid)
             {
@@ -32,23 +34,34 @@ namespace MyGigApi.Controllers
                 .SingleOrDefault()
             );
 
+            var user = _context.Users.Find(userId);
+
+            var ensemble = new Ensemble
+            {
+                Name = ensDto.Name
+            };
+
             _context.Ensembles.Add(ensemble);
+
             // Make ensemble creator Mod
-            _context.EnsembleModerators.Add(new EnsembleModerator
+            var mod = new EnsembleModerator
             {
-                EnsembleId = ensemble.EnsembleId,
-                UserIdRecipient = userId,
-                UserIdRequester = userId,
+                UserRecipient = user,
+                UserRequester = user,
+                Ensemble = ensemble,
                 Status = RequestStatus.Accepted
-            });
+            };
+            _context.EnsembleModerators.Add(mod);
             // Make ensemble creator Member
-            _context.EnsembleMembers.Add(new EnsembleMember
+            var mem = new EnsembleMember
             {
                 EnsembleId = ensemble.EnsembleId,
                 UserIdRecipient = userId,
                 UserIdRequester = userId,
                 Status = RequestStatus.Accepted
-            });
+            };
+            _context.EnsembleMembers.Add(mem);
+
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true, ensemble});

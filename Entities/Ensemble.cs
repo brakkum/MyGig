@@ -22,7 +22,6 @@ namespace MyGigApi.Entities
 
         public ICollection<EnsembleMember> Members { get; set; }
 
-        // TODO: Make Ensemble creator initial moderator
         public ICollection<EnsembleModerator> Moderators { get; set; }
 
         public ICollection<Booking> Bookings { get; set; }

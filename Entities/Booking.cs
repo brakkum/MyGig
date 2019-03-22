@@ -4,11 +4,6 @@ namespace MyGigApi.Entities
 {
     public class Booking : Request
     {
-        public Booking()
-        {
-            Text = $"{UserRequester.FullName} has requested {Ensemble.Name} to perform at {Event.Name}";
-        }
-
         [Required]
         public int EventId { get; set; }
 

@@ -5,11 +5,6 @@ namespace MyGigApi.Entities
 {
     public class EventModerator : Request
     {
-        public EventModerator()
-        {
-            Text = $"{UserRequester.FullName} has asked you to moderate the event {Event.Name}";
-        }
-
         [Required]
         public int EventId { get; set; }
 

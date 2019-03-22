@@ -1,10 +1,8 @@
-using System;
-
 namespace MyGigApi.DTOs
 {
-    public class ConnectionDto : RequestDto
+    public class EnsembleModeratorDto : RequestDto
     {
-        public ConnectionDto()
+        public EnsembleModeratorDto()
         {
             AcceptRoute = "/route";
             DenyRoute = "/route";
