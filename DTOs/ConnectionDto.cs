@@ -1,4 +1,3 @@
-using System;
 
 namespace MyGigApi.DTOs
 {
@@ -6,8 +5,8 @@ namespace MyGigApi.DTOs
     {
         public ConnectionDto()
         {
-            AcceptRoute = "/route";
-            DenyRoute = "/route";
+            AcceptRoute = "/api/users/confirmconnection";
+            DenyRoute = "/api/users/denyconnection";
         }
     }
 }

@@ -1,3 +1,4 @@
+
 namespace MyGigApi.DTOs
 {
     public class BookingDto : RequestDto

@@ -1,3 +1,5 @@
+using System;
+
 namespace MyGigApi.DTOs
 {
     public class RequestDto
@@ -9,5 +11,7 @@ namespace MyGigApi.DTOs
         public string AcceptRoute { get; set; }
 
         public string DenyRoute { get; set; }
+
+        public DateTime Timestamp { get; set; }
     }
 }

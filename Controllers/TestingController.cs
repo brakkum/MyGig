@@ -1,11 +1,10 @@
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MyGigApi.Context;
 using MyGigApi.DTOs;
-using Newtonsoft.Json.Linq;
+using MyGigApi.Entities;
 
 namespace MyGigApi.Controllers
 {
@@ -24,14 +23,65 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/getallrequests")]
         public OkObjectResult GetAllRequests()
         {
-            Console.WriteLine("wtf is goin on? ");
-            var req = _context.EnsembleMembers
+            var userId = int.Parse(
+                User.Claims
+                    .Where(c => c.Type == "UserId")
+                    .Select(x => x.Value)
+                    .SingleOrDefault()
+            );
+
+            var ensMem = _context.EnsembleMembers
+                .Where(u => u.UserIdRecipient == userId && u.Status == RequestStatus.Pending)
                 .Select(em => new EnsembleMemberDto
                 {
                     RequestId = em.RequestId,
                     Text = $"{em.UserRequester.FullName} wants you to join {em.Ensemble.Name}",
+                    Timestamp = em.Timestamp
                 });
-            return new OkObjectResult(new { req });
+
+            var ensMod = _context.EnsembleModerators
+                .Where(em => em.UserIdRecipient == userId && em.Status == RequestStatus.Pending)
+                .Select(em => new EnsembleMemberDto
+                {
+                    RequestId = em.RequestId,
+                    Text = $"{em.UserRequester.FullName} wants you to moderate {em.Ensemble.Name}",
+                    Timestamp = em.Timestamp
+                });
+
+            var ensBook = _context.Bookings
+                .Where(b => b.UserIdRecipient == userId && b.Status == RequestStatus.Pending)
+                .Select(b => new BookingDto
+                {
+                    RequestId = b.RequestId,
+                    Text = $"{b.UserRequester.FullName} wants your ensemble ${b.Ensemble.Name} to perform at {b.Event.Name}",
+                    Timestamp = b.Timestamp
+                });
+
+            var eveMod = _context.EventModerators
+                .Where(em => em.UserIdRecipient == userId && em.Status == RequestStatus.Pending)
+                .Select(em => new EventModeratorDto
+                {
+                    RequestId = em.RequestId,
+                    Text = $"{em.UserRequester.FullName} wants you to moderate the event {em.Event.Name}",
+                    Timestamp = em.Timestamp
+                });
+
+            var conn = _context.Connections
+                .Where(c => c.UserIdRecipient == userId && c.Status == RequestStatus.Pending)
+                .Select(b => new ConnectionDto
+                {
+                    RequestId = b.RequestId,
+                    Text = $"{b.UserRequester.FullName} wants to connect with you",
+                    Timestamp = b.Timestamp
+                });
+
+            var requests = ensMem.Concat<RequestDto>(ensMod)
+                .Concat(ensBook)
+                .Concat(eveMod)
+                .Concat(conn)
+                .OrderBy(r => r.Timestamp);
+
+            return new OkObjectResult(new { requests });
         }
     }
 }

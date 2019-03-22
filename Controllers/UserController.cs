@@ -22,12 +22,16 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/inactivateuser")]
-        public OkObjectResult InactivateUser([FromBody] User user)
+        public OkObjectResult InactivateUser()
         {
-            if (!ModelState.IsValid)
-            {
-                return new OkObjectResult(new {success = false, ModelState});
-            }
+            var userId = int.Parse(
+                User.Claims
+                    .Where(c => c.Type == "UserId")
+                    .Select(x => x.Value)
+                    .SingleOrDefault()
+            );
+
+            var user = _context.Users.Find(userId);
 
             user.Status = UserStatus.Inactive;
             _context.Users.Update(user);
@@ -76,51 +80,90 @@ namespace MyGigApi.Controllers
             {
                 return new OkObjectResult(new {success = false, userId});
             }
+
             return new OkObjectResult(new {success = true, user = requestedUser});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/newuserphoto")]
-        public OkObjectResult NewUserPhoto([FromBody] UserPhoto userPhoto)
+        public OkObjectResult NewUserPhoto([FromBody] UserPhotoDto userPhotoDto)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.UserPhotos.Add(userPhoto);
-                var user = _context.Users.Find(userPhoto.UserId);
-                user.UserPhotoId = userPhoto.UserPhotoId;
-                _context.SaveChanges();
-                return new OkObjectResult(new {success = true, userPhoto});
+                return new OkObjectResult(new {success = false, error = "Model invalid"});
             }
-            return new OkObjectResult(new {success = false, ModelState});
+
+            var userId = int.Parse(
+                User.Claims
+                    .Where(c => c.Type == "UserId")
+                    .Select(x => x.Value)
+                    .SingleOrDefault()
+            );
+
+            var newPhoto = new UserPhoto
+            {
+                UserId = userId,
+                Url = userPhotoDto.Url
+            };
+
+            _context.UserPhotos.Add(newPhoto);
+
+            var user = _context.Users.Find(userId);
+            user.UserPhotoId = newPhoto.UserPhotoId;
+
+            _context.SaveChanges();
+
+            return new OkObjectResult(new {success = true, newPhoto});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/newconnection")]
-        public OkObjectResult NewConnection([FromBody] Connection connection)
+        public OkObjectResult RequestNewConnection([FromBody] ConnectionRequestDto connectionRequestDto)
         {
-            var alreadyRequested = _context.Connections
-                .Any(c => c.UserIdRecipient == connection.UserIdRequester &&
-                          c.UserIdRequester == connection.UserIdRecipient);
-            if (alreadyRequested)
-            {
-                ModelState.AddModelError("Key", "Request exists from opposite party");
-            }
             if (!ModelState.IsValid)
             {
-                return new OkObjectResult(new {success = false, connection, ModelState});
+                return new OkObjectResult(new {success = false, ModelState});
             }
 
-            _context.Connections.Add(connection);
+            var userId = int.Parse(
+                User.Claims
+                    .Where(c => c.Type == "UserId")
+                    .Select(x => x.Value)
+                    .SingleOrDefault()
+            );
+
+            var existingRequest = _context.Connections
+                .FirstOrDefault(c => c.UserIdRecipient == userId &&
+                          c.UserIdRequester == connectionRequestDto.UserIdRecipient);
+
+            if (existingRequest != null)
+            {
+                existingRequest.Status = RequestStatus.Accepted;
+                _context.SaveChanges();
+
+                return new OkObjectResult(new
+                {
+                    success = true,
+                    info = "Instant accept, other user already requested"
+                });
+            }
+
+            _context.Connections.Add(new Connection
+            {
+                UserIdRecipient = connectionRequestDto.UserIdRecipient,
+                UserIdRequester = userId
+            });
             _context.SaveChanges();
-            return new OkObjectResult(new {success = true, connection});
+
+            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/confirmconnection")]
-        public OkObjectResult ConfirmConnection([FromBody] Connection connection)
+        public OkObjectResult ConfirmConnection([FromBody] ConnectionDto connectionDto)
         {
             if (!ModelState.IsValid)
             {
@@ -128,25 +171,28 @@ namespace MyGigApi.Controllers
             }
 
             var conn = _context.Connections
-                .Find(connection.UserIdRequester, connection.UserIdRecipient);
+                .Find(connectionDto.RequestId);
             conn.Status = RequestStatus.Accepted;
             _context.SaveChanges();
+
             return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/denyconnection")]
-        public OkObjectResult DenyConnection([FromBody] Connection connection)
+        public OkObjectResult DenyConnection([FromBody] ConnectionDto connectionDto)
         {
             if (!ModelState.IsValid)
             {
                 return new OkObjectResult(new {success = false, ModelState});
             }
+
             var conn = _context.Connections
-                .Find(connection.UserIdRequester, connection.UserIdRecipient);
-            conn.Status = RequestStatus.Accepted;
+                .Find(connectionDto.RequestId);
+            conn.Status = RequestStatus.Denied;
             _context.SaveChanges();
+
             return new OkObjectResult(new {success = true});
         }
     }
