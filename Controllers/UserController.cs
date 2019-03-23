@@ -96,6 +96,7 @@ namespace MyGigApi.Controllers
 
             var user = _context.Users.Find(userId);
             user.UserPhotoId = newPhoto.UserPhotoId;
+            _context.Users.Update(user);
 
             _context.SaveChanges();
 

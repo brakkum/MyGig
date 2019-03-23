@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
+        <!--<TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>-->
+        <!--<RuntimeIdentifier>linux-x64</RuntimeIdentifier>-->
         <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     </PropertyGroup>
 
