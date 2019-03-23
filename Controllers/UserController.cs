@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -133,6 +134,31 @@ namespace MyGigApi.Controllers
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/search")]
+        public OkObjectResult SearchUsers([FromBody] SearchDto dto)
+        {
+            var userId = GetUserId();
+
+            var users = _context.Users
+                .Include(us => us.UserPhoto)
+                .Where(u => u.FullName.Contains(dto.Search) && !(_context.Connections
+                    .Any(c => (
+                        (c.UserIdRecipient == userId && c.UserIdRequester == u.UserId) ||
+                        (c.UserIdRecipient == u.UserId && c.UserIdRequester == userId)
+                            ) && c.Status == RequestStatus.Accepted
+                    ) || u.UserId == userId))
+                .Select(us => new MemberDto
+                {
+                    UserId = us.UserId,
+                    FullName = us.FullName,
+                    PhotoUrl = us.UserPhoto.Url
+                });
+
+            return new OkObjectResult(new {success = true , users});
         }
 
         public int GetUserId()

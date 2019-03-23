@@ -4,4 +4,5 @@ export default {
     backgroundColor: "lightblue",
     loaderTransitionTimeMs: 800,
     loaderTransitionTimeSe: ".8s",
+    searchTimeout: 800,
 }

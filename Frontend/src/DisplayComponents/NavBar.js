@@ -2,14 +2,11 @@ import React from "react";
 import { withRouter } from "react-router";
 import MemberPicture from "./MemberPicture";
 import Constants from "../Constants/Constants";
+import UserSearch from "../FormComponents/UserSearch";
 
 export default withRouter(
     class NavBar extends React.Component {
         // MyGig page top navbar
-
-        state = {
-            redirect: null
-        };
 
         navStyle = {
             maxWidth: "1000px",
@@ -66,6 +63,12 @@ export default withRouter(
                             :
                         <div>
                             {/* empty div for flex consistency */}
+                        </div>
+                    }
+                    {
+                        this.props.userData &&
+                        <div style={this.navSectionStyle}>
+                            <UserSearch userData={this.props.userData} />
                         </div>
                     }
                     <div style={this.navRightStyle}>

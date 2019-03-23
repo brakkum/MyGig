@@ -51,9 +51,12 @@ export default class Input extends React.Component {
                 </div>
                 <input
                     type={this.props.type || "text"}
-                    value={this.state.value}
+                    value={this.props.value}
                     name={this.props.name}
                     onChange={event => this.onChange(event)}
+                    onFocus={this.props.onFocus}
+                    onBlur={this.props.onBlur}
+                    placeholder={this.props.placeholder}
                     style={{
                         width: "100%",
                         borderRadius: "4px",
