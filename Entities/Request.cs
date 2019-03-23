@@ -33,6 +33,8 @@ namespace MyGigApi.Entities
             get => _text;
             set => _text = value;
         }
+
+        public DateTime? ConfirmedAt { get; set; }
     }
 
     public enum RequestStatus

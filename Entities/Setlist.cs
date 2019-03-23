@@ -25,6 +25,6 @@ namespace MyGigApi.Entities
         [ForeignKey("EnsembleId")]
         public Ensemble Ensemble { get; set; }
 
-        public ICollection<EventSetlist> EventSetlists { get; set; }
+        public ICollection<BookingSetlist> BookingSetlists { get; set; }
     }
 }

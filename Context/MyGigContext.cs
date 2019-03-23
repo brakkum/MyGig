@@ -15,6 +15,7 @@ namespace MyGigApi.Context
         }
 
         public DbSet<Booking> Bookings { get; set; }
+        public DbSet<BookingSetlist> BookingSetlists { get; set; }
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Ensemble> Ensembles { get; set; }
         public DbSet<EnsembleComment> EnsembleComments { get; set; }
@@ -22,10 +23,8 @@ namespace MyGigApi.Context
         public DbSet<EnsembleModerator> EnsembleModerators { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventModerator> EventModerators { get; set; }
-        public DbSet<EventSetlist> EventSetlists { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-        public DbSet<PrivateEventComment> PrivateEventComments { get; set; }
-        public DbSet<PublicEventComment> PublicEventComments { get; set; }
+        public DbSet<EventComment> EventComments { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<Setlist> Setlists { get; set; }
         public DbSet<SetlistComment> SetlistComments { get; set; }
@@ -44,6 +43,20 @@ namespace MyGigApi.Context
             modelBuilder.Entity<Booking>()
                 .HasOne(b => b.Ensemble)
                 .WithMany(b => b.Bookings);
+            modelBuilder.Entity<Booking>()
+                .Property(b => b.Status)
+                .HasDefaultValue(RequestStatus.Pending);
+            // BookingSetlist
+            modelBuilder.Entity<BookingSetlist>()
+                .HasKey(bs => new {bs.BookingId, bs.SetlistId});
+            modelBuilder.Entity<BookingSetlist>()
+                .HasOne(es => es.Booking)
+                .WithMany(e => e.Setlists)
+                .HasForeignKey(es => es.BookingId);
+            modelBuilder.Entity<BookingSetlist>()
+                .HasOne(es => es.Setlist)
+                .WithMany(e => e.BookingSetlists)
+                .HasForeignKey(es => es.SetlistId);
             // Connection
             modelBuilder.Entity<Connection>()
                 .Property(c => c.Timestamp)
@@ -67,9 +80,6 @@ namespace MyGigApi.Context
                 .Property(em => em.Status)
                 .HasDefaultValue(RequestStatus.Pending);
             modelBuilder.Entity<EnsembleMember>()
-                .Property(em => em.JoinedOn)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
-            modelBuilder.Entity<EnsembleMember>()
                 .HasOne(em => em.Ensemble)
                 .WithMany(m => m.Members);
             // EnsembleModerator
@@ -86,6 +96,10 @@ namespace MyGigApi.Context
             modelBuilder.Entity<Event>()
                 .Property(e => e.CreatedOn)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
+            // EventComment
+            modelBuilder.Entity<EventComment>()
+                .Property(p => p.Timestamp)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // EventModerator
             modelBuilder.Entity<EventModerator>()
                 .Property(em => em.Status)
@@ -93,17 +107,6 @@ namespace MyGigApi.Context
             modelBuilder.Entity<EventModerator>()
                 .HasOne(em => em.Event)
                 .WithMany(e => e.Moderators);
-            // EventSetlist
-            modelBuilder.Entity<EventSetlist>()
-                .HasKey(es => new { es.EventId, es.SetlistId });
-            modelBuilder.Entity<EventSetlist>()
-                .HasOne(es => es.Event)
-                .WithMany(e => e.EventSetlists)
-                .HasForeignKey(es => es.EventId);
-            modelBuilder.Entity<EventSetlist>()
-                .HasOne(es => es.Setlist)
-                .WithMany(s => s.EventSetlists)
-                .HasForeignKey(es => es.SetlistId);
             // Notification
             modelBuilder.Entity<Notification>()
                 .HasKey(n => new { n.UserId, n.Url });
@@ -113,14 +116,6 @@ namespace MyGigApi.Context
             modelBuilder.Entity<Notification>()
                 .Property(n => n.Status)
                 .HasDefaultValue(NotificationStatus.Unseen);
-            // PrivateEventComment
-            modelBuilder.Entity<PrivateEventComment>()
-                .Property(p => p.Timestamp)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
-            // PublicEventComment
-            modelBuilder.Entity<PublicEventComment>()
-                .Property(p => p.Timestamp)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // Request
             modelBuilder.Entity<Request>()
                 .Property(r => r.Timestamp)

@@ -33,7 +33,7 @@ namespace MyGigApi.Entities
 
         [Required]
         [NotMapped]
-        [MinLength(6)]
+        [MinLength(1)]
         [MaxLength(50)]
         public string PasswordConfirm { get; set; }
 

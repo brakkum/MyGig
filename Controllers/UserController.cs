@@ -24,17 +24,11 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/inactivateuser")]
         public OkObjectResult InactivateUser()
         {
-            var userId = int.Parse(
-                User.Claims
-                    .Where(c => c.Type == "UserId")
-                    .Select(x => x.Value)
-                    .SingleOrDefault()
-            );
+            var userId = GetUserId();
 
             var user = _context.Users.Find(userId);
 
             user.Status = UserStatus.Inactive;
-            _context.Users.Update(user);
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true, user});
@@ -46,12 +40,7 @@ namespace MyGigApi.Controllers
         public OkObjectResult GetUser([FromBody] JObject body)
         {
             var requestedUserId = (int)body["UserId"];
-            var userId = int.Parse(
-                User.Claims
-                .Where(c => c.Type == "UserId")
-                .Select(x => x.Value)
-                .SingleOrDefault()
-            );
+            var userId = GetUserId();
 
             var requestedUser = _context.Users
                 .Include(us => us.UserPhoto)
@@ -78,7 +67,7 @@ namespace MyGigApi.Controllers
 
             if (requestedUser == null)
             {
-                return new OkObjectResult(new {success = false, userId});
+                return new OkObjectResult(new {success = false, error = "No user found"});
             }
 
             return new OkObjectResult(new {success = true, user = requestedUser});
@@ -94,12 +83,7 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "Model invalid"});
             }
 
-            var userId = int.Parse(
-                User.Claims
-                    .Where(c => c.Type == "UserId")
-                    .Select(x => x.Value)
-                    .SingleOrDefault()
-            );
+            var userId = GetUserId();
 
             var newPhoto = new UserPhoto
             {
@@ -120,23 +104,13 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/newconnection")]
-        public OkObjectResult RequestNewConnection([FromBody] ConnectionRequestDto connectionRequestDto)
+        public OkObjectResult RequestNewConnection([FromBody] ConnectionDto request)
         {
-            if (!ModelState.IsValid)
-            {
-                return new OkObjectResult(new {success = false, ModelState});
-            }
-
-            var userId = int.Parse(
-                User.Claims
-                    .Where(c => c.Type == "UserId")
-                    .Select(x => x.Value)
-                    .SingleOrDefault()
-            );
+            var userId = GetUserId();
 
             var existingRequest = _context.Connections
                 .FirstOrDefault(c => c.UserIdRecipient == userId &&
-                          c.UserIdRequester == connectionRequestDto.UserIdRecipient);
+                                     c.UserIdRequester == request.UserIdRecipient);
 
             if (existingRequest != null)
             {
@@ -152,48 +126,23 @@ namespace MyGigApi.Controllers
 
             _context.Connections.Add(new Connection
             {
-                UserIdRecipient = connectionRequestDto.UserIdRecipient,
-                UserIdRequester = userId
+                UserIdRecipient = request.UserIdRecipient,
+                UserIdRequester = userId,
+                Status = RequestStatus.Pending
             });
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
         }
 
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/confirmconnection")]
-        public OkObjectResult ConfirmConnection([FromBody] ConnectionDto connectionDto)
+        public int GetUserId()
         {
-            if (!ModelState.IsValid)
-            {
-                return new OkObjectResult(new {success = false, ModelState});
-            }
-
-            var conn = _context.Connections
-                .Find(connectionDto.RequestId);
-            conn.Status = RequestStatus.Accepted;
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/denyconnection")]
-        public OkObjectResult DenyConnection([FromBody] ConnectionDto connectionDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return new OkObjectResult(new {success = false, ModelState});
-            }
-
-            var conn = _context.Connections
-                .Find(connectionDto.RequestId);
-            conn.Status = RequestStatus.Denied;
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true});
+            return int.Parse(
+                User.Claims
+                    .Where(c => c.Type == "UserId")
+                    .Select(x => x.Value)
+                    .SingleOrDefault()
+            );
         }
     }
 }

@@ -6,6 +6,8 @@ namespace MyGigApi.DTOs
     {
         public int SetlistId { get; set; }
 
+        public int EnsembleId { get; set; }
+
         public string Name { get; set; }
 
         public ICollection<SongDto> Songs { get; set; }

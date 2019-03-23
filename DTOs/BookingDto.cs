@@ -3,10 +3,8 @@ namespace MyGigApi.DTOs
 {
     public class BookingDto : RequestDto
     {
-        public BookingDto()
-        {
-            AcceptRoute = "/route";
-            DenyRoute = "/route";
-        }
+        public int EventId { get; set; }
+
+        public int EnsembleId { get; set; }
     }
 }

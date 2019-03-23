@@ -24,11 +24,7 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/home")]
         public OkObjectResult GetHomePage()
         {
-            var userId = int.Parse(User.Claims
-                .Where(c => c.Type == "UserId")
-                .Select(x => x.Value)
-                .SingleOrDefault()
-            );
+            var userId = GetUserId();
 
             var userExists = _context.Users.Any(u => u.UserId == userId);
 
@@ -61,6 +57,15 @@ namespace MyGigApi.Controllers
                 notifications,
                 requests
             });
+        }
+
+        public int GetUserId()
+        {
+            return int.Parse(User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(x => x.Value)
+                .SingleOrDefault()
+            );
         }
     }
 }

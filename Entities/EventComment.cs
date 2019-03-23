@@ -4,12 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyGigApi.Entities
 {
-    public class PublicEventComment
+    public class EventComment
     {
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PublicEventCommentId { get; set; }
+        public int EventCommentId { get; set; }
 
         [Required]
         [MinLength(1)]

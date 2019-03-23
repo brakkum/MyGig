@@ -5,10 +5,9 @@ import Home from "./Home";
 import Account from "./Account";
 import Notifications from "./Notifications";
 import Connections from "./Connections";
-import PrivateEvent from "./PrivateEvent";
+import Event from "./Event";
 import Ensemble from "./Ensemble";
 import Sets from "./Sets";
-import PublicEvent from "./PublicEvent";
 import Login from "./Login";
 import Logout from "./Logout";
 
@@ -71,7 +70,7 @@ export default withRouter(
                         redirect={this.props.redirect}
                         pageLoaded={this.props.pageLoaded}
                         component={
-                            PrivateEvent
+                            Event
                         }
                     />
                     <ProtectedRoute
@@ -99,17 +98,6 @@ export default withRouter(
                         // remaining components are accessible by anyone
                     }
                     <Route
-                        path="/public_event/:eventId"
-                        render={(match) =>
-                            <PublicEvent
-                                userData={this.props.userData}
-                                redirect={this.props.redirect}
-                                pageLoaded={this.props.pageLoaded}
-                                {...match}
-                            />
-                        }
-                    />
-                    <Route
                         path="/login"
                         render={() =>
                             <Login
@@ -134,8 +122,7 @@ export default withRouter(
                         <div onClick={() => this.props.redirect("/", this.props.location.pathname)}>Home</div>
                         <div onClick={() => this.props.redirect("/account", this.props.location.pathname)}>Account</div>
                         <div onClick={() => this.props.redirect("/notifications", this.props.location.pathname)}>Notif</div>
-                        <div onClick={() => this.props.redirect("/public_event/2", this.props.location.pathname)}>pubEve2</div>
-                        <div onClick={() => this.props.redirect("/event/3", this.props.location.pathname)}>priEv3</div>
+                        <div onClick={() => this.props.redirect("/event/3", this.props.location.pathname)}>ev3</div>
                         <div onClick={() => this.props.redirect("/ensemble/4", this.props.location.pathname)}>ense4</div>
                         <div onClick={() => this.props.redirect("/connections", this.props.location.pathname)}>conn</div>
                         <div onClick={() => this.props.redirect("/sets/24", this.props.location.pathname)}>sets24</div>

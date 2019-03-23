@@ -4,10 +4,8 @@ namespace MyGigApi.DTOs
 {
     public class SetlistCommentDto
     {
-        public DateTime Timestamp { get; set; }
-
         public string Text { get; set; }
 
-        public UserDto User { get; set; }
+        public int SetlistId { get; set; }
     }
 }

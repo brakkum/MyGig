@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace MyGigApi.Entities
 {
@@ -11,5 +11,7 @@ namespace MyGigApi.Entities
         public int EnsembleId { get; set; }
 
         public Ensemble Ensemble { get; set; }
+
+        public ICollection<BookingSetlist> Setlists { get; set; }
     }
 }

@@ -6,11 +6,11 @@ namespace MyGigApi.DTOs
     {
         public int RequestId { get; set; }
 
+        public int UserIdRequester { get; set; }
+
+        public int UserIdRecipient { get; set; }
+
         public string Text { get; set; }
-
-        public string AcceptRoute { get; set; }
-
-        public string DenyRoute { get; set; }
 
         public DateTime Timestamp { get; set; }
     }

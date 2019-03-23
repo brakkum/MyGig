@@ -2,6 +2,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGigApi.Context;
+using MyGigApi.DTOs;
 using MyGigApi.Entities;
 
 namespace MyGigApi.Controllers
@@ -19,160 +20,209 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/newevent")]
-        public OkObjectResult NewEvent([FromBody] Event ev)
+        public OkObjectResult NewEvent([FromBody] EventDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return new OkObjectResult(new {success = false, ModelState});
-            }
+            var userId = GetUserId();
 
-            var userId = int.Parse(User.Claims
-                .Where(c => c.Type == "UserId")
-                .Select(x => x.Value)
-                .SingleOrDefault()
-            );
+            var ev = new Event
+            {
+                Name = dto.Name,
+                Location = dto.Location,
+                CreatedByUserId = userId,
+                DateAndTime = dto.DateAndTime
+            };
 
             _context.Events.Add(ev);
             _context.EventModerators.Add(new EventModerator
             {
                 EventId = ev.EventId,
                 UserIdRecipient = userId,
-                UserIdRequester = userId
+                UserIdRequester = userId,
+                Status = RequestStatus.Accepted
             });
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, ev});
+            return new OkObjectResult(new {success = true, eventId = ev.EventId});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/newmod")]
-        public OkObjectResult NewEventModerator([FromBody] EventModerator eventModerator)
+        public OkObjectResult NewEventModerator([FromBody] EventModeratorDto dto)
         {
-            if (!ModelState.IsValid)
+            var userId = GetUserId();
+
+            var validMod = _context.EventModerators
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.EventId == dto.EventId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
             {
-                return new OkObjectResult(new {success = false, ModelState});
+                return new OkObjectResult(new {success = false, error = "Not valid mod"});
             }
 
-            _context.EventModerators.Add(eventModerator);
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true, eventModerator});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/acceptmod")]
-        public OkObjectResult AcceptEventModerator([FromBody] EventModerator eventModerator)
-        {
-            if (!ModelState.IsValid)
+            _context.EventModerators.Add(new EventModerator
             {
-                return new OkObjectResult(new {success = false, ModelState});
-            }
-
-            eventModerator.Status = RequestStatus.Accepted;
-            _context.EventModerators.Update(eventModerator);
+                EventId = dto.EventId,
+                UserIdRecipient = dto.UserIdRecipient,
+                UserIdRequester = userId
+            });
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, eventModerator});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/denymod")]
-        public OkObjectResult DenyEventModerator([FromBody] EventModerator eventModerator)
-        {
-            if (!ModelState.IsValid)
-            {
-                return new OkObjectResult(new {success = false, ModelState});
-            }
-
-            eventModerator.Status = RequestStatus.Denied;
-            _context.EventModerators.Update(eventModerator);
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true, eventModerator});
+            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/invalidatemod")]
-        public OkObjectResult InvalidateEventModerator([FromBody] EventModerator eventModerator)
+        public OkObjectResult InvalidateEventModerator([FromBody] EventModeratorDto dto)
         {
-            if (!ModelState.IsValid)
+            var userId = GetUserId();
+
+            var validMod = _context.EventModerators
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.EventId == dto.EventId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
             {
-                return new OkObjectResult(new {success = false, ModelState});
+                return new OkObjectResult(new {success = false, error = "Not valid mod"});
             }
 
-            eventModerator.Status = RequestStatus.Inactive;
-            _context.EventModerators.Update(eventModerator);
+            var mod = _context.EventModerators
+                .FirstOrDefault(em => em.EventId == dto.EventId &&
+                                      em.UserIdRecipient == dto.UserIdRecipient &&
+                                      em.Status == RequestStatus.Accepted);
+
+            if (mod == null)
+            {
+                return new OkObjectResult(new {success = false, error = "No mod found"});
+            }
+
+            mod.Status = RequestStatus.Inactive;
+
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, eventModerator});
+            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/newpubliccomment")]
-        public OkObjectResult NewPublicEventComment([FromBody] PublicEventComment publicEventComment)
+        [Route(RoutePrefix + "/neweventcomment")]
+        public OkObjectResult NewPrivateEventComment([FromBody] EventCommentDto dto)
         {
-            if (!ModelState.IsValid)
+            var userId = GetUserId();
+
+            var ensembles = _context.Bookings
+                .Where(ev => ev.EventId == dto.EventId)
+                .Select(ev => ev.Ensemble);
+
+            var validUser = ensembles.Any(en =>
+                en.Members.Any(u => u.UserIdRecipient == userId &&
+                                    u.Status == RequestStatus.Accepted));
+
+            if (!validUser)
             {
-                return new OkObjectResult(new {success = false, ModelState});
+                return new OkObjectResult(new {success = false, error = "Not valid member"});
             }
 
-            _context.PublicEventComments.Add(publicEventComment);
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true, publicEventComment});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/newprivatecomment")]
-        public OkObjectResult NewPrivateEventComment([FromBody] PrivateEventComment privateEventComment)
-        {
-            if (!ModelState.IsValid)
+            var comment = new EventComment
             {
-                return new OkObjectResult(new {success = false, ModelState});
-            }
+                EventId = dto.EventId,
+                Text = dto.Text,
+                UserId = userId
+            };
 
-            _context.PrivateEventComments.Add(privateEventComment);
+            _context.EventComments.Add(comment);
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, privateEventComment});
+            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/newbooking")]
-        public OkObjectResult NewBooking([FromBody] Booking booking)
+        public OkObjectResult NewBooking([FromBody] BookingDto dto)
         {
-            if (!ModelState.IsValid)
+            var userId = GetUserId();
+
+            var validMod = _context.EventModerators
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.EventId == dto.EventId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
             {
-                return new OkObjectResult(new {success = false, ModelState});
+                return new OkObjectResult(new {success = false, error = "Not valid mod"});
             }
+
+            var firstEnsMod = _context.EnsembleModerators
+                .Where(em => em.EnsembleId == dto.EnsembleId &&
+                             em.Status == RequestStatus.Accepted)
+                .Select(em => em.UserRecipient)
+                .FirstOrDefault();
+
+            if (firstEnsMod == null)
+            {
+                return new OkObjectResult(new {success = false, error = "Could not find mod of ensemble"});
+            }
+
+            var booking = new Booking
+            {
+                EnsembleId = dto.EnsembleId,
+                UserIdRecipient = firstEnsMod.UserId,
+                UserIdRequester = userId,
+                EventId = dto.EventId
+            };
 
             _context.Bookings.Add(booking);
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, booking});
+            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/addsetlist")]
-        public OkObjectResult AddSetlistToEvent([FromBody] EventSetlist eventSetlist)
+        public OkObjectResult AddSetlistToBooking([FromBody] BookingSetlistDto dto)
         {
-            if (!ModelState.IsValid)
+            var userId = GetUserId();
+            var ensembleId = _context.Bookings
+                .Where(b => b.EventId == dto.Booking.EventId &&
+                            b.EnsembleId == dto.Setlist.EnsembleId)
+                .Select(b => b.EnsembleId)
+                .FirstOrDefault();
+
+            var validMod = _context.EnsembleModerators
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.EnsembleId == ensembleId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
             {
-                return new OkObjectResult(new {success = false, ModelState});
+                return new OkObjectResult(new {success = false, error = "Not valid mod"});
             }
 
-            _context.EventSetlists.Add(eventSetlist);
+            var bookingSetlist = new BookingSetlist
+            {
+                SetlistId = dto.SetlistId,
+                BookingId = dto.BookingId
+            };
+
+            _context.BookingSetlists.Add(bookingSetlist);
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, eventSetlist});
+            return new OkObjectResult(new {success = true});
+        }
+
+        public int GetUserId()
+        {
+            return int.Parse(User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(x => x.Value)
+                .SingleOrDefault()
+            );
         }
     }
 }

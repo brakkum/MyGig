@@ -21,24 +21,13 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/newensemble")]
-        public OkObjectResult NewEnsemble([FromBody] NewEnsembleDto ensDto)
+        public OkObjectResult NewEnsemble([FromBody] EnsembleDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return new OkObjectResult(new {success = false, ModelState.Keys});
-            }
-
-            var userId = int.Parse(User.Claims
-                .Where(c => c.Type == "UserId")
-                .Select(x => x.Value)
-                .SingleOrDefault()
-            );
-
-            var user = _context.Users.Find(userId);
+            var userId = GetUserId();
 
             var ensemble = new Ensemble
             {
-                Name = ensDto.Name
+                Name = dto.Name
             };
 
             _context.Ensembles.Add(ensemble);
@@ -46,9 +35,9 @@ namespace MyGigApi.Controllers
             // Make ensemble creator Mod
             var mod = new EnsembleModerator
             {
-                UserRecipient = user,
-                UserRequester = user,
-                Ensemble = ensemble,
+                UserIdRecipient = userId,
+                UserIdRequester = userId,
+                EnsembleId = ensemble.EnsembleId,
                 Status = RequestStatus.Accepted
             };
             _context.EnsembleModerators.Add(mod);
@@ -64,24 +53,33 @@ namespace MyGigApi.Controllers
 
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, ensemble});
+            return new OkObjectResult(new {success = true, ensembleId = ensemble.EnsembleId});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/inactivateensemble")]
-        public OkObjectResult InactivateEnsemble([FromBody] Ensemble ensemble)
+        public OkObjectResult InactivateEnsemble([FromBody] EnsembleDto dto)
         {
-            if (!ModelState.IsValid)
+            var userId = GetUserId();
+
+            var validMod = _context.EnsembleModerators
+                .Any(em => em.EnsembleId == dto.EnsembleId &&
+                           em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
             {
-                return new OkObjectResult(new {success = false, ModelState.Keys});
+                return new OkObjectResult(new {success = false, error = "Permission denied"});
             }
+
+            var ensemble = _context.Ensembles.Find(dto.EnsembleId);
 
             ensemble.Status = EnsembleStatus.Inactive;
             _context.Ensembles.Update(ensemble);
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, ensemble});
+            return new OkObjectResult(new {success = true });
         }
 
         [HttpPost]
@@ -95,127 +93,161 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/newmember")]
-        public OkObjectResult NewEnsembleMember([FromBody] EnsembleMember ensembleMember)
+        public OkObjectResult NewEnsembleMember([FromBody] EnsembleMember dto)
         {
-            if (!ModelState.IsValid)
+            var userId = GetUserId();
+
+            var validMod = _context.EnsembleModerators
+                .Any(em => em.EnsembleId == dto.EnsembleId &&
+                           em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
             {
-                return new OkObjectResult(new {success = false, ModelState});
+                return new OkObjectResult(new {success = false, error = "Permission denied"});
             }
 
-            _context.EnsembleMembers.Add(ensembleMember);
+            _context.EnsembleMembers.Add(new EnsembleMember
+            {
+                EnsembleId = dto.EnsembleId,
+                UserIdRecipient = dto.UserIdRecipient,
+                UserIdRequester = userId
+            });
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, ensembleMember});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/confirmmembership")]
-        public OkObjectResult ConfirmEnsembleMembership([FromBody] EnsembleMember ensembleMember)
-        {
-            ensembleMember.Status = RequestStatus.Accepted;
-
-            _context.EnsembleMembers.Update(ensembleMember);
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true, ensembleMember});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/denymembership")]
-        public OkObjectResult DenyEnsembleMembership([FromBody] EnsembleMember ensembleMember)
-        {
-            ensembleMember.Status = RequestStatus.Denied;
-
-            _context.EnsembleMembers.Update(ensembleMember);
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true, ensembleMember});
+            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/inactivatemembership")]
-        public OkObjectResult InactivateEnsembleMembership([FromBody] EnsembleMember ensembleMember)
+        public OkObjectResult InactivateEnsembleMembership([FromBody] EnsembleMemberDto dto)
         {
-            ensembleMember.Status = RequestStatus.Inactive;
+            var userId = GetUserId();
 
-            _context.EnsembleMembers.Update(ensembleMember);
+            var validMod = _context.EnsembleModerators
+                .Any(em => em.EnsembleId == dto.EnsembleId &&
+                           em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
+            {
+                return new OkObjectResult(new {success = false, error = "Permission denied"});
+            }
+
+            var mem = _context.EnsembleMembers
+                .FirstOrDefault(em => em.EnsembleId == dto.EnsembleId &&
+                                      em.UserIdRecipient == dto.UserIdRecipient);
+
+            if (mem == null)
+            {
+                return new OkObjectResult(new {success = false, error = "No member found"});
+            }
+
+            mem.Status = RequestStatus.Inactive;
+            _context.EnsembleMembers.Update(mem);
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, ensembleMember});
+            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/addmod")]
-        public OkObjectResult AddEnsembleModerator([FromBody] EnsembleModerator ensembleModerator)
+        public OkObjectResult AddEnsembleModerator([FromBody] EnsembleModeratorDto dto)
         {
-            if (!ModelState.IsValid)
+            var userId = GetUserId();
+
+            var validMod = _context.EnsembleModerators
+                .Any(em => em.EnsembleId == dto.EnsembleId &&
+                           em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
             {
-                return new OkObjectResult(new {success = false, ModelState});
+                return new OkObjectResult(new {success = false, error = "Permission denied"});
             }
 
-            _context.EnsembleModerators.Add(ensembleModerator);
+            _context.EnsembleModerators.Add(new EnsembleModerator
+            {
+                EnsembleId = dto.EnsembleId,
+                UserIdRecipient = dto.UserIdRecipient,
+                UserIdRequester = userId
+            });
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, ensembleModerator});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/confirmmod")]
-        public OkObjectResult ConfirmEnsembleModerator([FromBody] EnsembleModerator ensembleModerator)
-        {
-            ensembleModerator.Status = RequestStatus.Accepted;
-
-            _context.EnsembleModerators.Update(ensembleModerator);
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true, ensembleModerator});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/denymod")]
-        public OkObjectResult DenyEnsembleModerator([FromBody] EnsembleModerator ensembleModerator)
-        {
-            ensembleModerator.Status = RequestStatus.Denied;
-
-            _context.EnsembleModerators.Update(ensembleModerator);
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true, ensembleModerator});
+            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/inactivatemod")]
-        public OkObjectResult InactivateEnsembleMembership([FromBody] EnsembleModerator ensembleModerator)
+        public OkObjectResult InactivateEnsembleMembership([FromBody] EnsembleModeratorDto dto)
         {
-            ensembleModerator.Status = RequestStatus.Inactive;
+            var userId = GetUserId();
 
-            _context.EnsembleModerators.Update(ensembleModerator);
+            var validMod = _context.EnsembleModerators
+                .Any(em => em.EnsembleId == dto.EnsembleId &&
+                           em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
+            {
+                return new OkObjectResult(new {success = false, error = "Permission denied"});
+            }
+
+            var mod = _context.EnsembleModerators
+                .FirstOrDefault(em => em.EnsembleId == dto.EnsembleId &&
+                                      em.UserIdRecipient == dto.UserIdRecipient);
+
+            if (mod == null)
+            {
+                return new OkObjectResult(new {success = false, error = "No mod found"});
+            }
+
+            mod.Status = RequestStatus.Inactive;
+            _context.EnsembleModerators.Update(mod);
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, ensembleModerator});
+            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/addcomment")]
-        public OkObjectResult AddEnsembleModerator([FromBody] EnsembleComment ensembleComment)
+        public OkObjectResult AddEnsembleModerator([FromBody] EnsembleCommentDto dto)
         {
-            if (!ModelState.IsValid)
+            var userId = GetUserId();
+
+            var validMem = _context.EnsembleMembers
+                .Any(em => em.EnsembleId == dto.EnsembleId &&
+                           em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMem)
             {
-                return new OkObjectResult(new {success = false, ModelState});
+                return new OkObjectResult(new {success = false, error = "Not a valid member"});
             }
 
-            _context.EnsembleComments.Add(ensembleComment);
+            _context.EnsembleComments.Add(new EnsembleComment
+            {
+                EnsembleId = dto.EnsembleId,
+                UserId = userId,
+                Text = dto.Text,
+                Timestamp = DateTime.Now
+            });
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, ensembleComment});
+            return new OkObjectResult(new {success = true});
+        }
+
+        public int GetUserId()
+        {
+            return int.Parse(User.Claims
+                .Where(c => c.Type == "UserId")
+                .Select(x => x.Value)
+                .SingleOrDefault()
+            );
         }
     }
 }
