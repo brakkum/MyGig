@@ -34,9 +34,25 @@ namespace MyGigApi.Controllers
             }
 
             var ensembles = _context.EnsembleMembers
-                .Include(em => em.Ensemble.Name)
-                .Include(em => em.Ensemble.EnsembleId)
-                .Select(e => e.UserIdRecipient == userId && e.Status == RequestStatus.Accepted);
+                .Where(e => e.UserIdRecipient == userId && e.Status == RequestStatus.Accepted)
+                .Select(e => new EnsembleDto
+                {
+                    EnsembleId = e.EnsembleId,
+                    Name = e.Ensemble.Name
+                });
+
+            var ensembleIds = ensembles
+                .Select(e => e.EnsembleId)
+                .ToArray();
+
+            var events = _context.Bookings
+                .Where(b => ensembleIds.Contains(b.EnsembleId) && b.Event.DateAndTime > DateTime.Now)
+                .Select(b => new EventDto
+                {
+                    Name = b.Event.Name,
+                    DateAndTime = b.Event.DateAndTime,
+                    Location = b.Event.Location
+                });
 
             var notifications = _context.Notifications
                 .Where(n => n.UserId == userId && n.Status == NotificationStatus.Unseen)
@@ -61,7 +77,8 @@ namespace MyGigApi.Controllers
             {
                 ensembles,
                 notifications,
-                requests
+                requests,
+                events
             });
         }
 

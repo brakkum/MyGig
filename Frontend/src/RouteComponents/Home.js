@@ -3,8 +3,15 @@ import React from "react";
 export default class Home extends React.Component {
     // top level route component for /
 
+    state = {
+        ensembles: [],
+        notifications: [],
+        requests: [],
+        upcoming: []
+    };
+
     componentDidMount() {
-        // api call
+
         setTimeout(() => {
             this.props.pageLoaded();
         }, 2000);
