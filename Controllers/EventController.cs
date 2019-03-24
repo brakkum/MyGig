@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Xml;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyGigApi.Context;
@@ -51,6 +52,7 @@ namespace MyGigApi.Controllers
         public OkObjectResult NewEventModerator([FromBody] EventModeratorDto dto)
         {
             var userId = GetUserId();
+            var user = _context.Users.Find(userId);
 
             var validMod = _context.EventModerators
                 .Any(em => em.UserIdRecipient == userId &&
@@ -62,11 +64,14 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "Not valid mod"});
             }
 
+            var ev = _context.Events.Find(dto.EventId);
+
             _context.EventModerators.Add(new EventModerator
             {
                 EventId = dto.EventId,
                 UserIdRecipient = dto.UserIdRecipient,
-                UserIdRequester = userId
+                UserIdRequester = userId,
+                Text = $"{user.FullName} wants you to moderate the event {ev.Name}"
             });
             _context.SaveChanges();
 
@@ -146,6 +151,7 @@ namespace MyGigApi.Controllers
         public OkObjectResult NewBooking([FromBody] BookingDto dto)
         {
             var userId = GetUserId();
+            var user = _context.Users.Find(userId);
 
             var validMod = _context.EventModerators
                 .Any(em => em.UserIdRecipient == userId &&
@@ -168,12 +174,16 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "Could not find mod of ensemble"});
             }
 
+            var ev = _context.Events.Find(dto.EventId);
+            var en = _context.Ensembles.Find(dto.EnsembleId);
+
             var booking = new Booking
             {
                 EnsembleId = dto.EnsembleId,
                 UserIdRecipient = firstEnsMod.UserId,
                 UserIdRequester = userId,
-                EventId = dto.EventId
+                EventId = dto.EventId,
+                Text = $"{user.FullName} has asked {en.Name} to perform at {ev.Name}"
             };
 
             _context.Bookings.Add(booking);

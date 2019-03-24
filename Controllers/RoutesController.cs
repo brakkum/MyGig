@@ -48,8 +48,14 @@ namespace MyGigApi.Controllers
                 });
 
             var requests = _context.Requests
+                .Where(r => r.UserIdRecipient == userId)
                 .OrderBy(r => r.Timestamp)
-                .Select(r => r.Status == RequestStatus.Pending);
+                .Select(r => new RequestDto
+                {
+                    Text = r.Text,
+                    RequestId = r.RequestId,
+                    Timestamp = r.Timestamp
+                });
 
             return new OkObjectResult(new
             {

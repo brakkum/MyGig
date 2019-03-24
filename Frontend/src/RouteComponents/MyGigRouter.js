@@ -25,6 +25,7 @@ export default withRouter(
                 <div className="routing">
                     <div className="test-nav" style={{backgroundColor: "lightgreen", display: "flex", justifyContent: "space-between"}}>
                         <div onClick={() => this.props.redirect("/", this.props.location.pathname)}>Home</div>
+                        <div onClick={() => this.props.redirect("/search", this.props.location.pathname)}>Search</div>
                         <div onClick={() => this.props.redirect("/account", this.props.location.pathname)}>Account</div>
                         <div onClick={() => this.props.redirect("/notifications", this.props.location.pathname)}>Notif</div>
                         <div onClick={() => this.props.redirect("/event/3", this.props.location.pathname)}>ev3</div>

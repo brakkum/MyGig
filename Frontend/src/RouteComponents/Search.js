@@ -4,7 +4,9 @@ import UserSearch from "../FormComponents/UserSearch";
 export default class Search extends React.Component {
 
     componentDidMount() {
-        this.props.pageLoaded();
+        setTimeout(() => {
+            this.props.pageLoaded();
+        }, 200);
     }
 
     render() {

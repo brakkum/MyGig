@@ -108,7 +108,7 @@ export default class SignUpForm extends React.Component {
                 />
                 <Button
                     onClick={this.attemptSignUp}
-                    innerText={"Submit"}
+                    preClickText={"Submit"}
                     style={{float: "right"}}
                     colorType={"success"}
                     buttonType={"submit"}

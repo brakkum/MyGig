@@ -178,6 +178,8 @@ namespace MyGigApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 
+                    b.Property<string>("Text");
+
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");

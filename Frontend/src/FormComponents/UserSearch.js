@@ -39,8 +39,12 @@ export default class UserSearch extends React.Component{
                     .then(json => {
                         if (json.success){
                             console.log(json.users);
+                            let users = json.users;
                             this.setState({
-                                users: json.users
+                                users: []
+                            });
+                            this.setState({
+                                users: users
                             });
                         } else {
                             console.log("search fail");
@@ -61,7 +65,6 @@ export default class UserSearch extends React.Component{
     };
 
     render() {
-        console.log(this.state);
         return(
             <div>
                 <Input

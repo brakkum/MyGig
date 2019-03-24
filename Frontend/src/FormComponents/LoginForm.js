@@ -80,7 +80,7 @@ export default class LoginForm extends React.Component {
                 </h3>
                 <Button
                     onClick={this.attemptLogin}
-                    innerText={"Login"}
+                    preClickText={"Login"}
                     style={{float: "right"}}
                     colorType={"success"}
                     buttonType={"submit"}

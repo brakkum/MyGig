@@ -99,6 +99,7 @@ namespace MyGigApi.Migrations
                     UserIdRecipient = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false, defaultValue: 0),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
+                    Text = table.Column<string>(nullable: true),
                     ConfirmedAt = table.Column<DateTime>(nullable: true),
                     Discriminator = table.Column<string>(nullable: false),
                     EventId = table.Column<int>(nullable: true),

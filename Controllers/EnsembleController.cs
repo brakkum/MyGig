@@ -96,6 +96,7 @@ namespace MyGigApi.Controllers
         public OkObjectResult NewEnsembleMember([FromBody] EnsembleMember dto)
         {
             var userId = GetUserId();
+            var user = _context.Users.Find(userId);
 
             var validMod = _context.EnsembleModerators
                 .Any(em => em.EnsembleId == dto.EnsembleId &&
@@ -107,11 +108,14 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "Permission denied"});
             }
 
+            var ens = _context.Ensembles.Find(dto.EnsembleId);
+
             _context.EnsembleMembers.Add(new EnsembleMember
             {
                 EnsembleId = dto.EnsembleId,
                 UserIdRecipient = dto.UserIdRecipient,
-                UserIdRequester = userId
+                UserIdRequester = userId,
+                Text = $"{user.FullName} wants you to join {ens.Name}"
             });
             _context.SaveChanges();
 
@@ -157,6 +161,7 @@ namespace MyGigApi.Controllers
         public OkObjectResult AddEnsembleModerator([FromBody] EnsembleModeratorDto dto)
         {
             var userId = GetUserId();
+            var user = _context.Users.Find(userId);
 
             var validMod = _context.EnsembleModerators
                 .Any(em => em.EnsembleId == dto.EnsembleId &&
@@ -168,11 +173,14 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "Permission denied"});
             }
 
+            var ens = _context.Ensembles.Find(dto.EnsembleId);
+
             _context.EnsembleModerators.Add(new EnsembleModerator
             {
                 EnsembleId = dto.EnsembleId,
                 UserIdRecipient = dto.UserIdRecipient,
-                UserIdRequester = userId
+                UserIdRequester = userId,
+                Text = $"{user.FullName} wants you to moderate {ens.Name}"
             });
             _context.SaveChanges();
 

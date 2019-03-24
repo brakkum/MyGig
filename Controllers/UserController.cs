@@ -110,6 +110,7 @@ namespace MyGigApi.Controllers
         public OkObjectResult RequestNewConnection([FromBody] ConnectionDto request)
         {
             var userId = GetUserId();
+            var user = _context.Users.Find(userId);
 
             var existingRequest = _context.Connections
                 .FirstOrDefault(c => c.UserIdRecipient == userId &&
@@ -144,7 +145,8 @@ namespace MyGigApi.Controllers
             {
                 UserIdRecipient = request.UserIdRecipient,
                 UserIdRequester = userId,
-                Status = RequestStatus.Pending
+                Status = RequestStatus.Pending,
+                Text = $"{user.FullName} wants to connect with you"
             });
             _context.SaveChanges();
 

@@ -9,7 +9,7 @@ using MyGigApi.Context;
 namespace MyGigApi.Migrations
 {
     [DbContext(typeof(MyGigContext))]
-    [Migration("20190323024007_Init")]
+    [Migration("20190324011920_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -179,6 +179,8 @@ namespace MyGigApi.Migrations
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
+
+                    b.Property<string>("Text");
 
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()

@@ -90,7 +90,7 @@ export default withRouter(
                     >
                         <Button
                             onClick={this.switchForm}
-                            innerText={this.state.showLogin ? "Sign Up" : "Login"}
+                            preClickText={this.state.showLogin ? "Sign Up" : "Login"}
                             size={"lg"}
                         />
                     </div>
