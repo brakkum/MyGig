@@ -75,6 +75,7 @@ namespace MyGigApi.Controllers
 
             return new OkObjectResult(new
             {
+                success = true,
                 ensembles,
                 notifications,
                 requests,
