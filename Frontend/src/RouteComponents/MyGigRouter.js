@@ -23,6 +23,15 @@ export default withRouter(
         render() {
             return(
                 <div className="routing">
+                    <div className="test-nav" style={{backgroundColor: "lightgreen", display: "flex", justifyContent: "space-between"}}>
+                        <div onClick={() => this.props.redirect("/", this.props.location.pathname)}>Home</div>
+                        <div onClick={() => this.props.redirect("/account", this.props.location.pathname)}>Account</div>
+                        <div onClick={() => this.props.redirect("/notifications", this.props.location.pathname)}>Notif</div>
+                        <div onClick={() => this.props.redirect("/event/3", this.props.location.pathname)}>ev3</div>
+                        <div onClick={() => this.props.redirect("/ensemble/4", this.props.location.pathname)}>ense4</div>
+                        <div onClick={() => this.props.redirect("/connections", this.props.location.pathname)}>conn</div>
+                        <div onClick={() => this.props.redirect("/sets/24", this.props.location.pathname)}>sets24</div>
+                    </div>
                     <ProtectedRoute
                         exact
                         path="/"
@@ -129,15 +138,6 @@ export default withRouter(
                             />
                         }
                     />
-                    <div className="test-nav" style={{backgroundColor: "lightgreen", display: "flex", justifyContent: "space-between"}}>
-                        <div onClick={() => this.props.redirect("/", this.props.location.pathname)}>Home</div>
-                        <div onClick={() => this.props.redirect("/account", this.props.location.pathname)}>Account</div>
-                        <div onClick={() => this.props.redirect("/notifications", this.props.location.pathname)}>Notif</div>
-                        <div onClick={() => this.props.redirect("/event/3", this.props.location.pathname)}>ev3</div>
-                        <div onClick={() => this.props.redirect("/ensemble/4", this.props.location.pathname)}>ense4</div>
-                        <div onClick={() => this.props.redirect("/connections", this.props.location.pathname)}>conn</div>
-                        <div onClick={() => this.props.redirect("/sets/24", this.props.location.pathname)}>sets24</div>
-                    </div>
                 </div>
             )
         }
