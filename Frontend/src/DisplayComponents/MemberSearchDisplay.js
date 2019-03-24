@@ -1,5 +1,6 @@
 import React from "react";
 import MemberPicture from "../DisplayComponents/MemberPicture";
+import Button from "../HelperComponents/Button";
 
 export default class MemberSearchDisplay extends React.Component {
 
@@ -64,6 +65,12 @@ export default class MemberSearchDisplay extends React.Component {
                     highlightOnHover={true}
                     innerHtml={"Add"}
                     onClick={() => this.sendConnectionRequest()}
+                />
+                <Button
+                    sendingRequest={this.state.sendingRequest}
+                    preClickText={"Connect"}
+                    postClickText={"Sending.."}
+                    onClick={this.sendConnectionRequest}
                 />
                 {this.state.fullName}
             </div>
