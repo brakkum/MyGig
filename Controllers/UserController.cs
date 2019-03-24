@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using MyGigApi.Context;
 using MyGigApi.DTOs;
 using MyGigApi.Entities;
@@ -126,6 +127,19 @@ namespace MyGigApi.Controllers
                 });
             }
 
+            var alreadyRequested = _context.Connections
+                .Any(c => c.UserIdRecipient == request.UserIdRecipient &&
+                          c.UserIdRequester == userId);
+
+            if (alreadyRequested)
+            {
+                return new OkObjectResult(new
+                {
+                    success = false,
+                    info = "Hold your horses"
+                });
+            }
+
             _context.Connections.Add(new Connection
             {
                 UserIdRecipient = request.UserIdRecipient,
@@ -150,7 +164,7 @@ namespace MyGigApi.Controllers
                     .Any(c => (
                         (c.UserIdRecipient == userId && c.UserIdRequester == u.UserId) ||
                         (c.UserIdRecipient == u.UserId && c.UserIdRequester == userId)
-                            ) && c.Status == RequestStatus.Accepted
+                            ) && (c.Status == RequestStatus.Accepted || c.Status == RequestStatus.Pending)
                     ) || u.UserId == userId))
                 .Select(us => new MemberDto
                 {

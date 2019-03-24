@@ -10,6 +10,7 @@ import Ensemble from "./Ensemble";
 import Sets from "./Sets";
 import Login from "./Login";
 import Logout from "./Logout";
+import Search from "./Search";
 
 export default withRouter(
     class MyGigRouter extends React.Component {
@@ -91,6 +92,16 @@ export default withRouter(
                         pageLoaded={this.props.pageLoaded}
                         component={
                             Sets
+                        }
+                    />
+                    <ProtectedRoute
+                        path="/search"
+                        userData={this.props.userData}
+                        loggedIn={this.props.loggedIn}
+                        redirect={this.props.redirect}
+                        pageLoaded={this.props.pageLoaded}
+                        component={
+                            Search
                         }
                     />
                     {

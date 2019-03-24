@@ -1,12 +1,13 @@
 import React from "react";
 import Input from "../HelperComponents/Input";
 import Constants from "../Constants/Constants";
+import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
+import MemberSearchDisplay from "../DisplayComponents/MemberSearchDisplay";
 
 export default class UserSearch extends React.Component{
 
     state = {
         value: "",
-        focused: false,
         timeOut: 0,
         users: []
     };
@@ -20,6 +21,9 @@ export default class UserSearch extends React.Component{
         this.setState({
             value: text,
             timeOut: setTimeout(() => {
+                if (!this.state.value){
+                    return;
+                }
                 fetch("/api/users/search",
                     {
                         method: "post",
@@ -33,8 +37,11 @@ export default class UserSearch extends React.Component{
                     }
                 ).then(res => res.json())
                     .then(json => {
-                        if (this.state.focused && json.success){
-                            console.log(json.users)
+                        if (json.success){
+                            console.log(json.users);
+                            this.setState({
+                                users: json.users
+                            });
                         } else {
                             console.log("search fail");
                         }
@@ -43,34 +50,40 @@ export default class UserSearch extends React.Component{
         });
     };
 
-    onFocus = () => {
+    filterUser = userId => {
+        let users = this.state.users.filter(u => u.userId !== userId);
         this.setState({
-            focused: true
+            users: []
+        });
+        this.setState({
+            users: users
         });
     };
 
-    onBlur = () => {
-        this.setState({
-            focused: false
-        })
-    };
-
     render() {
+        console.log(this.state)
         return(
             <div>
                 <Input
                     value={this.state.value}
                     placeholder={"Search Users"}
                     onChange={this.onChange}
-                    onFocus={this.onFocus}
-                    onBlur={this.onBlur}
                     name={"user-search"}
                 />
-                {
-                    this.state.users.map((user, i) => {
-                        return <div>{user}</div>;
-                    })
-                }
+                <DisplayCase maxHeight={"400px"}>
+                    {
+                        this.state.users.map((user, i) => {
+                            return(
+                                <MemberSearchDisplay
+                                    jwt={this.props.userData.jwt}
+                                    user={user}
+                                    key={i}
+                                    filterUser={this.filterUser}
+                                />
+                            )
+                        })
+                    }
+                </DisplayCase>
             </div>
         )
     }
