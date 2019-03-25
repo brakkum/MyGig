@@ -104,16 +104,16 @@ export default class MyGig extends Component {
         return (
             // entire application lives inside router
             <Router>
-                <div style={{backgroundColor: Constants.backgroundColor}}>
+                <div style={{backgroundColor: Constants.backgroundColor}} className={"parent"}>
                     {
                         // redirect if set
                         redirect && <Redirect to={redirect}/>
                     }
-                    {/* NavBar for application */}
-                    <NavBar userData={this.state.userData} redirect={this.redirect} logoutUser={this.logoutUser} />
                     {
                         <LoadingBuffer showBuffer={this.state.showBuffer} />
                     }
+                    {/* NavBar for application */}
+                    <NavBar userData={this.state.userData} redirect={this.redirect} logoutUser={this.logoutUser} />
                     {/* all body content contained here */}
                     <div className="body-content" style={{backgroundColor: Constants.backgroundColor}}>
                         {/* contains all the routing logic */}

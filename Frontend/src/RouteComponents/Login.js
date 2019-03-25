@@ -63,7 +63,7 @@ export default withRouter(
                         }
                     }
                 ).catch(e => {
-                    console.log(e);
+                    console.log("no response from back");
                     setTimeout(() => {
                         this.props.pageLoaded();
                     }, 1500);

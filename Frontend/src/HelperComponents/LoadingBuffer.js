@@ -35,17 +35,16 @@ export default class LoadingBuffer extends React.Component {
     };
 
     render() {
-        let noTransitionOnFirstLoad = this.state.spaFirstLoad ? {} : {transition: "opacity " + Constants.loaderTransitionTimeSe};
         let show = this.state.className;
         return(
             <div>
                 <div
                     className={"loader " + show}
                     style={{
-                        top: Constants.navBarHeight,
-                        height: "90vh",
+                        transition: "opacity " + Constants.loaderTransitionTimeSe,
+                        border: "1px solid red",
                         backgroundColor: Constants.backgroundColor,
-                        ...noTransitionOnFirstLoad
+                        height: "100%"
                     }}
                 >
                     <Loading/>
