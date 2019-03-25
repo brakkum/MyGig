@@ -7,10 +7,6 @@ export default withRouter(
     class NavBar extends React.Component {
         // MyGig page top navbar
 
-        state = {
-            redirect: null
-        };
-
         navStyle = {
             maxWidth: "1000px",
             margin: "auto",

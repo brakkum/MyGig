@@ -98,7 +98,7 @@ export default class Button extends React.Component {
                 type={this.props.buttonType || "button"}
             >
                 {
-                    this.props.sendingRequest ? (this.props.postClickText || "One moment..") : this.props.innerText || "Click"
+                    this.props.sendingRequest ? (this.props.postClickText || "One moment..") : this.props.preClickText || "Click"
                 }
             </button>
         )

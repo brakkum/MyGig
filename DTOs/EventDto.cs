@@ -9,7 +9,7 @@ namespace MyGigApi.DTOs
 
         public DateTime DateAndTime { get; set; }
 
-        public string Locations { get; set; }
+        public string Location { get; set; }
 
         public ICollection<EnsembleDto> Ensembles { get; set; }
     }

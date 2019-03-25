@@ -41,11 +41,9 @@ namespace MyGigApi.Entities
 
         public ICollection<Booking> Ensembles { get; set; }
 
-        public ICollection<PublicEventComment> PublicEventComments { get; set; }
+        public ICollection<EventComment> EventComments { get; set; }
 
-        public ICollection<PrivateEventComment> PrivateEventComments { get; set; }
-
-        public ICollection<EventSetlist> EventSetlists { get; set; }
+        public ICollection<BookingSetlist> EventSetlists { get; set; }
 
         public ICollection<EventModerator> Moderators { get; set; }
     }

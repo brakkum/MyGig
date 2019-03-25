@@ -7,7 +7,5 @@ namespace MyGigApi.Entities
         public int EnsembleId { get; set; }
 
         public Ensemble Ensemble { get; set; }
-
-        public DateTime JoinedOn { get; set; }
     }
 }

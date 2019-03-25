@@ -1,38 +1,26 @@
 import React from "react";
-import res from "../MockData/PublicEventMockData";
 import EventHeader from "../DisplayComponents/EventHeader";
+import res from "../MockData/EventMockData";
 import { Redirect } from "react-router-dom";
 import CommentSection from "../DisplayComponents/CommentSection";
 
-export default class PublicEvent extends React.Component {
-    // top level route component for /public_event/{event_id}
-
-    _isMounted = false;
+export default class Event extends React.Component {
+    // top level route component for /event/{event_id}
 
     state = {
-        loaded: false,
-        data: null,
-        userAllowed: true
+        "data": null,
+        "loaded": false,
+        "userAllowed": true
     };
 
     componentDidMount() {
         // api call here
         // check that user is allowed
         // redirect if they're not
-        // setTimeout to mimic data load
-        this._isMounted = true;
+        this.setState({ "data": res.data, "loaded": true });
         setTimeout(() => {
-            if (this._isMounted) {
-                this.setState({ data: res.data, loaded: true });
-            }
-            setTimeout(() => {
-                this.props.pageLoaded();
-            }, 100);
-        }, 2000);
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
+            this.props.pageLoaded();
+        }, 100);
     }
 
     render() {
@@ -49,7 +37,7 @@ export default class PublicEvent extends React.Component {
                         comments={this.state.data && this.state.data.eventComments}
                     />
                     <h4>
-                        Id: {this.props.match.params.eventId}
+                        Event Id: {this.props.match.params.eventId}
                     </h4>
                 </div>
         )

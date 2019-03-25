@@ -94,6 +94,8 @@ namespace MyGigApi
             app.UseHttpsRedirection();
 
             app.UseMvc();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
 
             app.UseSpa(spa =>
             {

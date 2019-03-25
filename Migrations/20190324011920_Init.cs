@@ -99,12 +99,12 @@ namespace MyGigApi.Migrations
                     UserIdRecipient = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false, defaultValue: 0),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
+                    Text = table.Column<string>(nullable: true),
+                    ConfirmedAt = table.Column<DateTime>(nullable: true),
                     Discriminator = table.Column<string>(nullable: false),
                     EventId = table.Column<int>(nullable: true),
                     EnsembleId = table.Column<int>(nullable: true),
-                    ConfirmedAt = table.Column<DateTime>(nullable: true),
                     EnsembleMember_EnsembleId = table.Column<int>(nullable: true),
-                    JoinedOn = table.Column<DateTime>(nullable: true, defaultValueSql: "CURRENT_TIMESTAMP()"),
                     EnsembleModerator_EnsembleId = table.Column<int>(nullable: true),
                     EventModerator_EventId = table.Column<int>(nullable: true)
                 },
@@ -132,18 +132,24 @@ namespace MyGigApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventSetlists",
+                name: "BookingSetlists",
                 columns: table => new
                 {
-                    EventId = table.Column<int>(nullable: false),
+                    BookingId = table.Column<int>(nullable: false),
                     SetlistId = table.Column<int>(nullable: false),
-                    EventSetlistOrder = table.Column<int>(nullable: false)
+                    EventId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventSetlists", x => new { x.EventId, x.SetlistId });
+                    table.PrimaryKey("PK_BookingSetlists", x => new { x.BookingId, x.SetlistId });
                     table.ForeignKey(
-                        name: "FK_EventSetlists_Setlists_SetlistId",
+                        name: "FK_BookingSetlists_Requests_BookingId",
+                        column: x => x.BookingId,
+                        principalTable: "Requests",
+                        principalColumn: "RequestId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BookingSetlists_Setlists_SetlistId",
                         column: x => x.SetlistId,
                         principalTable: "Setlists",
                         principalColumn: "SetlistId",
@@ -151,10 +157,10 @@ namespace MyGigApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PrivateEventComments",
+                name: "EventComments",
                 columns: table => new
                 {
-                    PrivateEventCommentId = table.Column<int>(nullable: false)
+                    EventCommentId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Text = table.Column<string>(maxLength: 500, nullable: false),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
@@ -163,23 +169,7 @@ namespace MyGigApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PrivateEventComments", x => x.PrivateEventCommentId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PublicEventComments",
-                columns: table => new
-                {
-                    PublicEventCommentId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Text = table.Column<string>(maxLength: 500, nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
-                    UserId = table.Column<int>(nullable: false),
-                    EventId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PublicEventComments", x => x.PublicEventCommentId);
+                    table.PrimaryKey("PK_EventComments", x => x.EventCommentId);
                 });
 
             migrationBuilder.CreateTable(
@@ -311,6 +301,16 @@ namespace MyGigApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_BookingSetlists_EventId",
+                table: "BookingSetlists",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookingSetlists_SetlistId",
+                table: "BookingSetlists",
+                column: "SetlistId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EnsembleComments_EnsembleId",
                 table: "EnsembleComments",
                 column: "EnsembleId");
@@ -321,34 +321,19 @@ namespace MyGigApi.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EventComments_EventId",
+                table: "EventComments",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventComments_UserId",
+                table: "EventComments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Events_CreatedByUserId",
                 table: "Events",
                 column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EventSetlists_SetlistId",
-                table: "EventSetlists",
-                column: "SetlistId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PrivateEventComments_EventId",
-                table: "PrivateEventComments",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PrivateEventComments_UserId",
-                table: "PrivateEventComments",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PublicEventComments_EventId",
-                table: "PublicEventComments",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PublicEventComments_UserId",
-                table: "PublicEventComments",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Requests_EnsembleId",
@@ -434,22 +419,6 @@ namespace MyGigApi.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Requests_Users_UserIdRecipient",
-                table: "Requests",
-                column: "UserIdRecipient",
-                principalTable: "Users",
-                principalColumn: "UserId",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Requests_Users_UserIdRequester",
-                table: "Requests",
-                column: "UserIdRequester",
-                principalTable: "Users",
-                principalColumn: "UserId",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_Requests_Events_EventId",
                 table: "Requests",
                 column: "EventId",
@@ -466,43 +435,43 @@ namespace MyGigApi.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_EventSetlists_Events_EventId",
-                table: "EventSetlists",
-                column: "EventId",
-                principalTable: "Events",
-                principalColumn: "EventId",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_PrivateEventComments_Users_UserId",
-                table: "PrivateEventComments",
-                column: "UserId",
+                name: "FK_Requests_Users_UserIdRecipient",
+                table: "Requests",
+                column: "UserIdRecipient",
                 principalTable: "Users",
                 principalColumn: "UserId",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_PrivateEventComments_Events_EventId",
-                table: "PrivateEventComments",
-                column: "EventId",
-                principalTable: "Events",
-                principalColumn: "EventId",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_PublicEventComments_Users_UserId",
-                table: "PublicEventComments",
-                column: "UserId",
+                name: "FK_Requests_Users_UserIdRequester",
+                table: "Requests",
+                column: "UserIdRequester",
                 principalTable: "Users",
                 principalColumn: "UserId",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_PublicEventComments_Events_EventId",
-                table: "PublicEventComments",
+                name: "FK_BookingSetlists_Events_EventId",
+                table: "BookingSetlists",
                 column: "EventId",
                 principalTable: "Events",
                 principalColumn: "EventId",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_EventComments_Events_EventId",
+                table: "EventComments",
+                column: "EventId",
+                principalTable: "Events",
+                principalColumn: "EventId",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_EventComments_Users_UserId",
+                table: "EventComments",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "UserId",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -537,22 +506,16 @@ namespace MyGigApi.Migrations
                 table: "UserPhotos");
 
             migrationBuilder.DropTable(
+                name: "BookingSetlists");
+
+            migrationBuilder.DropTable(
                 name: "EnsembleComments");
 
             migrationBuilder.DropTable(
-                name: "EventSetlists");
+                name: "EventComments");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
-
-            migrationBuilder.DropTable(
-                name: "PrivateEventComments");
-
-            migrationBuilder.DropTable(
-                name: "PublicEventComments");
-
-            migrationBuilder.DropTable(
-                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "SetlistComments");
@@ -561,10 +524,13 @@ namespace MyGigApi.Migrations
                 name: "SongComments");
 
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "Requests");
 
             migrationBuilder.DropTable(
                 name: "Songs");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Setlists");

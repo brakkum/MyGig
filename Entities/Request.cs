@@ -27,12 +27,9 @@ namespace MyGigApi.Entities
 
         public DateTime Timestamp { get; set; }
 
-        private string _text;
-        [NotMapped]
-        public string Text {
-            get => _text;
-            set => _text = value;
-        }
+        public string Text { get; set; }
+
+        public DateTime? ConfirmedAt { get; set; }
     }
 
     public enum RequestStatus

@@ -2,10 +2,6 @@ namespace MyGigApi.DTOs
 {
     public class EnsembleModeratorDto : RequestDto
     {
-        public EnsembleModeratorDto()
-        {
-            AcceptRoute = "/route";
-            DenyRoute = "/route";
-        }
+        public int EnsembleId { get; set; }
     }
 }

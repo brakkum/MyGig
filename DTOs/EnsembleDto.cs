@@ -6,6 +6,8 @@ namespace MyGigApi.DTOs
     {
         public string Name { get; set; }
 
+        public int EnsembleId { get; set; }
+
         public ICollection<UserDto> Members { get; set; }
     }
 }
