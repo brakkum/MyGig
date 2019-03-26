@@ -50,7 +50,10 @@ export default class LoginForm extends React.Component {
                     });
                 }
             }
-        ).catch(e => console.log(e));
+        ).catch(e => {
+            console.log(e);
+            this.setState({sendingRequest: false});
+        });
     };
 
     updateValue = (name, value) => {

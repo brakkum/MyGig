@@ -65,7 +65,10 @@ export default class SignUpForm extends React.Component {
                         });
                     }
                 }
-            )
+            ).catch(e => {
+                console.log(e);
+                this.setState({sendingRequest: false});
+            });
         }
     };
 
