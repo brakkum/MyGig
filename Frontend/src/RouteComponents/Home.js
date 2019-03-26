@@ -104,7 +104,11 @@ export default class Home extends React.Component {
                     <DisplayCase
                         labelLeft={"Ensembles"}
                         labelRight={
-                            <Link text={"New Ensemble"} url={"/newensemble"} />
+                            <Link
+                                text={"New Ensemble"}
+                                url={"/newensemble"}
+                                redirect={this.props.redirect}
+                            />
                         }
                     >
                         {this.state.ensembles.length > 0
@@ -129,7 +133,11 @@ export default class Home extends React.Component {
                     <DisplayCase
                         labelLeft={"Events"}
                         labelRight={
-                            <Link text={"New Event"} url={"/newevent"} />
+                            <Link
+                                text={"New Event"}
+                                url={"/newevent"}
+                                redirect={this.props.redirect}
+                            />
                         }
                     >
                         {this.state.events.length > 0
