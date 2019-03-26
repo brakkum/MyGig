@@ -54,10 +54,13 @@ export default withRouter(
                             />
                             <div
                                 // redirect passed from MyGig component for app redirects
-                                onClick={() => this.props.redirect("/", this.props.location.pathname)}
                                 style={this.navHomeLinkStyle}
                             >
-                                Home
+                                <Link
+                                    url={"/"}
+                                    text={"Home"}
+                                    redirect={this.props.redirect}
+                                />
                             </div>
                         </div>
                             :

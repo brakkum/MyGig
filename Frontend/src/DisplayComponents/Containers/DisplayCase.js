@@ -26,7 +26,6 @@ export default class DisplayCase extends React.Component {
     };
 
     render() {
-        console.log(this.props)
         return(
             <div className={"DisplayCase"}>
                 <div style={{...this.containerStyle, ...this.props.containerStyle}}>

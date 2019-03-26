@@ -166,8 +166,7 @@ namespace MyGigApi.Controllers
                     .Any(c => (
                         (c.UserIdRecipient == userId && c.UserIdRequester == u.UserId) ||
                         (c.UserIdRecipient == u.UserId && c.UserIdRequester == userId)
-                            ) && (c.Status == RequestStatus.Accepted || c.Status == RequestStatus.Pending)
-                    ) || u.UserId == userId))
+                            )) || u.UserId == userId))
                 .Select(us => new MemberDto
                 {
                     UserId = us.UserId,
@@ -175,7 +174,7 @@ namespace MyGigApi.Controllers
                     PhotoUrl = us.UserPhoto.Url
                 });
 
-            return new OkObjectResult(new {success = true , users});
+            return new OkObjectResult(new {success = true, users});
         }
 
         public int GetUserId()
