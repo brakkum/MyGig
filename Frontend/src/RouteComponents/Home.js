@@ -1,4 +1,5 @@
 import React from "react";
+import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
 
 export default class Home extends React.Component {
     // top level route component for /
@@ -46,11 +47,14 @@ export default class Home extends React.Component {
         return(
             <div>
                 Home
-                <h4>
-                    {
-                        this.props.userData && this.props.userData.id
-                    }
-                </h4>
+                {
+                    this.state.requests.length > 0 &&
+                        <DisplayCase label={"Requests"}>
+                            {this.state.requests.map(req => {
+                                return req.text
+                            })}
+                        </DisplayCase>
+                }
             </div>
         )
     }
