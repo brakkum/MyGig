@@ -115,17 +115,19 @@ export default class MyGig extends Component {
                     {/* NavBar for application */}
                     <NavBar userData={this.state.userData} redirect={this.redirect} logoutUser={this.logoutUser} />
                     {/* all body content contained here */}
-                    <div style={{ height: "50px"}}></div>
+                    <div style={{ height: "50px"}}>{}</div>
                     <div className="body-content" style={{backgroundColor: Constants.backgroundColor}}>
                         {/* contains all the routing logic */}
-                        <MyGigRouter
-                            userData={this.state.userData}
-                            loggedIn={this.state.loggedIn}
-                            loginUser={this.loginUser}
-                            redirect={this.redirect}
-                            pageLoaded={this.pageLoaded}
-                            logoutUser={this.logoutUser}
-                        />
+                        <div style={{maxWidth: Constants.maxBodyWidth, margin: "auto"}}>
+                            <MyGigRouter
+                                userData={this.state.userData}
+                                loggedIn={this.state.loggedIn}
+                                loginUser={this.loginUser}
+                                redirect={this.redirect}
+                                pageLoaded={this.pageLoaded}
+                                logoutUser={this.logoutUser}
+                            />
+                        </div>
                     </div>
                 </div>
             </Router>

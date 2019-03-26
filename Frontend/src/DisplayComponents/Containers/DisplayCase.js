@@ -1,4 +1,5 @@
 import React from "react";
+import Constants from "../../Constants/Constants";
 
 export default class DisplayCase extends React.Component {
     // used to contain things such as comments, notifications
@@ -18,7 +19,7 @@ export default class DisplayCase extends React.Component {
     };
 
     boxStyle = {
-        backgroundColor: this.props.backgroundColor || "darkgrey",
+        backgroundColor: this.props.backgroundColor || Constants.displayCaseColor,
         borderRadius: "4px",
         maxHeight: this.props.maxHeight ? this.props.maxHeight + "px" : "280px",
         overflow: "scroll",

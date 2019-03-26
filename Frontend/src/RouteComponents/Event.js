@@ -36,9 +36,9 @@ export default class Event extends React.Component {
                     <CommentSection
                         comments={this.state.data && this.state.data.eventComments}
                     />
-                    <h4>
+                    <span>
                         Event Id: {this.props.match.params.eventId}
-                    </h4>
+                    </span>
                 </div>
         )
     }

@@ -1,6 +1,7 @@
 import React from "react";
 import MemberPictureConnect from "./MemberPictureConnect";
 import TimeSince from "../HelperComponents/TimeSince";
+import Constants from "../Constants/Constants";
 
 export default class Comment extends React.Component {
 
@@ -9,13 +10,12 @@ export default class Comment extends React.Component {
         minHeight: "60px",
         overflow: "scroll",
         margin: "auto",
-        border: "1px solid blue",
-        backgroundColor: "coral",
+        backgroundColor: Constants.commentColor,
         display: "grid",
-        gridTemplateColumns: "60px auto",
-        gridTemplateRows: "10px auto auto 20px",
-        gridTemplateAreas: "'photo username' 'photo comment' 'photo comment' 'photo time'",
-        gridGap: "10px"
+        borderRadius: "4px",
+        gridTemplateColumns: "70px auto",
+        gridTemplateRows: "20px auto auto 30px",
+        gridTemplateAreas: "'photo username' 'photo comment' 'photo comment' 'photo time'"
     };
 
     render() {
@@ -27,15 +27,15 @@ export default class Comment extends React.Component {
                             memberData={this.props.data.commentUser}
                         />
                     </div>
-                    <div style={{gridArea: "username"}}>
+                    <div style={{gridArea: "username", fontWeight: "bolder"}}>
                         {
                             this.props.data.commentUser.name
                         }
                     </div>
-                    <div style={{gridArea: "comment", margin: "5px"}}>
+                    <div style={{gridArea: "comment", margin: "5px 15px 5px 10px"}}>
                         {this.props.data.commentText}
                     </div>
-                    <div style={{gridArea: "time", textAlign: "right"}}>
+                    <div style={{gridArea: "time", textAlign: "right", fontWeight: "bold"}}>
                         <TimeSince time={this.props.data.commentTime} />
                     </div>
                 </div>
