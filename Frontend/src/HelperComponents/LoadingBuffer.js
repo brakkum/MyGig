@@ -43,7 +43,8 @@ export default class LoadingBuffer extends React.Component {
                     style={{
                         transition: "opacity " + Constants.loaderTransitionTimeSe,
                         backgroundColor: Constants.backgroundColor,
-                        height: "100%"
+                        height: "100%",
+                        position: "fixed"
                     }}
                 >
                     <Loading/>

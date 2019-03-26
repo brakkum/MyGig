@@ -128,6 +128,7 @@ export default class MyGig extends Component {
                                 logoutUser={this.logoutUser}
                             />
                         </div>
+                        <div style={{ height: "50px"}}>{}</div>
                     </div>
                 </div>
             </Router>
