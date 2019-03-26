@@ -64,13 +64,16 @@ namespace MyGigApi.Controllers
                 });
 
             var requests = _context.Requests
-                .Where(r => r.UserIdRecipient == userId)
+                .Include(r => r.UserRequester)
+                .ThenInclude(u => u.UserPhoto)
+                .Where(r => r.UserIdRecipient == userId && r.Status == RequestStatus.Pending)
                 .OrderBy(r => r.Timestamp)
                 .Select(r => new RequestDto
                 {
                     Text = r.Text,
                     RequestId = r.RequestId,
-                    Timestamp = r.Timestamp
+                    Timestamp = r.Timestamp,
+                    userPhoto = r.UserRequester.UserPhoto.Url
                 });
 
             return new OkObjectResult(new

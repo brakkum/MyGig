@@ -1,5 +1,6 @@
 import React from "react";
 import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
+import Request from "../DisplayComponents/Request";
 
 export default class Home extends React.Component {
     // top level route component for /
@@ -39,6 +40,13 @@ export default class Home extends React.Component {
             }).catch(e => console.log(e));
     }
 
+    filterRequests = id => {
+        let reqs = this.state.requests;
+        let newReqs = reqs.filter(req => req.requestId !== id);
+        this.setState({requests: []});
+        this.setState({requests: newReqs});
+    };
+
     componentWillUnmount() {
         this._isMounted = false;
     }
@@ -49,9 +57,17 @@ export default class Home extends React.Component {
                 Home
                 {
                     this.state.requests.length > 0 &&
-                        <DisplayCase label={"Requests"}>
-                            {this.state.requests.map(req => {
-                                return req.text
+                        <DisplayCase label={"Requests"} backgroundColor={"transparent"}>
+                            {this.state.requests.map((req, i) => {
+                                console.log(req);
+                                return <Request
+                                    userPhoto={req.userPhoto}
+                                    text={req.text}
+                                    requestId={req.requestId}
+                                    key={i}
+                                    jwt={this.props.userData.jwt}
+                                    filterRequests={this.filterRequests}
+                                />
                             })}
                         </DisplayCase>
                 }
