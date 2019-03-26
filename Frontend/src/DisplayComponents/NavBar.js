@@ -2,6 +2,7 @@ import React from "react";
 import { withRouter } from "react-router";
 import MemberPicture from "./MemberPicture";
 import Constants from "../Constants/Constants";
+import Link from "../DisplayComponents/Containers/Link";
 
 export default withRouter(
     class NavBar extends React.Component {
@@ -66,14 +67,11 @@ export default withRouter(
                     }
                     <div style={this.navRightStyle}>
                         {
-                            this.props.userData ?
-                                <div onClick={() => this.props.redirect("/logout")}>
-                                    Logout
-                                </div>
-                                    :
-                                <div onClick={() => this.props.redirect("/login", this.props.location.pathname)}>
-                                    Login
-                                </div>
+                            <Link
+                                url={this.props.userData ? "/logout" : "/login"}
+                                text={this.props.userData ? "Logout" : "Login"}
+                                redirect={this.props.redirect}
+                            />
                         }
                     </div>
                 </div>

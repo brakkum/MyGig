@@ -26,13 +26,29 @@ export default class DisplayCase extends React.Component {
     };
 
     render() {
+        console.log(this.props)
         return(
             <div className={"DisplayCase"}>
                 <div style={{...this.containerStyle, ...this.props.containerStyle}}>
-                    <div style={{fontSize: "28px", margin: "5px"}}>
-                        {
-                            this.props.label
-                        }
+                    <div>
+                        <div style={{
+                            fontSize: "28px",
+                            margin: "5px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "baseline"
+                        }}>
+                            <span>
+                                {
+                                    this.props.labelLeft
+                                }
+                            </span>
+                            <span style={{fontSize: "16px"}} >
+                                {
+                                    this.props.labelRight
+                                }
+                            </span>
+                        </div>
                     </div>
                     <div style={{...this.boxStyle, ...this.props.boxStyle}}>
                         {

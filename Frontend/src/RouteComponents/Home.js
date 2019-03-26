@@ -1,6 +1,7 @@
 import React from "react";
 import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
 import Request from "../DisplayComponents/Request";
+import Link from "../DisplayComponents/Containers/Link";
 
 export default class Home extends React.Component {
     // top level route component for /
@@ -56,20 +57,98 @@ export default class Home extends React.Component {
             <div>
                 Home
                 {
-                    this.state.requests.length > 0 &&
-                        <DisplayCase label={"Requests"} backgroundColor={"transparent"}>
-                            {this.state.requests.map((req, i) => {
+                    <DisplayCase labelLeft={"Requests"}>
+                        {this.state.requests.length > 0
+                            ?
+                            this.state.requests.map((req, i) => {
                                 console.log(req);
                                 return <Request
                                     userPhoto={req.userPhoto}
                                     text={req.text}
                                     requestId={req.requestId}
-                                    key={i}
                                     jwt={this.props.userData.jwt}
                                     filterRequests={this.filterRequests}
+                                    key={i}
                                 />
-                            })}
-                        </DisplayCase>
+                            })
+                            :
+                            <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
+                                No requests
+                            </div>
+                        }
+                    </DisplayCase>
+                }
+                {
+                    <DisplayCase
+                        labelLeft={"Notifications"}
+                    >
+                        {this.state.notifications.length > 0
+                            ?
+                            this.state.notifications.map((n, i) => {
+                                console.log(n);
+                                return <Link
+                                    url={n.url}
+                                    interior={n.displayMessage}
+                                    redirect={this.props.redirect}
+                                    key={i}
+                                />
+                            })
+                            :
+                            <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
+                                No notifications
+                            </div>
+                        }
+                    </DisplayCase>
+                }
+                {
+                    <DisplayCase
+                        labelLeft={"Ensembles"}
+                        labelRight={
+                            <Link text={"New Ensemble"} url={"/newensemble"} />
+                        }
+                    >
+                        {this.state.ensembles.length > 0
+                            ?
+                            this.state.ensembles.map((ens, i) => {
+                                console.log(ens);
+                                return <Link
+                                    url={`/ensemble/${ens.ensembleId}`}
+                                    interior={ens.name}
+                                    redirect={this.props.redirect}
+                                    key={i}
+                                />
+                            })
+                            :
+                            <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
+                                No ensembles
+                            </div>
+                        }
+                    </DisplayCase>
+                }
+                {
+                    <DisplayCase
+                        labelLeft={"Events"}
+                        labelRight={
+                            <Link text={"New Event"} url={"/newevent"} />
+                        }
+                    >
+                        {this.state.events.length > 0
+                            ?
+                            this.state.ensembles.map((ev, i) => {
+                                console.log(ev);
+                                return <Link
+                                    url={`/event/${ev.eventId}`}
+                                    interior={ev.name}
+                                    redirect={this.props.redirect}
+                                    key={i}
+                                />
+                            })
+                            :
+                            <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
+                                No events
+                            </div>
+                        }
+                    </DisplayCase>
                 }
             </div>
         )

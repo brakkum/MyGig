@@ -60,7 +60,8 @@ export default class Input extends React.Component {
                     style={{
                         width: "100%",
                         borderRadius: "4px",
-                        height: "20px",
+                        height: "25px",
+                        padding: "5px",
                         fontSize: "18px",
                         ...validStyle
                     }}

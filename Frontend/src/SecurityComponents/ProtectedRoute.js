@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
-export default function ProtectedRoute({component: Component, userData, loggedIn, pageLoaded, ...rest }) {
+export default function ProtectedRoute({component: Component, userData, loggedIn, pageLoaded, redirect, ...rest }) {
     // Used on pages that should not be publicly accessible
 
     return(
@@ -13,7 +13,12 @@ export default function ProtectedRoute({component: Component, userData, loggedIn
                 loggedIn ? (
                     // if so, take them to what they requested
                     // (more security will occur in the component)
-                    <Component userData={userData} match={props.match} pageLoaded={pageLoaded} />
+                    <Component
+                        redirect={redirect}
+                        userData={userData}
+                        match={props.match}
+                        pageLoaded={pageLoaded}
+                    />
                 ) : (
                     // if they're not logged in, redirect to login
                     // include requested route

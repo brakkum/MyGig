@@ -13,7 +13,7 @@ export default class ConnectionsDisplay extends React.Component {
 
     render() {
         return(
-            <DisplayCase label={this.props.label}>
+            <DisplayCase labelLeft={this.props.label}>
                 {
                     this.props.connections && this.props.connections.map((conn, i) => {
                         return <Connection memberData={conn} key={i} acceptConnectionRequest={this.props.acceptConnectionRequest} />

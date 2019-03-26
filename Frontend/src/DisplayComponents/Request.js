@@ -11,7 +11,8 @@ export default class Request extends React.Component {
     requestStyle = {
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-around"
+        justifyContent: "space-around",
+        margin: "10px"
     };
 
     acceptRequest = () => {
