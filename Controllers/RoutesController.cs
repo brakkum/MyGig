@@ -124,7 +124,7 @@ namespace MyGigApi.Controllers
 
             var comments = _context.EventComments
                 .Where(ec => ec.EventId == dto.EventId)
-                .OrderBy(ec => ec.Timestamp)
+                .OrderByDescending(ec => ec.Timestamp)
                 .Select(ec => new EventCommentDto
                 {
                     Text = ec.Text,

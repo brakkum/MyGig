@@ -178,7 +178,7 @@ namespace MyGigApi.Controllers
                 .Include(c => c.User)
                 .ThenInclude(u => u.UserPhoto)
                 .Where(c => c.EventId == dto.EventId)
-                .OrderBy(c => c.Timestamp)
+                .OrderByDescending(c => c.Timestamp)
                 .Select(c => new EventCommentDto
                 {
                     Text = c.Text,
