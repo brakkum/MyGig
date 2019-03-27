@@ -40,7 +40,7 @@ export default class Input extends React.Component {
     };
 
     render() {
-        let validStyle = this.state.valid ? {border: "1px solid lightgrey"} : {border: "2px solid #b73300"};
+        let validStyle = this.props.valid ? {border: "1px solid lightgrey"} : {border: "1px solid #b73300"};
         return(
             <div style={{width: "90%", margin: "auto"}}>
                 <div style={{margin: "10px", fontSize: "15px"}}>

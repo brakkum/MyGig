@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -83,6 +84,76 @@ namespace MyGigApi.Controllers
                 notifications,
                 requests,
                 events
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/event")]
+        public OkObjectResult GetEventPage([FromBody] EventDto dto)
+        {
+            var userId = GetUserId();
+
+            var validMod = _context.EventModerators
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.EventId == dto.EventId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
+            {
+                return new OkObjectResult(new {success = false, error = "Not valid mod"});
+            }
+
+            var ensembles = _context.Bookings
+                .Include(b => b.Ensemble)
+                .Where(b => b.EventId == dto.EventId && b.Status == RequestStatus.Accepted)
+                .Select(b => new EnsembleDto
+                {
+                    Name = b.Ensemble.Name,
+                    Members = _context.EnsembleMembers
+                        .Include(em => em.UserRecipient)
+                        .ThenInclude(u => u.UserPhoto)
+                        .Where(e => e.EnsembleId == b.EnsembleId && e.Status == RequestStatus.Accepted)
+                        .Select(em => new UserDto
+                        {
+                            FullName = em.UserRecipient.FullName,
+                            PhotoUrl = em.UserRecipient.UserPhoto.Url,
+                            UserId = em.UserIdRecipient
+                        }).ToList() as ICollection<UserDto>
+                }).ToList() as ICollection<EnsembleDto>;
+
+            var comments = _context.EventComments
+                .Where(ec => ec.EventId == dto.EventId)
+                .OrderBy(ec => ec.Timestamp)
+                .Select(ec => new EventCommentDto
+                {
+                    Text = ec.Text,
+                    Timestamp = ec.Timestamp,
+                    User = new UserDto
+                    {
+                        FullName = ec.User.FullName,
+                        PhotoUrl = ec.User.UserPhoto.Url,
+                        UserId = ec.UserId
+                    }
+                })
+                .ToList() as ICollection<EventCommentDto>;
+
+            var ev = _context.Events
+                .Where(e => e.EventId == dto.EventId)
+                .Select(e => new EventDto
+                {
+                    Name = e.Name,
+                    Ensembles = ensembles,
+                    DateAndTime = e.DateAndTime,
+                    EventId = e.EventId,
+                    Location = e.Location,
+                    Comments = comments
+                }).FirstOrDefault();
+
+            return new OkObjectResult(new
+            {
+                success = true,
+                ev
             });
         }
 

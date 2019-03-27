@@ -4,6 +4,7 @@ import moment from "moment";
 export default class DateDisplay extends React.Component {
 
     render() {
+        console.log(this.props)
         return(
             <div style={{margin: "20px"}}>
                 <div style={{fontSize: "15pt"}}>

@@ -11,7 +11,7 @@ export default class CommentSection extends React.Component {
         return(
             <DisplayCase label={this.props.label || "Comments"}>
                 {
-                    this.props.comments.map((comment, i) => {
+                    this.props.comments && this.props.comments.map((comment, i) => {
                        return <Comment data={comment} key={i} />
                     })
                 }

@@ -1,40 +1,48 @@
 import React from "react";
 import EventHeader from "../DisplayComponents/EventHeader";
-import res from "../MockData/EventMockData";
-import { Redirect } from "react-router-dom";
 import CommentSection from "../DisplayComponents/CommentSection";
 
 export default class Event extends React.Component {
     // top level route component for /event/{event_id}
 
     state = {
-        "data": null,
-        "loaded": false,
-        "userAllowed": true
+        event: null
     };
 
     componentDidMount() {
-        // api call here
-        // check that user is allowed
-        // redirect if they're not
-        this.setState({ "data": res.data, "loaded": true });
-        setTimeout(() => {
-            this.props.pageLoaded();
-        }, 100);
+        const eventId = this.props.match.params.eventId;
+        const jwt = this.props.userData.jwt;
+
+        fetch("/api/routes/event", {
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
+            }),
+            body: JSON.stringify({
+                EventId: eventId
+            })
+        }).then(res => res.json())
+            .then(json => {
+                if (json.success) {
+                    this.setState({event: json.ev});
+                    this.props.pageLoaded();
+                } else {
+                    console.log("event fetch fail");
+                    this.props.pageLoaded();
+                }
+            })
+            .catch(e => console.log(e));
     }
 
     render() {
-        // if user not allowed, redirect home
-        if (!this.state.userAllowed) {
-            return <Redirect to={"/"} />
-        }
         return(
             // wait for api data to load page
-            this.state.data &&
+            this.state.event &&
                 <div>
-                    <EventHeader {...this.state.data} />
+                    <EventHeader {...this.state.event} />
                     <CommentSection
-                        comments={this.state.data && this.state.data.eventComments}
+                        comments={this.state.event && this.state.event.comments}
                     />
                     <span>
                         Event Id: {this.props.match.params.eventId}

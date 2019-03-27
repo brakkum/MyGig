@@ -19,15 +19,14 @@ export default class Header extends React.Component {
                 </h1>
                 {
                     // details: for events, location & time
-                    this.props.details &&
                     <div className="details">
-                        <h3>{this.props.details.location}</h3>
-                        <DateDisplay datetime={this.props.details.time} />
+                        <h3>{this.props.location}</h3>
+                        <DateDisplay datetime={this.props.dateAndTime} />
                     </div>
                 }
                 {
                     // ensembles: array of ensembles involved in event
-                    this.props.ensembles && <EnsemblesList ensembles={this.props.ensembles}/>
+                    this.props.ensembles.length > 0 && <EnsemblesList ensembles={this.props.ensembles}/>
                 }
                 {
                     // ensembleMembers: members of the current ensemble page

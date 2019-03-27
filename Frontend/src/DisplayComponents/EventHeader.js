@@ -6,8 +6,9 @@ export default class EventHeader extends React.Component {
     // for event pages
 
     render() {
+        console.log(this.props);
         return(
-            <Header pageHeader={this.props.name} details={this.props.details} ensembles={this.props.ensembles} />
+            <Header {...this.props} />
         )
     }
 }
