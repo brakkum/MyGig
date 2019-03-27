@@ -1,5 +1,5 @@
 import React from "react";
-import EventHeader from "../DisplayComponents/EventHeader";
+import Header from "../DisplayComponents/Header";
 import CommentSection from "../DisplayComponents/CommentSection";
 
 export default class Event extends React.Component {
@@ -40,7 +40,7 @@ export default class Event extends React.Component {
             // wait for api data to load page
             this.state.event &&
                 <div>
-                    <EventHeader {...this.state.event} />
+                    <Header {...this.state.event} />
                     <CommentSection
                         comments={this.state.event.comments}
                         eventId={this.state.event.eventId}

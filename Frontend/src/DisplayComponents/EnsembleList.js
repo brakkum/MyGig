@@ -1,6 +1,5 @@
 import React from "react";
-import EnsembleMembersList from "./EnsembleMembersList";
-import EnsembleName from "./EnsembleName";
+import MemberPicture from "./MemberPicture";
 
 export default class EnsembleList extends React.Component {
     // maps an array of ensembles by using
@@ -9,13 +8,32 @@ export default class EnsembleList extends React.Component {
     render() {
         return(
             <div className="ensemble_list">
-                With
+                {
+                    this.props.ensembles.length > 1 && "With"
+                }
                 {
                     this.props.ensembles.map((ens, i) => {
                         return(
                             <div key={i} className="ensembleListing">
-                                <EnsembleName ensembleName={ens.ensembleName} />
-                                <EnsembleMembersList ensembleMembers={ens.ensembleMembers} />
+                                <div className="ensemble_name" style={{margin: "10px", fontWeight: "bold"}}>
+                                    {ens.name}
+                                </div>
+                                {
+                                    ens.ensembleMembers.map((mem, i) => {
+                                        return(
+                                            <span
+                                                key={i}
+                                            >
+                                                <MemberPicture url={mem.photoUrl} />
+                                                <span style={this.memberStyle}>
+                                                    {
+                                                        mem.fullName
+                                                    }
+                                                </span>
+                                            </span>
+                                        )
+                                    })
+                                }
                             </div>
                         )
                     })

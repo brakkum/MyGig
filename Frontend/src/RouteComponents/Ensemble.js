@@ -1,6 +1,6 @@
 import React from "react";
 import res from "../MockData/EnsembleMockData";
-import EnsembleHeader from "../DisplayComponents/EnsembleHeader";
+import Header from "../DisplayComponents/Header";
 import { Redirect } from "react-router-dom";
 import CommentSection from "../DisplayComponents/CommentSection";
 
@@ -42,7 +42,7 @@ export default class Ensemble extends React.Component {
         return(
             this.state.data &&
                 <div>
-                    <EnsembleHeader {...this.state.data} />
+                    <Header {...this.state.data} />
                     <CommentSection
                         comments={this.state.data && this.state.data.ensembleComments}
                     />

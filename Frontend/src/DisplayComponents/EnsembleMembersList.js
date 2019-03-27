@@ -1,5 +1,5 @@
 import React from "react";
-import MemberNameDisplay from "./MemberNameDisplay";
+import MemberPicture from "./MemberPicture";
 
 export default class EnsembleMembersList extends React.Component {
     // map props.ensembleMembers into MemberNameDisplay components
@@ -9,7 +9,16 @@ export default class EnsembleMembersList extends React.Component {
             <div className="ensembleMembers">
                 {
                     this.props.ensembleMembers.map((mem, i) => {
-                        return <MemberNameDisplay memberData={mem} key={i} />
+                        return(
+                            <span onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave} key={i}>
+                                <MemberPicture url={mem.photoUrl} />
+                                <span style={this.memberStyle}>
+                                    {
+                                        mem.fullName
+                                    }
+                                </span>
+                            </span>
+                        )
                     })
                 }
             </div>

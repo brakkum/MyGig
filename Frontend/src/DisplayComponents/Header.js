@@ -9,28 +9,23 @@ export default class Header extends React.Component {
     // and ensemble pages
 
     render() {
+        console.log(this.props);
         return (
             <div className="page-header">
-                <h1>
-                    {
-                        // pageHeader: top header title
-                        this.props.pageHeader
-                    }
-                </h1>
+                <h1>{this.props.name}</h1>
+                <div className="details">
+                    <h3>{this.props.location}</h3>
+                    <DateDisplay datetime={this.props.dateAndTime} />
+                </div>
                 {
-                    // details: for events, location & time
-                    <div className="details">
-                        <h3>{this.props.location}</h3>
-                        <DateDisplay datetime={this.props.dateAndTime} />
-                    </div>
+                    // for event pages
+                    this.props.ensembles &&
+                        <EnsemblesList ensembles={this.props.ensembles}/>
                 }
                 {
-                    // ensembles: array of ensembles involved in event
-                    this.props.ensembles && <EnsemblesList ensembles={this.props.ensembles}/>
-                }
-                {
-                    // ensembleMembers: members of the current ensemble page
-                    this.props.ensembleMembers && <EnsembleMembersList ensembleMembers={this.props.ensembleMembers}/>
+                    // for ensemble pages
+                    this.props.ensembleMembers &&
+                        <EnsembleMembersList ensembleMembers={this.props.ensembleMembers}/>
                 }
             </div>
         )

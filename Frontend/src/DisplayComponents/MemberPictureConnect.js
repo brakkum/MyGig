@@ -8,7 +8,6 @@ export default class MemberPictureConnect extends React.Component {
     };
 
     render() {
-        console.log(this.props)
         let notConnectedToUser = !(this.props.connectedToUser);
         return(
             <MemberPicture
