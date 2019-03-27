@@ -40,6 +40,7 @@ export default class Input extends React.Component {
     };
 
     render() {
+        let Component = this.props.type === "textarea" ? "textarea" : "input";
         let validStyle = this.props.valid ? {border: "1px solid lightgrey"} : {border: "1px solid #b73300"};
         return(
             <div style={{width: "90%", margin: "auto"}}>
@@ -49,18 +50,20 @@ export default class Input extends React.Component {
                         {this.props.errorOverride || this.state.error}
                     </span>
                 </div>
-                <input
+                <Component
                     type={this.props.type || "text"}
                     value={this.props.value}
                     name={this.props.name}
                     onChange={event => this.onChange(event)}
                     onFocus={this.props.onFocus}
                     onBlur={this.props.onBlur}
+                    maxLength={this.props.maxLength}
                     placeholder={this.props.placeholder}
                     style={{
                         width: "100%",
                         borderRadius: "4px",
-                        height: "25px",
+                        height: Component === "textarea" ? "50px" : "25px",
+                        resize: Component === "textarea" && "none",
                         padding: "5px",
                         fontSize: "18px",
                         ...validStyle
