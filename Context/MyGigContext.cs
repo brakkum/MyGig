@@ -91,9 +91,6 @@ namespace MyGigApi.Context
                 .WithMany(e => e.Moderators);
             // Event
             modelBuilder.Entity<Event>()
-                .Property(e => e.IsPublic)
-                .HasColumnType("bit");
-            modelBuilder.Entity<Event>()
                 .Property(e => e.CreatedOn)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // EventComment

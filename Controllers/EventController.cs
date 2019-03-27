@@ -2,6 +2,7 @@ using System.Linq;
 using System.Xml;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyGigApi.Context;
 using MyGigApi.DTOs;
 using MyGigApi.Entities;
@@ -127,9 +128,13 @@ namespace MyGigApi.Controllers
                 en.Members.Any(u => u.UserIdRecipient == userId &&
                                     u.Status == RequestStatus.Accepted));
 
-            if (!validUser)
+            var validMod = _context.EventModerators
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!(validUser || validMod))
             {
-                return new OkObjectResult(new {success = false, error = "Not valid member"});
+                return new OkObjectResult(new {success = false, error = "Not valid member or mod"});
             }
 
             var comment = new EventComment
@@ -143,6 +148,54 @@ namespace MyGigApi.Controllers
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/getcomments")]
+        public OkObjectResult GetEventComments([FromBody] EventDto dto)
+        {
+            var userId = GetUserId();
+
+            var ensembles = _context.Bookings
+                .Where(ev => ev.EventId == dto.EventId)
+                .Select(ev => ev.Ensemble);
+
+            var validUser = ensembles.Any(en =>
+                en.Members.Any(u => u.UserIdRecipient == userId &&
+                                    u.Status == RequestStatus.Accepted));
+
+            var validMod = _context.EventModerators
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!(validUser || validMod))
+            {
+                return new OkObjectResult(new {success = false, error = "Not valid member or mod"});
+            }
+
+            var comments = _context.EventComments
+                .Include(c => c.User)
+                .ThenInclude(u => u.UserPhoto)
+                .Where(c => c.EventId == dto.EventId)
+                .OrderBy(c => c.Timestamp)
+                .Select(c => new EventCommentDto
+                {
+                    Text = c.Text,
+                    Timestamp = c.Timestamp,
+                    User = new MemberDto
+                    {
+                        FullName = c.User.FullName,
+                        PhotoUrl = c.User.UserPhoto.Url,
+                        UserId = c.UserId,
+                        ConnectedToUser = _context.Connections
+                            .Any(conn =>
+                                        conn.UserIdRecipient == c.UserId && conn.UserIdRequester == userId ||
+                                        conn.UserIdRecipient == userId && conn.UserIdRequester == c.UserId)
+                    }
+                });
+
+            return new OkObjectResult(new {success = true, comments});
         }
 
         [HttpPost]

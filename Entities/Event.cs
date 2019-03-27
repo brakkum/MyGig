@@ -28,9 +28,6 @@ namespace MyGigApi.Entities
         public string Location { get; set; }
 
         [Required]
-        public bool IsPublic { get; set; }
-
-        [Required]
         public DateTime CreatedOn { get; set; }
 
         [Required]

@@ -249,6 +249,66 @@ namespace MyGigApi.Controllers
             return new OkObjectResult(new {success = true});
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/requestbooking")]
+        public OkObjectResult RequestBooking([FromBody] BookingDto dto)
+        {
+            var userId = GetUserId();
+
+            var validMod = _context.EventModerators
+                .Any(em => em.EventId == dto.EventId &&
+                           em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
+            {
+                return new OkObjectResult(new {success = false, error = "Not a valid event mod"});
+            }
+
+            var ensembleMod = _context.EnsembleModerators
+                .FirstOrDefault(em => em.EnsembleId == dto.EnsembleId &&
+                                      em.Status == RequestStatus.Accepted);
+
+            if (ensembleMod == null)
+            {
+                return new OkObjectResult(new {success = false, error = "No group mod"});
+            }
+
+            var user = _context.Users.Find(userId);
+            var ensemble = _context.Ensembles.Find(dto.EnsembleId);
+            var ev = _context.Events.Find(dto.EventId);
+
+            _context.Bookings.Add(new Booking
+            {
+                EnsembleId = dto.EnsembleId,
+                EventId = dto.EventId,
+                UserIdRecipient = ensembleMod.UserIdRecipient,
+                UserIdRequester = userId,
+                Text = $"{user.FullName} would like your ensemble {ensemble.Name} to perform at the event {ev.Name}"
+            });
+
+            _context.SaveChanges();
+
+            return new OkObjectResult(new {success = true});
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/search")]
+        public OkObjectResult SearchUsers([FromBody] SearchDto dto)
+        {
+            var ensembles = _context.Ensembles
+                .Where(e => e.Name.Contains(dto.Search))
+                .Select(e => new EnsembleDto
+                {
+                    EnsembleId = e.EnsembleId,
+                    Name = e.Name
+                });
+
+            return new OkObjectResult(new {success = true, ensembles});
+        }
+
         public int GetUserId()
         {
             return int.Parse(User.Claims

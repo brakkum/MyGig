@@ -129,7 +129,7 @@ namespace MyGigApi.Controllers
                 {
                     Text = ec.Text,
                     Timestamp = ec.Timestamp,
-                    User = new UserDto
+                    User = new MemberDto
                     {
                         FullName = ec.User.FullName,
                         PhotoUrl = ec.User.UserPhoto.Url,

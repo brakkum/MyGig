@@ -42,7 +42,9 @@ export default class Event extends React.Component {
                 <div>
                     <EventHeader {...this.state.event} />
                     <CommentSection
-                        comments={this.state.event && this.state.event.comments}
+                        comments={this.state.event.comments}
+                        eventId={this.state.event.eventId}
+                        jwt={this.props.userData.jwt}
                     />
                     <span>
                         Event Id: {this.props.match.params.eventId}

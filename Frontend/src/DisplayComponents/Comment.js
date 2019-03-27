@@ -24,19 +24,19 @@ export default class Comment extends React.Component {
                 <div style={this.commentStyle}>
                     <div style={{gridArea: "photo", alignSelf: "center", justifySelf: "center"}}>
                         <MemberPictureConnect
-                            memberData={this.props.data.commentUser}
+                            {...this.props.user}
                         />
                     </div>
                     <div style={{gridArea: "username", fontWeight: "bolder"}}>
                         {
-                            this.props.data.commentUser.name
+                            this.props.user.fullName
                         }
                     </div>
                     <div style={{gridArea: "comment", margin: "5px 15px 5px 10px"}}>
-                        {this.props.data.commentText}
+                        {this.props.text}
                     </div>
                     <div style={{gridArea: "time", textAlign: "right", fontWeight: "bold"}}>
-                        <TimeSince time={this.props.data.commentTime} />
+                        <TimeSince time={this.props.timestamp} />
                     </div>
                 </div>
             </div>

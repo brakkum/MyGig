@@ -26,7 +26,7 @@ export default class Header extends React.Component {
                 }
                 {
                     // ensembles: array of ensembles involved in event
-                    this.props.ensembles.length > 0 && <EnsemblesList ensembles={this.props.ensembles}/>
+                    this.props.ensembles && <EnsemblesList ensembles={this.props.ensembles}/>
                 }
                 {
                     // ensembleMembers: members of the current ensemble page

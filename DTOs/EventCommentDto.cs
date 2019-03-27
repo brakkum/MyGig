@@ -10,6 +10,6 @@ namespace MyGigApi.DTOs
 
         public int EventId { get; set; }
 
-        public UserDto User { get; set; }
+        public MemberDto User { get; set; }
     }
 }

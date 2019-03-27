@@ -4,14 +4,15 @@ import MemberPicture from "./MemberPicture";
 export default class MemberPictureConnect extends React.Component {
 
     connectWithUser = () => {
-        console.log("connectMethod ", this.props.memberData.id);
+        console.log("connectMethod ", this.props.userId);
     };
 
     render() {
-        let notConnectedToUser = !(this.props.memberData.connectedToUser);
+        console.log(this.props)
+        let notConnectedToUser = !(this.props.connectedToUser);
         return(
             <MemberPicture
-                photoUrl={this.props.memberData.photoUrl}
+                photoUrl={this.props.photoUrl}
                 innerHtml={notConnectedToUser ? "Add" : null}
                 highlightOnHover={notConnectedToUser}
                 onClick={notConnectedToUser ? () => this.connectWithUser() : null}
