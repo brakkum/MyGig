@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -46,24 +47,26 @@ namespace MyGigApi.Controllers
                 .Select(e => e.EnsembleId)
                 .ToArray();
 
-            // TODO: Fix this to actually select from events, ya dingus
-            var events = _context.Bookings
-                .Where(b =>
-                    (ensembleIds.Contains(b.EnsembleId) && b.Event.DateAndTime > DateTime.Now) ||
-                    _context.EventModerators
-                        .Any(em => em.EventId == b.EventId &&
-                                   em.Status == RequestStatus.Accepted &&
-                                   em.UserIdRecipient == userId &&
-                                   b.Event.DateAndTime > DateTime.Now
-                                   )
+            // TODO: Improve this/grab events based on ensemble membership
+            var events = _context.Events
+                .Include(e => e.Moderators)
+                .ThenInclude(m => m.UserIdRecipient)
+                .Where(e =>
+                    (
+                        e.Moderators.Contains(
+                            _context.EventModerators
+                                .FirstOrDefault(em => em.EventId == e.EventId &&
+                                                      em.UserIdRecipient == userId &&
+                                                      em.Status == RequestStatus.Accepted))
                     )
-                .Select(b => new EventDto
+                )
+                .Select(e => new EventDto
                 {
-                    Name = b.Event.Name,
-                    DateAndTime = b.Event.DateAndTime,
-                    Location = b.Event.Location,
+                    Name = e.Name,
+                    DateAndTime = e.DateAndTime,
+                    Location = e.Location,
                     UserIsMod = _context.EventModerators
-                        .Any(evm => evm.EventId == b.EventId &&
+                        .Any(evm => evm.EventId == e.EventId &&
                                     evm.UserIdRecipient == userId &&
                                     evm.Status == RequestStatus.Accepted)
                 });
