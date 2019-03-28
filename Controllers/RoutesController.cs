@@ -110,15 +110,43 @@ namespace MyGigApi.Controllers
         {
             var userId = GetUserId();
 
-            var validMod = _context.EventModerators
-                .Any(em => em.UserIdRecipient == userId &&
-                           em.EventId == dto.EventId &&
-                           em.Status == RequestStatus.Accepted);
+            var eventModIds = _context.EventModerators
+                .Where(em => em.EventId == dto.EventId &&
+                           em.Status == RequestStatus.Accepted)
+                .Select(em => em.UserIdRecipient)
+                .ToArray();
 
-            if (!validMod)
+            var ensembleIds = _context.Bookings
+                .Where(b => b.EventId == dto.EventId &&
+                            b.Status == RequestStatus.Accepted)
+                .Select(b => b.EnsembleId)
+                .ToArray();
+
+            var validMem = _context.EnsembleMembers
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted &&
+                           ensembleIds.Contains(em.EnsembleId));
+            var validMod = eventModIds.Contains(userId);
+
+            if (!(validMem || validMod))
             {
-                return new OkObjectResult(new {success = false, error = "Not valid mod"});
+                return new OkObjectResult(new
+                {
+                    success = false,
+                    error = "Not valid mod or ensemble member"
+                });
             }
+
+            var connsA = _context.Connections
+                .Where(c => c.UserIdRecipient == userId)
+                .Select(c => c.UserIdRequester)
+                .ToArray();
+            var connsB = _context.Connections
+                .Where(c => c.UserIdRequester == userId)
+                .Select(c => c.UserIdRecipient)
+                .ToArray();
+
+            var userConnectionIds = connsA.Concat(connsB);
 
             var ensembles = _context.Bookings
                 .Include(b => b.Ensemble)
@@ -126,16 +154,14 @@ namespace MyGigApi.Controllers
                 .Select(b => new EnsembleDto
                 {
                     Name = b.Ensemble.Name,
-                    Members = _context.EnsembleMembers
-                        .Include(em => em.UserRecipient)
-                        .ThenInclude(u => u.UserPhoto)
-                        .Where(e => e.EnsembleId == b.EnsembleId && e.Status == RequestStatus.Accepted)
-                        .Select(em => new UserDto
+                    Members = b.Ensemble.Members
+                        .Select(m => new MemberDto
                         {
-                            FullName = em.UserRecipient.FullName,
-                            PhotoUrl = em.UserRecipient.UserPhoto.Url,
-                            UserId = em.UserIdRecipient
-                        }).ToList() as ICollection<UserDto>
+                            FullName = m.UserRecipient.FullName,
+                            PhotoUrl = m.UserRecipient.UserPhoto.Url,
+                            UserId = m.UserIdRecipient,
+                            ConnectedToUser = userConnectionIds.Contains(m.UserIdRecipient)
+                        }).ToList() as ICollection<MemberDto>
                 }).ToList() as ICollection<EnsembleDto>;
 
             var comments = _context.EventComments
@@ -149,7 +175,8 @@ namespace MyGigApi.Controllers
                     {
                         FullName = ec.User.FullName,
                         PhotoUrl = ec.User.UserPhoto.Url,
-                        UserId = ec.UserId
+                        UserId = ec.UserId,
+                        ConnectedToUser = userConnectionIds.Contains(ec.UserId)
                     }
                 })
                 .ToList() as ICollection<EventCommentDto>;
@@ -164,16 +191,91 @@ namespace MyGigApi.Controllers
                     EventId = e.EventId,
                     Location = e.Location,
                     Comments = comments,
-                    UserIsMod = _context.EventModerators
-                        .Any(evm => evm.EventId == dto.EventId &&
-                                    evm.UserIdRecipient == userId &&
-                                    evm.Status == RequestStatus.Accepted)
+                    UserIsMod = validMod
                 }).FirstOrDefault();
 
             return new OkObjectResult(new
             {
                 success = true,
                 ev
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/ensemble")]
+        public OkObjectResult GetEnsemblePage([FromBody] EnsembleDto dto)
+        {
+            var userId = GetUserId();
+
+            var ensMems = _context.EnsembleMembers
+                .Where(em => em.EnsembleId == dto.EnsembleId &&
+                                      em.Status == RequestStatus.Accepted)
+                .Select(em => em.UserIdRecipient).ToArray();
+
+            var ensMods = _context.EnsembleModerators
+                .Where(em => em.EnsembleId == dto.EnsembleId &&
+                                      em.Status == RequestStatus.Accepted)
+                .Select(em => em.UserIdRecipient).ToArray();
+
+            var validMem = ensMems.Contains(userId);
+            var validMod = ensMods.Contains(userId);
+
+            if (!(validMem || validMod))
+            {
+                return new OkObjectResult(new {success = false, error = "Not valid member or mod"});
+            }
+
+            var events = _context.Bookings
+                .Include(b => b.Event)
+                .Where(b => b.EnsembleId == dto.EnsembleId && b.Status == RequestStatus.Accepted)
+                .Select(b => new EventDto
+                {
+                    Name = b.Event.Name,
+                    Location = b.Event.Location,
+                    DateAndTime = b.Event.DateAndTime
+                }).ToList() as ICollection<EventDto>;
+
+            var comments = _context.EnsembleComments
+                .Where(ec => ec.EnsembleId == dto.EnsembleId)
+                .OrderByDescending(ec => ec.Timestamp)
+                .Select(ec => new EnsembleCommentDto
+                {
+                    Text = ec.Text,
+                    Timestamp = ec.Timestamp,
+                    User = new MemberDto
+                    {
+                        FullName = ec.User.FullName,
+                        PhotoUrl = ec.User.UserPhoto.Url,
+                        UserId = ec.UserId
+                    }
+                })
+                .ToList() as ICollection<EnsembleCommentDto>;
+
+            var members = _context.EnsembleMembers
+                .Where(e => e.EnsembleId == dto.EnsembleId && e.Status == RequestStatus.Accepted)
+                .Select(e => new MemberDto
+                {
+                    FullName = e.UserRecipient.FullName,
+                    PhotoUrl = e.UserRecipient.UserPhoto.Url,
+                    UserId = e.UserRecipient.UserId
+                }).ToList() as ICollection<MemberDto>;
+
+            var ensemble = _context.Ensembles
+                .Select(e => new EnsembleDto
+                {
+                    EnsembleId = dto.EnsembleId,
+                    Name = e.Name,
+                    Members = members,
+                    Comments = comments,
+                    Events = events
+                })
+                .FirstOrDefault(e => e.EnsembleId == dto.EnsembleId);
+
+            return new OkObjectResult(new
+            {
+                success = true,
+                ensemble
             });
         }
 
@@ -184,6 +286,15 @@ namespace MyGigApi.Controllers
                 .Select(x => x.Value)
                 .SingleOrDefault()
             );
+        }
+
+        public bool MemberIsConnectedToUser(int memberId, int userId)
+        {
+            return _context.Connections
+                .Any(c =>
+                    c.UserIdRecipient == memberId && c.UserIdRequester == userId ||
+                    c.UserIdRecipient == userId && c.UserIdRequester == memberId
+                );
         }
     }
 }

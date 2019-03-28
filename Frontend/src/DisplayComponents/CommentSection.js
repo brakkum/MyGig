@@ -16,7 +16,7 @@ export default class CommentSection extends React.Component {
 
     addComment = () => {
         let jwt = this.props.jwt;
-        let eventId = this.props.eventId;
+        let id = this.props.id;
 
         if (!this.state.newComment) {
             return;
@@ -26,7 +26,7 @@ export default class CommentSection extends React.Component {
             sendingRequest: true
         });
 
-        fetch("/api/events/neweventcomment", {
+        fetch(this.props.submitUrl, {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export default class CommentSection extends React.Component {
             }),
             body: JSON.stringify({
                 Text: this.state.newComment,
-                EventId: eventId
+                Id: id
             })
         }).then(res => res.json())
             .then(json => {
@@ -42,7 +42,7 @@ export default class CommentSection extends React.Component {
                     console.log("comment submitted");
                     this.repopulateComments();
                 } else {
-                    console.log("bad comment request ", json)
+                    console.log("bad comment request ", json);
                     this.setState({
                         sendingRequest: false
                     });
@@ -58,21 +58,21 @@ export default class CommentSection extends React.Component {
 
     repopulateComments = () => {
         let jwt = this.props.jwt;
-        let eventId = this.props.eventId;
+        let id = this.props.id;
 
         this.setState({
             sendingRequest: true,
             newComment: ""
         });
 
-        fetch("/api/events/getcomments", {
+        fetch(this.props.getUrl, {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${jwt}`
             }),
             body: JSON.stringify({
-                EventId: eventId
+                Id: id
             })
         }).then(res => res.json())
             .then(json => {

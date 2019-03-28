@@ -14,8 +14,11 @@ export default class Header extends React.Component {
                 <h1>{this.props.name}</h1>
                 <div className="details">
                     <h3>{this.props.location}</h3>
-                    <DateDisplay datetime={this.props.dateAndTime} />
-                </div>
+                        {
+                            this.props.dateAndTime &&
+                            <DateDisplay datetime={this.props.dateAndTime} />
+                        }
+                    </div>
                 {
                     // for event pages
                     this.props.ensembles &&
@@ -23,8 +26,8 @@ export default class Header extends React.Component {
                 }
                 {
                     // for ensemble pages
-                    this.props.ensembleMembers &&
-                        <EnsembleMembersList ensembleMembers={this.props.ensembleMembers}/>
+                    this.props.members &&
+                        <EnsembleMembersList ensembleMembers={this.props.members}/>
                 }
             </div>
         )

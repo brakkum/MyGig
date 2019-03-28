@@ -42,8 +42,10 @@ export default class Event extends React.Component {
                     <Header {...this.state.event} />
                     <CommentSection
                         comments={this.state.event.comments}
-                        eventId={this.state.event.eventId}
+                        id={this.state.event.eventId}
                         jwt={this.props.userData.jwt}
+                        submitUrl={"/api/events/neweventcomment"}
+                        getUrl={"/api/events/getcomments"}
                     />
                     <span>
                         Event Id: {this.props.match.params.eventId}

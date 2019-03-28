@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace MyGigApi.DTOs
 {
@@ -9,6 +10,10 @@ namespace MyGigApi.DTOs
 
         public int EnsembleId { get; set; }
 
-        public ICollection<UserDto> Members { get; set; }
+        public ICollection<MemberDto> Members { get; set; }
+
+        public ICollection<EventDto> Events { get; set; }
+
+        public ICollection<EnsembleCommentDto> Comments { get; set; }
     }
 }

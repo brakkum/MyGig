@@ -9,8 +9,9 @@ namespace MyGigApi.DTOs
 
         public string Text { get; set; }
 
-        public UserDto User { get; set; }
+        public MemberDto User { get; set; }
 
-        public int EnsembleId { get; set; }
+        // Ensemble Id
+        public int Id { get; set; }
     }
 }

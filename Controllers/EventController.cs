@@ -121,7 +121,7 @@ namespace MyGigApi.Controllers
             var userId = GetUserId();
 
             var ensembles = _context.Bookings
-                .Where(ev => ev.EventId == dto.EventId)
+                .Where(ev => ev.EventId == dto.Id)
                 .Select(ev => ev.Ensemble);
 
             var validUser = ensembles.Any(en =>
@@ -139,7 +139,7 @@ namespace MyGigApi.Controllers
 
             var comment = new EventComment
             {
-                EventId = dto.EventId,
+                EventId = dto.Id,
                 Text = dto.Text,
                 UserId = userId
             };

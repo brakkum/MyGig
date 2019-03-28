@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyGigApi.Context;
 using MyGigApi.DTOs;
 using MyGigApi.Entities;
@@ -222,13 +223,13 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/addcomment")]
+        [Route(RoutePrefix + "/newensemblecomment")]
         public OkObjectResult AddEnsembleModerator([FromBody] EnsembleCommentDto dto)
         {
             var userId = GetUserId();
 
             var validMem = _context.EnsembleMembers
-                .Any(em => em.EnsembleId == dto.EnsembleId &&
+                .Any(em => em.EnsembleId == dto.Id &&
                            em.UserIdRecipient == userId &&
                            em.Status == RequestStatus.Accepted);
 
@@ -239,7 +240,7 @@ namespace MyGigApi.Controllers
 
             _context.EnsembleComments.Add(new EnsembleComment
             {
-                EnsembleId = dto.EnsembleId,
+                EnsembleId = dto.Id,
                 UserId = userId,
                 Text = dto.Text,
                 Timestamp = DateTime.Now
@@ -247,6 +248,56 @@ namespace MyGigApi.Controllers
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/getcomments")]
+        public OkObjectResult GetEnsembleComments([FromBody] EnsembleCommentDto dto)
+        {
+            var userId = GetUserId();
+
+            var ensMem = _context.EnsembleMembers
+                .FirstOrDefault(em => em.EnsembleId == dto.Id &&
+                                      em.UserIdRecipient == userId &&
+                                      em.Status == RequestStatus.Accepted);
+
+            var ensMod = _context.EnsembleModerators
+                .FirstOrDefault(em => em.EnsembleId == dto.Id &&
+                                      em.UserIdRecipient == userId &&
+                                      em.Status == RequestStatus.Accepted);
+
+            var validUser = _context.Ensembles
+                .Any(e => e.EnsembleId == dto.Id &&
+                          (e.Members.Contains(ensMem) || e.Moderators.Contains(ensMod)));
+
+            if (!validUser)
+            {
+                return new OkObjectResult(new {success = false, error = "Not valid member or mod"});
+            }
+
+            var comments = _context.EnsembleComments
+                .Include(c => c.User)
+                .ThenInclude(u => u.UserPhoto)
+                .Where(c => c.EnsembleId == dto.Id)
+                .OrderByDescending(c => c.Timestamp)
+                .Select(c => new EnsembleCommentDto
+                {
+                    Text = c.Text,
+                    Timestamp = c.Timestamp,
+                    User = new MemberDto
+                    {
+                        FullName = c.User.FullName,
+                        PhotoUrl = c.User.UserPhoto.Url,
+                        UserId = c.UserId,
+                        ConnectedToUser = _context.Connections
+                            .Any(conn =>
+                                conn.UserIdRecipient == c.UserId && conn.UserIdRequester == userId ||
+                                conn.UserIdRecipient == userId && conn.UserIdRequester == c.UserId)
+                    }
+                });
+
+            return new OkObjectResult(new {success = true, comments});
         }
 
         [HttpPost]

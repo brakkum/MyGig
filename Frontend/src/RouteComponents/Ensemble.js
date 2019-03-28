@@ -1,7 +1,5 @@
 import React from "react";
-import res from "../MockData/EnsembleMockData";
 import Header from "../DisplayComponents/Header";
-import { Redirect } from "react-router-dom";
 import CommentSection from "../DisplayComponents/CommentSection";
 
 export default class Ensemble extends React.Component {
@@ -11,23 +9,33 @@ export default class Ensemble extends React.Component {
 
     state = {
         loaded: false,
-        data: null,
-        userAllowed: true
+        ensemble: null
     };
 
     componentDidMount() {
-        // api call here
-        // check that user is allowed
-        // redirect if they're not
-        this._isMounted = true;
-        setTimeout(() => {
-            if (this._isMounted) {
-                this.setState({ data: res.data, loaded: true });
-            }
-        }, 2000);
-        setTimeout(() => {
-            this.props.pageLoaded();
-        }, 100);
+        const ensembleId = this.props.match.params.ensembleId;
+        const jwt = this.props.userData.jwt;
+
+        fetch("/api/routes/ensemble", {
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
+            }),
+            body: JSON.stringify({
+                EnsembleId: ensembleId
+            })
+        }).then(res => res.json())
+            .then(json => {
+                if (json.success) {
+                    this.setState({ensemble: json.ensemble});
+                    this.props.pageLoaded();
+                } else {
+                    console.log("ensemble fetch fail");
+                    this.props.pageLoaded();
+                }
+            })
+            .catch(e => console.log(e));
     }
 
     componentWillUnmount() {
@@ -35,16 +43,16 @@ export default class Ensemble extends React.Component {
     }
 
     render() {
-        // if user not allowed, redirect home
-        if (!this.state.userAllowed) {
-            return <Redirect to={"/"} />
-        }
         return(
-            this.state.data &&
+            this.state.ensemble &&
                 <div>
-                    <Header {...this.state.data} />
+                    <Header {...this.state.ensemble} />
                     <CommentSection
-                        comments={this.state.data && this.state.data.ensembleComments}
+                        comments={this.state.ensemble && this.state.ensemble.comments}
+                        submitUr={"/api/ensembles/newensemblecomment"}
+                        getUrl={"/api/ensembles/getcomments"}
+                        jwt={this.props.userData.jwt}
+                        id={this.props.match.params.eventId}
                     />
                     <h4>
                         Ensemble Id: {this.props.match.params.ensembleId}
