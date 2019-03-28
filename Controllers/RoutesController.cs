@@ -46,13 +46,26 @@ namespace MyGigApi.Controllers
                 .Select(e => e.EnsembleId)
                 .ToArray();
 
+            // TODO: Fix this to actually select from events, ya dingus
             var events = _context.Bookings
-                .Where(b => ensembleIds.Contains(b.EnsembleId) && b.Event.DateAndTime > DateTime.Now)
+                .Where(b =>
+                    (ensembleIds.Contains(b.EnsembleId) && b.Event.DateAndTime > DateTime.Now) ||
+                    _context.EventModerators
+                        .Any(em => em.EventId == b.EventId &&
+                                   em.Status == RequestStatus.Accepted &&
+                                   em.UserIdRecipient == userId &&
+                                   b.Event.DateAndTime > DateTime.Now
+                                   )
+                    )
                 .Select(b => new EventDto
                 {
                     Name = b.Event.Name,
                     DateAndTime = b.Event.DateAndTime,
-                    Location = b.Event.Location
+                    Location = b.Event.Location,
+                    UserIsMod = _context.EventModerators
+                        .Any(evm => evm.EventId == b.EventId &&
+                                    evm.UserIdRecipient == userId &&
+                                    evm.Status == RequestStatus.Accepted)
                 });
 
             var notifications = _context.Notifications
@@ -147,7 +160,11 @@ namespace MyGigApi.Controllers
                     DateAndTime = e.DateAndTime,
                     EventId = e.EventId,
                     Location = e.Location,
-                    Comments = comments
+                    Comments = comments,
+                    UserIsMod = _context.EventModerators
+                        .Any(evm => evm.EventId == dto.EventId &&
+                                    evm.UserIdRecipient == userId &&
+                                    evm.Status == RequestStatus.Accepted)
                 }).FirstOrDefault();
 
             return new OkObjectResult(new

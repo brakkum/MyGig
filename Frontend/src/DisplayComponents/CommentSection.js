@@ -125,7 +125,7 @@ export default class CommentSection extends React.Component {
                         maxLength={"500"}
                     />
                     <Button
-                        preClickText={"Submit Comment"}
+                        preClickText={"Submit"}
                         onClick={this.addComment}
                         type={"submit"}
                         style={{float: "right"}}

@@ -41,7 +41,7 @@ export default class Input extends React.Component {
 
     render() {
         let Component = this.props.type === "textarea" ? "textarea" : "input";
-        let validStyle = this.props.valid ? {border: "1px solid lightgrey"} : {border: "1px solid #b73300"};
+        let validStyle = (this.props.valid || this.props.valid === undefined) ? {border: "1px solid lightgrey"} : {border: "1px solid #b73300"};
         return(
             <div style={{width: "90%", margin: "auto"}}>
                 <div style={{margin: "10px", fontSize: "15px"}}>

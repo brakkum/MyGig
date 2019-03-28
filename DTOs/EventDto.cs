@@ -13,6 +13,8 @@ namespace MyGigApi.DTOs
 
         public string Location { get; set; }
 
+        public bool UserIsMod { get; set; }
+
         public ICollection<EnsembleDto> Ensembles { get; set; }
 
         public ICollection<EventCommentDto> Comments { get; set; }

@@ -37,7 +37,6 @@ export default class Event extends React.Component {
 
     render() {
         return(
-            // wait for api data to load page
             this.state.event &&
                 <div>
                     <Header {...this.state.event} />
