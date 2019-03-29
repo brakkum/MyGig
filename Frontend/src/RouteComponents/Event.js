@@ -17,6 +17,7 @@ export default class Event extends React.Component {
     componentDidMount() {
         this._eventId = this.props.match.params.eventId;
         this._jwt = this.props.userData.jwt;
+        this._isMounted = true;
 
         fetch("/api/routes/event", {
             method: "post",
@@ -29,7 +30,7 @@ export default class Event extends React.Component {
             })
         }).then(res => res.json())
             .then(json => {
-                if (json.success) {
+                if (json.success && this._isMounted) {
                     this.setState({event: json.ev});
                     this.props.pageLoaded();
                 } else {
@@ -38,6 +39,10 @@ export default class Event extends React.Component {
                 }
             })
             .catch(e => console.log(e));
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render() {

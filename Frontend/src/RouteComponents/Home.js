@@ -116,7 +116,6 @@ export default class Home extends React.Component {
                         {this.state.ensembles.length > 0
                             ?
                             this.state.ensembles.map((ens, i) => {
-                                console.log(ens);
                                 return <Button
                                     onClick={() => this.props.redirect(`/ensemble/${ens.ensembleId}`, "/")}
                                     key={i}
@@ -145,7 +144,6 @@ export default class Home extends React.Component {
                         {this.state.events.length > 0
                             ?
                             this.state.events.map((ev, i) => {
-                                console.log(ev);
                                 return <Button
                                     onClick={() => this.props.redirect(`/event/${ev.eventId}`, "/")}
                                     key={i}
