@@ -26,6 +26,7 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/home")]
         public OkObjectResult GetHomePage()
         {
+            // TODO: Clean up entire method
             var userId = GetUserId();
 
             var userExists = _context.Users.Any(u => u.UserId == userId);
@@ -35,41 +36,46 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "No User"});
             }
 
-            var ensembles = _context.EnsembleMembers
+            var ensemblesAsMember = _context.EnsembleMembers
                 .Where(e => e.UserIdRecipient == userId && e.Status == RequestStatus.Accepted)
-                .Select(e => new EnsembleDto
-                {
-                    EnsembleId = e.EnsembleId,
-                    Name = e.Ensemble.Name
-                });
-
-            var ensembleIds = ensembles
                 .Select(e => e.EnsembleId)
                 .ToArray();
 
-            // TODO: Improve this/grab events based on ensemble membership
-            var events = _context.Events
-                .Include(e => e.Moderators)
-                .ThenInclude(m => m.UserIdRecipient)
-                .Where(e =>
-                    (
-                        e.Moderators.Contains(
-                            _context.EventModerators
-                                .FirstOrDefault(em => em.EventId == e.EventId &&
-                                                      em.UserIdRecipient == userId &&
-                                                      em.Status == RequestStatus.Accepted))
-                    )
-                )
-                .Select(e => new EventDto
+            var ensemblesAsMod = _context.EnsembleModerators
+                .Where(e => e.UserIdRecipient == userId && e.Status == RequestStatus.Accepted)
+                .Select(e => e.EnsembleId)
+                .ToArray();
+
+            var ensembleIds = ensemblesAsMember.Concat(ensemblesAsMod).Distinct();
+
+            var ensembles = _context.Ensembles
+                .Where(e => ensembleIds.Contains(e.EnsembleId))
+                .Select(e => new EnsembleDto
                 {
-                    Name = e.Name,
-                    DateAndTime = e.DateAndTime,
-                    Location = e.Location,
-                    UserIsMod = _context.EventModerators
-                        .Any(evm => evm.EventId == e.EventId &&
-                                    evm.UserIdRecipient == userId &&
-                                    evm.Status == RequestStatus.Accepted)
+                    EnsembleId = e.EnsembleId,
+                    Name = e.Name
                 });
+
+            var eventsModerated = _context.EventModerators
+                .Where(em => em.UserIdRecipient == userId && em.Status == RequestStatus.Accepted)
+                .Select(em => new EventDto
+                {
+                    DateAndTime = em.Event.DateAndTime,
+                    Name = em.Event.Name,
+                    Location = em.Event.Location
+                });
+
+            var eventsOfEnsembles = _context.Bookings
+                .Where(b => ensembleIds.Contains(b.EnsembleId) &&
+                            b.Status == RequestStatus.Accepted)
+                .Select(b => new EventDto
+                {
+                    DateAndTime = b.Event.DateAndTime,
+                    Name = b.Event.Name,
+                    Location = b.Event.Location
+                });
+
+            var events = eventsModerated.Concat(eventsOfEnsembles).Distinct();
 
             var notifications = _context.Notifications
                 .Where(n => n.UserId == userId && n.Status == NotificationStatus.Unseen)
