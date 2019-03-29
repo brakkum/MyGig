@@ -142,7 +142,7 @@ export default class Home extends React.Component {
                     >
                         {this.state.events.length > 0
                             ?
-                            this.state.ensembles.map((ev, i) => {
+                            this.state.events.map((ev, i) => {
                                 console.log(ev);
                                 return <Link
                                     url={`/event/${ev.eventId}`}
