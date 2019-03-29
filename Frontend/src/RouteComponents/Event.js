@@ -5,22 +5,27 @@ import CommentSection from "../DisplayComponents/CommentSection";
 export default class Event extends React.Component {
     // top level route component for /event/{event_id}
 
+
+    _isMounted = false;
+    _eventId = null;
+    _jwt = null;
+
     state = {
         event: null
     };
 
     componentDidMount() {
-        const eventId = this.props.match.params.eventId;
-        const jwt = this.props.userData.jwt;
+        this._eventId = this.props.match.params.eventId;
+        this._jwt = this.props.userData.jwt;
 
         fetch("/api/routes/event", {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
+                "Authorization": `Bearer ${this._jwt}`
             }),
             body: JSON.stringify({
-                EventId: eventId
+                EventId: this._eventId
             })
         }).then(res => res.json())
             .then(json => {
@@ -41,8 +46,9 @@ export default class Event extends React.Component {
                 <div>
                     <Header {...this.state.event} />
                     <CommentSection
-                        id={this.state.event.eventId}
-                        jwt={this.props.userData.jwt}
+                        id={this._eventId}
+                        jwt={this._jwt}
+                        comments={this.state.event.comments}
                         submitUrl={"/api/events/neweventcomment"}
                         getUrl={"/api/events/getcomments"}
                     />

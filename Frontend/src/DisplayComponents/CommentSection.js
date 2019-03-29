@@ -59,7 +59,6 @@ export default class CommentSection extends React.Component {
     repopulateComments = () => {
         let jwt = this.props.jwt;
         let id = this.props.id;
-        console.log(jwt,id)
 
         this.setState({
             sendingRequest: true,
@@ -81,6 +80,7 @@ export default class CommentSection extends React.Component {
                     this.setState({
                         comments: json.comments
                     })
+                    console.log("retrieved comments ", json)
                 } else {
                     console.log("comments not retrieved ", json)
                 }
@@ -103,8 +103,9 @@ export default class CommentSection extends React.Component {
     };
 
     componentDidMount() {
-        console.log(this.props)
-        this.repopulateComments()
+        this.setState({
+            comments: this.props.comments
+        })
     }
 
     render() {

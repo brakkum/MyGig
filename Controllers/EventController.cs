@@ -154,12 +154,12 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/getcomments")]
-        public OkObjectResult GetEventComments([FromBody] EventDto dto)
+        public OkObjectResult GetEventComments([FromBody] EventCommentDto dto)
         {
             var userId = GetUserId();
 
             var ensembles = _context.Bookings
-                .Where(ev => ev.EventId == dto.EventId)
+                .Where(ev => ev.EventId == dto.Id)
                 .Select(ev => ev.Ensemble);
 
             var validUser = ensembles.Any(en =>
@@ -180,7 +180,7 @@ namespace MyGigApi.Controllers
             var comments = _context.EventComments
                 .Include(c => c.User)
                 .ThenInclude(u => u.UserPhoto)
-                .Where(c => c.EventId == dto.EventId)
+                .Where(c => c.EventId == dto.Id)
                 .OrderByDescending(c => c.Timestamp)
                 .Select(c => new EventCommentDto
                 {

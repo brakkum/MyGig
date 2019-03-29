@@ -10,8 +10,7 @@ export default class Ensemble extends React.Component {
     _jwt = null;
 
     state = {
-        ensemble: null,
-        ensembleId: null
+        ensemble: null
     };
 
     componentDidMount() {
@@ -51,7 +50,7 @@ export default class Ensemble extends React.Component {
                 <div>
                     <Header {...this.state.ensemble} />
                     <CommentSection
-                        comments={this.state.ensemble && this.state.ensemble.comments}
+                        comments={this.state.ensemble.comments}
                         submitUrl={"/api/ensembles/newensemblecomment"}
                         getUrl={"/api/ensembles/getcomments"}
                         jwt={this._jwt}
