@@ -15,6 +15,7 @@ export default class Ensemble extends React.Component {
     componentDidMount() {
         const ensembleId = this.props.match.params.ensembleId;
         const jwt = this.props.userData.jwt;
+        this._isMounted = true;
 
         fetch("/api/routes/ensemble", {
             method: "post",
@@ -27,7 +28,7 @@ export default class Ensemble extends React.Component {
             })
         }).then(res => res.json())
             .then(json => {
-                if (json.success) {
+                if (json.success && this._isMounted) {
                     this.setState({ensemble: json.ensemble});
                     this.props.pageLoaded();
                 } else {

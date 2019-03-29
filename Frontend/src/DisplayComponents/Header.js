@@ -9,6 +9,7 @@ export default class Header extends React.Component {
     // and ensemble pages
 
     render() {
+        console.log(this.props)
         return (
             <div className="page-header">
                 <h1>{this.props.name}</h1>

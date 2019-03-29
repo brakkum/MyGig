@@ -255,7 +255,7 @@ namespace MyGigApi.Controllers
             var ensemble = _context.Ensembles
                 .Select(e => new EnsembleDto
                 {
-                    EnsembleId = dto.EnsembleId,
+                    EnsembleId = e.EnsembleId,
                     Name = e.Name,
                     Members = members,
                     Comments = comments,
@@ -284,7 +284,7 @@ namespace MyGigApi.Controllers
             var connA = _context.Connections
                 .Where(c => c.UserIdRecipient == userId)
                 .Select(c => c.UserIdRequester)
-                .ToArray();    
+                .ToArray();
             var connB = _context.Connections
                 .Where(c => c.UserIdRequester == userId)
                 .Select(c => c.UserIdRecipient)
