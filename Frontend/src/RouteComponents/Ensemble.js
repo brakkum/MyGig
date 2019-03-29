@@ -50,15 +50,12 @@ export default class Ensemble extends React.Component {
                 <div>
                     <Header {...this.state.ensemble} />
                     <CommentSection
+                        id={this._ensembleId}
+                        jwt={this._jwt}
                         comments={this.state.ensemble.comments}
                         submitUrl={"/api/ensembles/newensemblecomment"}
                         getUrl={"/api/ensembles/getcomments"}
-                        jwt={this._jwt}
-                        id={this._ensembleId}
                     />
-                    <h4>
-                        Ensemble Id: {this.props.match.params.ensembleId}
-                    </h4>
                 </div>
         )
     }

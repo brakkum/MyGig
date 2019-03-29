@@ -9,15 +9,15 @@ export default class CommentSection extends React.Component {
     // props
     // comments: array of comments
 
+    _jwt = null;
+    _id = null;
+
     state = {
         comments: [],
         newComment: ""
     };
 
     addComment = () => {
-        let jwt = this.props.jwt;
-        let id = this.props.id;
-
         if (!this.state.newComment) {
             return;
         }
@@ -30,11 +30,11 @@ export default class CommentSection extends React.Component {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
+                "Authorization": `Bearer ${this._jwt}`
             }),
             body: JSON.stringify({
                 Text: this.state.newComment,
-                Id: id
+                Id: this._id
             })
         }).then(res => res.json())
             .then(json => {
@@ -57,9 +57,6 @@ export default class CommentSection extends React.Component {
     };
 
     repopulateComments = () => {
-        let jwt = this.props.jwt;
-        let id = this.props.id;
-
         this.setState({
             sendingRequest: true,
             newComment: ""
@@ -69,17 +66,17 @@ export default class CommentSection extends React.Component {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
+                "Authorization": `Bearer ${this._jwt}`
             }),
             body: JSON.stringify({
-                Id: id
+                Id: this._id
             })
         }).then(res => res.json())
             .then(json => {
                 if (json.success) {
                     this.setState({
                         comments: json.comments
-                    })
+                    });
                     console.log("retrieved comments ", json)
                 } else {
                     console.log("comments not retrieved ", json)
@@ -103,6 +100,9 @@ export default class CommentSection extends React.Component {
     };
 
     componentDidMount() {
+        this._jwt = this.props.jwt;
+        this._id = this.props.id;
+
         this.setState({
             comments: this.props.comments
         })
@@ -114,6 +114,7 @@ export default class CommentSection extends React.Component {
                 <DisplayCase label={this.props.label || "Comments"}>
                     {
                         this.state.comments && this.state.comments.map((comment, i) => {
+                            console.log(comment)
                            return <Comment {...comment} key={i} />
                         })
                     }

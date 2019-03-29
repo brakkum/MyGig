@@ -361,7 +361,7 @@ namespace MyGigApi.Controllers
             return new OkObjectResult(new {success = true, ensembles});
         }
 
-        public IEnumerable<int> GetUserConnections(int userId)
+        public int[] GetUserConnections(int userId)
         {
             var connA = _context.Connections
                 .Where(c => c.UserIdRecipient == userId)
@@ -372,7 +372,7 @@ namespace MyGigApi.Controllers
                 .Select(c => c.UserIdRecipient)
                 .ToArray();
 
-            return connA.Concat(connB);
+            return connA.Concat(connB).ToArray();
         }
 
         public int GetUserId()

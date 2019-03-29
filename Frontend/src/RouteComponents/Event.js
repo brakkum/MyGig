@@ -5,7 +5,6 @@ import CommentSection from "../DisplayComponents/CommentSection";
 export default class Event extends React.Component {
     // top level route component for /event/{event_id}
 
-
     _isMounted = false;
     _eventId = null;
     _jwt = null;
@@ -57,9 +56,6 @@ export default class Event extends React.Component {
                         submitUrl={"/api/events/neweventcomment"}
                         getUrl={"/api/events/getcomments"}
                     />
-                    <span>
-                        Event Id: {this.props.match.params.eventId}
-                    </span>
                 </div>
         )
     }

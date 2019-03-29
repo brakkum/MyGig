@@ -239,6 +239,8 @@ namespace MyGigApi.Controllers
                     DateAndTime = b.Event.DateAndTime
                 }).ToList() as ICollection<EventDto>;
 
+            var userConnectionIds = GetUserConnections(userId);
+
             var comments = _context.EnsembleComments
                 .Where(ec => ec.EnsembleId == dto.EnsembleId)
                 .OrderByDescending(ec => ec.Timestamp)
@@ -250,7 +252,8 @@ namespace MyGigApi.Controllers
                     {
                         FullName = ec.User.FullName,
                         PhotoUrl = ec.User.UserPhoto.Url,
-                        UserId = ec.UserId
+                        UserId = ec.UserId,
+                        ConnectedToUser = userConnectionIds.Contains(ec.UserId)
                     }
                 })
                 .ToList() as ICollection<EnsembleCommentDto>;
@@ -291,7 +294,7 @@ namespace MyGigApi.Controllers
             );
         }
 
-        public IEnumerable<int> GetUserConnections(int userId)
+        public int[] GetUserConnections(int userId)
         {
             var connA = _context.Connections
                 .Where(c => c.UserIdRecipient == userId)
@@ -302,7 +305,7 @@ namespace MyGigApi.Controllers
                 .Select(c => c.UserIdRecipient)
                 .ToArray();
 
-            return connA.Concat(connB);
+            return connA.Concat(connB).ToArray();
         }
     }
 }

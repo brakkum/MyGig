@@ -95,7 +95,17 @@ namespace MyGigApi.Controllers
             _context.Users.Add(user);
             _context.SaveChanges();
 
-            string jwtToken = GenerateJwtToken(new UserDto
+            _context.Connections.Add(new Connection
+            {
+                ConfirmedAt = DateTime.Now,
+                Status = RequestStatus.Accepted,
+                UserIdRecipient = user.UserId,
+                UserIdRequester = user.UserId,
+                Text = "New User"
+            });
+            _context.SaveChanges();
+
+            var jwtToken = GenerateJwtToken(new UserDto
             {
                 UserId = user.UserId
             });
