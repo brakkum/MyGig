@@ -2,6 +2,7 @@ import React from "react";
 import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
 import Request from "../DisplayComponents/Request";
 import Link from "../DisplayComponents/Containers/Link";
+import Button from "../HelperComponents/Button";
 
 export default class Home extends React.Component {
     // top level route component for /
@@ -110,16 +111,16 @@ export default class Home extends React.Component {
                                 redirect={this.props.redirect}
                             />
                         }
+                        boxStyle={{display: "flex", justifyContent: "space-around"}}
                     >
                         {this.state.ensembles.length > 0
                             ?
                             this.state.ensembles.map((ens, i) => {
                                 console.log(ens);
-                                return <Link
-                                    url={`/ensemble/${ens.ensembleId}`}
-                                    interior={ens.name}
-                                    redirect={this.props.redirect}
+                                return <Button
+                                    onClick={() => this.props.redirect(`/ensemble/${ens.ensembleId}`, "/")}
                                     key={i}
+                                    preClickText={ens.name}
                                 />
                             })
                             :
