@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -257,24 +258,30 @@ namespace MyGigApi.Controllers
         {
             var userId = GetUserId();
 
-            var ensMem = _context.EnsembleMembers
-                .FirstOrDefault(em => em.EnsembleId == dto.Id &&
-                                      em.UserIdRecipient == userId &&
-                                      em.Status == RequestStatus.Accepted);
+            var eventModIds = _context.EventModerators
+                .Where(em => em.EventId == dto.Id &&
+                             em.Status == RequestStatus.Accepted)
+                .Select(em => em.UserIdRecipient)
+                .ToArray();
 
-            var ensMod = _context.EnsembleModerators
-                .FirstOrDefault(em => em.EnsembleId == dto.Id &&
-                                      em.UserIdRecipient == userId &&
-                                      em.Status == RequestStatus.Accepted);
+            var ensembleIds = _context.Bookings
+                .Where(b => b.EventId == dto.Id &&
+                            b.Status == RequestStatus.Accepted)
+                .Select(b => b.EnsembleId)
+                .ToArray();
 
-            var validUser = _context.Ensembles
-                .Any(e => e.EnsembleId == dto.Id &&
-                          (e.Members.Contains(ensMem) || e.Moderators.Contains(ensMod)));
+            var validMem = _context.EnsembleMembers
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted &&
+                           ensembleIds.Contains(em.EnsembleId));
+            var validMod = eventModIds.Contains(userId);
 
-            if (!validUser)
+            if (!(validMem || validMod))
             {
                 return new OkObjectResult(new {success = false, error = "Not valid member or mod"});
             }
+
+            var userConnectionIds = GetUserConnections(userId);
 
             var comments = _context.EnsembleComments
                 .Include(c => c.User)
@@ -290,10 +297,7 @@ namespace MyGigApi.Controllers
                         FullName = c.User.FullName,
                         PhotoUrl = c.User.UserPhoto.Url,
                         UserId = c.UserId,
-                        ConnectedToUser = _context.Connections
-                            .Any(conn =>
-                                conn.UserIdRecipient == c.UserId && conn.UserIdRequester == userId ||
-                                conn.UserIdRecipient == userId && conn.UserIdRequester == c.UserId)
+                        ConnectedToUser = userConnectionIds.Contains(c.UserId)
                     }
                 });
 
@@ -358,6 +362,20 @@ namespace MyGigApi.Controllers
                 });
 
             return new OkObjectResult(new {success = true, ensembles});
+        }
+
+        public IEnumerable<int> GetUserConnections(int userId)
+        {
+            var connA = _context.Connections
+                .Where(c => c.UserIdRecipient == userId)
+                .Select(c => c.UserIdRequester)
+                .ToArray();
+            var connB = _context.Connections
+                .Where(c => c.UserIdRequester == userId)
+                .Select(c => c.UserIdRecipient)
+                .ToArray();
+
+            return connA.Concat(connB);
         }
 
         public int GetUserId()

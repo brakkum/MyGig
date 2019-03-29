@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
 using Microsoft.AspNetCore.Authorization;
@@ -174,6 +175,8 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "Not valid member or mod"});
             }
 
+            var userConnectionIds = GetUserConnections(userId);
+
             var comments = _context.EventComments
                 .Include(c => c.User)
                 .ThenInclude(u => u.UserPhoto)
@@ -188,10 +191,7 @@ namespace MyGigApi.Controllers
                         FullName = c.User.FullName,
                         PhotoUrl = c.User.UserPhoto.Url,
                         UserId = c.UserId,
-                        ConnectedToUser = _context.Connections
-                            .Any(conn =>
-                                        conn.UserIdRecipient == c.UserId && conn.UserIdRequester == userId ||
-                                        conn.UserIdRecipient == userId && conn.UserIdRequester == c.UserId)
+                        ConnectedToUser = userConnectionIds.Contains(c.UserId)
                     }
                 });
 
@@ -277,6 +277,20 @@ namespace MyGigApi.Controllers
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
+        }
+
+        public IEnumerable<int> GetUserConnections(int userId)
+        {
+            var connA = _context.Connections
+                .Where(c => c.UserIdRecipient == userId)
+                .Select(c => c.UserIdRequester)
+                .ToArray();
+            var connB = _context.Connections
+                .Where(c => c.UserIdRequester == userId)
+                .Select(c => c.UserIdRecipient)
+                .ToArray();
+
+            return connA.Concat(connB);
         }
 
         public int GetUserId()

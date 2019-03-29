@@ -137,16 +137,7 @@ namespace MyGigApi.Controllers
                 });
             }
 
-            var connsA = _context.Connections
-                .Where(c => c.UserIdRecipient == userId)
-                .Select(c => c.UserIdRequester)
-                .ToArray();
-            var connsB = _context.Connections
-                .Where(c => c.UserIdRequester == userId)
-                .Select(c => c.UserIdRecipient)
-                .ToArray();
-
-            var userConnectionIds = connsA.Concat(connsB);
+            var userConnectionIds = GetUserConnections(userId);
 
             var ensembles = _context.Bookings
                 .Include(b => b.Ensemble)
@@ -210,7 +201,7 @@ namespace MyGigApi.Controllers
 
             var ensMems = _context.EnsembleMembers
                 .Where(em => em.EnsembleId == dto.EnsembleId &&
-                                      em.Status == RequestStatus.Accepted)
+					   em.Status == RequestStatus.Accepted)
                 .Select(em => em.UserIdRecipient).ToArray();
 
             var ensMods = _context.EnsembleModerators
@@ -288,13 +279,18 @@ namespace MyGigApi.Controllers
             );
         }
 
-        public bool MemberIsConnectedToUser(int memberId, int userId)
+        public IEnumerable<int> GetUserConnections(int userId)
         {
-            return _context.Connections
-                .Any(c =>
-                    c.UserIdRecipient == memberId && c.UserIdRequester == userId ||
-                    c.UserIdRecipient == userId && c.UserIdRequester == memberId
-                );
+            var connA = _context.Connections
+                .Where(c => c.UserIdRecipient == userId)
+                .Select(c => c.UserIdRequester)
+                .ToArray();    
+            var connB = _context.Connections
+                .Where(c => c.UserIdRequester == userId)
+                .Select(c => c.UserIdRecipient)
+                .ToArray();
+
+            return connA.Concat(connB);
         }
     }
 }

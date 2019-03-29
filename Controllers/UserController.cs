@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,8 @@ namespace MyGigApi.Controllers
             var requestedUserId = (int)body["UserId"];
             var userId = GetUserId();
 
+            var userConnectionIds = GetUserConnections(userId);
+
             var requestedUser = _context.Users
                 .Include(us => us.UserPhoto)
                 .Select(us => new MemberDto
@@ -51,20 +54,7 @@ namespace MyGigApi.Controllers
                     UserId = us.UserId,
                     FullName = us.FullName,
                     PhotoUrl = us.UserPhoto.Url,
-                    ConnectedToUser =
-                        _context.Connections
-                        .Any(u =>
-                            // Is this user connected successfully to user?
-                            (
-                                (
-                                    (u.UserIdRecipient == requestedUserId && u.UserIdRequester == userId) ||
-                                    (u.UserIdRecipient == userId && u.UserIdRequester == requestedUserId)
-                                )
-                                && u.Status == RequestStatus.Accepted
-                            )
-                            // Or are we looking at this logged in user?
-                            || requestedUserId == userId
-                        )
+                    ConnectedToUser = userConnectionIds.Contains(us.UserId)
                 }).SingleOrDefault(us => us.UserId == requestedUserId);
 
             if (requestedUser == null)
@@ -160,13 +150,11 @@ namespace MyGigApi.Controllers
         {
             var userId = GetUserId();
 
+            var userConnectionIds = GetUserConnections(userId);
+
             var users = _context.Users
                 .Include(us => us.UserPhoto)
-                .Where(u => u.FullName.Contains(dto.Search) && !(_context.Connections
-                    .Any(c => (
-                        (c.UserIdRecipient == userId && c.UserIdRequester == u.UserId) ||
-                        (c.UserIdRecipient == u.UserId && c.UserIdRequester == userId)
-                            )) || u.UserId == userId))
+                .Where(u => u.FullName.Contains(dto.Search) && !userConnectionIds.Contains(u.UserId))
                 .Select(us => new MemberDto
                 {
                     UserId = us.UserId,
@@ -175,6 +163,20 @@ namespace MyGigApi.Controllers
                 });
 
             return new OkObjectResult(new {success = true, users});
+        }
+
+        public IEnumerable<int> GetUserConnections(int userId)
+        {
+            var connA = _context.Connections
+                .Where(c => c.UserIdRecipient == userId)
+                .Select(c => c.UserIdRequester)
+                .ToArray();
+            var connB = _context.Connections
+                .Where(c => c.UserIdRequester == userId)
+                .Select(c => c.UserIdRecipient)
+                .ToArray();
+
+            return connA.Concat(connB);
         }
 
         public int GetUserId()
