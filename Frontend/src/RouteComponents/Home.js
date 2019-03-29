@@ -32,7 +32,7 @@ export default class Home extends React.Component {
                         ensembles: json.ensembles,
                         notifications: json.notifications,
                         requests: json.requests,
-                        event: json.events
+                        events: json.events
                     });
                     console.log(json);
                     this.props.pageLoaded();
@@ -140,16 +140,16 @@ export default class Home extends React.Component {
                                 redirect={this.props.redirect}
                             />
                         }
+                        boxStyle={{display: "flex", justifyContent: "space-around"}}
                     >
                         {this.state.events.length > 0
                             ?
                             this.state.events.map((ev, i) => {
                                 console.log(ev);
-                                return <Link
-                                    url={`/event/${ev.eventId}`}
-                                    interior={ev.name}
-                                    redirect={this.props.redirect}
+                                return <Button
+                                    onClick={() => this.props.redirect(`/event/${ev.eventId}`, "/")}
                                     key={i}
+                                    preClickText={ev.name}
                                 />
                             })
                             :

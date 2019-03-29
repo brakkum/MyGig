@@ -56,29 +56,35 @@ namespace MyGigApi.Controllers
                     Name = e.Name
                 });
 
-            var eventsModerated = _context.EventModerators
-                .Where(em => em.UserIdRecipient == userId && em.Status == RequestStatus.Accepted)
-                .Select(em => new EventDto
-                {
-                    DateAndTime = em.Event.DateAndTime,
-                    Name = em.Event.Name,
-                    Location = em.Event.Location
-                });
+            var eventsModeratedIds = _context.EventModerators
+                .Where(em => em.UserIdRecipient == userId &&
+                             em.Status == RequestStatus.Accepted)
+                .Select(em => em.EventId)
+                .ToArray();
 
-            var eventsOfEnsembles = _context.Bookings
+            var eventsFromEnsemblesIds = _context.Bookings
                 .Where(b => ensembleIds.Contains(b.EnsembleId) &&
                             b.Status == RequestStatus.Accepted)
-                .Select(b => new EventDto
+                .Select(b => b.EventId)
+                .ToArray();
+
+            var eventIds = eventsModeratedIds
+                .Concat(eventsFromEnsemblesIds)
+                .Distinct()
+                .ToArray();
+
+            var events = _context.Events
+                .Where(e => eventIds.Contains(e.EventId))
+                .Select(e => new EventDto
                 {
-                    DateAndTime = b.Event.DateAndTime,
-                    Name = b.Event.Name,
-                    Location = b.Event.Location
+                    Name = e.Name,
+                    EventId = e.EventId,
+                    DateAndTime = e.DateAndTime
                 });
 
-            var events = eventsModerated.Concat(eventsOfEnsembles).Distinct();
-
             var notifications = _context.Notifications
-                .Where(n => n.UserId == userId && n.Status == NotificationStatus.Unseen)
+                .Where(n => n.UserId == userId &&
+                            n.Status == NotificationStatus.Unseen)
                 .Select(n => new NotificationDto
                 {
                     Url = n.Url,
