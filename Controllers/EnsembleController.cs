@@ -258,22 +258,19 @@ namespace MyGigApi.Controllers
         {
             var userId = GetUserId();
 
-            var eventModIds = _context.EventModerators
-                .Where(em => em.EventId == dto.Id &&
+            var eventModIds = _context.EnsembleModerators
+                .Where(em => em.EnsembleId == dto.Id &&
                              em.Status == RequestStatus.Accepted)
                 .Select(em => em.UserIdRecipient)
                 .ToArray();
 
-            var ensembleIds = _context.Bookings
-                .Where(b => b.EventId == dto.Id &&
-                            b.Status == RequestStatus.Accepted)
-                .Select(b => b.EnsembleId)
+            var ensembleMemberIds = _context.EnsembleMembers
+                .Where(e => e.EnsembleId == dto.Id &&
+                            e.Status == RequestStatus.Accepted)
+                .Select(b => b.UserIdRecipient)
                 .ToArray();
 
-            var validMem = _context.EnsembleMembers
-                .Any(em => em.UserIdRecipient == userId &&
-                           em.Status == RequestStatus.Accepted &&
-                           ensembleIds.Contains(em.EnsembleId));
+            var validMem = ensembleMemberIds.Contains(userId);
             var validMod = eventModIds.Contains(userId);
 
             if (!(validMem || validMod))
