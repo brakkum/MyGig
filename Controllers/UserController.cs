@@ -165,6 +165,29 @@ namespace MyGigApi.Controllers
             return new OkObjectResult(new {success = true, users});
         }
 
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/searchconnections")]
+        public OkObjectResult SearchConnections([FromBody] SearchDto dto)
+        {
+            var userId = GetUserId();
+
+            var userConnectionIds = GetUserConnections(userId);
+
+            var users = _context.Users
+                .Include(us => us.UserPhoto)
+                .Where(u => u.FullName.Contains(dto.Search) && userConnectionIds.Contains(u.UserId))
+                .Select(us => new MemberDto
+                {
+                    UserId = us.UserId,
+                    FullName = us.FullName,
+                    PhotoUrl = us.UserPhoto.Url
+                });
+
+            return new OkObjectResult(new {success = true, users});
+        }
+
         public int[] GetUserConnections(int userId)
         {
             var connA = _context.Connections

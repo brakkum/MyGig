@@ -246,6 +246,7 @@ namespace MyGigApi.Controllers
                 .OrderByDescending(ec => ec.Timestamp)
                 .Select(ec => new EnsembleCommentDto
                 {
+                    Id = ec.EnsembleCommentId,
                     Text = ec.Text,
                     Timestamp = ec.Timestamp,
                     User = new MemberDto
@@ -253,7 +254,7 @@ namespace MyGigApi.Controllers
                         FullName = ec.User.FullName,
                         PhotoUrl = ec.User.UserPhoto.Url,
                         UserId = ec.UserId,
-                        ConnectedToUser = userConnectionIds.Contains(ec.UserId)
+                        ConnectedToUser = validMod
                     }
                 })
                 .ToList() as ICollection<EnsembleCommentDto>;
@@ -264,7 +265,8 @@ namespace MyGigApi.Controllers
                 {
                     FullName = e.UserRecipient.FullName,
                     PhotoUrl = e.UserRecipient.UserPhoto.Url,
-                    UserId = e.UserRecipient.UserId
+                    UserId = e.UserRecipient.UserId,
+                    ConnectedToUser = userConnectionIds.Contains(e.UserIdRecipient)
                 }).ToList() as ICollection<MemberDto>;
 
             var ensemble = _context.Ensembles
@@ -274,7 +276,8 @@ namespace MyGigApi.Controllers
                     Name = e.Name,
                     Members = members,
                     Comments = comments,
-                    Events = events
+                    Events = events,
+                    IsMod = ensMods.Contains(userId)
                 })
                 .FirstOrDefault(e => e.EnsembleId == dto.EnsembleId);
 
