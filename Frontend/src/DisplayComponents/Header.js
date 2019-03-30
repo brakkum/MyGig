@@ -3,17 +3,25 @@ import EnsemblesList from "./EnsembleList";
 import EnsembleMembersList from "./EnsembleMembersList";
 import DateDisplay from "../HelperComponents/DateDisplay";
 import Constants from "../Constants/Constants";
+import UserSearch from "../FormComponents/UserSearch";
 
 export default class Header extends React.Component {
     // Reusable header
     // used for public/private event page headers
     // and ensemble pages
 
+    _jwt = null;
+    _id = null;
+
     state = {
         showMemberAdd: false,
         showEnsembleAdd: false,
-        results: []
     };
+
+    componentDidMount() {
+        this._id = this.props.id;
+        this._jwt = this.props.jwt;
+    }
 
     toggleAddMembers = () => {
         this.setState({
@@ -25,6 +33,33 @@ export default class Header extends React.Component {
         this.setState({
             showEnsembleAdd: !this.state.showEnsembleAdd
         });
+    };
+
+    requestUserToEnsemble = async userId => {
+        let success = false;
+
+        await fetch("/api/ensembles/newmember", {
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this._jwt}`
+            }),
+            body: JSON.stringify({
+                UserIdRecipient: userId,
+                EnsembleId: this._id
+            })
+        }).then(res => res.json())
+            .then(json => {
+                if (json.success){
+                    console.log("requested");
+                    success = true;
+                } else {
+                    console.log("fail, ", json);
+                    success = false
+                }
+            }).catch(e => console.log(e));
+
+        return success;
     };
 
     render() {
@@ -71,7 +106,16 @@ export default class Header extends React.Component {
                                     height: height
                                 }}
                             >
-                                hello
+                                {
+                                    this._jwt &&
+                                        <UserSearch
+                                            jwt={this._jwt}
+                                            url={"/api/users/connsnotinensemble"}
+                                            body={{Id: this._id}}
+                                            buttonFunc={this.requestUserToEnsemble}
+                                            buttonText={"Add to Ensemble"}
+                                        />
+                                }
                             </div>
                         </div>
                 }

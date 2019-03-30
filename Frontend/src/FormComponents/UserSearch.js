@@ -21,7 +21,7 @@ export default class UserSearch extends React.Component {
     };
 
     componentDidMount() {
-        this._jwt = this.props.jwt
+        this._jwt = this.props.jwt;
     }
 
     onChange = text => {
@@ -78,29 +78,31 @@ export default class UserSearch extends React.Component {
 
     render() {
         return(
-            <div>
-                <Input
-                    value={this.state.value}
-                    placeholder={"Search Users"}
-                    onChange={this.onChange}
-                    name={"user-search"}
-                />
-                <DisplayCase maxHeight={"400px"}>
-                    {
-                        this.state.users.map((user, i) => {
-                            return(
-                                <MemberSearchDisplay
-                                    jwt={this._jwt}
-                                    user={user}
-                                    key={i}
-                                    filterUser={this.filterUser}
-                                    buttonFunc={this.props.buttonFunc}
-                                />
-                            )
-                        })
-                    }
-                </DisplayCase>
-            </div>
+            this._jwt &&
+                <div>
+                    <Input
+                        value={this.state.value}
+                        placeholder={"Search Users"}
+                        onChange={this.onChange}
+                        name={"user-search"}
+                    />
+                    <DisplayCase maxHeight={"400px"}>
+                        {
+                            this.state.users.map((user, i) => {
+                                return(
+                                    <MemberSearchDisplay
+                                        jwt={this._jwt}
+                                        user={user}
+                                        key={i}
+                                        filterUser={this.filterUser}
+                                        buttonFunc={this.props.buttonFunc}
+                                        buttonText={this.props.buttonText}
+                                    />
+                                )
+                            })
+                        }
+                    </DisplayCase>
+                </div>
         )
     }
 }

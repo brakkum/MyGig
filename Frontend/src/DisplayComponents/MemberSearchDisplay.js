@@ -52,7 +52,7 @@ export default class MemberSearchDisplay extends React.Component {
                 />
                 <Button
                     sendingRequest={this.state.sendingRequest}
-                    preClickText={"Connect"}
+                    preClickText={this.props.buttonText}
                     postClickText={"Sending.."}
                     onClick={this.onClick}
                 />

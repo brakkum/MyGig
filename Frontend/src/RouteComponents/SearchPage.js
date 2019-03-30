@@ -54,6 +54,7 @@ export default class SearchPage extends React.Component {
                             jwt={this._jwt}
                             url={"/api/users/search"}
                             buttonFunc={this.sendConnectionRequest}
+                            buttonText={"Connect"}
                         />
                 }
             </div>
