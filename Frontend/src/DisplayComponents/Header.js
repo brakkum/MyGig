@@ -92,6 +92,7 @@ export default class Header extends React.Component {
     };
 
     render() {
+        console.log(this.props)
         let memOpacity = this.state.showMemberAdd ? "1" : "0";
         let memHeight = this.state.showMemberAdd ? "300px" : "0px";
         let ensOpacity = this.state.showEnsembleAdd ? "1" : "0";
@@ -108,7 +109,7 @@ export default class Header extends React.Component {
                     </div>
                 {
                     // for event pages
-                    this.props.ensembles &&
+                    this.props.ensembles && this.props.userIsMod &&
                         <div>
                             <EnsemblesList
                                 userIsMod={this.props.userIsMod}
@@ -142,7 +143,7 @@ export default class Header extends React.Component {
                 }
                 {
                     // for ensemble pages
-                    this.props.members &&
+                    this.props.members && this.props.userIsMod &&
                         <div>
                             <EnsembleMembersList
                                 userIsMod={this.props.userIsMod}

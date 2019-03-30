@@ -19,7 +19,7 @@ export default class EnsembleList extends React.Component {
                                     {ens.name}
                                 </div>
                                 {
-                                    ens.ensembleMembers.map((mem, i) => {
+                                    ens.members.map((mem, i) => {
                                         return(
                                             <span
                                                 key={i}
