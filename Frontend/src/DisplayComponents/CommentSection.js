@@ -114,14 +114,14 @@ export default class CommentSection extends React.Component {
                 <DisplayCase label={this.props.label || "Comments"}>
                     {
                         this.state.comments && this.state.comments.map((comment, i) => {
-                            console.log(comment)
-                           return <Comment {...comment} key={i} />
+                            return <Comment {...comment} key={i} />
                         })
                     }
                 </DisplayCase>
                 <div style={{maxWidth: "400px", margin: "auto"}}>
                     <Input
                         value={this.state.newComment}
+                        placeholder={"Add a comment"}
                         type={"textarea"}
                         onChange={comm => this.updateComment(comm)}
                         maxLength={"500"}

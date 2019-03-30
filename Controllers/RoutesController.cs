@@ -218,7 +218,7 @@ namespace MyGigApi.Controllers
 
             var ensMods = _context.EnsembleModerators
                 .Where(em => em.EnsembleId == dto.EnsembleId &&
-                                      em.Status == RequestStatus.Accepted)
+                             em.Status == RequestStatus.Accepted)
                 .Select(em => em.UserIdRecipient).ToArray();
 
             var validMem = ensMems.Contains(userId);
@@ -277,7 +277,7 @@ namespace MyGigApi.Controllers
                     Members = members,
                     Comments = comments,
                     Events = events,
-                    IsMod = ensMods.Contains(userId)
+                    UserIsMod = ensMods.Contains(userId)
                 })
                 .FirstOrDefault(e => e.EnsembleId == dto.EnsembleId);
 

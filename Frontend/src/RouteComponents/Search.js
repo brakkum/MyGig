@@ -3,7 +3,10 @@ import UserSearch from "../FormComponents/UserSearch";
 
 export default class Search extends React.Component {
 
+    
+
     componentDidMount() {
+
         setTimeout(() => {
             this.props.pageLoaded();
         }, 200);
@@ -12,7 +15,10 @@ export default class Search extends React.Component {
     render() {
         return(
             <div>
-                <UserSearch userData={this.props.userData} />
+                <UserSearch
+                    userData={this.props.userData}
+
+                />
             </div>
         )
     }

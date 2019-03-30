@@ -48,7 +48,11 @@ export default class Ensemble extends React.Component {
         return(
             this.state.ensemble &&
                 <div>
-                    <Header {...this.state.ensemble} />
+                    <Header
+                        jwt={this._jwt}
+                        ensembleId={this._ensembleId}
+                        {...this.state.ensemble}
+                    />
                     <CommentSection
                         id={this._ensembleId}
                         jwt={this._jwt}

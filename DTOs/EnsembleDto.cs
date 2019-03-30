@@ -8,7 +8,7 @@ namespace MyGigApi.DTOs
 
         public int EnsembleId { get; set; }
 
-        public bool IsMod { get; set; }
+        public bool UserIsMod { get; set; }
 
         public ICollection<MemberDto> Members { get; set; }
 

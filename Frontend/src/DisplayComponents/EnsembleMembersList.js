@@ -6,21 +6,43 @@ export default class EnsembleMembersList extends React.Component {
 
     render() {
         return(
-            <div className="ensembleMembers">
-                {
-                    this.props.ensembleMembers.map((mem, i) => {
-                        return(
-                            <span onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave} key={i}>
-                                <MemberPicture url={mem.photoUrl} />
-                                <span style={this.memberStyle}>
-                                    {
-                                        mem.fullName
-                                    }
-                                </span>
-                            </span>
-                        )
-                    })
-                }
+            <div className="header">
+                Members
+                <div className="ensembleMembers"
+                    style={{
+                        minWidth: "50%",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-around",
+                        alignItems: "center"
+                    }}
+                >
+                    {
+                        this.props.ensembleMembers.map((mem, i) => {
+                            return(
+                                <div
+                                    style={{
+                                        width: "75px",
+                                        height: "75px",
+                                        margin: "10px",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "space-between",
+                                        alignItems: "center"
+                                    }}
+                                    key={i}
+                                >
+                                    <MemberPicture url={mem.photoUrl} />
+                                    <span style={this.memberStyle}>
+                                        {
+                                            mem.fullName
+                                        }
+                                    </span>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
             </div>
         )
     }
