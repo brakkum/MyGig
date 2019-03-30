@@ -303,6 +303,30 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
+        [Route(RoutePrefix + "/ensemblesnotonevent")]
+        public OkObjectResult SearchEnsemblesNotOnEvent([FromBody] SearchDto dto)
+        {
+            var userId = GetUserId();
+
+            var ensemblesRequestedIds = _context.Bookings
+                .Where(b => b.EventId == dto.Id)
+                .Select(b => b.EnsembleId)
+                .ToArray();
+
+            var ensembles = _context.Ensembles
+                .Where(e => e.Name.Contains(dto.Search) &&
+                            !ensemblesRequestedIds.Contains(e.EnsembleId))
+                .Select(e => new EnsembleDto
+                {
+                    EnsembleId = e.EnsembleId,
+                    Name = e.Name
+                });
+
+            return new OkObjectResult(new {success = true, ensembles});
+        }
+
+        [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/requestbooking")]
         public OkObjectResult RequestBooking([FromBody] BookingDto dto)
         {

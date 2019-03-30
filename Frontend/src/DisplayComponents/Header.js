@@ -4,6 +4,7 @@ import EnsembleMembersList from "./EnsembleMembersList";
 import DateDisplay from "../HelperComponents/DateDisplay";
 import Constants from "../Constants/Constants";
 import UserSearch from "../FormComponents/UserSearch";
+import EnsembleSearch from "../FormComponents/EnsembleSearch";
 
 export default class Header extends React.Component {
     // Reusable header
@@ -62,10 +63,39 @@ export default class Header extends React.Component {
         return success;
     };
 
+    requestEnsembleForEvent = async ensembleId => {
+        let success = false;
+        console.log(this._id, ensembleId)
+
+        await fetch("/api/ensembles/requestbooking", {
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${this._jwt}`
+            }),
+            body: JSON.stringify({
+                EventId: this._id,
+                EnsembleId: ensembleId
+            })
+        }).then(res => res.json())
+            .then(json => {
+                if (json.success){
+                    console.log("requested");
+                    success = true;
+                } else {
+                    console.log("fail, ", json);
+                    success = false
+                }
+            }).catch(e => console.log(e));
+
+        return success;
+    };
+
     render() {
-        let opacity = this.state.showMemberAdd ? "1" : "0";
-        let height = this.state.showMemberAdd ? "300px" : "0px" ;
-        console.log(this.props);
+        let memOpacity = this.state.showMemberAdd ? "1" : "0";
+        let memHeight = this.state.showMemberAdd ? "300px" : "0px";
+        let ensOpacity = this.state.showEnsembleAdd ? "1" : "0";
+        let ensHeight = this.state.showEnsembleAdd ? "300px" : "0px";
         return (
             <div className="page-header">
                 <h1>{this.props.name}</h1>
@@ -79,11 +109,36 @@ export default class Header extends React.Component {
                 {
                     // for event pages
                     this.props.ensembles &&
-                        <EnsemblesList
-                            userIsMod={this.props.userIsMod}
-                            ensembles={this.props.ensembles}
-                        />
-                        // add ensemble search
+                        <div>
+                            <EnsemblesList
+                                userIsMod={this.props.userIsMod}
+                                ensembles={this.props.ensembles}
+                            />
+                            <span
+                                onClick={this.toggleAddEnsembles}
+                                style={{color: Constants.linkColor}}
+                            >
+                                Request Ensembles
+                            </span>
+                            <div
+                            style={{
+                                opacity: ensOpacity,
+                                transition: "all 1s",
+                                height: ensHeight
+                            }}
+                            >
+                            {
+                                this._jwt &&
+                                    <EnsembleSearch
+                                        jwt={this._jwt}
+                                        url={"/api/ensembles/ensemblesnotonevent"}
+                                        body={{Id: this._id}}
+                                        buttonFunc={this.requestEnsembleForEvent}
+                                        buttonText={"Send Request"}
+                                    />
+                            }
+                            </div>
+                        </div>
                 }
                 {
                     // for ensemble pages
@@ -101,9 +156,9 @@ export default class Header extends React.Component {
                             </span>
                             <div
                                 style={{
-                                    opacity: opacity,
+                                    opacity: memOpacity,
                                     transition: "all 1s",
-                                    height: height
+                                    height: memHeight
                                 }}
                             >
                                 {

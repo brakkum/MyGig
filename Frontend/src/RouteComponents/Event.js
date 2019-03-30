@@ -48,7 +48,11 @@ export default class Event extends React.Component {
         return(
             this.state.event &&
                 <div>
-                    <Header {...this.state.event} />
+                    <Header
+                        jwt={this._jwt}
+                        id={this._eventId}
+                        {...this.state.event}
+                    />
                     <CommentSection
                         id={this._eventId}
                         jwt={this._jwt}
