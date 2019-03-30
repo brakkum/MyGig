@@ -10,7 +10,7 @@ import Ensemble from "./Ensemble";
 import Sets from "./Sets";
 import Login from "./Login";
 import Logout from "./Logout";
-import Search from "./Search";
+import SearchPage from "./SearchPage";
 import NewEvent from "./NewEvent";
 import NewEnsemble from "./NewEnsemble";
 
@@ -113,7 +113,7 @@ export default withRouter(
                         redirect={this.props.redirect}
                         pageLoaded={this.props.pageLoaded}
                         component={
-                            Search
+                            SearchPage
                         }
                     />
                     <ProtectedRoute

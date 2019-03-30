@@ -19,41 +19,25 @@ export default class MemberSearchDisplay extends React.Component {
         })
     }
 
-    sendConnectionRequest = () => {
-        let jwt = this.props.jwt;
-        if (this.state.sendingRequest) {
-            return;
-        }
+    onClick = async () => {
         this.setState({
             sendingRequest: true
         });
-        fetch("/api/users/newconnection", {
-            method: "post",
-            headers: new Headers({
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
-            }),
-            body: JSON.stringify({
-                UserIdRecipient: this.state.userId
-            })
-        }).then(res => res.json())
-            .then(json => {
-                if (json.success){
-                    console.log("requested");
+        this.props.buttonFunc(this.state.userId)
+            .then(success => {
+                if (success) {
                     this.props.filterUser(this.state.userId);
-                } else {
-                    console.log("fail, ", json);
-                    this.setState({
-                        sendingRequest: false
-                    });
                 }
-            }).catch(e => console.log(e));
+            });
+
+        this.setState({
+            sendingRequest: false
+        });
     };
 
     render() {
         return(
             <div style={{
-                border: "1px solid red",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "space-around",
@@ -64,13 +48,13 @@ export default class MemberSearchDisplay extends React.Component {
                     photoUrl={this.state.photoUrl}
                     highlightOnHover={true}
                     innerHtml={"Add"}
-                    onClick={() => this.sendConnectionRequest()}
+                    onClick={this.onClick}
                 />
                 <Button
                     sendingRequest={this.state.sendingRequest}
                     preClickText={"Connect"}
                     postClickText={"Sending.."}
-                    onClick={this.sendConnectionRequest}
+                    onClick={this.onClick}
                 />
                 {this.state.fullName}
             </div>
