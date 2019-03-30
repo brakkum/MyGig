@@ -32,10 +32,12 @@ export default class MyGig extends Component {
     loginUser = data => {
         let userData = {...data.user};
         userData.jwt = data.jwt;
-        this.setState({
-            userData: userData,
-            loggedIn: true
-        });
+        setTimeout(() => {
+            this.setState({
+                userData: userData,
+                loggedIn: true
+            });
+        }, 1000);
         this.setJwtInLocalStorage(data.jwt);
     };
 

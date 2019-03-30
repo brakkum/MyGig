@@ -42,41 +42,40 @@ export default withRouter(
             return(
                 <div style={this.navStyle}>
                     {
-                        this.props.userData ?
-                        <div style={this.navLeftStyle}>
-                            <MemberPicture
-                                // redirect passed from MyGig component for app redirects
-                                onClick={() => this.props.redirect("/account", this.props.location.pathname)}
-                                // photoUrl for user
-                                photoUrl={this.props.userData.photoUrl}
-                                // highlight pic on hover
-                                highlightOnHover={true}
-                            />
-                            <div
-                                // redirect passed from MyGig component for app redirects
-                                style={this.navHomeLinkStyle}
-                            >
-                                <Link
-                                    url={"/"}
-                                    text={"Home"}
-                                    redirect={this.props.redirect}
+                        this.props.userData &&
+                            <div style={this.navLeftStyle}>
+                                <MemberPicture
+                                    // redirect passed from MyGig component for app redirects
+                                    onClick={() => this.props.redirect("/account", this.props.location.pathname)}
+                                    // photoUrl for user
+                                    photoUrl={this.props.userData.photoUrl}
+                                    // highlight pic on hover
+                                    highlightOnHover={true}
                                 />
+                                <div
+                                    // redirect passed from MyGig component for app redirects
+                                    style={this.navHomeLinkStyle}
+                                >
+                                    <Link
+                                        url={"/"}
+                                        text={"Home"}
+                                        redirect={this.props.redirect}
+                                    />
+                                </div>
                             </div>
-                        </div>
-                            :
-                        <div>
-                            {/* empty div for flex consistency */}
-                        </div>
                     }
-                    <div style={this.navRightStyle}>
-                        {
-                            <Link
-                                url={this.props.userData ? "/logout" : "/login"}
-                                text={this.props.userData ? "Logout" : "Login"}
-                                redirect={this.props.redirect}
-                            />
-                        }
-                    </div>
+                    {
+                        this.props.userData &&
+                            <div style={this.navRightStyle}>
+                                {
+                                    <Link
+                                        url={"/logout"}
+                                        text={"Logout"}
+                                        redirect={this.props.redirect}
+                                    />
+                                }
+                            </div>
+                    }
                 </div>
             )
         }
