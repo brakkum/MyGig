@@ -9,7 +9,7 @@ export default class EnsembleList extends React.Component {
         return(
             <div className="ensemble_list">
                 {
-                    this.props.ensembles.length > 1 && "With"
+                    this.props.ensembles.length > 0 && <h4>With</h4>
                 }
                 {
                     this.props.ensembles.map((ens, i) => {
@@ -22,8 +22,7 @@ export default class EnsembleList extends React.Component {
                                 </div>
                                 <div
                                     style={{
-                                        minWidth: "50%",
-                                        width: "100%",
+                                        width: "50%",
                                         display: "flex",
                                         justifyContent: "space-around",
                                         alignItems: "center"
