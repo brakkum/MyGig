@@ -4,6 +4,28 @@ import MemberPicture from "./MemberPicture";
 export default class EnsembleMembersList extends React.Component {
     // map props.ensembleMembers into MemberNameDisplay components
 
+    sendConnectionRequest = memId => {
+        let jwt = this.props.jwt;
+
+        fetch("/api/users/newconnection", {
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
+            }),
+            body: JSON.stringify({
+                UserIdRecipient: memId
+            })
+        }).then(res => res.json())
+            .then(json => {
+                if (json.success){
+                    console.log("requested");
+                } else {
+                    console.log("fail, ", json);
+                }
+            }).catch(e => console.log(e));
+    };
+
     render() {
         return(
             <div className="header">
@@ -19,6 +41,7 @@ export default class EnsembleMembersList extends React.Component {
                 >
                     {
                         this.props.ensembleMembers.map((mem, i) => {
+                            console.log(mem)
                             return(
                                 <div
                                     style={{
@@ -32,7 +55,12 @@ export default class EnsembleMembersList extends React.Component {
                                     }}
                                     key={i}
                                 >
-                                    <MemberPicture url={mem.photoUrl} />
+                                    <MemberPicture
+                                        url={mem.photoUrl}
+                                        highlightOnHover={!mem.connectedToUser}
+                                        innerHtml={"Connect"}
+                                        onClick={!mem.connectedToUser ? () => this.sendConnectionRequest(mem.userId) : null}
+                                    />
                                     <span style={this.memberStyle}>
                                         {
                                             mem.fullName

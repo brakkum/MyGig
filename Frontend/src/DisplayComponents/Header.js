@@ -150,6 +150,7 @@ export default class Header extends React.Component {
                             <EnsembleMembersList
                                 userIsMod={this.props.userIsMod}
                                 ensembleMembers={this.props.members}
+                                jwt={this._jwt}
                             />
                             {
                                 this._jwt && this.props.userIsMod &&
