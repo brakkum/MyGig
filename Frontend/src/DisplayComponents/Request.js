@@ -11,7 +11,7 @@ export default class Request extends React.Component {
     requestStyle = {
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-around",
+        justifyContent: "space-between",
         margin: "10px"
     };
 
@@ -71,11 +71,13 @@ export default class Request extends React.Component {
     render() {
         return(
             <div style={this.requestStyle}>
-                <MemberPicture photoUrl={this.props.userPhoto} />
-                {
-                    this.props.text
-                }
-                <div style={{display: "flex"}}>
+                <div style={{maxWidth: "15%"}}>
+                    <MemberPicture photoUrl={this.props.userPhoto} />
+                </div>
+                <span style={{fontSize: "12px", textAlign: "center"}}>
+                    {this.props.text}
+                </span>
+                <div style={{minWidth: "150px"}}>
                     {
                         !this.state.sendingRequest ?
                             <div>
