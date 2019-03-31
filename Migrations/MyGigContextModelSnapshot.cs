@@ -96,9 +96,6 @@ namespace MyGigApi.Migrations
 
                     b.Property<DateTime>("DateAndTime");
 
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(50);

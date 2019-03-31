@@ -9,7 +9,7 @@ using MyGigApi.Context;
 namespace MyGigApi.Migrations
 {
     [DbContext(typeof(MyGigContext))]
-    [Migration("20190324011920_Init")]
+    [Migration("20190330205302_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,9 +97,6 @@ namespace MyGigApi.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
                     b.Property<DateTime>("DateAndTime");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Location")
                         .IsRequired()

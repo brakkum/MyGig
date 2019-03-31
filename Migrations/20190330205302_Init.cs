@@ -243,7 +243,6 @@ namespace MyGigApi.Migrations
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     DateAndTime = table.Column<DateTime>(nullable: false),
                     Location = table.Column<string>(maxLength: 50, nullable: false),
-                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
                     CreatedByUserId = table.Column<int>(nullable: false)
                 },

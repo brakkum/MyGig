@@ -58,7 +58,16 @@ export default class Home extends React.Component {
             <div>
                 Home
                 {
-                    <DisplayCase labelLeft={"Requests"}>
+                    <DisplayCase
+                        labelLeft={"Requests"}
+                        labelRight={
+                            <Link
+                                text={"Find Users"}
+                                url={"/search"}
+                                redirect={this.props.redirect}
+                            />
+                        }
+                    >
                         {this.state.requests.length > 0
                             ?
                             this.state.requests.map((req, i) => {

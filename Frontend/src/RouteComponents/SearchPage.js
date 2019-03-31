@@ -8,11 +8,11 @@ export default class SearchPage extends React.Component {
 
     componentDidMount() {
         this._isMounted = true;
-        this._jwt =  this.props.userData.jwt;
+        this._jwt = this.props.userData.jwt;
 
         setTimeout(() => {
             this.props.pageLoaded();
-        }, 200);
+        }, 400);
     }
 
     componentWillUnmount() {

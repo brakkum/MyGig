@@ -109,7 +109,7 @@ export default class Header extends React.Component {
                     </div>
                 {
                     // for event pages
-                    this.props.ensembles && this.props.userIsMod &&
+                    this.props.ensembles &&
                         <div>
                             <EnsemblesList
                                 userIsMod={this.props.userIsMod}
@@ -129,7 +129,7 @@ export default class Header extends React.Component {
                             }}
                             >
                             {
-                                this._jwt &&
+                                this._jwt && this.props.userIsMod &&
                                     <EnsembleSearch
                                         jwt={this._jwt}
                                         url={"/api/ensembles/ensemblesnotonevent"}
@@ -143,7 +143,7 @@ export default class Header extends React.Component {
                 }
                 {
                     // for ensemble pages
-                    this.props.members && this.props.userIsMod &&
+                    this.props.members &&
                         <div>
                             <EnsembleMembersList
                                 userIsMod={this.props.userIsMod}
@@ -163,7 +163,7 @@ export default class Header extends React.Component {
                                 }}
                             >
                                 {
-                                    this._jwt &&
+                                    this._jwt && this.props.userIsMod &&
                                         <UserSearch
                                             jwt={this._jwt}
                                             url={"/api/users/connsnotinensemble"}
