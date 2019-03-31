@@ -15,25 +15,46 @@ export default class EnsembleList extends React.Component {
                     this.props.ensembles.map((ens, i) => {
                         return(
                             <div key={i} className="ensembleListing">
-                                <div className="ensemble_name" style={{margin: "10px", fontWeight: "bold"}}>
+                                <div
+                                    className="ensemble_name"
+                                >
                                     {ens.name}
                                 </div>
-                                {
-                                    ens.members.map((mem, i) => {
-                                        return(
-                                            <span
-                                                key={i}
-                                            >
-                                                <MemberPicture url={mem.photoUrl} />
-                                                <span style={this.memberStyle}>
-                                                    {
-                                                        mem.fullName
-                                                    }
+                                <div
+                                    style={{
+                                        minWidth: "50%",
+                                        width: "100%",
+                                        display: "flex",
+                                        justifyContent: "space-around",
+                                        alignItems: "center"
+                                    }}
+                                >
+                                    {
+                                        ens.members.map((mem, i) => {
+                                            return(
+                                                <span
+                                                    style={{
+                                                        width: "75px",
+                                                        height: "75px",
+                                                        margin: "10px",
+                                                        display: "flex",
+                                                        flexDirection: "column",
+                                                        justifyContent: "space-between",
+                                                        alignItems: "center"
+                                                    }}
+                                                    key={i}
+                                                >
+                                                    <MemberPicture url={mem.photoUrl} />
+                                                    <span style={this.memberStyle}>
+                                                        {
+                                                            mem.fullName
+                                                        }
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        )
-                                    })
-                                }
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
                         )
                     })

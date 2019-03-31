@@ -115,30 +115,32 @@ export default class Header extends React.Component {
                                 userIsMod={this.props.userIsMod}
                                 ensembles={this.props.ensembles}
                             />
-                            <span
-                                onClick={this.toggleAddEnsembles}
-                                style={{color: Constants.linkColor}}
-                            >
-                                Request Ensembles
-                            </span>
-                            <div
-                            style={{
-                                opacity: ensOpacity,
-                                transition: "all 1s",
-                                height: ensHeight
-                            }}
-                            >
                             {
                                 this._jwt && this.props.userIsMod &&
-                                    <EnsembleSearch
-                                        jwt={this._jwt}
-                                        url={"/api/ensembles/ensemblesnotonevent"}
-                                        body={{Id: this._id}}
-                                        buttonFunc={this.requestEnsembleForEvent}
-                                        buttonText={"Send Request"}
-                                    />
+                                    <div>
+                                        <span
+                                            onClick={this.toggleAddEnsembles}
+                                            style={{color: Constants.linkColor}}
+                                        >
+                                            Request Ensembles
+                                        </span>
+                                        <div
+                                            style={{
+                                                opacity: ensOpacity,
+                                                transition: "all 1s",
+                                                height: ensHeight
+                                            }}
+                                        >
+                                            <EnsembleSearch
+                                                jwt={this._jwt}
+                                                url={"/api/ensembles/ensemblesnotonevent"}
+                                                body={{Id: this._id}}
+                                                buttonFunc={this.requestEnsembleForEvent}
+                                                buttonText={"Send Request"}
+                                            />
+                                        </div>
+                                    </div>
                             }
-                            </div>
                         </div>
                 }
                 {
@@ -149,30 +151,34 @@ export default class Header extends React.Component {
                                 userIsMod={this.props.userIsMod}
                                 ensembleMembers={this.props.members}
                             />
-                            <span
-                                onClick={this.toggleAddMembers}
-                                style={{color: Constants.linkColor}}
-                            >
-                                Add Members
-                            </span>
-                            <div
-                                style={{
-                                    opacity: memOpacity,
-                                    transition: "all 1s",
-                                    height: memHeight
-                                }}
-                            >
-                                {
-                                    this._jwt && this.props.userIsMod &&
-                                        <UserSearch
-                                            jwt={this._jwt}
-                                            url={"/api/users/connsnotinensemble"}
-                                            body={{Id: this._id}}
-                                            buttonFunc={this.requestUserToEnsemble}
-                                            buttonText={"Add to Ensemble"}
-                                        />
-                                }
-                            </div>
+                            {
+                                this._jwt && this.props.userIsMod &&
+                                    <div>
+                                        <span
+                                            onClick={this.toggleAddMembers}
+                                            style={{color: Constants.linkColor}}
+                                        >
+                                            Add Members
+                                        </span>
+                                        <div
+                                            style={{
+                                                opacity: memOpacity,
+                                                transition: "all 1s",
+                                                height: memHeight
+                                            }}
+                                        >
+                                            {
+                                                <UserSearch
+                                                    jwt={this._jwt}
+                                                    url={"/api/users/connsnotinensemble"}
+                                                    body={{Id: this._id}}
+                                                    buttonFunc={this.requestUserToEnsemble}
+                                                    buttonText={"Add to Ensemble"}
+                                                />
+                                            }
+                                        </div>
+                                    </div>
+                            }
                         </div>
                 }
             </div>
