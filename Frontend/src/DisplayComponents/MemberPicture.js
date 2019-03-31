@@ -29,7 +29,7 @@ export default class MemberPicture extends React.Component {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-evenly",
-        boxShadow: "0 0 1pt transparent",
+        boxShadow: "0 0 0 1pt transparent",
         color: this.state.color,
         textShadow: "1px 1px black"
     };
