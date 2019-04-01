@@ -218,6 +218,28 @@ namespace MyGigApi.Controllers
             return new OkObjectResult(new {success = true, users});
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/newpassword")]
+        public OkObjectResult ChangePassword([FromBody] PasswordChangeDto dto)
+        {
+            var userId = GetUserId();
+
+            var user = _context.Users.Find(userId);
+
+            if (!BCrypt.Net.BCrypt.Verify(dto.OldPassword, user.Password) ||
+                dto.OldPassword != dto.OldPasswordConfirm)
+            {
+                return new OkObjectResult(new {success = false, error = "Password mismatch"});
+            }
+
+            user.Password = dto.NewPassword;
+            _context.Update(user);
+            _context.SaveChanges();
+
+            return new OkObjectResult(new {success = true});
+        }
+
         public int[] GetUserConnections(int userId)
         {
             var connA = _context.Connections

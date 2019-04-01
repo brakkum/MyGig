@@ -1,0 +1,13 @@
+
+.box {
+    transition: all .8s;
+    padding-bottom: 5px;
+}
+
+.box.open {
+    border-bottom: 1px solid royalblue;
+}
+
+.box.close {
+    border-bottom: 1px solid transparent;
+}

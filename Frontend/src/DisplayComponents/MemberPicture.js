@@ -21,6 +21,8 @@ export default class MemberPicture extends React.Component {
     };
 
     baseStyle = {
+        width: this.props.size || "50px",
+        height: this.props.size || "50px",
         minWidth: this.props.size || "50px",
         minHeight: this.props.size || "50px",
         borderRadius: "100%",
