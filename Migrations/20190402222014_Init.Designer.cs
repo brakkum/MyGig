@@ -9,7 +9,7 @@ using MyGigApi.Context;
 namespace MyGigApi.Migrations
 {
     [DbContext(typeof(MyGigContext))]
-    [Migration("20190330205302_Init")]
+    [Migration("20190402222014_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -318,38 +318,15 @@ namespace MyGigApi.Migrations
                     b.Property<string>("Password")
                         .IsRequired();
 
+                    b.Property<string>("PhotoUrl");
+
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(1);
 
-                    b.Property<int?>("UserPhotoId");
-
                     b.HasKey("UserId");
 
-                    b.HasIndex("UserPhotoId");
-
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.UserPhoto", b =>
-                {
-                    b.Property<int>("UserPhotoId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("UploadedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP()");
-
-                    b.Property<string>("Url")
-                        .IsRequired();
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("UserPhotoId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserPhotos");
                 });
 
             modelBuilder.Entity("MyGigApi.Entities.Booking", b =>
@@ -518,21 +495,6 @@ namespace MyGigApi.Migrations
                         .HasForeignKey("SongId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MyGigApi.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.User", b =>
-                {
-                    b.HasOne("MyGigApi.Entities.UserPhoto", "UserPhoto")
-                        .WithMany()
-                        .HasForeignKey("UserPhotoId");
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.UserPhoto", b =>
-                {
                     b.HasOne("MyGigApi.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")

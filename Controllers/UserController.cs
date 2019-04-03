@@ -1,10 +1,10 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Net.Http.Headers;
 using MyGigApi.Context;
 using MyGigApi.DTOs;
 using MyGigApi.Entities;
@@ -15,11 +15,14 @@ namespace MyGigApi.Controllers
     public class UserController : ApiBaseController
     {
         private readonly MyGigContext _context;
+        private readonly IHostingEnvironment _env;
         private const string RoutePrefix = "users";
+        private const string UserPhotoDir = "static/userphotos/";
 
-        public UserController(MyGigContext context)
+        public UserController(MyGigContext context, IHostingEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         [HttpPost]
@@ -48,12 +51,11 @@ namespace MyGigApi.Controllers
             var userConnectionIds = GetUserConnections(userId);
 
             var requestedUser = _context.Users
-                .Include(us => us.UserPhoto)
                 .Select(us => new MemberDto
                 {
                     UserId = us.UserId,
                     FullName = us.FullName,
-                    PhotoUrl = us.UserPhoto.Url,
+                    PhotoUrl = us.PhotoUrl,
                     ConnectedToUser = userConnectionIds.Contains(us.UserId)
                 }).SingleOrDefault(us => us.UserId == requestedUserId);
 
@@ -68,30 +70,55 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/newuserphoto")]
-        public OkObjectResult NewUserPhoto([FromBody] UserPhotoDto userPhotoDto)
+        public OkObjectResult NewUserPhoto()
         {
-            if (!ModelState.IsValid)
-            {
-                return new OkObjectResult(new {success = false, error = "Model invalid"});
-            }
-
             var userId = GetUserId();
 
-            var newPhoto = new UserPhoto
-            {
-                UserId = userId,
-                Url = userPhotoDto.Url
-            };
-
-            _context.UserPhotos.Add(newPhoto);
-
             var user = _context.Users.Find(userId);
-            user.UserPhotoId = newPhoto.UserPhotoId;
-            _context.Users.Update(user);
 
+            var file = HttpContext.Request.Form.Files["file"];
+
+            if (file == null)
+            {
+                return new OkObjectResult(new {success = false, error = "Null file"});
+            }
+
+            var supportedTypes = new[] {"image/jpeg", "image/png", "image/gif"};
+
+            if (!supportedTypes.Contains(file.ContentType))
+            {
+                return new OkObjectResult(new {success = false, error = "Unsupported file type, please use an image."});
+            }
+
+            Directory.CreateDirectory(UserPhotoDir);
+
+            var fileName = ContentDispositionHeaderValue
+                .Parse(file.ContentDisposition)
+                .FileName;
+            var dateTimeHash = DateTime.Now.Ticks
+                .GetHashCode()
+                .ToString("x");
+            var ext = Path.GetExtension(fileName);
+            var url = Path.Combine(
+                UserPhotoDir,
+                $"user{userId}_{dateTimeHash}{ext.ToString()}");
+
+            var oldPhoto = user.PhotoUrl;
+
+            if (oldPhoto != null)
+            {
+                System.IO.File.Delete(oldPhoto);
+            }
+
+            using (var fileStream = new FileStream(url, FileMode.Create))
+            {
+                file.CopyTo(fileStream);
+            }
+
+            user.PhotoUrl = url;
             _context.SaveChanges();
 
-            return new OkObjectResult(new {success = true, newPhoto});
+            return new OkObjectResult(new {success = true, url});
         }
 
         [HttpPost]
@@ -153,13 +180,12 @@ namespace MyGigApi.Controllers
             var userConnectionIds = GetUserConnections(userId);
 
             var users = _context.Users
-                .Include(us => us.UserPhoto)
                 .Where(u => u.FullName.Contains(dto.Search) && !userConnectionIds.Contains(u.UserId))
                 .Select(us => new MemberDto
                 {
                     UserId = us.UserId,
                     FullName = us.FullName,
-                    PhotoUrl = us.UserPhoto.Url
+                    PhotoUrl = us.PhotoUrl
                 });
 
             return new OkObjectResult(new {success = true, users});
@@ -176,13 +202,12 @@ namespace MyGigApi.Controllers
             var userConnectionIds = GetUserConnections(userId);
 
             var users = _context.Users
-                .Include(us => us.UserPhoto)
                 .Where(u => u.FullName.Contains(dto.Search) && userConnectionIds.Contains(u.UserId))
                 .Select(us => new MemberDto
                 {
                     UserId = us.UserId,
                     FullName = us.FullName,
-                    PhotoUrl = us.UserPhoto.Url
+                    PhotoUrl = us.PhotoUrl
                 });
 
             return new OkObjectResult(new {success = true, users});
@@ -204,7 +229,6 @@ namespace MyGigApi.Controllers
                 .ToArray();
 
             var users = _context.Users
-                .Include(us => us.UserPhoto)
                 .Where(u => u.FullName.Contains(dto.Search) &&
                             userConnectionIds.Contains(u.UserId) &&
                             !ensembleMembersIds.Contains(u.UserId))
@@ -212,7 +236,7 @@ namespace MyGigApi.Controllers
                 {
                     UserId = us.UserId,
                     FullName = us.FullName,
-                    PhotoUrl = us.UserPhoto.Url
+                    PhotoUrl = us.PhotoUrl
                 });
 
             return new OkObjectResult(new {success = true, users});

@@ -41,13 +41,10 @@ namespace MyGigApi.Entities
         [MaxLength(50)]
         public string Email { get; set; }
 
-        public int? UserPhotoId { get; set; }
-
-        [ForeignKey("UserPhotoId")]
-        public UserPhoto UserPhoto { get; set; }
-
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
+
+        public string PhotoUrl { get; set; }
 
         public UserStatus Status { get; set; }
     }

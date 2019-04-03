@@ -179,7 +179,6 @@ namespace MyGigApi.Controllers
 
             var comments = _context.EventComments
                 .Include(c => c.User)
-                .ThenInclude(u => u.UserPhoto)
                 .Where(c => c.EventId == dto.Id)
                 .OrderByDescending(c => c.Timestamp)
                 .Select(c => new EventCommentDto
@@ -189,7 +188,7 @@ namespace MyGigApi.Controllers
                     User = new MemberDto
                     {
                         FullName = c.User.FullName,
-                        PhotoUrl = c.User.UserPhoto.Url,
+                        PhotoUrl = c.User.PhotoUrl,
                         UserId = c.UserId,
                         ConnectedToUser = userConnectionIds.Contains(c.UserId)
                     }

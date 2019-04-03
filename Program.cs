@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 
 namespace MyGigApi
 {
@@ -25,7 +19,7 @@ namespace MyGigApi
                 .UseKestrel(options =>
                 {
                     options.Limits.MinRequestBodyDataRate =
-                        new MinDataRate(80, TimeSpan.FromSeconds(20));
+                        new MinDataRate(20, TimeSpan.FromSeconds(20));
                 })
                 .UseStartup<Startup>();
     }

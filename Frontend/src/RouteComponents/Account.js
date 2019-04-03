@@ -4,6 +4,7 @@ import MemberPicture from "../DisplayComponents/MemberPicture";
 import "./Account.css";
 import Input from "../HelperComponents/Input";
 import Button from "../HelperComponents/Button";
+import FileInput from "../HelperComponents/FileInput";
 
 export default class Account extends React.Component {
     // top level route component for /account
@@ -15,11 +16,14 @@ export default class Account extends React.Component {
         fullName: "",
         photoUrl: null,
         showPasswordChange: false,
-        showPhotoChange: false,
         oldPassword: "",
         oldPasswordConfirm: "",
         newPassword: "",
-        passwordError: ""
+        passwordError: "",
+        showPhotoChange: false,
+        photoHide: true,
+        file: null,
+        fileError: ""
     };
 
     componentDidMount() {
@@ -89,6 +93,43 @@ export default class Account extends React.Component {
             }).catch(e => console.log(e))
     };
 
+    updatePhoto = event => {
+        event.preventDefault();
+        let file = this.state.file;
+        console.log(file);
+
+        if (!file) {
+            this.setState({
+                fileError: "File required"
+            });
+            return;
+        }
+
+        let form = new FormData();
+        form.append("file", file);
+
+        fetch("/api/users/newuserphoto", {
+            method: "post",
+            headers: {
+                "Authorization": `Bearer ${this._jwt}`
+            },
+            body: form
+        }).then(res => res.json())
+            .then(json => {
+                if (json.success) {
+                    this.setState({
+                        fileError: ""
+                    });
+                    this.props.updateUserPhoto(json.url);
+                } else {
+                    this.setState({
+                        fileError: json.error
+                    });
+                }
+                console.log(json);
+        }).catch(e => console.log("photo fail ", e));
+    };
+
     updateValue = (name, value) => {
         this.setState({
             [name]: value
@@ -96,6 +137,7 @@ export default class Account extends React.Component {
     };
 
     render() {
+        console.log(this.props)
         return(
             <div className={"account-details"}
                 style={{
@@ -125,8 +167,8 @@ export default class Account extends React.Component {
                             onClick={() => {
                                 this.setState({
                                     showPasswordChange: !this.state.showPasswordChange
-                                })}
-                            }
+                                });
+                            }}
                             className={`box ${this.state.showPasswordChange ? "open" : "close"}`}
                         >
                             Change Password
@@ -135,7 +177,8 @@ export default class Account extends React.Component {
                     <div style={{
                         height: this.state.showPasswordChange ? "200px" : "0px",
                         opacity: this.state.showPasswordChange ? "1" : "0",
-                        transition: "all 1s"
+                        transition: "all 1s",
+                        overflow: "hidden"
                     }}>
                         <span style={{margin: "10px", color: "darkred"}}>
                             {this.state.passwordError}
@@ -190,9 +233,21 @@ export default class Account extends React.Component {
                     <div style={{
                         height: this.state.showPhotoChange ? "200px" : "0px",
                         opacity: this.state.showPhotoChange ? "1" : "0",
-                        transition: "all 1s"
+                        transition: "all 1s",
+                        overflow: "hidden"
                     }}>
-                        photo
+                        <span style={{margin: "10px", color: "darkred"}}>
+                            {this.state.fileError}
+                        </span>
+                        <form onSubmit={this.updatePhoto}>
+                            <FileInput
+                                onChange={file => this.updateValue("file", file)}
+                            />
+                            <Button
+                                type={"submit"}
+                                onClick={this.updatePhoto}
+                            />
+                        </form>
                     </div>
                 </div>
             </div>

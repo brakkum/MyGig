@@ -31,7 +31,6 @@ namespace MyGigApi.Context
         public DbSet<Song> Songs { get; set; }
         public DbSet<SongComment> SongComments { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<UserPhoto> UserPhotos { get; set; }
 
         // Configure Entity properties, keys, etc.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -129,10 +128,6 @@ namespace MyGigApi.Context
             modelBuilder.Entity<User>()
                 .Property(u => u.Status)
                 .HasDefaultValue(UserStatus.Active);
-            // UserPhoto
-            modelBuilder.Entity<UserPhoto>()
-                .Property(u => u.UploadedAt)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
         }
     }
 }

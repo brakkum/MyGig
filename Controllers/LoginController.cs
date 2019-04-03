@@ -29,7 +29,6 @@ namespace MyGigApi.Controllers
         private User GetLoginUser(LoginDto user)
         {
             return _context.Users
-                .Include(u => u.UserPhoto)
                 .SingleOrDefault(u => u.Email == user.Email &&
                     BCrypt.Net.BCrypt.Verify(user.Password, u.Password));
         }
@@ -160,7 +159,7 @@ namespace MyGigApi.Controllers
                 {
                     FullName = user.FullName,
                     UserId = user.UserId,
-                    PhotoUrl = user.UserPhoto?.Url
+                    PhotoUrl = user.PhotoUrl
                 },
                 jwt = jwtToken
             });
@@ -182,7 +181,6 @@ namespace MyGigApi.Controllers
             }
 
             var userObj = _context.Users
-                .Include(u => u.UserPhoto)
                 .SingleOrDefault(u => u.UserId == int.Parse(userId));
 
             if (userObj == null)
@@ -195,7 +193,7 @@ namespace MyGigApi.Controllers
                 user = new UserDto
                 {
                     UserId = userObj.UserId,
-                    PhotoUrl = userObj.UserPhoto?.Url,
+                    PhotoUrl = userObj.PhotoUrl,
                     FullName = userObj.FullName
                 }
             });

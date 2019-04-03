@@ -52,6 +52,7 @@ export default withRouter(
                         loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}
                         pageLoaded={this.props.pageLoaded}
+                        updateUserPhoto={this.props.updateUserPhoto}
                         component={
                             Account
                         }

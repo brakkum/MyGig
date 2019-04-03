@@ -282,7 +282,6 @@ namespace MyGigApi.Controllers
 
             var comments = _context.EnsembleComments
                 .Include(c => c.User)
-                .ThenInclude(u => u.UserPhoto)
                 .Where(c => c.EnsembleId == dto.Id)
                 .OrderByDescending(c => c.Timestamp)
                 .Select(c => new EnsembleCommentDto
@@ -292,7 +291,7 @@ namespace MyGigApi.Controllers
                     User = new MemberDto
                     {
                         FullName = c.User.FullName,
-                        PhotoUrl = c.User.UserPhoto.Url,
+                        PhotoUrl = c.User.PhotoUrl,
                         UserId = c.UserId,
                         ConnectedToUser = userConnectionIds.Contains(c.UserId)
                     }

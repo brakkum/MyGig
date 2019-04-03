@@ -28,7 +28,6 @@ export default class MyGig extends Component {
     // this is called from login page
     // to store necessary userData
     // necessary here for app scope
-    // TODO: set localstorage on login
     loginUser = data => {
         let userData = {...data.user};
         userData.jwt = data.jwt;
@@ -41,8 +40,15 @@ export default class MyGig extends Component {
         this.setJwtInLocalStorage(data.jwt);
     };
 
+    updateUserPhoto = url => {
+        let userData = this.state.userData;
+        userData.photoUrl = url;
+        this.setState({
+            userData: userData
+        });
+    };
+
     // clear user info on logout
-    // TODO: remove local storage info
     logoutUser = () => {
         this.deleteJwtInLocalStorage();
         this.setState({
@@ -128,6 +134,7 @@ export default class MyGig extends Component {
                                 redirect={this.redirect}
                                 pageLoaded={this.pageLoaded}
                                 logoutUser={this.logoutUser}
+                                updateUserPhoto={this.updateUserPhoto}
                             />
                         </div>
                         <div style={{ height: "50px"}}>{}</div>

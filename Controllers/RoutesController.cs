@@ -94,7 +94,6 @@ namespace MyGigApi.Controllers
 
             var requests = _context.Requests
                 .Include(r => r.UserRequester)
-                .ThenInclude(u => u.UserPhoto)
                 .Where(r => r.UserIdRecipient == userId && r.Status == RequestStatus.Pending)
                 .OrderBy(r => r.Timestamp)
                 .Select(r => new RequestDto
@@ -102,7 +101,7 @@ namespace MyGigApi.Controllers
                     Text = r.Text,
                     RequestId = r.RequestId,
                     Timestamp = r.Timestamp,
-                    userPhoto = r.UserRequester.UserPhoto.Url
+                    userPhoto = r.UserRequester.PhotoUrl
                 });
 
             return new OkObjectResult(new
@@ -161,7 +160,7 @@ namespace MyGigApi.Controllers
                         .Select(m => new MemberDto
                         {
                             FullName = m.UserRecipient.FullName,
-                            PhotoUrl = m.UserRecipient.UserPhoto.Url,
+                            PhotoUrl = m.UserRecipient.PhotoUrl,
                             UserId = m.UserIdRecipient,
                             ConnectedToUser = userConnectionIds.Contains(m.UserIdRecipient)
                         }).ToList() as ICollection<MemberDto>
@@ -177,7 +176,7 @@ namespace MyGigApi.Controllers
                     User = new MemberDto
                     {
                         FullName = ec.User.FullName,
-                        PhotoUrl = ec.User.UserPhoto.Url,
+                        PhotoUrl = ec.User.PhotoUrl,
                         UserId = ec.UserId,
                         ConnectedToUser = userConnectionIds.Contains(ec.UserId)
                     }
@@ -252,7 +251,7 @@ namespace MyGigApi.Controllers
                     User = new MemberDto
                     {
                         FullName = ec.User.FullName,
-                        PhotoUrl = ec.User.UserPhoto.Url,
+                        PhotoUrl = ec.User.PhotoUrl,
                         UserId = ec.UserId,
                         ConnectedToUser = validMod
                     }
@@ -264,7 +263,7 @@ namespace MyGigApi.Controllers
                 .Select(e => new MemberDto
                 {
                     FullName = e.UserRecipient.FullName,
-                    PhotoUrl = e.UserRecipient.UserPhoto.Url,
+                    PhotoUrl = e.UserRecipient.PhotoUrl,
                     UserId = e.UserRecipient.UserId,
                     ConnectedToUser = userConnectionIds.Contains(e.UserIdRecipient)
                 }).ToList() as ICollection<MemberDto>;
