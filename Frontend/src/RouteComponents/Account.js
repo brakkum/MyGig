@@ -108,17 +108,24 @@ export default class Account extends React.Component {
         let form = new FormData();
         form.append("file", file);
 
-        fetch("/api/users/newuserphoto", {
+        let options = {
             method: "post",
             headers: {
                 "Authorization": `Bearer ${this._jwt}`
             },
             body: form
-        }).then(res => res.json())
+        };
+        delete options.headers['Content-Type'];
+
+        fetch("/api/users/newuserphoto",
+            options
+        ).then(res => res.json())
             .then(json => {
                 if (json.success) {
                     this.setState({
-                        fileError: ""
+                        fileError: "",
+                        file: null,
+                        showPhotoChange: false
                     });
                     this.props.updateUserPhoto(json.url);
                 } else {

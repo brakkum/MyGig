@@ -1,8 +1,11 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 using MyGigApi.Context;
@@ -69,14 +72,14 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
+        [DisableRequestSizeLimit]
         [Route(RoutePrefix + "/newuserphoto")]
-        public OkObjectResult NewUserPhoto()
+        public async Task<IActionResult> NewUserPhoto([FromForm] IFormFile file)
         {
+//            var file = HttpContext.Request.Form.Files["file"];
             var userId = GetUserId();
 
             var user = _context.Users.Find(userId);
-
-            var file = HttpContext.Request.Form.Files["file"];
 
             if (file == null)
             {
@@ -98,10 +101,10 @@ namespace MyGigApi.Controllers
             var dateTimeHash = DateTime.Now.Ticks
                 .GetHashCode()
                 .ToString("x");
-            var ext = Path.GetExtension(fileName);
+            var ext = Path.GetExtension(fileName).ToString();
             var url = Path.Combine(
                 UserPhotoDir,
-                $"user{userId}_{dateTimeHash}{ext.ToString()}");
+                $"user{userId}_{dateTimeHash}{ext}");
 
             var oldPhoto = user.PhotoUrl;
 
@@ -110,9 +113,10 @@ namespace MyGigApi.Controllers
                 System.IO.File.Delete(oldPhoto);
             }
 
-            using (var fileStream = new FileStream(url, FileMode.Create))
+            using (var fs = System.IO.File.Create(url))
             {
-                file.CopyTo(fileStream);
+                await file.CopyToAsync(fs);
+                fs.Flush();
             }
 
             user.PhotoUrl = url;

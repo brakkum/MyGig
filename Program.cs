@@ -20,6 +20,7 @@ namespace MyGigApi
                 {
                     options.Limits.MinRequestBodyDataRate =
                         new MinDataRate(20, TimeSpan.FromSeconds(20));
+                    options.Limits.MaxRequestBodySize = Int64.MaxValue;
                 })
                 .UseStartup<Startup>();
     }
