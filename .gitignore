@@ -4,4 +4,4 @@ obj/
 appsettings*
 .idea/*
 MyGigApi.sln.DotSettings.user
-
+static/*
