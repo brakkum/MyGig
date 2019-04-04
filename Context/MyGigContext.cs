@@ -15,7 +15,7 @@ namespace MyGigApi.Context
         }
 
         public DbSet<Booking> Bookings { get; set; }
-        public DbSet<BookingSetlist> BookingSetlists { get; set; }
+//        public DbSet<BookingSetlist> BookingSetlists { get; set; }
         public DbSet<Connection> Connections { get; set; }
         public DbSet<Ensemble> Ensembles { get; set; }
         public DbSet<EnsembleComment> EnsembleComments { get; set; }
@@ -25,10 +25,10 @@ namespace MyGigApi.Context
         public DbSet<EventModerator> EventModerators { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<EventComment> EventComments { get; set; }
-        public DbSet<Setlist> Setlists { get; set; }
-        public DbSet<SetlistComment> SetlistComments { get; set; }
-        public DbSet<Song> Songs { get; set; }
-        public DbSet<SongComment> SongComments { get; set; }
+//        public DbSet<Setlist> Setlists { get; set; }
+//        public DbSet<SetlistComment> SetlistComments { get; set; }
+//        public DbSet<Song> Songs { get; set; }
+//        public DbSet<SongComment> SongComments { get; set; }
         public DbSet<User> Users { get; set; }
 
         // Configure Entity properties, keys, etc.
@@ -45,12 +45,12 @@ namespace MyGigApi.Context
                 .Property(b => b.Status)
                 .HasDefaultValue(RequestStatus.Pending);
             // BookingSetlist
-            modelBuilder.Entity<BookingSetlist>()
-                .HasKey(bs => new {bs.BookingId, bs.SetlistId});
-            modelBuilder.Entity<BookingSetlist>()
-                .HasOne(es => es.Setlist)
-                .WithMany(e => e.BookingSetlists)
-                .HasForeignKey(es => es.SetlistId);
+//            modelBuilder.Entity<BookingSetlistetlist>()
+//                .HasKey(bs => new {bs.BookingId, bs.SetlistId});
+//            modelBuilder.Entity<BookingSetlist>()
+//                .HasOne(es => es.Setlist)
+//                .WithMany(e => e.BookingSetlists)
+//                .HasForeignKey(es => es.SetlistId);
             // Connection
             modelBuilder.Entity<Connection>()
                 .Property(c => c.Timestamp)
@@ -108,13 +108,13 @@ namespace MyGigApi.Context
                 .Property(n => n.Status)
                 .HasDefaultValue(NotificationStatus.Unseen);
             // SetlistComment
-            modelBuilder.Entity<SetlistComment>()
-                .Property(sc => sc.Timestamp)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
+//            modelBuilder.Entity<SetlistComments>()
+//                .Property(sc => sc.Timestamp)
+//                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // SongComment
-            modelBuilder.Entity<SongComment>()
-                .Property(sc => sc.Timestamp)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
+//            modelBuilder.Entity<SongComment>()
+//                .Property(sc => sc.Timestamp)
+//                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // User
             modelBuilder.Entity<User>()
                 .Property(u => u.Status)

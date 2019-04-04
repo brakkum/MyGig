@@ -1,6 +1,7 @@
 import React from "react";
 import Input from "../HelperComponents/Input";
 import Button from "../HelperComponents/Button";
+import DateTimePicker from "react-datetime-picker";
 
 export default class NewEvent extends React.Component {
 
@@ -9,7 +10,7 @@ export default class NewEvent extends React.Component {
         nameValid: true,
         location: "",
         locationValid: true,
-        dateAndTime: "",
+        dateAndTime: new Date(),
         dateAndTimeValid: true,
         sendingRequest: false,
         formError: null
@@ -93,12 +94,8 @@ export default class NewEvent extends React.Component {
                     name={"location"}
                     onChange={location => this.updateValue("location", location)}
                 />
-                <Input
-                    for={"Date and Time"}
-                    type={"datetime-local"}
+                <DateTimePicker
                     value={this.state.dateAndTime}
-                    valid={this.state.dateAndTimeValid}
-                    name={"dateAndTime"}
                     onChange={dnt => this.updateValue("dateAndTime", dnt)}
                 />
                 <Button

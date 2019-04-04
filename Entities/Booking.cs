@@ -35,10 +35,15 @@ namespace MyGigApi.Entities
         // Unique to Booking below
         public int EventId { get; set; }
 
+        [ForeignKey("EventId")]
         public Event Event { get; set; }
 
         public int EnsembleId { get; set; }
 
+        [ForeignKey("EnsembleId")]
         public Ensemble Ensemble { get; set; }
+
+        // newline separate string of songs
+        public string Setlist { get; set; }
     }
 }

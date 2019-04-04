@@ -40,7 +40,7 @@ namespace MyGigApi.Entities
 
         public ICollection<EventComment> EventComments { get; set; }
 
-        public ICollection<BookingSetlist> EventSetlists { get; set; }
+//        public ICollection<BookingSetlist> EventSetlists { get; set; }
 
         public ICollection<EventModerator> Moderators { get; set; }
     }

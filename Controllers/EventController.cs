@@ -246,13 +246,15 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/addsetlist")]
-        public OkObjectResult AddSetlistToBooking([FromBody] BookingSetlistDto dto)
+        [Route(RoutePrefix + "/updatesetlist")]
+        public OkObjectResult AddSetlistToBooking([FromBody] BookingDto dto)
         {
             var userId = GetUserId();
+            var booking = _context.Bookings.Find(dto.BookingId);
+
             var ensembleId = _context.Bookings
-                .Where(b => b.EventId == dto.Booking.EventId &&
-                            b.EnsembleId == dto.Setlist.EnsembleId)
+                .Where(b => b.EventId == booking.EventId &&
+                            b.EnsembleId == booking.EnsembleId)
                 .Select(b => b.EnsembleId)
                 .FirstOrDefault();
 
@@ -266,13 +268,7 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "Not valid mod"});
             }
 
-            var bookingSetlist = new BookingSetlist
-            {
-                SetlistId = dto.SetlistId,
-                BookingId = dto.BookingId
-            };
-
-            _context.BookingSetlists.Add(bookingSetlist);
+            booking.Setlist = dto.Setlist;
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});

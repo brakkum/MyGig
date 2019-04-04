@@ -42,26 +42,6 @@ namespace MyGigApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Setlists",
-                columns: table => new
-                {
-                    SetlistId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
-                    EnsembleId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Setlists", x => x.SetlistId);
-                    table.ForeignKey(
-                        name: "FK_Setlists_Ensembles_EnsembleId",
-                        column: x => x.EnsembleId,
-                        principalTable: "Ensembles",
-                        principalColumn: "EnsembleId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Connections",
                 columns: table => new
                 {
@@ -238,58 +218,6 @@ namespace MyGigApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SetlistComments",
-                columns: table => new
-                {
-                    SetlistCommentId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    SetlistId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    Text = table.Column<string>(maxLength: 500, nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SetlistComments", x => x.SetlistCommentId);
-                    table.ForeignKey(
-                        name: "FK_SetlistComments_Setlists_SetlistId",
-                        column: x => x.SetlistId,
-                        principalTable: "Setlists",
-                        principalColumn: "SetlistId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SetlistComments_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Songs",
-                columns: table => new
-                {
-                    SongId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    SetlistPosition = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(maxLength: 50, nullable: false),
-                    YouTubeUrl = table.Column<string>(maxLength: 200, nullable: true),
-                    PdfUrl = table.Column<string>(maxLength: 200, nullable: true),
-                    Artist = table.Column<string>(maxLength: 50, nullable: true),
-                    SetlistId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Songs", x => x.SongId);
-                    table.ForeignKey(
-                        name: "FK_Songs_Setlists_SetlistId",
-                        column: x => x.SetlistId,
-                        principalTable: "Setlists",
-                        principalColumn: "SetlistId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Bookings",
                 columns: table => new
                 {
@@ -302,7 +230,8 @@ namespace MyGigApi.Migrations
                     Text = table.Column<string>(nullable: true),
                     ConfirmedAt = table.Column<DateTime>(nullable: true),
                     EventId = table.Column<int>(nullable: false),
-                    EnsembleId = table.Column<int>(nullable: false)
+                    EnsembleId = table.Column<int>(nullable: false),
+                    Setlist = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -398,65 +327,6 @@ namespace MyGigApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "SongComments",
-                columns: table => new
-                {
-                    SongCommentId = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    SongId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    Text = table.Column<string>(maxLength: 500, nullable: false),
-                    Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SongComments", x => x.SongCommentId);
-                    table.ForeignKey(
-                        name: "FK_SongComments_Songs_SongId",
-                        column: x => x.SongId,
-                        principalTable: "Songs",
-                        principalColumn: "SongId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_SongComments_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BookingSetlists",
-                columns: table => new
-                {
-                    BookingId = table.Column<int>(nullable: false),
-                    SetlistId = table.Column<int>(nullable: false),
-                    EventId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BookingSetlists", x => new { x.BookingId, x.SetlistId });
-                    table.ForeignKey(
-                        name: "FK_BookingSetlists_Bookings_BookingId",
-                        column: x => x.BookingId,
-                        principalTable: "Bookings",
-                        principalColumn: "BookingId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BookingSetlists_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
-                        principalColumn: "EventId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_BookingSetlists_Setlists_SetlistId",
-                        column: x => x.SetlistId,
-                        principalTable: "Setlists",
-                        principalColumn: "SetlistId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Bookings_EnsembleId",
                 table: "Bookings",
@@ -476,16 +346,6 @@ namespace MyGigApi.Migrations
                 name: "IX_Bookings_UserIdRequester",
                 table: "Bookings",
                 column: "UserIdRequester");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookingSetlists_EventId",
-                table: "BookingSetlists",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookingSetlists_SetlistId",
-                table: "BookingSetlists",
-                column: "SetlistId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Connections_UserIdRecipient",
@@ -566,42 +426,12 @@ namespace MyGigApi.Migrations
                 name: "IX_Events_CreatedByUserId",
                 table: "Events",
                 column: "CreatedByUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SetlistComments_SetlistId",
-                table: "SetlistComments",
-                column: "SetlistId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SetlistComments_UserId",
-                table: "SetlistComments",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Setlists_EnsembleId",
-                table: "Setlists",
-                column: "EnsembleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SongComments_SongId",
-                table: "SongComments",
-                column: "SongId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SongComments_UserId",
-                table: "SongComments",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Songs_SetlistId",
-                table: "Songs",
-                column: "SetlistId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BookingSetlists");
+                name: "Bookings");
 
             migrationBuilder.DropTable(
                 name: "Connections");
@@ -625,28 +455,13 @@ namespace MyGigApi.Migrations
                 name: "Notifications");
 
             migrationBuilder.DropTable(
-                name: "SetlistComments");
-
-            migrationBuilder.DropTable(
-                name: "SongComments");
-
-            migrationBuilder.DropTable(
-                name: "Bookings");
-
-            migrationBuilder.DropTable(
-                name: "Songs");
+                name: "Ensembles");
 
             migrationBuilder.DropTable(
                 name: "Events");
 
             migrationBuilder.DropTable(
-                name: "Setlists");
-
-            migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Ensembles");
         }
     }
 }
