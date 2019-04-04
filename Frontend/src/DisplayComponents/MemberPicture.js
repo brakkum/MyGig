@@ -37,7 +37,7 @@ export default class MemberPicture extends React.Component {
     };
 
     hasPicStyle = {
-        backgroundSize: "150% auto",
+        backgroundSize: "120% auto",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center"
     };

@@ -83,7 +83,10 @@ export default class Account extends React.Component {
             .then(json => {
                 if (json.success) {
                     this.setState({
-                        showPasswordChange: false
+                        showPasswordChange: false,
+                        newPass: "",
+                        oldPass: "",
+                        oldPassConf: ""
                     });
                     alert("Password updated");
                 } else {
@@ -102,6 +105,13 @@ export default class Account extends React.Component {
         if (!file) {
             this.setState({
                 fileError: "File required"
+            });
+            return;
+        }
+
+        if (file.size > 2097152) {
+            this.setState({
+                fileError: "Please use file below 2MB"
             });
             return;
         }
