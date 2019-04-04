@@ -44,7 +44,7 @@ export default class MemberPicture extends React.Component {
 
     hoverStyle = {
         // if highlight on hover, but no color provided, default royalblue
-        boxShadow: "0 0 0 3pt " + (this.props.highlightColor || "royalblue")
+        boxShadow: "0 0 0 2pt " + (this.props.highlightColor || "mediumpurple")
     };
 
     handleHover = () => {

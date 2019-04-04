@@ -51,6 +51,8 @@ export default withRouter(
                                     photoUrl={this.props.photoUrl || undefined}
                                     // highlight pic on hover
                                     highlightOnHover={true}
+                                    innerHtml={"account"}
+                                    size={"60px"}
                                 />
                                 <div
                                     // redirect passed from MyGig component for app redirects
