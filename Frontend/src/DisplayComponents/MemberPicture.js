@@ -25,7 +25,7 @@ export default class MemberPicture extends React.Component {
         height: this.props.size || "50px",
         minWidth: this.props.size || "50px",
         minHeight: this.props.size || "50px",
-        borderRadius: "100%",
+        borderRadius: "10%",
         backgroundColor: "lightblue",
         transition: ".3s",
         display: "flex",
@@ -37,7 +37,6 @@ export default class MemberPicture extends React.Component {
     };
 
     hasPicStyle = {
-        backgroundImage: `url(${this.props.photoUrl})`,
         backgroundSize: "150% auto",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center center"
@@ -58,7 +57,7 @@ export default class MemberPicture extends React.Component {
 
     render() {
         // use pic as background if supplied
-        let includePic = this.props.photoUrl ? this.hasPicStyle : {};
+        let includePic = this.props.photoUrl ? {...this.hasPicStyle, backgroundImage: `url(${this.props.photoUrl})`} : {};
         // is it hovered, and should it be highlighted
         let hoveredStyle = (this.state.hovered && this.props.highlightOnHover) ? this.hoverStyle : {};
         return(

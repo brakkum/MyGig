@@ -22,7 +22,8 @@ export default class MyGig extends Component {
         // and then be reset to null
         loggedIn: false,
         redirect: null,
-        showBuffer: true
+        showBuffer: true,
+        photoUrl: null
     };
 
     // this is called from login page
@@ -34,17 +35,16 @@ export default class MyGig extends Component {
         setTimeout(() => {
             this.setState({
                 userData: userData,
-                loggedIn: true
+                loggedIn: true,
+                photoUrl: userData.photoUrl
             });
         }, 1000);
         this.setJwtInLocalStorage(data.jwt);
     };
 
     updateUserPhoto = url => {
-        let userData = this.state.userData;
-        userData.photoUrl = url;
         this.setState({
-            userData: userData
+            photoUrl: url
         });
     };
 
@@ -121,7 +121,7 @@ export default class MyGig extends Component {
                         <LoadingBuffer showBuffer={this.state.showBuffer} />
                     }
                     {/* NavBar for application */}
-                    <NavBar userData={this.state.userData} redirect={this.redirect} logoutUser={this.logoutUser} />
+                    <NavBar userData={this.state.userData} photoUrl={this.state.photoUrl} redirect={this.redirect} logoutUser={this.logoutUser} />
                     {/* all body content contained here */}
                     {/*<div style={{ height: "50px"}}>{}</div>*/}
                     <div className="body-content" style={{backgroundColor: Constants.backgroundColor}}>

@@ -34,7 +34,6 @@ export default class Home extends React.Component {
                         requests: json.requests,
                         events: json.events
                     });
-                    console.log(json);
                     this.props.pageLoaded();
                 } else {
                     console.log("fail, ", json);

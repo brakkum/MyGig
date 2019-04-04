@@ -23,7 +23,7 @@ export default class Account extends React.Component {
         showPhotoChange: false,
         photoHide: true,
         file: null,
-        fileError: ""
+        fileError: "",
     };
 
     componentDidMount() {
@@ -31,7 +31,8 @@ export default class Account extends React.Component {
         this._jwt = this.props.userData.jwt;
 
         this.setState({
-            fullName: this.props.userData.fullName
+            fullName: this.props.userData.fullName,
+            photoUrl: this.props.userData.photoUrl
         });
 
         setTimeout(() => {
@@ -125,6 +126,7 @@ export default class Account extends React.Component {
                     this.setState({
                         fileError: "",
                         file: null,
+                        photoUrl: json.url,
                         showPhotoChange: false
                     });
                     this.props.updateUserPhoto(json.url);
@@ -144,7 +146,6 @@ export default class Account extends React.Component {
     };
 
     render() {
-        console.log(this.props)
         return(
             <div className={"account-details"}
                 style={{
@@ -160,7 +161,7 @@ export default class Account extends React.Component {
                     }}
                 >
                     <h1>{this.state.fullName}</h1>
-                    {<MemberPicture url={this.props.userData.photoUrl} />}
+                    {<MemberPicture photoUrl={this.state.photoUrl} />}
                 </div>
                 {/* password */}
                 <div>
