@@ -16,8 +16,6 @@ export default class MemberPicture extends React.Component {
         username: null,
         hovered: false,
         innerHtml: null,
-        color: this.props.color || "azure",
-        photoUrl: this.props.photoUrl
     };
 
     baseStyle = {
@@ -32,7 +30,7 @@ export default class MemberPicture extends React.Component {
         alignItems: "center",
         justifyContent: "space-evenly",
         boxShadow: "0 0 0 1pt transparent",
-        color: this.state.color,
+        color:  this.props.color || "azure",
         textShadow: "1px 1px black"
     };
 

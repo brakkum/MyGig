@@ -92,24 +92,80 @@ namespace MyGigApi.Controllers
                     Timestamp = n.Timestamp
                 });
 
-            var requests = _context.Requests
-                .Include(r => r.UserRequester)
-                .Where(r => r.UserIdRecipient == userId && r.Status == RequestStatus.Pending)
-                .OrderBy(r => r.Timestamp)
-                .Select(r => new RequestDto
+            // Requests extravaganza
+            var bookings = _context.Bookings
+                .Where(b => b.UserIdRecipient == userId
+                            && b.Status == RequestStatus.Pending)
+                .Select(b => new RequestDto
                 {
-                    Text = r.Text,
-                    RequestId = r.RequestId,
-                    Timestamp = r.Timestamp,
-                    UserPhoto = r.UserRequester.PhotoUrl
+                    RequestType = RequestType.Booking,
+                    TypeId = b.BookingId,
+                    Text = b.Text,
+                    Timestamp = b.Timestamp,
+                    UserPhoto = b.UserRequester.PhotoUrl
                 });
+
+            var connections = _context.Connections
+                .Where(c => c.UserIdRecipient == userId
+                            && c.Status == RequestStatus.Pending)
+                .Select(c => new RequestDto
+                {
+                    RequestType = RequestType.Connection,
+                    TypeId = c.ConnectionId,
+                    Text = c.Text,
+                    Timestamp = c.Timestamp,
+                    UserPhoto = c.UserRequester.PhotoUrl
+                });
+
+            var ensMems = _context.EnsembleMembers
+                .Where(em => em.UserIdRecipient == userId
+                            && em.Status == RequestStatus.Pending)
+                .Select(em => new RequestDto
+                {
+                    RequestType = RequestType.EnsembleMember,
+                    TypeId = em.EnsembleMemberId,
+                    Text = em.Text,
+                    Timestamp = em.Timestamp,
+                    UserPhoto = em.UserRequester.PhotoUrl
+                });
+
+            var ensMods = _context.EnsembleModerators
+                .Where(em => em.UserIdRecipient == userId
+                            && em.Status == RequestStatus.Pending)
+                .Select(em => new RequestDto
+                {
+                    RequestType = RequestType.EnsembleModerator,
+                    TypeId = em.EnsembleModeratorId,
+                    Text = em.Text,
+                    Timestamp = em.Timestamp,
+                    UserPhoto = em.UserRequester.PhotoUrl
+                });
+
+            var evMods = _context.EventModerators
+                .Where(em => em.UserIdRecipient == userId
+                             && em.Status == RequestStatus.Pending)
+                .Select(em => new RequestDto
+                {
+                    RequestType = RequestType.EventModerator,
+                    TypeId = em.EventModeratorId,
+                    Text = em.Text,
+                    Timestamp = em.Timestamp,
+                    UserPhoto = em.UserRequester.PhotoUrl
+                });
+
+            var requests = bookings
+                .Concat(connections)
+                .Concat(ensMems)
+                .Concat(ensMods)
+                .Concat(evMods);
 
             return new OkObjectResult(new
             {
                 success = true,
                 ensembles,
                 notifications,
-                requests,
+                requests = requests
+                    .OrderBy(r => r.Timestamp),
                 events
             });
         }

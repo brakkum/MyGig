@@ -4,8 +4,6 @@ namespace MyGigApi.DTOs
 {
     public class RequestDto
     {
-        public int RequestId { get; set; }
-
         public int UserIdRequester { get; set; }
 
         public string UserPhoto { get; set; }
@@ -15,5 +13,18 @@ namespace MyGigApi.DTOs
         public string Text { get; set; }
 
         public DateTime Timestamp { get; set; }
+
+        public RequestType RequestType { get; set; }
+
+        public int TypeId { get; set; }
+    }
+
+    public enum RequestType
+    {
+        Connection,
+        EnsembleMember,
+        EnsembleModerator,
+        EventModerator,
+        Booking
     }
 }

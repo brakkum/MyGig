@@ -41,7 +41,6 @@ export default class EnsembleMembersList extends React.Component {
                 >
                     {
                         this.props.ensembleMembers.map((mem, i) => {
-                            console.log(mem)
                             return(
                                 <div
                                     style={{
@@ -56,7 +55,7 @@ export default class EnsembleMembersList extends React.Component {
                                     key={i}
                                 >
                                     <MemberPicture
-                                        url={mem.photoUrl}
+                                        photoUrl={mem.photoUrl}
                                         highlightOnHover={!mem.connectedToUser}
                                         innerHtml={"Connect"}
                                         onClick={!mem.connectedToUser ? () => this.sendConnectionRequest(mem.userId) : null}

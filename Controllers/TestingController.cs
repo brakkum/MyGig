@@ -34,16 +34,18 @@ namespace MyGigApi.Controllers
                 .Where(u => u.UserIdRecipient == userId && u.Status == RequestStatus.Pending)
                 .Select(em => new EnsembleMemberDto
                 {
-                    RequestId = em.RequestId,
+                    RequestType = RequestType.EnsembleMember,
+                    TypeId = em.EnsembleMemberId,
                     Text = $"{em.UserRequester.FullName} wants you to join {em.Ensemble.Name}",
                     Timestamp = em.Timestamp
                 });
 
             var ensMod = _context.EnsembleModerators
                 .Where(em => em.UserIdRecipient == userId && em.Status == RequestStatus.Pending)
-                .Select(em => new EnsembleMemberDto
+                .Select(em => new EnsembleModeratorDto
                 {
-                    RequestId = em.RequestId,
+                    RequestType = RequestType.EnsembleModerator,
+                    TypeId = em.EnsembleModeratorId,
                     Text = $"{em.UserRequester.FullName} wants you to moderate {em.Ensemble.Name}",
                     Timestamp = em.Timestamp
                 });
@@ -52,7 +54,8 @@ namespace MyGigApi.Controllers
                 .Where(b => b.UserIdRecipient == userId && b.Status == RequestStatus.Pending)
                 .Select(b => new BookingDto
                 {
-                    RequestId = b.RequestId,
+                    RequestType = RequestType.Booking,
+                    TypeId = b.BookingId,
                     Text = $"{b.UserRequester.FullName} wants your ensemble ${b.Ensemble.Name} to perform at {b.Event.Name}",
                     Timestamp = b.Timestamp
                 });
@@ -61,7 +64,8 @@ namespace MyGigApi.Controllers
                 .Where(em => em.UserIdRecipient == userId && em.Status == RequestStatus.Pending)
                 .Select(em => new EventModeratorDto
                 {
-                    RequestId = em.RequestId,
+                    RequestType = RequestType.EventModerator,
+                    TypeId = em.EventModeratorId,
                     Text = $"{em.UserRequester.FullName} wants you to moderate the event {em.Event.Name}",
                     Timestamp = em.Timestamp
                 });
@@ -70,7 +74,8 @@ namespace MyGigApi.Controllers
                 .Where(c => c.UserIdRecipient == userId && c.Status == RequestStatus.Pending)
                 .Select(b => new ConnectionDto
                 {
-                    RequestId = b.RequestId,
+                    RequestType = RequestType.Connection,
+                    TypeId = b.ConnectionId,
                     Text = $"{b.UserRequester.FullName} wants to connect with you",
                     Timestamp = b.Timestamp
                 });

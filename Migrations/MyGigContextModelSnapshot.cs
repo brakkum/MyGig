@@ -17,6 +17,42 @@ namespace MyGigApi.Migrations
                 .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("MyGigApi.Entities.Booking", b =>
+                {
+                    b.Property<int>("BookingId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("ConfirmedAt");
+
+                    b.Property<int>("EnsembleId");
+
+                    b.Property<int>("EventId");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("Text");
+
+                    b.Property<DateTime>("Timestamp");
+
+                    b.Property<int>("UserIdRecipient");
+
+                    b.Property<int>("UserIdRequester");
+
+                    b.HasKey("BookingId");
+
+                    b.HasIndex("EnsembleId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("UserIdRecipient");
+
+                    b.HasIndex("UserIdRequester");
+
+                    b.ToTable("Bookings");
+                });
+
             modelBuilder.Entity("MyGigApi.Entities.BookingSetlist", b =>
                 {
                     b.Property<int>("BookingId");
@@ -32,6 +68,36 @@ namespace MyGigApi.Migrations
                     b.HasIndex("SetlistId");
 
                     b.ToTable("BookingSetlists");
+                });
+
+            modelBuilder.Entity("MyGigApi.Entities.Connection", b =>
+                {
+                    b.Property<int>("ConnectionId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("ConfirmedAt");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("Text");
+
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP()");
+
+                    b.Property<int>("UserIdRecipient");
+
+                    b.Property<int>("UserIdRequester");
+
+                    b.HasKey("ConnectionId");
+
+                    b.HasIndex("UserIdRecipient");
+
+                    b.HasIndex("UserIdRequester");
+
+                    b.ToTable("Connections");
                 });
 
             modelBuilder.Entity("MyGigApi.Entities.Ensemble", b =>
@@ -81,6 +147,70 @@ namespace MyGigApi.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("EnsembleComments");
+                });
+
+            modelBuilder.Entity("MyGigApi.Entities.EnsembleMember", b =>
+                {
+                    b.Property<int>("EnsembleMemberId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("ConfirmedAt");
+
+                    b.Property<int>("EnsembleId");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("Text");
+
+                    b.Property<DateTime>("Timestamp");
+
+                    b.Property<int>("UserIdRecipient");
+
+                    b.Property<int>("UserIdRequester");
+
+                    b.HasKey("EnsembleMemberId");
+
+                    b.HasIndex("EnsembleId");
+
+                    b.HasIndex("UserIdRecipient");
+
+                    b.HasIndex("UserIdRequester");
+
+                    b.ToTable("EnsembleMembers");
+                });
+
+            modelBuilder.Entity("MyGigApi.Entities.EnsembleModerator", b =>
+                {
+                    b.Property<int>("EnsembleModeratorId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("ConfirmedAt");
+
+                    b.Property<int>("EnsembleId");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("Text");
+
+                    b.Property<DateTime>("Timestamp");
+
+                    b.Property<int>("UserIdRecipient");
+
+                    b.Property<int>("UserIdRequester");
+
+                    b.HasKey("EnsembleModeratorId");
+
+                    b.HasIndex("EnsembleId");
+
+                    b.HasIndex("UserIdRecipient");
+
+                    b.HasIndex("UserIdRequester");
+
+                    b.ToTable("EnsembleModerators");
                 });
 
             modelBuilder.Entity("MyGigApi.Entities.Event", b =>
@@ -137,6 +267,38 @@ namespace MyGigApi.Migrations
                     b.ToTable("EventComments");
                 });
 
+            modelBuilder.Entity("MyGigApi.Entities.EventModerator", b =>
+                {
+                    b.Property<int>("EventModeratorId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime?>("ConfirmedAt");
+
+                    b.Property<int>("EventId");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("Text");
+
+                    b.Property<DateTime>("Timestamp");
+
+                    b.Property<int>("UserIdRecipient");
+
+                    b.Property<int>("UserIdRequester");
+
+                    b.HasKey("EventModeratorId");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("UserIdRecipient");
+
+                    b.HasIndex("UserIdRequester");
+
+                    b.ToTable("EventModerators");
+                });
+
             modelBuilder.Entity("MyGigApi.Entities.Notification", b =>
                 {
                     b.Property<int>("UserId");
@@ -159,41 +321,6 @@ namespace MyGigApi.Migrations
                     b.HasKey("UserId", "Url");
 
                     b.ToTable("Notifications");
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.Request", b =>
-                {
-                    b.Property<int>("RequestId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime?>("ConfirmedAt");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
-
-                    b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
-
-                    b.Property<string>("Text");
-
-                    b.Property<DateTime>("Timestamp")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP()");
-
-                    b.Property<int>("UserIdRecipient");
-
-                    b.Property<int>("UserIdRequester");
-
-                    b.HasKey("RequestId");
-
-                    b.HasIndex("UserIdRecipient");
-
-                    b.HasIndex("UserIdRequester");
-
-                    b.ToTable("Requests");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Request");
                 });
 
             modelBuilder.Entity("MyGigApi.Entities.Setlist", b =>
@@ -329,66 +456,31 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.Booking", b =>
                 {
-                    b.HasBaseType("MyGigApi.Entities.Request");
+                    b.HasOne("MyGigApi.Entities.Ensemble", "Ensemble")
+                        .WithMany("Bookings")
+                        .HasForeignKey("EnsembleId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Property<int>("EnsembleId");
+                    b.HasOne("MyGigApi.Entities.Event", "Event")
+                        .WithMany("Ensembles")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.Property<int>("EventId");
+                    b.HasOne("MyGigApi.Entities.User", "UserRecipient")
+                        .WithMany()
+                        .HasForeignKey("UserIdRecipient")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasIndex("EnsembleId");
-
-                    b.HasIndex("EventId");
-
-                    b.HasDiscriminator().HasValue("Booking");
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.Connection", b =>
-                {
-                    b.HasBaseType("MyGigApi.Entities.Request");
-
-                    b.HasDiscriminator().HasValue("Connection");
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.EnsembleMember", b =>
-                {
-                    b.HasBaseType("MyGigApi.Entities.Request");
-
-                    b.Property<int>("EnsembleId")
-                        .HasColumnName("EnsembleMember_EnsembleId");
-
-                    b.HasIndex("EnsembleId");
-
-                    b.HasDiscriminator().HasValue("EnsembleMember");
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.EnsembleModerator", b =>
-                {
-                    b.HasBaseType("MyGigApi.Entities.Request");
-
-                    b.Property<int>("EnsembleId")
-                        .HasColumnName("EnsembleModerator_EnsembleId");
-
-                    b.HasIndex("EnsembleId");
-
-                    b.HasDiscriminator().HasValue("EnsembleModerator");
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.EventModerator", b =>
-                {
-                    b.HasBaseType("MyGigApi.Entities.Request");
-
-                    b.Property<int>("EventId")
-                        .HasColumnName("EventModerator_EventId");
-
-                    b.HasIndex("EventId");
-
-                    b.HasDiscriminator().HasValue("EventModerator");
+                    b.HasOne("MyGigApi.Entities.User", "UserRequester")
+                        .WithMany()
+                        .HasForeignKey("UserIdRequester")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MyGigApi.Entities.BookingSetlist", b =>
                 {
                     b.HasOne("MyGigApi.Entities.Booking", "Booking")
-                        .WithMany("Setlists")
+                        .WithMany()
                         .HasForeignKey("BookingId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -402,6 +494,19 @@ namespace MyGigApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MyGigApi.Entities.Connection", b =>
+                {
+                    b.HasOne("MyGigApi.Entities.User", "UserRecipient")
+                        .WithMany()
+                        .HasForeignKey("UserIdRecipient")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyGigApi.Entities.User", "UserRequester")
+                        .WithMany()
+                        .HasForeignKey("UserIdRequester")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("MyGigApi.Entities.EnsembleComment", b =>
                 {
                     b.HasOne("MyGigApi.Entities.Ensemble", "Ensemble")
@@ -412,6 +517,42 @@ namespace MyGigApi.Migrations
                     b.HasOne("MyGigApi.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyGigApi.Entities.EnsembleMember", b =>
+                {
+                    b.HasOne("MyGigApi.Entities.Ensemble", "Ensemble")
+                        .WithMany("Members")
+                        .HasForeignKey("EnsembleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyGigApi.Entities.User", "UserRecipient")
+                        .WithMany()
+                        .HasForeignKey("UserIdRecipient")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyGigApi.Entities.User", "UserRequester")
+                        .WithMany()
+                        .HasForeignKey("UserIdRequester")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyGigApi.Entities.EnsembleModerator", b =>
+                {
+                    b.HasOne("MyGigApi.Entities.Ensemble", "Ensemble")
+                        .WithMany("Moderators")
+                        .HasForeignKey("EnsembleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyGigApi.Entities.User", "UserRecipient")
+                        .WithMany()
+                        .HasForeignKey("UserIdRecipient")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MyGigApi.Entities.User", "UserRequester")
+                        .WithMany()
+                        .HasForeignKey("UserIdRequester")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -436,16 +577,13 @@ namespace MyGigApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MyGigApi.Entities.Notification", b =>
+            modelBuilder.Entity("MyGigApi.Entities.EventModerator", b =>
                 {
-                    b.HasOne("MyGigApi.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("MyGigApi.Entities.Event", "Event")
+                        .WithMany("Moderators")
+                        .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
 
-            modelBuilder.Entity("MyGigApi.Entities.Request", b =>
-                {
                     b.HasOne("MyGigApi.Entities.User", "UserRecipient")
                         .WithMany()
                         .HasForeignKey("UserIdRecipient")
@@ -454,6 +592,14 @@ namespace MyGigApi.Migrations
                     b.HasOne("MyGigApi.Entities.User", "UserRequester")
                         .WithMany()
                         .HasForeignKey("UserIdRequester")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MyGigApi.Entities.Notification", b =>
+                {
+                    b.HasOne("MyGigApi.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -496,43 +642,6 @@ namespace MyGigApi.Migrations
                     b.HasOne("MyGigApi.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.Booking", b =>
-                {
-                    b.HasOne("MyGigApi.Entities.Ensemble", "Ensemble")
-                        .WithMany("Bookings")
-                        .HasForeignKey("EnsembleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MyGigApi.Entities.Event", "Event")
-                        .WithMany("Ensembles")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.EnsembleMember", b =>
-                {
-                    b.HasOne("MyGigApi.Entities.Ensemble", "Ensemble")
-                        .WithMany("Members")
-                        .HasForeignKey("EnsembleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.EnsembleModerator", b =>
-                {
-                    b.HasOne("MyGigApi.Entities.Ensemble", "Ensemble")
-                        .WithMany("Moderators")
-                        .HasForeignKey("EnsembleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MyGigApi.Entities.EventModerator", b =>
-                {
-                    b.HasOne("MyGigApi.Entities.Event", "Event")
-                        .WithMany("Moderators")
-                        .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

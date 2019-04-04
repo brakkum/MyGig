@@ -76,7 +76,6 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/newuserphoto")]
         public async Task<IActionResult> NewUserPhoto([FromForm] IFormFile file)
         {
-//            var file = HttpContext.Request.Form.Files["file"];
             var userId = GetUserId();
 
             var user = _context.Users.Find(userId);
@@ -119,7 +118,7 @@ namespace MyGigApi.Controllers
                 fs.Flush();
             }
 
-            user.PhotoUrl = url;
+            user.PhotoUrl = $"/{url}";
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true, url});

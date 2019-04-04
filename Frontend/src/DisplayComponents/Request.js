@@ -16,8 +16,10 @@ export default class Request extends React.Component {
     };
 
     acceptRequest = () => {
-        let reqId = this.props.requestId;
+        let requestType = this.props.requestType;
+        let typeId = this.props.typeId;
         let jwt = this.props.jwt;
+        console.log("accept");
         this.setState({sendingRequest: true});
         fetch("/api/requests/confirm", {
             method: "post",
@@ -26,23 +28,26 @@ export default class Request extends React.Component {
                 "Authorization": `Bearer ${jwt}`
             }),
             body: JSON.stringify({
-                RequestId: reqId
+                RequestType: requestType,
+                TypeId: typeId
             })
         }).then(res => res.json())
             .then(json => {
                 if (json.success) {
-                    this.props.filterRequests(reqId);
+                    this.props.filterRequests(requestType, typeId);
                 } else {
                     this.setState({
                         sendingRequest: false
                     })
                 }
+                console.log(json)
             }
         ).catch(e => console.log(e));
     };
 
     denyRequest = () => {
-        let reqId = this.props.requestId;
+        let reqType = this.props.requestType;
+        let typeId = this.props.typeId;
         let jwt = this.props.jwt;
 
         this.setState({sendingRequest: true});
@@ -53,12 +58,13 @@ export default class Request extends React.Component {
                 "Authorization": `Bearer ${jwt}`
             }),
             body: JSON.stringify({
-                RequestId: reqId
+                RequestType: reqType,
+                TypeId: typeId
             })
         }).then(res => res.json())
             .then(json => {
                     if (json.success) {
-                        this.props.filterRequests(reqId);
+                        this.props.filterRequests(reqType, typeId);
                     } else {
                         this.setState({
                             sendingRequest: false

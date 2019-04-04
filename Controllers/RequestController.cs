@@ -22,22 +22,82 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/confirm")]
-        public OkObjectResult ConfirmRequest([FromBody] RequestDto requestDto)
+        public OkObjectResult ConfirmRequest([FromBody] RequestDto dto)
         {
-            var req = _context.Requests
-                .Find(requestDto.RequestId);
-
             var userId = GetUserId();
 
-            if (req.UserIdRecipient != userId && req.UserIdRequester != userId)
+            var success = false;
+
+            switch (dto.RequestType)
             {
-                // this user isn't a part of this request
-                return new OkObjectResult(new {success = false});
+                case RequestType.Booking:
+                    var b = _context.Bookings.Find(dto.TypeId);
+                    if (b.UserIdRecipient != userId)
+                    {
+                        break;
+                    }
+                    b.ConfirmedAt = DateTime.Now;
+                    b.Status = RequestStatus.Accepted;
+                    _context.SaveChanges();
+                    success = true;
+                    break;
+                case RequestType.Connection:
+                    var c = _context.Connections.Find(dto.TypeId);
+                    if (c.UserIdRecipient != userId)
+                    {
+                        break;
+                    }
+                    c.ConfirmedAt = DateTime.Now;
+                    c.Status = RequestStatus.Accepted;
+                    _context.SaveChanges();
+                    success = true;
+                    break;
+                case RequestType.EnsembleMember:
+                    var enMem = _context.EnsembleMembers.Find(dto.TypeId);
+                    if (enMem.UserIdRecipient != userId)
+                    {
+                        break;
+                    }
+                    enMem.ConfirmedAt = DateTime.Now;
+                    enMem.Status = RequestStatus.Accepted;
+                    _context.SaveChanges();
+                    success = true;
+                    break;
+                case RequestType.EventModerator:
+                    var evMod = _context.EventModerators.Find(dto.TypeId);
+                    if (evMod.UserIdRecipient != userId)
+                    {
+                        break;
+                    }
+                    evMod.ConfirmedAt = DateTime.Now;
+                    evMod.Status = RequestStatus.Accepted;
+                    _context.SaveChanges();
+                    success = true;
+                    break;
+                case RequestType.EnsembleModerator:
+                    var enMod = _context.EnsembleModerators.Find(dto.TypeId);
+                    if (enMod.UserIdRecipient != userId)
+                    {
+                        break;
+                    }
+                    enMod.ConfirmedAt = DateTime.Now;
+                    enMod.Status = RequestStatus.Accepted;
+                    _context.SaveChanges();
+                    success = true;
+                    break;
+                default:
+                    Console.WriteLine("Invalid Request Type " + dto.RequestType);
+                    break;
             }
 
-            req.ConfirmedAt = DateTime.Now;
-            req.Status = RequestStatus.Accepted;
-            _context.SaveChanges();
+            if (!success)
+            {
+                return new OkObjectResult(new
+                {
+                    success = false,
+                    error = "Bad request type"
+                });
+            }
 
             return new OkObjectResult(new {success = true});
         }
@@ -45,21 +105,79 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/deny")]
-        public OkObjectResult DenyRequest([FromBody] RequestDto requestDto)
+        public OkObjectResult DenyRequest([FromBody] RequestDto dto)
         {
-            var req = _context.Requests
-                .Find(requestDto.RequestId);
-
             var userId = GetUserId();
 
-            if (req.UserIdRecipient != userId && req.UserIdRequester != userId)
+            var success = false;
+
+            switch (dto.RequestType)
             {
-                // this user isn't a part of this request
-                return new OkObjectResult(new {success = false});
+                case RequestType.Booking:
+                    var b = _context.Bookings.Find(dto.TypeId);
+                    if (b.UserIdRecipient != userId)
+                    {
+                        break;
+                    }
+                    b.ConfirmedAt = DateTime.Now;
+                    b.Status = RequestStatus.Denied;
+                    _context.SaveChanges();
+                    success = true;
+                    break;
+                case RequestType.Connection:
+                    var c = _context.Connections.Find(dto.TypeId);
+                    if (c.UserIdRecipient != userId)
+                    {
+                        break;
+                    }
+                    c.ConfirmedAt = DateTime.Now;
+                    c.Status = RequestStatus.Denied;
+                    _context.SaveChanges();
+                    success = true;
+                    break;
+                case RequestType.EnsembleMember:
+                    var enMem = _context.EnsembleMembers.Find(dto.TypeId);
+                    if (enMem.UserIdRecipient != userId)
+                    {
+                        break;
+                    }
+                    enMem.ConfirmedAt = DateTime.Now;
+                    enMem.Status = RequestStatus.Denied;
+                    _context.SaveChanges();
+                    success = true;
+                    break;
+                case RequestType.EventModerator:
+                    var evMod = _context.EventModerators.Find(dto.TypeId);
+                    if (evMod.UserIdRecipient != userId)
+                    {
+                        break;
+                    }
+                    evMod.ConfirmedAt = DateTime.Now;
+                    evMod.Status = RequestStatus.Denied;
+                    _context.SaveChanges();
+                    success = true;
+                    break;
+                case RequestType.EnsembleModerator:
+                    var enMod = _context.EnsembleModerators.Find(dto.TypeId);
+                    if (enMod.UserIdRecipient != userId)
+                    {
+                        break;
+                    }
+                    enMod.ConfirmedAt = DateTime.Now;
+                    enMod.Status = RequestStatus.Denied;
+                    _context.SaveChanges();
+                    success = true;
+                    break;
             }
 
-            req.Status = RequestStatus.Denied;
-            _context.SaveChanges();
+            if (!success)
+            {
+                return new OkObjectResult(new
+                {
+                    success = false,
+                    error = "Bad request type"
+                });
+            }
 
             return new OkObjectResult(new {success = true});
         }

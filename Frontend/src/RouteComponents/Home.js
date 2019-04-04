@@ -8,6 +8,7 @@ export default class Home extends React.Component {
     // top level route component for /
 
     _isMounted = false;
+    _jwt = null;
 
     state = {
         ensembles: [],
@@ -18,12 +19,13 @@ export default class Home extends React.Component {
 
     componentDidMount() {
         this._isMounted = true;
-        let jwt = this.props.userData.jwt;
+        this._jwt = this.props.userData.jwt;
+
         fetch("/api/routes/home", {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
+                "Authorization": `Bearer ${this._jwt}`
             })
         }).then(res => res.json())
             .then(json => {
@@ -41,9 +43,9 @@ export default class Home extends React.Component {
             }).catch(e => console.log(e));
     }
 
-    filterRequests = id => {
+    filterRequests = (requestType, typeId) => {
         let reqs = this.state.requests;
-        let newReqs = reqs.filter(req => req.requestId !== id);
+        let newReqs = reqs.filter(req => req.requestType !== requestType && req.typeId !== typeId);
         this.setState({requests: []});
         this.setState({requests: newReqs});
     };
@@ -73,8 +75,9 @@ export default class Home extends React.Component {
                                 return <Request
                                     userPhoto={req.userPhoto}
                                     text={req.text}
-                                    requestId={req.requestId}
-                                    jwt={this.props.userData.jwt}
+                                    requestType={req.requestType}
+                                    typeId={req.typeId}
+                                    jwt={this._jwt}
                                     filterRequests={this.filterRequests}
                                     key={i}
                                 />

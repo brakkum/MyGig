@@ -25,7 +25,6 @@ namespace MyGigApi.Context
         public DbSet<EventModerator> EventModerators { get; set; }
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<EventComment> EventComments { get; set; }
-        public DbSet<Request> Requests { get; set; }
         public DbSet<Setlist> Setlists { get; set; }
         public DbSet<SetlistComment> SetlistComments { get; set; }
         public DbSet<Song> Songs { get; set; }
@@ -48,10 +47,6 @@ namespace MyGigApi.Context
             // BookingSetlist
             modelBuilder.Entity<BookingSetlist>()
                 .HasKey(bs => new {bs.BookingId, bs.SetlistId});
-            modelBuilder.Entity<BookingSetlist>()
-                .HasOne(es => es.Booking)
-                .WithMany(e => e.Setlists)
-                .HasForeignKey(es => es.BookingId);
             modelBuilder.Entity<BookingSetlist>()
                 .HasOne(es => es.Setlist)
                 .WithMany(e => e.BookingSetlists)
@@ -112,10 +107,6 @@ namespace MyGigApi.Context
             modelBuilder.Entity<Notification>()
                 .Property(n => n.Status)
                 .HasDefaultValue(NotificationStatus.Unseen);
-            // Request
-            modelBuilder.Entity<Request>()
-                .Property(r => r.Timestamp)
-                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // SetlistComment
             modelBuilder.Entity<SetlistComment>()
                 .Property(sc => sc.Timestamp)
