@@ -101,7 +101,7 @@ namespace MyGigApi.Controllers
                     Text = r.Text,
                     RequestId = r.RequestId,
                     Timestamp = r.Timestamp,
-                    userPhoto = r.UserRequester.PhotoUrl
+                    UserPhoto = r.UserRequester.PhotoUrl
                 });
 
             return new OkObjectResult(new

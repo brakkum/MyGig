@@ -8,7 +8,7 @@ namespace MyGigApi.DTOs
 
         public int UserIdRequester { get; set; }
 
-        public string userPhoto { get; set; }
+        public string UserPhoto { get; set; }
 
         public int UserIdRecipient { get; set; }
 
