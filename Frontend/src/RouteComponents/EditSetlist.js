@@ -56,7 +56,7 @@ export default class EditSetlist extends React.Component {
             })
         }).then(res => res.json())
             .then(json => {
-                if (json.success) {
+                if (json.success && this._isMounted) {
                     this.setState({
                         setlist: json.setlist
                     });
@@ -86,6 +86,7 @@ export default class EditSetlist extends React.Component {
                     type={"textarea"}
                     value={this.state.setlist}
                     onChange={this.onChange}
+                    height={"400px"}
                     sendingRequest={this.state.sendingRequest}
                     resizeable={true}
                 />

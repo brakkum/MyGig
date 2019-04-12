@@ -62,7 +62,7 @@ export default class Input extends React.Component {
                     style={{
                         width: "100%",
                         borderRadius: "4px",
-                        height: Component === "textarea" ? "50px" : "25px",
+                        height: Component === "textarea" ? this.props.height || "50px" : "25px",
                         resize: Component === "textarea" && !this.props.resizeable && "none",
                         padding: "5px",
                         fontSize: "18px",

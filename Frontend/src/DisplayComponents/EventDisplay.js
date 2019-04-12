@@ -18,8 +18,9 @@ export default class EventDisplay extends React.Component {
                 <div
                     style={{gridArea: "info"}}
                 >
-                    <div>{this.props.name}</div>
-                    <div>{this.props.location}</div>
+                    <div>{this.props.ensembleName}</div>
+                    <div>{this.props.name || this.props.eventName}</div>
+                    <div>{this.props.location || this.props.eventLocation}</div>
                 </div>
                 <div
                     style={{gridArea: "datetime"}}

@@ -66,6 +66,20 @@ namespace MyGigApi.Controllers
                 .Select(b => b.EventId)
                 .ToArray();
 
+            var performances = _context.Bookings
+                .Where(b => eventsFromEnsemblesIds.Contains(b.EventId))
+                .Select(b => new EnsembleBookingDto
+                {
+                    EventName = b.Event.Name,
+                    EventLocation = b.Event.Location,
+                    EnsembleName = b.Ensemble.Name,
+                    EventId = b.EventId,
+                    DateAndTime = b.Event.DateAndTime,
+                    UserIsMod = ensemblesAsMod.Contains(b.EnsembleId),
+                    BookingId = b.BookingId,
+                    Setlist = b.Setlist
+                });
+
             var eventIds = eventsModeratedIds
                 .Concat(eventsFromEnsemblesIds)
                 .Distinct()
@@ -76,8 +90,8 @@ namespace MyGigApi.Controllers
                 .Select(e => new EventDto
                 {
                     Name = e.Name,
-                    EventId = e.EventId,
-                    DateAndTime = e.DateAndTime
+                    DateAndTime = e.DateAndTime,
+                    Location = e.Location
                 });
 
             var notifications = _context.Notifications
@@ -164,6 +178,7 @@ namespace MyGigApi.Controllers
                 notifications,
                 requests = requests
                     .OrderBy(r => r.Timestamp),
+                performances,
                 events
             });
         }
@@ -285,14 +300,14 @@ namespace MyGigApi.Controllers
             var events = _context.Bookings
                 .Include(b => b.Event)
                 .Where(b => b.EnsembleId == dto.EnsembleId && b.Status == RequestStatus.Accepted)
-                .Select(b => new EventDto
+                .Select(b => new EnsembleBookingDto
                 {
-                    Name = b.Event.Name,
-                    Location = b.Event.Location,
+                    EventName = b.Event.Name,
+                    EventLocation = b.Event.Location,
                     DateAndTime = b.Event.DateAndTime,
                     BookingId = b.BookingId,
                     Setlist = b.Setlist
-                }).ToList() as ICollection<EventDto>;
+                }).ToList() as ICollection<EnsembleBookingDto>;
 
             var userConnectionIds = GetUserConnections(userId);
 

@@ -3,6 +3,7 @@ import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
 import Request from "../DisplayComponents/Request";
 import Link from "../DisplayComponents/Containers/Link";
 import Button from "../HelperComponents/Button";
+import EventDisplay from "../DisplayComponents/EventDisplay";
 
 export default class Home extends React.Component {
     // top level route component for /
@@ -14,6 +15,7 @@ export default class Home extends React.Component {
         ensembles: [],
         notifications: [],
         requests: [],
+        performances: [],
         events: []
     };
 
@@ -34,6 +36,7 @@ export default class Home extends React.Component {
                         ensembles: json.ensembles,
                         notifications: json.notifications,
                         requests: json.requests,
+                        performances: json.performances,
                         events: json.events
                     });
                     this.props.pageLoaded();
@@ -141,6 +144,27 @@ export default class Home extends React.Component {
                 }
                 {
                     <DisplayCase
+                        labelLeft={"Upcoming Performances"}
+                    >
+                        {this.state.performances.length > 0
+                            ?
+                            this.state.performances.map((perf, i) => {
+                                console.log(perf);
+                                return <EventDisplay
+                                    {...perf}
+                                    redirect={this.props.redirect}
+                                    key={i}
+                                />
+                            })
+                            :
+                            <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
+                                No Upcoming Performances
+                            </div>
+                        }
+                    </DisplayCase>
+                }
+                {
+                    <DisplayCase
                         labelLeft={"Events"}
                         labelRight={
                             <Link
@@ -149,15 +173,15 @@ export default class Home extends React.Component {
                                 redirect={this.props.redirect}
                             />
                         }
-                        boxStyle={{display: "flex", justifyContent: "space-around"}}
                     >
                         {this.state.events.length > 0
                             ?
                             this.state.events.map((ev, i) => {
-                                return <Button
-                                    onClick={() => this.props.redirect(`/event/${ev.eventId}`, "/")}
+                                console.log(ev);
+                                return <EventDisplay
+                                    {...ev}
+                                    redirect={this.props.redirect}
                                     key={i}
-                                    preClickText={ev.name}
                                 />
                             })
                             :

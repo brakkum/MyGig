@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace MyGigApi.DTOs
 {
@@ -14,10 +13,6 @@ namespace MyGigApi.DTOs
         public string Location { get; set; }
 
         public bool UserIsMod { get; set; }
-
-        public int BookingId { get; set; }
-
-        public string Setlist { get; set; }
 
         public ICollection<EnsembleDto> Ensembles { get; set; }
 
