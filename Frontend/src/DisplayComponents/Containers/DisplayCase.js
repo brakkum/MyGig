@@ -13,7 +13,7 @@ export default class DisplayCase extends React.Component {
     // backgroundColor
 
     containerStyle = {
-        width: "90%",
+        width: this.props.width || "90%",
         maxWidth: "600px",
         margin: "auto"
     };

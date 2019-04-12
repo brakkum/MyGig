@@ -5,6 +5,8 @@ import DateDisplay from "../HelperComponents/DateDisplay";
 import Constants from "../Constants/Constants";
 import UserSearch from "../FormComponents/UserSearch";
 import EnsembleSearch from "../FormComponents/EnsembleSearch";
+import DisplayCase from "./Containers/DisplayCase";
+import EventDisplay from "./EventDisplay";
 
 export default class Header extends React.Component {
     // Reusable header
@@ -92,7 +94,7 @@ export default class Header extends React.Component {
     };
 
     render() {
-        console.log(this.props)
+        console.log(this.props);
         let memOpacity = this.state.showMemberAdd ? "1" : "0";
         let memHeight = this.state.showMemberAdd ? "300px" : "0px";
         let ensOpacity = this.state.showEnsembleAdd ? "1" : "0";
@@ -147,40 +149,62 @@ export default class Header extends React.Component {
                     // for ensemble pages
                     this.props.members &&
                         <div>
-                            <EnsembleMembersList
-                                userIsMod={this.props.userIsMod}
-                                ensembleMembers={this.props.members}
-                                jwt={this._jwt}
-                            />
+                            <DisplayCase
+                                labelLeft={"Members"}
+                            >
+                                <EnsembleMembersList
+                                    userIsMod={this.props.userIsMod}
+                                    ensembleMembers={this.props.members}
+                                    jwt={this._jwt}
+                                />
+                            </DisplayCase>
                             {
                                 this._jwt && this.props.userIsMod &&
-                                    <div>
-                                        <span
-                                            onClick={this.toggleAddMembers}
-                                            style={{color: Constants.linkColor}}
-                                        >
-                                            Add Members
-                                        </span>
-                                        <div
-                                            style={{
-                                                opacity: memOpacity,
-                                                transition: "all 1s",
-                                                height: memHeight
-                                            }}
-                                        >
-                                            {
-                                                <UserSearch
-                                                    jwt={this._jwt}
-                                                    url={"/api/users/connsnotinensemble"}
-                                                    body={{Id: this._id}}
-                                                    buttonFunc={this.requestUserToEnsemble}
-                                                    buttonText={"Add to Ensemble"}
-                                                />
-                                            }
-                                        </div>
+                                <div>
+                                <span
+                                    onClick={this.toggleAddMembers}
+                                    style={{color: Constants.linkColor}}
+                                >
+                                    Add Members
+                                </span>
+                                    <div
+                                        style={{
+                                            opacity: memOpacity,
+                                            transition: "all 1s",
+                                            height: memHeight
+                                        }}
+                                    >
+                                        {
+                                            <UserSearch
+                                                jwt={this._jwt}
+                                                url={"/api/users/connsnotinensemble"}
+                                                body={{Id: this._id}}
+                                                buttonFunc={this.requestUserToEnsemble}
+                                                buttonText={"Add to Ensemble"}
+                                            />
+                                        }
                                     </div>
+                                </div>
                             }
-                        </div>
+                            {
+                                this.props.events &&
+                                    <DisplayCase
+                                        labelLeft={"Upcoming Shows"}
+                                        containerStyle={{gridColumnStart: "2"}}
+                                    >
+                                        {
+                                            this.props.events.map((event, i) => {
+                                                return <EventDisplay
+                                                    {...event}
+                                                    redirect={this.props.redirect}
+                                                    userIsMod={this.props.userIsMod}
+                                                    key={i}
+                                                />
+                                            })
+                                        }
+                                    </DisplayCase>
+                            }
+                    </div>
                 }
             </div>
         )

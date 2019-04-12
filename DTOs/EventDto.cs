@@ -15,6 +15,10 @@ namespace MyGigApi.DTOs
 
         public bool UserIsMod { get; set; }
 
+        public int BookingId { get; set; }
+
+        public string Setlist { get; set; }
+
         public ICollection<EnsembleDto> Ensembles { get; set; }
 
         public ICollection<EventCommentDto> Comments { get; set; }

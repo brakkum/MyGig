@@ -369,6 +369,66 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
+        [Route(RoutePrefix + "/getSetlist")]
+        public OkObjectResult EditSetlist([FromBody] BookingDto dto)
+        {
+            var userId = GetUserId();
+
+            var booking = _context.Bookings.Find(dto.BookingId);
+            var ensembleId = booking.EnsembleId;
+            var ensembleModIds = _context.EnsembleModerators
+                .Where(em => em.EnsembleId == ensembleId &&
+                             em.Status == RequestStatus.Accepted)
+                .Select(em => em.UserIdRecipient)
+                .ToArray();
+
+            var validMod = ensembleModIds.Contains(userId);
+
+            if (!validMod)
+            {
+                return new OkObjectResult(new {success = false, error = "Not a valid mod"});
+            }
+
+            var setlist = booking.Setlist;
+
+            return new OkObjectResult(new {success = true, setlist, ensembleId});
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/updatesetlist")]
+        public OkObjectResult UpdateSetlist([FromBody] BookingDto dto)
+        {
+            var userId = GetUserId();
+
+            var booking = _context.Bookings.Find(dto.BookingId);
+            var ensembleId = booking.EnsembleId;
+            var ensembleModIds = _context.EnsembleModerators
+                .Where(em => em.EnsembleId == ensembleId &&
+                             em.Status == RequestStatus.Accepted)
+                .Select(em => em.UserIdRecipient)
+                .ToArray();
+
+            var validMod = ensembleModIds.Contains(userId);
+
+            if (!validMod)
+            {
+                return new OkObjectResult(new
+                {
+                    success = false,
+                    error = "Not a valid mod"
+                });
+            }
+
+            booking.Setlist = dto.Setlist;
+            _context.Update(booking);
+            _context.SaveChanges();
+
+            return new OkObjectResult(new {success = true});
+        }
+
+        [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/search")]
         public OkObjectResult SearchUsers([FromBody] SearchDto dto)
         {

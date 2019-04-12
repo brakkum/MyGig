@@ -8,6 +8,7 @@ export default class Ensemble extends React.Component {
     _isMounted = false;
     _ensembleId = null;
     _jwt = null;
+    _userIsMod = false;
 
     state = {
         ensemble: null
@@ -31,6 +32,7 @@ export default class Ensemble extends React.Component {
             .then(json => {
                 if (json.success && this._isMounted) {
                     this.setState({ensemble: json.ensemble});
+                    this._userIsMod = json.userIsMod;
                     this.props.pageLoaded();
                 } else {
                     console.log("ensemble fetch fail");
@@ -51,6 +53,7 @@ export default class Ensemble extends React.Component {
                     <Header
                         jwt={this._jwt}
                         id={this._ensembleId}
+                        redirect={this.props.redirect}
                         {...this.state.ensemble}
                     />
                     <CommentSection
@@ -60,6 +63,9 @@ export default class Ensemble extends React.Component {
                         submitUrl={"/api/ensembles/newensemblecomment"}
                         getUrl={"/api/ensembles/getcomments"}
                     />
+                    {
+                        this._userIsMod && "User Is Mod"
+                    }
                 </div>
         )
     }

@@ -29,7 +29,6 @@ export default class EnsembleMembersList extends React.Component {
     render() {
         return(
             <div className="header">
-                Members
                 <div className="ensembleMembers"
                     style={{
                         minWidth: "50%",

@@ -13,6 +13,7 @@ import Logout from "./Logout";
 import SearchPage from "./SearchPage";
 import NewEvent from "./NewEvent";
 import NewEnsemble from "./NewEnsemble";
+import EditSetlist from "./EditSetlist";
 
 export default withRouter(
     class MyGigRouter extends React.Component {
@@ -135,6 +136,16 @@ export default withRouter(
                         pageLoaded={this.props.pageLoaded}
                         component={
                             NewEnsemble
+                        }
+                    />
+                    <ProtectedRoute
+                        path="/editsetlist/:bookingId"
+                        userData={this.props.userData}
+                        loggedIn={this.props.loggedIn}
+                        redirect={this.props.redirect}
+                        pageLoaded={this.props.pageLoaded}
+                        component={
+                            EditSetlist
                         }
                     />
                     {

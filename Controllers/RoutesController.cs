@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -291,7 +289,9 @@ namespace MyGigApi.Controllers
                 {
                     Name = b.Event.Name,
                     Location = b.Event.Location,
-                    DateAndTime = b.Event.DateAndTime
+                    DateAndTime = b.Event.DateAndTime,
+                    BookingId = b.BookingId,
+                    Setlist = b.Setlist
                 }).ToList() as ICollection<EventDto>;
 
             var userConnectionIds = GetUserConnections(userId);

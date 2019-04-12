@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -18,14 +17,12 @@ namespace MyGigApi.Controllers
     public class UserController : ApiBaseController
     {
         private readonly MyGigContext _context;
-        private readonly IHostingEnvironment _env;
         private const string RoutePrefix = "users";
         private const string UserPhotoDir = "static/userphotos/";
 
-        public UserController(MyGigContext context, IHostingEnvironment env)
+        public UserController(MyGigContext context)
         {
             _context = context;
-            _env = env;
         }
 
         [HttpPost]
