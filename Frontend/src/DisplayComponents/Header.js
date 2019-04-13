@@ -187,7 +187,7 @@ export default class Header extends React.Component {
                                 </div>
                             }
                             {
-                                this.props.events &&
+                                this.props.events && this._jwt &&
                                     <DisplayCase
                                         labelLeft={"Upcoming Shows"}
                                         containerStyle={{gridColumnStart: "2"}}
@@ -198,6 +198,7 @@ export default class Header extends React.Component {
                                                     {...event}
                                                     redirect={this.props.redirect}
                                                     userIsMod={this.props.userIsMod}
+                                                    jwt={this._jwt}
                                                     key={i}
                                                 />
                                             })

@@ -149,9 +149,9 @@ export default class Home extends React.Component {
                         {this.state.performances.length > 0
                             ?
                             this.state.performances.map((perf, i) => {
-                                console.log(perf);
                                 return <EventDisplay
                                     {...perf}
+                                    jwt={this._jwt}
                                     redirect={this.props.redirect}
                                     key={i}
                                 />
@@ -177,7 +177,6 @@ export default class Home extends React.Component {
                         {this.state.events.length > 0
                             ?
                             this.state.events.map((ev, i) => {
-                                console.log(ev);
                                 return <EventDisplay
                                     {...ev}
                                     redirect={this.props.redirect}

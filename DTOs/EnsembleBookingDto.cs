@@ -6,7 +6,7 @@ namespace MyGigApi.DTOs
     {
         public int BookingId { get; set; }
 
-        public int EventId { get; set; } 
+        public int EventId { get; set; }
 
         public string EventName { get; set; }
 

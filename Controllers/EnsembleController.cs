@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -304,8 +305,6 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/ensemblesnotonevent")]
         public OkObjectResult SearchEnsemblesNotOnEvent([FromBody] SearchDto dto)
         {
-            var userId = GetUserId();
-
             var ensemblesRequestedIds = _context.Bookings
                 .Where(b => b.EventId == dto.Id)
                 .Select(b => b.EnsembleId)
@@ -425,6 +424,44 @@ namespace MyGigApi.Controllers
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/downloadSetlist")]
+        public OkObjectResult DownloadSetlist([FromBody] EnsembleBookingDto dto)
+        {
+            var userId = GetUserId();
+
+            var booking = _context.Bookings
+                .Include(b => b.Event)
+                .Include(b => b.Ensemble)
+                .FirstOrDefault(b => b.BookingId == dto.BookingId);
+
+            var userIsMember = _context.EnsembleMembers
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.EnsembleId == booking.EnsembleId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!userIsMember || booking == null)
+            {
+                return new OkObjectResult( new
+                {
+                    success = false,
+                    error = "invalid request"
+                });
+            }
+
+            var setlist = new SetlistDto
+            {
+                EnsembleName = booking.Ensemble.Name,
+                EventName = booking.Event.Name,
+                EventLocation = booking.Event.Location,
+                DateAndTime = booking.Event.DateAndTime,
+                Setlist = booking.Setlist
+            };
+
+            return new OkObjectResult(new { success = true, setlist});
         }
 
         [HttpPost]
