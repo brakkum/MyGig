@@ -1,22 +1,25 @@
 
-.loader.show {
+.loader-show {
     opacity: 1;
+    height: 100%;
 }
 
-.loader.hide {
+.loader-hide {
     opacity: 0;
+    height: 100%;
 }
 
-.loader.hidden {
+.loader-hidden {
     z-index: -999;
     opacity: 0;
 }
 
-.loader.shown {
+.loader-shown {
     opacity: 1;
+    height: 100%;
 }
 
-.loader {
+.curtain {
     display: flex;
     position: absolute;
     width: 100%;

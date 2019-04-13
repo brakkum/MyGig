@@ -5,6 +5,7 @@ import NavBar from "./DisplayComponents/NavBar";
 import MyGigRouter from "./RouteComponents/MyGigRouter";
 import Constants from "./Constants/Constants";
 import LoadingBuffer from "./HelperComponents/LoadingBuffer";
+import "bulma/css/bulma.css";
 
 export default class MyGig extends Component {
     // Parent of all components
@@ -112,7 +113,7 @@ export default class MyGig extends Component {
         return (
             // entire application lives inside router
             <Router>
-                <div style={{backgroundColor: Constants.backgroundColor}} className={"parent"}>
+                <body style={{backgroundColor: Constants.backgroundColor}} className={"body"}>
                     {
                         // redirect if set
                         redirect && <Redirect to={redirect}/>
@@ -139,7 +140,7 @@ export default class MyGig extends Component {
                         </div>
                         <div style={{ height: "50px"}}>{}</div>
                     </div>
-                </div>
+                </body>
             </Router>
         );
     }

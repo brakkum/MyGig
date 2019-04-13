@@ -1,8 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
-import MemberPicture from "./MemberPicture";
-import Constants from "../Constants/Constants";
-import Link from "../DisplayComponents/Containers/Link";
+import { Link } from "react-router-dom";
 
 export default withRouter(
     class NavBar extends React.Component {
@@ -11,75 +9,34 @@ export default withRouter(
         navStyle = {
             maxWidth: "1000px",
             margin: "auto",
-            height: Constants.navBarHeight,
-            display: "flex",
-            justifyContent: "space-between"
-            // TODO: Transition
-        };
-
-        navSectionStyle = {
-            height: "100%",
-            maxWidth: "150px",
-            minWidth: "150px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-around"
-        };
-
-        navLeftStyle = {
-            ...this.navSectionStyle
-        };
-
-        navRightStyle = {
-            ...this.navSectionStyle,
-        };
-
-        navHomeLinkStyle = {
-            cursor: "pointer"
         };
 
         render() {
-            return(
-                <div style={this.navStyle}>
-                    {
-                        this.props.userData &&
-                            <div style={this.navLeftStyle}>
-                                <MemberPicture
-                                    // redirect passed from MyGig component for app redirects
-                                    onClick={() => this.props.redirect("/account", this.props.location.pathname)}
-                                    // photoUrl for user
-                                    photoUrl={this.props.photoUrl || undefined}
-                                    // highlight pic on hover
-                                    highlightOnHover={true}
-                                    innerHtml={"account"}
-                                    size={"60px"}
-                                />
-                                <div
-                                    // redirect passed from MyGig component for app redirects
-                                    style={this.navHomeLinkStyle}
-                                >
-                                    <Link
-                                        url={"/"}
-                                        text={"Home"}
-                                        redirect={this.props.redirect}
-                                    />
+            return (
+                <nav style={this.navStyle} className="navbar">
+                    {this.props.userData &&
+                        <div>
+                            <div className="navbar-brand is-pulled-left">
+                                <div className="navbar-item is-size-4">
+                                    MyGig
                                 </div>
+                                <Link to="/" className="navbar-item">
+                                    Home
+                                </Link>
+                                <Link to="/account" className="navbar-item">
+                                    Account
+                                </Link>
                             </div>
-                    }
-                    {
-                        this.props.userData &&
-                            <div style={this.navRightStyle}>
-                                {
-                                    <Link
-                                        url={"/logout"}
-                                        text={"Logout"}
-                                        redirect={this.props.redirect}
-                                    />
-                                }
+                            <div className="navbar-brand is-pulled-right">
+                                <Link to="/logout" className="navbar-item">
+                                    Logout
+                                </Link>
                             </div>
+                        </div>
                     }
-                </div>
-            )
+                </nav>
+            );
         }
     }
-)
+);
+

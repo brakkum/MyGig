@@ -39,11 +39,10 @@ export default class LoadingBuffer extends React.Component {
         return(
             <div>
                 <div
-                    className={"loader " + show}
+                    className={"curtain loader-" + show}
                     style={{
                         transition: "opacity " + Constants.loaderTransitionTimeSe,
                         backgroundColor: Constants.backgroundColor,
-                        height: "100%",
                         position: "fixed"
                     }}
                 >

@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bulma": "^0.7.4",
     "jspdf": "^1.5.3",
     "moment": "^2.24.0",
+    "node-sass": "^4.11.0",
     "react": "^16.8.2",
     "react-datetime-picker": "^2.3.0",
     "react-dom": "^16.8.2",
