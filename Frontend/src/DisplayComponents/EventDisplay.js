@@ -9,7 +9,7 @@ export default class EventDisplay extends React.Component {
     _jwt = null;
 
     outputPdf = data => {
-        console.log(data);
+
         const ensName = data.ensembleName;
         const eventLoc = data.eventLocation;
         const eventName = data.eventName;
@@ -30,11 +30,16 @@ export default class EventDisplay extends React.Component {
         pdf.text(15, 40, date);
 
         let songY = 60;
+        let pageHeight = pdf.internal.pageSize.height;
         pdf.setFontSize(30);
 
         songs.forEach(song => {
             pdf.text(20, songY, song);
             songY += 15;
+            if (songY > pageHeight - 20) {
+                pdf.addPage();
+                songY = 30;
+            }
         });
 
         pdf.save(title);
