@@ -1,117 +1,122 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import Button from "../HelperComponents/Button";
 import LoginForm from "../FormComponents/LoginForm";
 import SignUpForm from "../FormComponents/SignUpForm";
-import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
-import "./Login.css";
 
 export default withRouter(
     class Login extends React.Component {
 
         state = {
-            showLogin: true,
-            sendingRequest: false
+            visibleForm: "login",
+            sendingRequest: false,
+            showLoginPage: false
         };
 
         redirectOnLogin = () => {
             // they logged in, now redirect
             // if no redirect value, take back home
             let to = (this.props.location && this.props.location.state) ? this.props.location.state.from : "/";
-            this.props.redirect(to, this.props.location.pathname);
-        };
-
-        setJwtInLocalStorage = jwt => {
-            localStorage.setItem("jwt", jwt);
+            // this.props.redirect(to, this.props.location.pathname);
+            this.props.history.push(to, this.props.location.pathname);
         };
 
         getJwtInLocalStorage = () => {
             return localStorage.getItem("jwt");
         };
 
-        deleteJwtInLocalStorage = () => {
-            localStorage.removeItem("jwt");
-        };
-
         switchForm = () => {
             this.setState({
-               showLogin: !this.state.showLogin
+               toggleLoginAndSignUp: !this.state.toggleLoginAndSignUp
             });
         };
 
         componentDidMount() {
             let jwt = this.getJwtInLocalStorage();
-            if (jwt) {
-                fetch("/api/users/getuserfromtoken", {
-                    method: "post",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": "Bearer " + jwt
-                    },
-                    body: JSON.stringify({
-                        Jwt: jwt
-                    })
-                }).then(res => res.json())
-                    .then(json => {
-                        if (json.success){
-                            json.jwt = jwt;
-                            this.props.loginUser(json);
-                            this.redirectOnLogin();
-                        } else {
-                            console.log("validation by jwt failed: ", json);
-                            this.props.pageLoaded();
-                        }
-                    }
-                ).catch(e => {
-                    console.log("no response from back");
-                    setTimeout(() => {
-                        this.props.pageLoaded();
-                    }, 1500);
-                });
-            } else {
-                // This is necessary to work correctly
+
+            if (!jwt) {
+                console.log("no jwt in storage");
                 setTimeout(() => {
                     this.props.pageLoaded();
                 }, 1500);
+                return;
             }
+
+            fetch("/api/users/getuserfromtoken", {
+                method: "post",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + jwt
+                },
+                body: JSON.stringify({
+                    Jwt: jwt
+                })
+            }).then(res => res.json())
+                .then(json => {
+                    if (json.success){
+                        json.jwt = jwt;
+                        this.props.loginUser(json);
+                        this.redirectOnLogin();
+                    } else {
+                        console.log("validation by jwt failed: ", json);
+                        this.props.pageLoaded();
+                    }
+                }
+            ).catch(e => {
+                console.log("no response from back");
+                setTimeout(() => {
+                    this.props.pageLoaded();
+                }, 1500);
+            });
         }
 
         render() {
             return(
-                <div className={"login-signup-box"}>
+                <div className="section">
                     {/* Button to switch form view */}
-                    <div
-                        className={"form-switch"}
-                        style={{
-                            padding: "10px",
-                            display: "flex",
-                            justifyContent: "center"
-                        }}
-                    >
-                        <Button
-                            onClick={this.switchForm}
-                            preClickText={this.state.showLogin ? "Sign Up" : "Login"}
-                            size={"lg"}
-                        />
+                    <div className="box">
+                        <div className="tabs">
+                            <ul>
+                                <li
+                                    className={
+                                        this.state.visibleForm === "login" ?
+                                            "is-active" : ""
+                                    }
+                                    onClick={() => this.setState({visibleForm: "login"})}
+                                >
+                                    <a>
+                                        Login
+                                    </a>
+                                </li>
+                                <li
+                                    className={
+                                        this.state.visibleForm === "signup" ?
+                                            "is-active" : ""
+                                    }
+                                    onClick={() => this.setState({visibleForm: "signup"})}
+                                >
+                                    <a>
+                                        Sign Up
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    {
+                        this.state.visibleForm === "login" ?
+                            <div className="">
+                                <LoginForm
+                                    redirectOnLogin={this.redirectOnLogin}
+                                    loginUser={this.props.loginUser}
+                                />
+                            </div>
+                            :
+                            <div className="">
+                                <SignUpForm
+                                    redirectOnLogin={this.redirectOnLogin}
+                                    loginUser={this.props.loginUser}
+                                />
+                            </div>
+                    }
                     </div>
-                    <DisplayCase
-                        boxStyle={{position: "relative", overflow: "visible"}}
-                        containerStyle={{height: "70vh"}}
-                        backgroundColor={"transparent"}
-                    >
-                        <div className={`login login-${this.state.showLogin ? "show" : "hide"}`}>
-                            <LoginForm
-                                redirectOnLogin={this.redirectOnLogin}
-                                loginUser={this.props.loginUser}
-                            />
-                        </div>
-                        <div className={`login login-${!this.state.showLogin ? "show" : "hide"}`}>
-                            <SignUpForm
-                                redirectOnLogin={this.redirectOnLogin}
-                                loginUser={this.props.loginUser}
-                            />
-                        </div>
-                    </DisplayCase>
                 </div>
             )
         }

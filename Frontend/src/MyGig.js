@@ -112,36 +112,37 @@ export default class MyGig extends Component {
         let redirect = this.state.redirect;
         return (
             // entire application lives inside router
-            <Router>
-                <body style={{backgroundColor: Constants.backgroundColor}} className={"body"}>
-                    {
-                        // redirect if set
-                        redirect && <Redirect to={redirect}/>
-                    }
-                    {
-                        <LoadingBuffer showBuffer={this.state.showBuffer} />
-                    }
-                    {/* NavBar for application */}
-                    <NavBar userData={this.state.userData} photoUrl={this.state.photoUrl} redirect={this.redirect} logoutUser={this.logoutUser} />
-                    {/* all body content contained here */}
-                    {/*<div style={{ height: "50px"}}>{}</div>*/}
-                    <div className="body-content" style={{backgroundColor: Constants.backgroundColor}}>
-                        {/* contains all the routing logic */}
-                        <div style={{maxWidth: Constants.maxBodyWidth, margin: "auto"}}>
-                            <MyGigRouter
-                                userData={this.state.userData}
-                                loggedIn={this.state.loggedIn}
-                                loginUser={this.loginUser}
-                                redirect={this.redirect}
-                                pageLoaded={this.pageLoaded}
-                                logoutUser={this.logoutUser}
-                                updateUserPhoto={this.updateUserPhoto}
-                            />
+            <div style={{backgroundColor: Constants.backgroundColor}} className="body">
+                <Router>
+                    <div>
+                        {
+                            // redirect if set
+                            redirect && <Redirect to={redirect}/>
+                        }
+                        {
+                            <LoadingBuffer showBuffer={this.state.showBuffer} />
+                        }
+                        {/* NavBar for application */}
+                        <NavBar userData={this.state.userData} photoUrl={this.state.photoUrl} redirect={this.redirect} logoutUser={this.logoutUser} />
+                        {/* all body content contained here */}
+                        <div className="body-content" style={{backgroundColor: Constants.backgroundColor}}>
+                            {/* contains all the routing logic */}
+                            <div style={{maxWidth: Constants.maxBodyWidth, margin: "auto"}}>
+                                <MyGigRouter
+                                    userData={this.state.userData}
+                                    loggedIn={this.state.loggedIn}
+                                    loginUser={this.loginUser}
+                                    redirect={this.redirect}
+                                    pageLoaded={this.pageLoaded}
+                                    logoutUser={this.logoutUser}
+                                    updateUserPhoto={this.updateUserPhoto}
+                                />
+                            </div>
+                            <div style={{ height: "50px"}}>{}</div>
                         </div>
-                        <div style={{ height: "50px"}}>{}</div>
                     </div>
-                </body>
-            </Router>
+                </Router>
+            </div>
         );
     }
 }

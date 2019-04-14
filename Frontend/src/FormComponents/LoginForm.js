@@ -1,6 +1,4 @@
 import React from "react";
-import Button from "../HelperComponents/Button";
-import Input from "../HelperComponents/Input";
 
 export default class LoginForm extends React.Component {
     // login form for /login
@@ -10,21 +8,50 @@ export default class LoginForm extends React.Component {
 
     state = {
         email: "",
+        emailValid: true,
         password: "",
+        passwordValid: true,
         sendingRequest: false,
-        loginError: null
+        loginError: ""
     };
 
     attemptLogin = event => {
         event.preventDefault();
 
-        if (!this.state.email || !this.state.password) {
+        let valid = true;
+
+        if (!this.state.email) {
+            this.setState({
+                emailValid: false
+            });
+            valid = false;
+        } else {
+            this.setState({
+                emailValid: true,
+            });
+        }
+
+        if (!this.state.password) {
+            this.setState({
+                passwordValid: false,
+            });
+            valid = false;
+        } else {
+            this.setState({
+                passwordValid: true,
+            });
+        }
+
+        if (!valid) {
+            this.setState({
+                loginError: "Please enter required fields"
+            });
             return;
         }
 
         this.setState({
             sendingRequest: true,
-            loginError: false
+            loginError: ""
         });
         // login call
         fetch("/api/users/login", {
@@ -56,39 +83,63 @@ export default class LoginForm extends React.Component {
         });
     };
 
-    updateValue = (name, value) => {
+    updateValue = (name, e) => {
         this.setState({
-            [name]: value
+            [name]: e.target.value
         });
     };
 
     render() {
         return(
             <form onSubmit={this.attemptLogin}>
-                <Input
-                    for={"Email"}
-                    value={this.state.username}
-                    name={"email"}
-                    onChange={email => this.updateValue("email", email)}
-                />
-                <Input
-                    for={"Password"}
-                    value={this.state.password}
-                    name={"password"}
-                    type={"password"}
-                    onChange={password => this.updateValue("password", password)}
-                />
-                <h3>
-                    {this.state.loginError}
-                </h3>
-                <Button
-                    onClick={this.attemptLogin}
-                    preClickText={"Login"}
-                    style={{float: "right"}}
-                    colorType={"success"}
-                    buttonType={"submit"}
-                    sendingRequest={this.state.sendingRequest}
-                />
+                <div className="field">
+                    <label className="label">
+                        Email
+                    </label>
+                    <input
+                        value={this.state.username}
+                        type="text"
+                        className={
+                            "input " +
+                            (!this.state.emailValid && "is-danger ") +
+                            (this.state.sendingRequest && "disabled ")
+                        }
+                        onChange={e => this.updateValue("email", e)}
+                    />
+                </div>
+                <div className="field">
+                    <label className="label">
+                        Password
+                    </label>
+                    <input
+                        value={this.state.password}
+                        type="text"
+                        className={
+                            "input " +
+                            (!this.state.passwordValid && "is-danger ") +
+                            (this.state.sendingRequest && "disabled ")
+                        }
+                        onChange={e => this.updateValue("password", e)}
+                    />
+                </div>
+                <div className="field columns">
+                    <div className="column is-three-quarters">
+                        <span>
+                            {this.state.loginError}
+                        </span>
+                    </div>
+                    <div className="column">
+                        <button
+                            onClick={this.attemptLogin}
+                            className={
+                                "button is-info is-pulled-right " +
+                                (this.state.sendingRequest && "is-loading")
+                            }
+                        >
+                            Login
+                        </button>
+                    </div>
+                </div>
             </form>
         )
     }
