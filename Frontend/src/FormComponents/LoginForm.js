@@ -113,7 +113,7 @@ export default class LoginForm extends React.Component {
                     </label>
                     <input
                         value={this.state.password}
-                        type="text"
+                        type="password"
                         className={
                             "input " +
                             (!this.state.passwordValid && "is-danger ") +
