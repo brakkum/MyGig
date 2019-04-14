@@ -7,6 +7,9 @@ import Constants from "./Constants/Constants";
 import LoadingBuffer from "./HelperComponents/LoadingBuffer";
 import "bulma/css/bulma.css";
 
+const body = document.getElementsByTagName("body")[0];
+body.style.backgroundColor = Constants.backgroundColor;
+
 export default class MyGig extends Component {
     // Parent of all components
     // userData stored in state controls all page population
@@ -112,7 +115,7 @@ export default class MyGig extends Component {
         let redirect = this.state.redirect;
         return (
             // entire application lives inside router
-            <div style={{backgroundColor: Constants.backgroundColor}} className="body">
+            <div>
                 <Router>
                     <div>
                         {
@@ -125,7 +128,7 @@ export default class MyGig extends Component {
                         {/* NavBar for application */}
                         <NavBar userData={this.state.userData} photoUrl={this.state.photoUrl} redirect={this.redirect} logoutUser={this.logoutUser} />
                         {/* all body content contained here */}
-                        <div className="body-content" style={{backgroundColor: Constants.backgroundColor}}>
+                        <div>
                             {/* contains all the routing logic */}
                             <div style={{maxWidth: Constants.maxBodyWidth, margin: "auto"}}>
                                 <MyGigRouter
