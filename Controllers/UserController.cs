@@ -70,7 +70,7 @@ namespace MyGigApi.Controllers
         [HttpPost]
         [Authorize]
         [DisableRequestSizeLimit]
-        [Route(RoutePrefix + "/newuserphoto")]
+        [Route(RoutePrefix + "/newUserPhoto")]
         public async Task<IActionResult> NewUserPhoto([FromForm] IFormFile file)
         {
             var userId = GetUserId();
@@ -244,7 +244,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/newpassword")]
+        [Route(RoutePrefix + "/newPassword")]
         public OkObjectResult ChangePassword([FromBody] PasswordChangeDto dto)
         {
             var userId = GetUserId();
@@ -262,6 +262,44 @@ namespace MyGigApi.Controllers
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/getuserinfo")]
+        public OkObjectResult GetUserInfo()
+        {
+            var userId = GetUserId();
+            var user = _context.Users.Find(userId);
+            var userConn = _context.Connections
+                .FirstOrDefault(c => c.UserIdRecipient == userId &&
+                                     c.UserIdRequester == userId);
+            var ensembleMemberCount = _context.EnsembleMembers
+                .Count(em => em.UserIdRecipient == userId &&
+                             em.Status == RequestStatus.Accepted);
+
+            if (userConn == null)
+            {
+                return new OkObjectResult(new
+                {
+                    success = false,
+                    error = "bad user request"
+                });
+            }
+
+            var accountDto = new AccountDto
+            {
+                FullName = user.FullName,
+                PhotoUrl = user.PhotoUrl,
+                JoinedOn = userConn.Timestamp,
+                NumEnsembles = ensembleMemberCount
+            };
+
+            return new OkObjectResult(new
+            {
+                success = true,
+                user = accountDto
+            });
         }
 
         public int[] GetUserConnections(int userId)

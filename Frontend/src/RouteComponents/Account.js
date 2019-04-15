@@ -1,10 +1,5 @@
 import React from "react";
-import Constants from "../Constants/Constants";
-import MemberPicture from "../DisplayComponents/MemberPicture";
-import "./Account.css";
-import Input from "../HelperComponents/Input";
-import Button from "../HelperComponents/Button";
-import FileInput from "../HelperComponents/FileInput";
+import moment from "moment";
 
 export default class Account extends React.Component {
     // top level route component for /account
@@ -13,31 +8,51 @@ export default class Account extends React.Component {
     _isMounted = false;
 
     state = {
+        pageLoaded: false,
         fullName: "",
         photoUrl: null,
-        showPasswordChange: false,
+        joinDate: null,
+        numEnsembles: null,
+        currentTab: "info",
         oldPassword: "",
+        oldPasswordError: false,
         oldPasswordConfirm: "",
+        oldPasswordConfirmError: false,
         newPassword: "",
+        newPasswordError: false,
         passwordError: "",
-        showPhotoChange: false,
         photoHide: true,
-        file: null,
+        file: "",
         fileError: "",
+        sendingRequest: false
     };
 
     componentDidMount() {
         this._isMounted = true;
         this._jwt = this.props.userData.jwt;
 
-        this.setState({
-            fullName: this.props.userData.fullName,
-            photoUrl: this.props.userData.photoUrl
-        });
-
-        setTimeout(() => {
-            this.props.pageLoaded();
-        },1500)
+        fetch("/api/users/getuserinfo", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${this._jwt}`
+            }
+        }).then(res => res.json())
+            .then(json => {
+                if (json.success) {
+                    const user = json.user;
+                    this.setState({
+                        fullName: user.fullName,
+                        photoUrl: user.photoUrl,
+                        joinedOn: user.joinedOn,
+                        numEnsembles: user.numEnsembles,
+                        pageLoaded: true
+                    })
+                } else {
+                    console.log("failed ", json);
+                    this.props.history.push("/");
+                }
+            }).catch(e => console.log("user get error ", e));
     }
 
     componentWillUnmount() {
@@ -46,29 +61,42 @@ export default class Account extends React.Component {
 
     updatePassword = event => {
         event.preventDefault();
+        console.log(this.state);
         let oldPass = this.state.oldPassword;
         let oldPassConf = this.state.oldPasswordConfirm;
         let newPass = this.state.newPassword;
 
         this.setState({
-            passwordError: ""
+            passwordError: "",
+            oldPasswordError: false,
+            oldPasswordConfirmError: false,
+            newPasswordError: false
         });
 
         if (!oldPass || !oldPassConf || !newPass) {
             this.setState({
-                passwordError: "All fields required"
+                passwordError: "All fields required",
+                oldPasswordError: !oldPass,
+                oldPasswordConfirmError: !oldPassConf,
+                newPasswordError: !newPass
             });
             return;
         }
 
         if (oldPass !== oldPassConf) {
             this.setState({
-                passwordError: "Passwords don't match"
+                passwordError: "Passwords don't match",
+                oldPasswordError: true,
+                oldPasswordConfirmError: true,
             });
             return;
         }
 
-        fetch("/api/users/newpassword", {
+        this.setState({
+            sendingRequest: true
+        });
+
+        fetch("/api/users/newPassword", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -83,15 +111,17 @@ export default class Account extends React.Component {
             .then(json => {
                 if (json.success) {
                     this.setState({
-                        showPasswordChange: false,
-                        newPass: "",
-                        oldPass: "",
-                        oldPassConf: ""
+                        currentTab: "info",
+                        oldPassword: "",
+                        oldPasswordConfirm: "",
+                        newPassword: "",
+                        sendingRequest: false
                     });
                     alert("Password updated");
                 } else {
                     this.setState({
-                        passwordError: json.error
+                        passwordError: json.error,
+                        sendingRequest: false
                     });
                 }
             }).catch(e => console.log(e))
@@ -100,6 +130,7 @@ export default class Account extends React.Component {
     updatePhoto = event => {
         event.preventDefault();
         let file = this.state.file;
+
         console.log(file);
 
         if (!file) {
@@ -109,9 +140,9 @@ export default class Account extends React.Component {
             return;
         }
 
-        if (file.size > 2097152) {
+        if (file.size > 5242880) {
             this.setState({
-                fileError: "Please use file below 2MB"
+                fileError: "Please use file below 5MB"
             });
             return;
         }
@@ -128,146 +159,223 @@ export default class Account extends React.Component {
         };
         delete options.headers['Content-Type'];
 
-        fetch("/api/users/newuserphoto",
+        this.setState({
+            sendingRequest: true
+        });
+
+        fetch("/api/users/newUserPhoto",
             options
         ).then(res => res.json())
             .then(json => {
                 if (json.success) {
                     this.setState({
+                        currentTab: "info",
                         fileError: "",
-                        file: null,
+                        file: "",
                         photoUrl: json.url,
-                        showPhotoChange: false
+                        sendingRequest: false
                     });
                     this.props.updateUserPhoto(json.url);
                 } else {
                     this.setState({
-                        fileError: json.error
+                        fileError: json.error,
+                        sendingRequest: false
                     });
                 }
                 console.log(json);
         }).catch(e => console.log("photo fail ", e));
     };
 
-    updateValue = (name, value) => {
+    updateValue = (name, e) => {
         this.setState({
-            [name]: value
+            [name]: e.target.value
+        });
+    };
+
+    updateFile = event => {
+        this.setState({
+            file: event.target.files[0]
         });
     };
 
     render() {
         return(
-            <div className={"account-details"}
-                style={{
-                    margin: "50px"
-                }}
-            >
-                <div
-                    style={{
-                        maxWidth: "50%",
-                        display: "flex",
-                        justifyContent: "space-evenly",
-                        alignItems: "center"
-                    }}
-                >
-                    <h1>{this.state.fullName}</h1>
-                    {<MemberPicture photoUrl={this.state.photoUrl} />}
-                </div>
-                {/* password */}
-                <div>
-                    <div
-                        style={{
-                            display: "flex",
-                            color: Constants.linkColor
-                        }}
-                    >
-                        <h2
-                            onClick={() => {
-                                this.setState({
-                                    showPasswordChange: !this.state.showPasswordChange
-                                });
-                            }}
-                            className={`box ${this.state.showPasswordChange ? "open" : "close"}`}
-                        >
-                            Change Password
-                        </h2>
-                    </div>
-                    <div style={{
-                        height: this.state.showPasswordChange ? "200px" : "0px",
-                        opacity: this.state.showPasswordChange ? "1" : "0",
-                        transition: "all 1s",
-                        overflow: "hidden"
-                    }}>
-                        <span style={{margin: "10px", color: "darkred"}}>
-                            {this.state.passwordError}
-                        </span>
-                        <form onSubmit={this.updatePassword}>
-                            <Input
-                                placeholder={"Current Password"}
-                                type={"password"}
-                                value={this.state.oldPassword}
-                                onChange={pass => this.updateValue("oldPassword", pass)}
-                            />
-                            <Input
-                                placeholder={"Confirm Current Password"}
-                                type={"password"}
-                                value={this.state.oldPasswordConfirm}
-                                onChange={pass => this.updateValue("oldPasswordConfirm", pass)}
-                            />
-                            <Input
-                                placeholder={"New Password"}
-                                type={"password"}
-                                value={this.state.newPassword}
-                                onChange={pass => this.updateValue("newPassword", pass)}
-                            />
-                            <Button
-                                style={{float: "right"}}
-                                preClickText={"Update Password"}
-                                type={"submit"}
-                                onClick={this.updatePassword}
-                            />
-                        </form>
-                    </div>
-                </div>
-            {/* photo */}
-                <div>
-                    <div
-                        style={{
-                            display: "flex",
-                            color: Constants.linkColor
-                        }}
-                    >
-                        <h2
-                            onClick={() => {
-                                this.setState({
-                                    showPhotoChange: !this.state.showPhotoChange
-                                })}
+            <div className={"section"}>
+                {
+                    this.state.pageLoaded ?
+                        <div className="box">
+                            <div className="tabs">
+                                <ul>
+                                    <li
+                                        className={this.state.currentTab === "info" ? "is-active" : ""}
+                                        onClick={() => this.setState({currentTab: "info"})}
+                                    >
+                                        <a>Info</a>
+                                    </li>
+                                    <li
+                                        className={this.state.currentTab === "password" ? "is-active" : ""}
+                                        onClick={() => this.setState({currentTab: "password"})}
+                                    >
+                                        <a>Change Password</a>
+                                    </li>
+                                    <li
+                                        className={this.state.currentTab === "photo" ? "is-active" : ""}
+                                        onClick={() => this.setState({currentTab: "photo"})}
+                                    >
+                                        <a>Change Photo</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            {
+                                this.state.currentTab === "info" &&
+                                    <div className="columns">
+                                        <div className="column">
+                                            <h1 className="is-size-1">
+                                                {this.state.fullName}
+                                            </h1>
+                                            <h3 className="is-size-3">
+                                                Joined on {moment(this.state.joinedOn).format("MMMM D, YYYY")}
+                                            </h3>
+                                            <h3 className="is-size-3">
+                                                Member of {this.state.numEnsembles} ensemble
+                                                {!(this.state.numEnsembles === 1) && "s"}
+                                            </h3>
+                                        </div>
+                                        <div className="column">
+                                            <div>
+                                                <img
+                                                    src={this.state.photoUrl}
+                                                    alt={this.state.fullName}
+                                                    className="image"
+                                                    style={{
+                                                        maxWidth: "450px",
+                                                        margin: "auto",
+                                                        border: "1px solid lightgrey",
+                                                        borderRadius: "5px"
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
                             }
-                            className={`box ${this.state.showPhotoChange ? "open" : "close"}`}
-                        >
-                            Change Photo
-                        </h2>
-                    </div>
-                    <div style={{
-                        height: this.state.showPhotoChange ? "200px" : "0px",
-                        opacity: this.state.showPhotoChange ? "1" : "0",
-                        transition: "all 1s",
-                        overflow: "hidden"
-                    }}>
-                        <span style={{margin: "10px", color: "darkred"}}>
-                            {this.state.fileError}
-                        </span>
-                        <form onSubmit={this.updatePhoto}>
-                            <FileInput
-                                onChange={file => this.updateValue("file", file)}
-                            />
-                            <Button
-                                type={"submit"}
-                                onClick={this.updatePhoto}
-                            />
-                        </form>
-                    </div>
-                </div>
+                            {
+                                this.state.currentTab === "password" &&
+                                    <div>
+                                        <div className="field">
+                                            <label className="label">
+                                                Current Password
+                                            </label>
+                                            <input
+                                                type="password"
+                                                className={"input " + (this.state.oldPasswordError && "is-danger")}
+                                                value={this.state.oldPassword}
+                                                onChange={e => this.updateValue("oldPassword", e)}
+                                            />
+                                        </div>
+                                        <div className="field">
+                                            <label className="label">
+                                                Confirm Current Password
+                                            </label>
+                                            <input
+                                                type="password"
+                                                className={"input " + (this.state.oldPasswordConfirmError && "is-danger")}
+                                                value={this.state.oldPasswordConfirm}
+                                                onChange={e => this.updateValue("oldPasswordConfirm", e)}
+                                            />
+                                        </div>
+                                        <div className="field">
+                                            <label className="label">
+                                                New Password
+                                            </label>
+                                            <input
+                                                type="password"
+                                                className={"input " + (this.state.newPasswordError && "is-danger")}
+                                                value={this.state.newPassword}
+                                                onChange={e => this.updateValue("newPassword", e)}
+                                            />
+                                        </div>
+                                        <div className="field">
+                                            <div className="columns">
+                                                <div className="column">
+                                                    {this.state.passwordError}
+                                                </div>
+                                                <div className="column">
+                                                    <div className="buttons is-right">
+                                                        <button
+                                                            className={"button is-info " + (this.state.sendingRequest && "is-loading")}
+                                                            onClick={e => this.updatePassword(e)}
+                                                        >
+                                                            Update Password
+                                                        </button>
+                                                        <button
+                                                            className={"button " + (this.state.sendingRequest && "is-loading")}
+                                                            onClick={() => this.setState({
+                                                                oldPassword: "",
+                                                                oldPasswordConfirm: "",
+                                                                newPassword: "",
+                                                                currentTab: "info"
+                                                            })}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            }
+                            {
+                                this.state.currentTab === "photo" &&
+                                    <div>
+                                        <div className="field">
+                                            <div className="file is-centered has-name is-boxed">
+                                                <label className="file-label">
+                                                    <input className="file-input" type="file"
+                                                        onChange={e => this.updateFile(e)}
+                                                    />
+                                                        <span className="file-cta">
+                                                            <span className="file-label">
+                                                                Choose a photo…
+                                                            </span>
+                                                        </span>
+                                                        <span className="file-name">
+                                                            {this.state.file.name}
+                                                        </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div className="field">
+                                            <div className="columns">
+                                                <div className="column">
+                                                    {this.state.fileError}
+                                                </div>
+                                                <div className="column">
+                                                    <div className="buttons is-right">
+                                                        <button
+                                                            className={"button is-info " + (this.state.sendingRequest && "is-loading")}
+                                                            onClick={e => this.updatePhoto(e)}
+                                                        >
+                                                            Update Photo
+                                                        </button>
+                                                        <button
+                                                            className={"button " + (this.state.sendingRequest && "is-loading")}
+                                                            onClick={() => this.setState({
+                                                                file: "",
+                                                                fileError: "",
+                                                                currentTab: "info"
+                                                            })}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            }
+                        </div> :
+                        <progress className="progress" />
+                    }
             </div>
         )
     }
