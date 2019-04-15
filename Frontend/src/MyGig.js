@@ -4,7 +4,6 @@ import './MyGig.css';
 import NavBar from "./DisplayComponents/NavBar";
 import MyGigRouter from "./RouteComponents/MyGigRouter";
 import Constants from "./Constants/Constants";
-import LoadingBuffer from "./HelperComponents/LoadingBuffer";
 import "bulma/css/bulma.css";
 
 const body = document.getElementsByTagName("body")[0];
@@ -26,7 +25,7 @@ export default class MyGig extends Component {
         // and then be reset to null
         loggedIn: false,
         redirect: null,
-        showBuffer: true,
+        // showBuffer: true,
         photoUrl: null
     };
 
@@ -86,18 +85,8 @@ export default class MyGig extends Component {
         }
     };
 
-    pageLoaded = () => {
-        this.setState({
-            showBuffer: false
-        });
-    };
-
     componentDidMount() {
-        // this is necessary to show loading
-        // screen on app load
-        this.setState({
-            showBuffer: true
-        })
+        //
     };
 
     // set redirect back to null
@@ -111,25 +100,16 @@ export default class MyGig extends Component {
     }
 
     render() {
-        // check for redirect
         let redirect = this.state.redirect;
         return (
-            // entire application lives inside router
             <div>
                 <Router>
                     <div>
                         {
-                            // redirect if set
                             redirect && <Redirect to={redirect}/>
                         }
-                        {
-                            <LoadingBuffer showBuffer={this.state.showBuffer} />
-                        }
-                        {/* NavBar for application */}
-                        <NavBar userData={this.state.userData} photoUrl={this.state.photoUrl} redirect={this.redirect} logoutUser={this.logoutUser} />
-                        {/* all body content contained here */}
+                        <NavBar userData={this.state.userData} />
                         <div>
-                            {/* contains all the routing logic */}
                             <div style={{maxWidth: Constants.maxBodyWidth, margin: "auto"}}>
                                 <MyGigRouter
                                     userData={this.state.userData}
@@ -141,7 +121,6 @@ export default class MyGig extends Component {
                                     updateUserPhoto={this.updateUserPhoto}
                                 />
                             </div>
-                            <div style={{ height: "50px"}}>{}</div>
                         </div>
                     </div>
                 </Router>

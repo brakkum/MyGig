@@ -1,83 +1,93 @@
 import React from "react";
-import Input from "../HelperComponents/Input";
-import Button from "../HelperComponents/Button";
+import { withRouter } from "react-router-dom";
 
-export default class NewEvent extends React.Component {
+export default withRouter(
+    class NewEnsemble extends React.Component {
 
-    state = {
-        name: "",
-        nameValid: true,
-        sendingRequest: false,
-        formError: null
-    };
+        state = {
+            ensembleName: "",
+            ensembleNameValid: true,
+            sendingRequest: false,
+            formError: null
+        };
 
-    updateValue = (name, value) => {
-        this.setState({
-            [name]: value
-        });
-    };
+        updateValue = (name, e) => {
+            this.setState({
+                [name]: e.target.value
+            });
+        };
 
-    makeEvent = () => {
-        let valid = true;
-        if (!this.state.name) {
-            this.setState({nameValid: false});
-            valid = false;
-        } else {
-            this.setState({nameValid: true});
+        makeEnsemble = e => {
+            e.preventDefault();
+
+            let valid = true;
+            let ensembleName = this.state.ensembleName;
+            if (!ensembleName) {
+                this.setState({ensembleNameValid: false});
+                valid = false;
+            } else {
+                this.setState({ensembleNameValid: true});
+            }
+
+            if (valid) {
+                this.setState({sendingRequest: true});
+                let jwt = this.props.userData.jwt;
+
+                fetch("/api/ensembles/newensemble", {
+                    method: "post",
+                    headers: new Headers({
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${jwt}`
+                    }),
+                    body: JSON.stringify({
+                        Name: ensembleName
+                    })
+                }).then(res => res.json())
+                    .then(json => {
+                        if (json.success) {
+                            this.props.redirect(`/ensemble/${json.ensembleId}`);
+                        } else {
+                            this.setState({sendingRequest: false});
+                        }
+                    })
+                    .catch(e => console.log(e));
+            }
+        };
+
+        componentDidMount() {
+            //
         }
 
-        if (valid) {
-            this.setState({sendingRequest: true});
-            let jwt = this.props.userData.jwt;
-
-            fetch("/api/ensembles/newensemble", {
-                method: "post",
-                headers: new Headers({
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${jwt}`
-                }),
-                body: JSON.stringify({
-                    Name: this.state.name
-                })
-            }).then(res => res.json())
-                .then(json => {
-                    if (json.success) {
-                        this.setState({sendingRequest: false});
-                        this.props.redirect(`/ensemble/${json.ensembleId}`);
-                    } else {
-                        this.setState({sendingRequest: false});
-                    }
-                })
-                .catch(e => console.log(e));
+        render() {
+            return(
+                <div className="section">
+                    <div className="field">
+                        <label className="label">
+                            Ensemble Name
+                        </label>
+                        <input
+                            className={"input " + (!this.state.ensembleNameValid && "is-danger")}
+                            type="text"
+                            value={this.state.ensembleName}
+                            onChange={e => this.updateValue("ensembleName", e)}
+                        />
+                    </div>
+                    <div className="field buttons is-right">
+                        <button
+                            className={"button is-info " + (this.state.sendingRequest && "is-loading")}
+                            onClick={e => this.makeEnsemble(e)}
+                        >
+                            Create Ensemble
+                        </button>
+                        <button
+                            className="button is-warning"
+                            onClick={() => this.props.history.push("/")}
+                        >
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            )
         }
-    };
-
-    componentDidMount() {
-        setTimeout(() => {
-            this.props.pageLoaded();
-        }, 250);
     }
-
-    render() {
-        return(
-            <div>
-                <Input
-                    for={"Ensemble Name"}
-                    value={this.state.name}
-                    valid={this.state.nameValid}
-                    name={"name"}
-                    onChange={name => this.updateValue("name", name)}
-                />
-                <Button
-                    onClick={this.makeEvent}
-                    type={"submit"}
-                    preClickText={"Create Ensemble"}
-                    style={{float: "right"}}
-                    colorType={"success"}
-                    buttonType={"submit"}
-                    sendingRequest={this.state.sendingRequest}
-                />
-            </div>
-        )
-    }
-}
+);

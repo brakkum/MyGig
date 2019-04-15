@@ -24,20 +24,14 @@ export default withRouter(
             return localStorage.getItem("jwt");
         };
 
-        switchForm = () => {
-            this.setState({
-               toggleLoginAndSignUp: !this.state.toggleLoginAndSignUp
-            });
-        };
-
         componentDidMount() {
             let jwt = this.getJwtInLocalStorage();
 
             if (!jwt) {
                 console.log("no jwt in storage");
-                setTimeout(() => {
-                    this.props.pageLoaded();
-                }, 1500);
+                this.setState({
+                    showLoginPage: true
+                });
                 return;
             }
 
@@ -58,65 +52,69 @@ export default withRouter(
                         this.redirectOnLogin();
                     } else {
                         console.log("validation by jwt failed: ", json);
-                        this.props.pageLoaded();
                     }
                 }
             ).catch(e => {
-                console.log("no response from back");
-                setTimeout(() => {
-                    this.props.pageLoaded();
-                }, 1500);
+                console.log("no response from back ", e);
+                this.setState({
+                    showLoginPage: true
+                });
             });
         }
 
         render() {
             return(
                 <div className="section">
-                    {/* Button to switch form view */}
-                    <div className="box">
-                        <div className="tabs">
-                            <ul>
-                                <li
-                                    className={
-                                        this.state.visibleForm === "login" ?
-                                            "is-active" : ""
-                                    }
-                                    onClick={() => this.setState({visibleForm: "login"})}
-                                >
-                                    <a>
-                                        Login
-                                    </a>
-                                </li>
-                                <li
-                                    className={
-                                        this.state.visibleForm === "signup" ?
-                                            "is-active" : ""
-                                    }
-                                    onClick={() => this.setState({visibleForm: "signup"})}
-                                >
-                                    <a>
-                                        Sign Up
-                                    </a>
-                                </li>
-                            </ul>
+                    {this.state.showLoginPage ?
+                        <div>
+                            <div className="box">
+                                <div className="tabs">
+                                    <ul>
+                                        <li
+                                            className={
+                                                this.state.visibleForm === "login" ?
+                                                    "is-active" : ""
+                                            }
+                                            onClick={() => this.setState({visibleForm: "login"})}
+                                        >
+                                            <a>
+                                                Login
+                                            </a>
+                                        </li>
+                                        <li
+                                            className={
+                                                this.state.visibleForm === "signup" ?
+                                                    "is-active" : ""
+                                            }
+                                            onClick={() => this.setState({visibleForm: "signup"})}
+                                        >
+                                            <a>
+                                                Sign Up
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {
+                                    this.state.visibleForm === "login" ?
+                                        <div className="">
+                                            <LoginForm
+                                                redirectOnLogin={this.redirectOnLogin}
+                                                loginUser={this.props.loginUser}
+                                            />
+                                        </div>
+                                        :
+                                        <div className="">
+                                            <SignUpForm
+                                                redirectOnLogin={this.redirectOnLogin}
+                                                loginUser={this.props.loginUser}
+                                            />
+                                        </div>
+                                }
+                            </div>
                         </div>
-                    {
-                        this.state.visibleForm === "login" ?
-                            <div className="">
-                                <LoginForm
-                                    redirectOnLogin={this.redirectOnLogin}
-                                    loginUser={this.props.loginUser}
-                                />
-                            </div>
-                            :
-                            <div className="">
-                                <SignUpForm
-                                    redirectOnLogin={this.redirectOnLogin}
-                                    loginUser={this.props.loginUser}
-                                />
-                            </div>
+                        :
+                        <progress className="progress" />
                     }
-                    </div>
                 </div>
             )
         }

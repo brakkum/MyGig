@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
 import Request from "../DisplayComponents/Request";
 import UpcomingEventsTable from "../DisplayComponents/UpcomingEventsTable";
-import moment from "moment";
 
 export default class Home extends React.Component {
     // top level route component for /
@@ -41,7 +40,6 @@ export default class Home extends React.Component {
                         performances: json.performances,
                         events: json.events
                     });
-                    this.props.pageLoaded();
                 } else {
                     console.log("fail, ", json);
                 }
@@ -140,14 +138,14 @@ export default class Home extends React.Component {
                                             return <span className="control" key={i}>
                                                 <Link to={"/ensemble/" + ens.ensembleId}>
                                                     <div className="tags has-addons are-medium">
-                                                    <span className="tag has-text-weight-semibold is-dark">
-                                                        {ens.name}
-                                                    </span>
-                                                    <span
-                                                        className={"tag " + (userIsMod ? "is-info" : "is-dark")}
-                                                        dangerouslySetInnerHTML={{__html: (userIsMod ? "Mod" : "&nbsp;")}}
-                                                    >
-                                                    </span>
+                                                        <span className="tag has-text-weight-semibold is-dark">
+                                                            {ens.name}
+                                                        </span>
+                                                        <span
+                                                            className={"tag " + (userIsMod ? "is-info" : "is-dark")}
+                                                            dangerouslySetInnerHTML={{__html: (userIsMod ? "Mod" : "&nbsp;")}}
+                                                        >
+                                                        </span>
                                                     </div>
                                                 </Link>
                                             </span>
