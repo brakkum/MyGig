@@ -139,7 +139,7 @@ export default withRouter(
                         }
                     />
                     <ProtectedRoute
-                        path="/editsetlist/:bookingId"
+                        path="/editSetlist/:bookingId"
                         userData={this.props.userData}
                         loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}

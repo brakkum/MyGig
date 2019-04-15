@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
 import Request from "../DisplayComponents/Request";
-import EventDisplay from "../DisplayComponents/EventDisplay";
+import UpcomingEventsTable from "../DisplayComponents/UpcomingEventsTable";
+import moment from "moment";
 
 export default class Home extends React.Component {
     // top level route component for /
@@ -33,6 +34,7 @@ export default class Home extends React.Component {
             .then(json => {
                 if (this._isMounted && json.success){
                     this.setState({
+                        isLoading: false,
                         ensembles: json.ensembles,
                         notifications: json.notifications,
                         requests: json.requests,
@@ -59,6 +61,7 @@ export default class Home extends React.Component {
 
     render() {
         const ensembles = this.state.ensembles;
+        const performances = this.state.performances;
         return(
             <div className="section">
                 {/* Requests - Full width box, if there are any */}
@@ -84,91 +87,79 @@ export default class Home extends React.Component {
                         {this.state.notifications.map((n, i) => {
                             console.log(n);
                             return <Link
-                                url={n.url}
-                                interior={n.displayMessage}
-                                redirect={this.props.redirect}
+                                to={n.url}
                                 key={i}
-                            />
+                            >
+                                {n.displayMessage}
+                            </Link>
                         })}
                     </div>
                 }
+                {
+                    this.state.isLoading &&
+                        <progress className="progress" />
+                }
+                {
+                    performances.length > 0 &&
+                        <div className="box">
+                            <span className="is-size-3">Upcoming Performances</span>
+                            <UpcomingEventsTable performances={performances} jwt={this._jwt} />
+                        </div>
+                    // <DisplayCase
+                    //     labelLeft={"Upcoming Performances"}
+                    // >
+                    //     {this.state.performances.length > 0
+                    //         ?
+                    //         this.state.performances.map((perf, i) => {
+                    //             return <EventDisplay
+                    //                 {...perf}
+                    //                 jwt={this._jwt}
+                    //                 redirect={this.props.redirect}
+                    //                 key={i}
+                    //             />
+                    //         })
+                    //         :
+                    //         <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
+                    //             No Upcoming Performances
+                    //         </div>
+                    //     }
+                    // </DisplayCase>
+                }
                 <div className="columns">
                     <div className="column">
-                        {/* put ensembles or events here */}
-                        <div className="box">
-                            <div>
-                                <span className="is-size-3">Ensembles</span>
-                                <Link to="/newEnsemble" className="is-pulled-right">New</Link>
+                        {!this.state.isLoading &&
+                            <div className="box">
+                                <div>
+                                    <span className="is-size-3">Ensembles</span>
+                                    <Link to="/newEnsemble" className="is-pulled-right">New</Link>
+                                </div>
+                                <div className="field is-grouped is-grouped-multiline section">
+                                    {ensembles.length > 0 ?
+                                        ensembles.map((ens, i) => {
+                                            const userIsMod = ens.userIsMod;
+                                            return <span className="control" key={i}>
+                                                <Link to={"/ensemble/" + ens.ensembleId}>
+                                                    <div className="tags has-addons are-medium">
+                                                    <span className="tag has-text-weight-semibold is-dark">
+                                                        {ens.name}
+                                                    </span>
+                                                    <span
+                                                        className={"tag " + (userIsMod ? "is-info" : "is-dark")}
+                                                        dangerouslySetInnerHTML={{__html: (userIsMod ? "Mod" : "&nbsp;")}}
+                                                    >
+                                                    </span>
+                                                    </div>
+                                                </Link>
+                                            </span>
+                                        })
+                                        :
+                                        <div>No Ensembles</div>
+                                    }
+                                </div>
                             </div>
-                            <div className="field is-grouped is-grouped-multiline section">
-                                {ensembles.length > 0 ?
-                                    ensembles.map((ens, i) => {
-                                        const userIsMod = ens.userIsMod;
-                                        return <span className="control" key={i}>
-                                            <Link to={"/ensemble/" + ens.ensembleId}>
-                                                <div className="tags has-addons are-medium">
-                                                <span className="tag has-text-weight-semibold is-dark">
-                                                    {ens.name}
-                                                </span>
-                                                <span
-                                                    className={"tag " + (userIsMod ? "is-info" : "is-dark")}
-                                                    dangerouslySetInnerHTML={{__html: (userIsMod ? "Mod" : "&nbsp;")}}
-                                                >
-                                                </span>
-                                                </div>
-                                            </Link>
-                                        </span>
-                                    })
-                                    :
-                                    this.state.isLoading ? <progress className="progress" /> : "No Ensembles"
-                                }
-                            </div>
-                        </div>
-                            {/*<DisplayCase*/}
-                            {/*    labelLeft={"Ensembles"}*/}
-                            {/*    labelRight={*/}
-                            {/*        "n/a"*/}
-                            {/*    }*/}
-                            {/*    boxStyle={{display: "flex", justifyContent: "space-around"}}*/}
-                            {/*>*/}
-                            {/*    {this.state.ensembles.length > 0*/}
-                            {/*        ?*/}
-                            {/*        this.state.ensembles.map((ens, i) => {*/}
-                            {/*            return <Button*/}
-                            {/*                onClick={() => this.props.redirect(`/ensemble/${ens.ensembleId}`, "/")}*/}
-                            {/*                key={i}*/}
-                            {/*                preClickText={ens.name}*/}
-                            {/*            />*/}
-                            {/*        })*/}
-                            {/*        :*/}
-                            {/*        <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>*/}
-                            {/*            No ensembles*/}
-                            {/*        </div>*/}
-                            {/*    }*/}
-                            {/*</DisplayCase>*/}
+                        }
                     </div>
                     <div className="column">
-                    {
-                        <DisplayCase
-                            labelLeft={"Upcoming Performances"}
-                        >
-                            {this.state.performances.length > 0
-                                ?
-                                this.state.performances.map((perf, i) => {
-                                    return <EventDisplay
-                                        {...perf}
-                                        jwt={this._jwt}
-                                        redirect={this.props.redirect}
-                                        key={i}
-                                    />
-                                })
-                                :
-                                <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
-                                    No Upcoming Performances
-                                </div>
-                            }
-                        </DisplayCase>
-                    }
                     {
                         <DisplayCase
                             labelLeft={"Events"}
@@ -176,20 +167,18 @@ export default class Home extends React.Component {
                                 "/newEvent"
                             }
                         >
-                            {this.state.events.length > 0
-                                ?
-                                this.state.events.map((ev, i) => {
-                                    return <EventDisplay
-                                        {...ev}
-                                        redirect={this.props.redirect}
-                                        key={i}
-                                    />
-                                })
-                                :
-                                <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
-                                    No events
-                                </div>
-                            }
+                            {/*{!this.state.isLoading && this.state.events.length > 0 ?*/}
+                            {/*    this.state.events.map((ev, i) => {*/}
+                            {/*        return <UpcomingEventsTable*/}
+                            {/*            {...ev}*/}
+                            {/*            key={i}*/}
+                            {/*        />*/}
+                            {/*    })*/}
+                            {/*    :*/}
+                            {/*    <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>*/}
+                            {/*        No events*/}
+                            {/*    </div>*/}
+                            {/*}*/}
                         </DisplayCase>
                     }
                     </div>
