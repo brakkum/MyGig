@@ -51,7 +51,8 @@ namespace MyGigApi.Controllers
                 .Select(e => new EnsembleDto
                 {
                     EnsembleId = e.EnsembleId,
-                    Name = e.Name
+                    Name = e.Name,
+                    UserIsMod = ensemblesAsMod.Contains(e.EnsembleId)
                 });
 
             var eventsModeratedIds = _context.EventModerators

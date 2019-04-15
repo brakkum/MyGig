@@ -1,8 +1,7 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
 import Request from "../DisplayComponents/Request";
-import Link from "../DisplayComponents/Containers/Link";
-import Button from "../HelperComponents/Button";
 import EventDisplay from "../DisplayComponents/EventDisplay";
 
 export default class Home extends React.Component {
@@ -12,6 +11,7 @@ export default class Home extends React.Component {
     _jwt = null;
 
     state = {
+        isLoading: true,
         ensembles: [],
         notifications: [],
         requests: [],
@@ -58,138 +58,143 @@ export default class Home extends React.Component {
     }
 
     render() {
+        const ensembles = this.state.ensembles;
         return(
-            <div>
-                {
-                    <DisplayCase
-                        labelLeft={"Requests"}
-                        labelRight={
-                            <Link
-                                text={"Find Users"}
-                                url={"/search"}
-                                redirect={this.props.redirect}
+            <div className="section">
+                {/* Requests - Full width box, if there are any */}
+                {this.state.requests.length > 0 &&
+                    <div className="box">
+                        {this.state.requests.map((req, i) => {
+                            console.log(req);
+                            return <Request
+                                userPhoto={req.userPhoto}
+                                text={req.text}
+                                requestType={req.requestType}
+                                typeId={req.typeId}
+                                jwt={this._jwt}
+                                filterRequests={this.filterRequests}
+                                key={i}
                             />
-                        }
-                    >
-                        {this.state.requests.length > 0
-                            ?
-                            this.state.requests.map((req, i) => {
-                                console.log(req);
-                                return <Request
-                                    userPhoto={req.userPhoto}
-                                    text={req.text}
-                                    requestType={req.requestType}
-                                    typeId={req.typeId}
-                                    jwt={this._jwt}
-                                    filterRequests={this.filterRequests}
-                                    key={i}
-                                />
-                            })
-                            :
-                            <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
-                                No requests
-                            </div>
-                        }
-                    </DisplayCase>
+                        })}
+                    </div>
                 }
-                {
-                    <DisplayCase
-                        labelLeft={"Notifications"}
-                    >
-                        {this.state.notifications.length > 0
-                            ?
-                            this.state.notifications.map((n, i) => {
-                                console.log(n);
-                                return <Link
-                                    url={n.url}
-                                    interior={n.displayMessage}
-                                    redirect={this.props.redirect}
-                                    key={i}
-                                />
-                            })
-                            :
-                            <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
-                                No notifications
-                            </div>
-                        }
-                    </DisplayCase>
-                }
-                {
-                    <DisplayCase
-                        labelLeft={"Ensembles"}
-                        labelRight={
-                            <Link
-                                text={"New Ensemble"}
-                                url={"/newensemble"}
+                {/* Notifications - Full width box, if there are any */}
+                {this.state.notifications.length > 0 &&
+                    <div className="box">
+                        {this.state.notifications.map((n, i) => {
+                            console.log(n);
+                            return <Link
+                                url={n.url}
+                                interior={n.displayMessage}
                                 redirect={this.props.redirect}
+                                key={i}
                             />
-                        }
-                        boxStyle={{display: "flex", justifyContent: "space-around"}}
-                    >
-                        {this.state.ensembles.length > 0
-                            ?
-                            this.state.ensembles.map((ens, i) => {
-                                return <Button
-                                    onClick={() => this.props.redirect(`/ensemble/${ens.ensembleId}`, "/")}
-                                    key={i}
-                                    preClickText={ens.name}
-                                />
-                            })
-                            :
-                            <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
-                                No ensembles
-                            </div>
-                        }
-                    </DisplayCase>
+                        })}
+                    </div>
                 }
-                {
-                    <DisplayCase
-                        labelLeft={"Upcoming Performances"}
-                    >
-                        {this.state.performances.length > 0
-                            ?
-                            this.state.performances.map((perf, i) => {
-                                return <EventDisplay
-                                    {...perf}
-                                    jwt={this._jwt}
-                                    redirect={this.props.redirect}
-                                    key={i}
-                                />
-                            })
-                            :
-                            <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
-                                No Upcoming Performances
+                <div className="columns">
+                    <div className="column">
+                        {/* put ensembles or events here */}
+                        <div className="box">
+                            <div>
+                                <span className="is-size-3">Ensembles</span>
+                                <Link to="/newEnsemble" className="is-pulled-right">New</Link>
                             </div>
-                        }
-                    </DisplayCase>
-                }
-                {
-                    <DisplayCase
-                        labelLeft={"Events"}
-                        labelRight={
-                            <Link
-                                text={"New Event"}
-                                url={"/newevent"}
-                                redirect={this.props.redirect}
-                            />
-                        }
-                    >
-                        {this.state.events.length > 0
-                            ?
-                            this.state.events.map((ev, i) => {
-                                return <EventDisplay
-                                    {...ev}
-                                    redirect={this.props.redirect}
-                                    key={i}
-                                />
-                            })
-                            :
-                            <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
-                                No events
+                            <div className="field is-grouped is-grouped-multiline section">
+                                {ensembles.length > 0 ?
+                                    ensembles.map((ens, i) => {
+                                        const userIsMod = ens.userIsMod;
+                                        return <span className="control" key={i}>
+                                            <Link to={"/ensemble/" + ens.ensembleId}>
+                                                <div className="tags has-addons are-medium">
+                                                <span className="tag has-text-weight-semibold is-dark">
+                                                    {ens.name}
+                                                </span>
+                                                <span
+                                                    className={"tag " + (userIsMod ? "is-info" : "is-dark")}
+                                                    dangerouslySetInnerHTML={{__html: (userIsMod ? "Mod" : "&nbsp;")}}
+                                                >
+                                                </span>
+                                                </div>
+                                            </Link>
+                                        </span>
+                                    })
+                                    :
+                                    this.state.isLoading ? <progress className="progress" /> : "No Ensembles"
+                                }
                             </div>
-                        }
-                    </DisplayCase>
-                }
+                        </div>
+                            {/*<DisplayCase*/}
+                            {/*    labelLeft={"Ensembles"}*/}
+                            {/*    labelRight={*/}
+                            {/*        "n/a"*/}
+                            {/*    }*/}
+                            {/*    boxStyle={{display: "flex", justifyContent: "space-around"}}*/}
+                            {/*>*/}
+                            {/*    {this.state.ensembles.length > 0*/}
+                            {/*        ?*/}
+                            {/*        this.state.ensembles.map((ens, i) => {*/}
+                            {/*            return <Button*/}
+                            {/*                onClick={() => this.props.redirect(`/ensemble/${ens.ensembleId}`, "/")}*/}
+                            {/*                key={i}*/}
+                            {/*                preClickText={ens.name}*/}
+                            {/*            />*/}
+                            {/*        })*/}
+                            {/*        :*/}
+                            {/*        <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>*/}
+                            {/*            No ensembles*/}
+                            {/*        </div>*/}
+                            {/*    }*/}
+                            {/*</DisplayCase>*/}
+                    </div>
+                    <div className="column">
+                    {
+                        <DisplayCase
+                            labelLeft={"Upcoming Performances"}
+                        >
+                            {this.state.performances.length > 0
+                                ?
+                                this.state.performances.map((perf, i) => {
+                                    return <EventDisplay
+                                        {...perf}
+                                        jwt={this._jwt}
+                                        redirect={this.props.redirect}
+                                        key={i}
+                                    />
+                                })
+                                :
+                                <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
+                                    No Upcoming Performances
+                                </div>
+                            }
+                        </DisplayCase>
+                    }
+                    {
+                        <DisplayCase
+                            labelLeft={"Events"}
+                            labelRight={
+                                "/newEvent"
+                            }
+                        >
+                            {this.state.events.length > 0
+                                ?
+                                this.state.events.map((ev, i) => {
+                                    return <EventDisplay
+                                        {...ev}
+                                        redirect={this.props.redirect}
+                                        key={i}
+                                    />
+                                })
+                                :
+                                <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
+                                    No events
+                                </div>
+                            }
+                        </DisplayCase>
+                    }
+                    </div>
+                </div>
+            {/* put upcoming performances down here */}
             </div>
         )
     }

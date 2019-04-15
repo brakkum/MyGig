@@ -119,7 +119,7 @@ export default withRouter(
                         }
                     />
                     <ProtectedRoute
-                        path="/newevent"
+                        path="/newEvent"
                         userData={this.props.userData}
                         loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}
@@ -129,7 +129,7 @@ export default withRouter(
                         }
                     />
                     <ProtectedRoute
-                        path="/newensemble"
+                        path="/newEnsemble"
                         userData={this.props.userData}
                         loggedIn={this.props.loggedIn}
                         redirect={this.props.redirect}
