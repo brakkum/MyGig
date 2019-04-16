@@ -69,100 +69,116 @@ export default class Home extends React.Component {
                     <div>
                         {/* Requests - Full width box, if there are any */}
                         {this.state.requests.length > 0 &&
-                            <div className="box">
-                                {this.state.requests.map((req, i) => {
-                                    console.log(req);
-                                    return <Request
-                                        userPhoto={req.userPhoto}
-                                        text={req.text}
-                                        requestType={req.requestType}
-                                        typeId={req.typeId}
-                                        jwt={this._jwt}
-                                        filterRequests={this.filterRequests}
-                                        key={i}
-                                    />
-                                })}
+                            <div className="columns">
+                                <div className="column is-12">
+                                    <div className="box">
+                                        {this.state.requests.map((req, i) => {
+                                            console.log(req);
+                                            return <Request
+                                                userPhoto={req.userPhoto}
+                                                text={req.text}
+                                                requestType={req.requestType}
+                                                typeId={req.typeId}
+                                                jwt={this._jwt}
+                                                filterRequests={this.filterRequests}
+                                                key={i}
+                                            />
+                                        })}
+                                    </div>
+                                </div>
                             </div>
                         }
                         {/* Notifications - Full width box, if there are any */}
                         {this.state.notifications.length > 0 &&
-                        <div className="box">
-                            {this.state.notifications.map((n, i) => {
-                                console.log(n);
-                                return <Link
-                                    to={n.url}
-                                    key={i}
-                                >
-                                    {n.displayMessage}
-                                </Link>
-                            })}
-                        </div>
+                            <div className="columns">
+                                <div className="column is-12">
+                                    <div className="box">
+                                        {this.state.notifications.map((n, i) => {
+                                            console.log(n);
+                                            return <Link
+                                                to={n.url}
+                                                key={i}
+                                            >
+                                                {n.displayMessage}
+                                            </Link>
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
                         }
                         {
                             performances.length > 0 &&
-                            <div className="box">
-                                <span className="is-size-3">Upcoming Performances</span>
-                                <UpcomingPerformancesTable performances={performances} jwt={this._jwt} />
-                            </div>
-                        }
-                        <div className="columns">
-                            <div className="column">
-                                <div className="box">
-                                    <div>
-                                        <span className="is-size-3">Ensembles</span>
-                                        <Link to="/newEnsemble" className="is-pulled-right">New</Link>
+                                <div className="columns">
+                                    <div className="column is-12">
+                                        <div className="box">
+                                            <span className="is-size-3">Upcoming Performances</span>
+                                            <UpcomingPerformancesTable performances={performances} jwt={this._jwt} />
+                                        </div>
                                     </div>
-                                    {ensembles.length > 0 ?
-                                        <div className="field is-grouped is-grouped-multiline">
-                                            {ensembles.map((ens, i) => {
-                                                const userIsMod = ens.userIsMod;
-                                                return <span className="control" key={i}>
-                                                    <Link to={"/ensemble/" + ens.ensembleId}>
-                                                        <div className="tags has-addons are-medium">
-                                                            <span className="tag has-text-weight-semibold is-dark">
-                                                                {ens.name}
-                                                            </span>
-                                                            <span
-                                                                className={"tag " + (userIsMod ? "is-info" : "is-dark")}
-                                                                dangerouslySetInnerHTML={{__html: (userIsMod ? "Mod" : "&nbsp;")}}
-                                                            >
-                                                            </span>
-                                                        </div>
-                                                    </Link>
-                                                </span>
-                                            })}
-                                        </div>
-                                        :
-                                        <div>
-                                            No Ensembles
-                                        </div>
-                                    }
                                 </div>
-                            </div>
-                            <div className="column">
-                                <div className="box">
-                                    <div>
-                                        <span className="is-size-3">Events</span>
-                                        <Link to="/newEvent" className="is-pulled-right">New</Link>
-                                        {events.length > 0 ?
-                                            events.map((event, i) => {
-                                                return <div key={i}>
-                                                    <Link to={`/event/${event.eventId}`} key={i}>
-                                                        <h4 className="is-size-4">{event.name}</h4>
-                                                    </Link>
-                                                    <span className="is-size-5">{moment(event.dateAndTime).format("MMM D")}, </span>
-                                                    <span className="is-size-6">{event.location}</span>
-                                                </div>
-                                            })
+                        }
+                        {
+                            <div className="columns is-vcentered">
+                                <div className="column is-6">
+                                    <div className="box">
+                                        <div>
+                                            <span className="is-size-3">Ensembles</span>
+                                            <Link to="/newEnsemble" className="is-pulled-right">New</Link>
+                                        </div>
+                                        {ensembles.length > 0 ?
+                                            <div className="field is-grouped is-grouped-multiline">
+                                                {ensembles.map((ens, i) => {
+                                                    const userIsMod = ens.userIsMod;
+                                                    return <span className="control" key={i}>
+                                                        <Link to={"/ensemble/" + ens.ensembleId}>
+                                                            <div className="tags has-addons are-medium">
+                                                                <span className="tag has-text-weight-semibold is-dark">
+                                                                    {ens.name}
+                                                                </span>
+                                                                <span
+                                                                    className={"tag " + (userIsMod ? "is-info" : "is-dark")}
+                                                                    dangerouslySetInnerHTML={{__html: (userIsMod ? "Mod" : "&nbsp;")}}
+                                                                >
+                                                                </span>
+                                                            </div>
+                                                        </Link>
+                                                    </span>
+                                                })}
+                                            </div>
                                             :
                                             <div>
-                                                No Events
+                                                No Ensembles
                                             </div>
                                         }
                                     </div>
                                 </div>
+                                <div className="column is-6">
+                                    <div className="box">
+                                        <div>
+                                            <span className="is-size-3">Events</span>
+                                            <Link to="/newEvent" className="is-pulled-right">New</Link>
+                                            {events.length > 0 ?
+                                                events.map((event, i) => {
+                                                    return <div key={i}>
+                                                        <Link to={`/event/${event.eventId}`} key={i}>
+                                                            <h4 className="is-size-4">{event.name}</h4>
+                                                        </Link>
+                                                        <span
+                                                            className="is-size-5">{moment(event.dateAndTime).format("MMM D")}, </span>
+                                                        <span className="is-size-6">{event.location}</span>
+                                                    </div>
+                                                })
+                                                :
+                                                <div>
+                                                    No Events
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        }
+
                     </div>
                 }
             </div>
