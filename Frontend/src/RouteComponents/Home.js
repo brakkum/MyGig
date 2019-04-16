@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Request from "../DisplayComponents/Request";
-import UpcomingPerformancesTable from "../DisplayComponents/UpcomingPerformancesTable";
+import UpcomingPerformancesDisplay from "../DisplayComponents/UpcomingPerformancesDisplay";
 import moment from "moment";
 
 export default class Home extends React.Component {
@@ -114,7 +114,7 @@ export default class Home extends React.Component {
                                     <div className="column is-12">
                                         <div className="box">
                                             <span className="is-size-3">Upcoming Performances</span>
-                                            <UpcomingPerformancesTable performances={performances} jwt={this._jwt} />
+                                            <UpcomingPerformancesDisplay performances={performances} jwt={this._jwt} />
                                         </div>
                                     </div>
                                 </div>
