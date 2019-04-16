@@ -17,6 +17,7 @@ export default class Home extends React.Component {
         requests: [],
         performances: [],
         events: [],
+        hideEnsembles: true,
         hideEvents: true
     };
 
@@ -127,28 +128,30 @@ export default class Home extends React.Component {
                                             <Link to="/newEnsemble" className="is-pulled-right">New</Link>
                                         </div>
                                         {ensembles.length > 0 ?
-                                            <div className="field is-grouped is-grouped-multiline">
-                                                {ensembles.map((ens, i) => {
-                                                    const userIsMod = ens.userIsMod;
-                                                    return <span className="control" key={i}>
-                                                        <Link to={"/ensemble/" + ens.ensembleId}>
-                                                            <div className="tags has-addons are-medium">
-                                                                <span className="tag has-text-weight-semibold is-dark">
-                                                                    {ens.name}
-                                                                </span>
-                                                                <span
-                                                                    className={"tag " + (userIsMod ? "is-info" : "is-dark")}
-                                                                    dangerouslySetInnerHTML={{__html: (userIsMod ? "Mod" : "&nbsp;")}}
-                                                                >
-                                                                </span>
-                                                            </div>
-                                                        </Link>
-                                                    </span>
-                                                })}
-                                            </div>
+                                            ensembles.map((ens, i) => {
+                                                const userIsMod = ens.userIsMod;
+                                                return <div className={i >= 2 && this.state.hideEnsembles ? "is-hidden" : ""} key={i}>
+                                                    <Link to={`/ensemble/${ens.ensembleId}`} key={i}>
+                                                        <span className="is-size-4">{ens.name}</span>
+                                                        &nbsp;&nbsp;
+                                                        <span className="is-size-6 has-text-grey-light">{userIsMod && "Moderator"}</span>
+                                                    </Link>
+                                                </div>
+                                            })
                                             :
                                             <div>
                                                 No Ensembles
+                                            </div>
+                                        }
+                                        {
+                                            ensembles.length >= 3 &&
+                                            <div className="has-text-centered">
+                                                <a
+                                                    href="#ensembles"
+                                                    onClick={() => this.setState({hideEnsembles: !this.state.hideEnsembles})}
+                                                >
+                                                    {this.state.hideEnsembles ? "More" : "Less"}
+                                                </a>
                                             </div>
                                         }
                                     </div>
@@ -163,11 +166,16 @@ export default class Home extends React.Component {
                                                     events.map((event, i) => {
                                                         return <div className={i >= 2 && this.state.hideEvents ? "is-hidden" : ""} key={i}>
                                                             <Link to={`/event/${event.eventId}`} key={i}>
-                                                                <h4 className="is-size-4">{event.name}</h4>
+                                                                <span className="is-size-4">{event.name}</span>
                                                             </Link>
-                                                            <span
-                                                                className="is-size-5">{moment(event.dateAndTime).format("MMM D")}, </span>
-                                                            <span className="is-size-6">{event.location}</span>
+                                                            &nbsp;
+                                                            <span className="is-size-6">
+                                                                {moment(event.dateAndTime).format("MMM D")},
+                                                            </span>
+                                                            &nbsp;
+                                                            <span className="is-size-6">
+                                                                {event.location}
+                                                            </span>
                                                         </div>
                                                     })
                                                     :

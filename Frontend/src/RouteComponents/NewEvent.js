@@ -72,7 +72,7 @@ export default withRouter(
 
             this.setState({sendingRequest: true});
             let jwt = this.props.userData.jwt;
-
+            console.log(this.state)
             fetch("/api/events/newevent", {
                 method: "post",
                 headers: new Headers({
@@ -82,7 +82,7 @@ export default withRouter(
                 body: JSON.stringify({
                     Name: this.state.name,
                     Location: this.state.location,
-                    DateAndTime: this.state.dateAndTime
+                    DateAndTime: this.state.date
                 })
             }).then(res => res.json())
                 .then(json => {
@@ -127,7 +127,7 @@ export default withRouter(
                             className="input"
                             options={{enableTime: true, time_24hr: false}}
                             value={date}
-                            onChange={date => this.setState({date})}
+                            onChange={date => this.setState({date: date[0]})}
                         />
                     </div>
                     <div className="field columns">
