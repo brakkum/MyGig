@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import DisplayCase from "../DisplayComponents/Containers/DisplayCase";
 import Request from "../DisplayComponents/Request";
-import UpcomingEventsTable from "../DisplayComponents/UpcomingEventsTable";
+import UpcomingPerformancesTable from "../DisplayComponents/UpcomingPerformancesTable";
+import moment from "moment";
 
 export default class Home extends React.Component {
     // top level route component for /
@@ -60,128 +60,105 @@ export default class Home extends React.Component {
     render() {
         const ensembles = this.state.ensembles;
         const performances = this.state.performances;
+        const events = this.state.events;
         return(
             <div className="section">
-                {/* Requests - Full width box, if there are any */}
-                {this.state.requests.length > 0 &&
-                    <div className="box">
-                        {this.state.requests.map((req, i) => {
-                            console.log(req);
-                            return <Request
-                                userPhoto={req.userPhoto}
-                                text={req.text}
-                                requestType={req.requestType}
-                                typeId={req.typeId}
-                                jwt={this._jwt}
-                                filterRequests={this.filterRequests}
-                                key={i}
-                            />
-                        })}
-                    </div>
-                }
-                {/* Notifications - Full width box, if there are any */}
-                {this.state.notifications.length > 0 &&
-                    <div className="box">
-                        {this.state.notifications.map((n, i) => {
-                            console.log(n);
-                            return <Link
-                                to={n.url}
-                                key={i}
-                            >
-                                {n.displayMessage}
-                            </Link>
-                        })}
-                    </div>
-                }
-                {
-                    this.state.isLoading &&
-                        <progress className="progress" />
-                }
-                {
-                    performances.length > 0 &&
-                        <div className="box">
-                            <span className="is-size-3">Upcoming Performances</span>
-                            <UpcomingEventsTable performances={performances} jwt={this._jwt} />
-                        </div>
-                    // <DisplayCase
-                    //     labelLeft={"Upcoming Performances"}
-                    // >
-                    //     {this.state.performances.length > 0
-                    //         ?
-                    //         this.state.performances.map((perf, i) => {
-                    //             return <EventDisplay
-                    //                 {...perf}
-                    //                 jwt={this._jwt}
-                    //                 redirect={this.props.redirect}
-                    //                 key={i}
-                    //             />
-                    //         })
-                    //         :
-                    //         <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>
-                    //             No Upcoming Performances
-                    //         </div>
-                    //     }
-                    // </DisplayCase>
-                }
-                <div className="columns">
-                    <div className="column">
-                        {!this.state.isLoading &&
+                {this.state.isLoading ?
+                    <progress className="progress" />
+                :
+                    <div>
+                        {/* Requests - Full width box, if there are any */}
+                        {this.state.requests.length > 0 &&
                             <div className="box">
-                                <div>
-                                    <span className="is-size-3">Ensembles</span>
-                                    <Link to="/newEnsemble" className="is-pulled-right">New</Link>
-                                </div>
-                                <div className="field is-grouped is-grouped-multiline section">
-                                    {ensembles.length > 0 ?
-                                        ensembles.map((ens, i) => {
-                                            const userIsMod = ens.userIsMod;
-                                            return <span className="control" key={i}>
-                                                <Link to={"/ensemble/" + ens.ensembleId}>
-                                                    <div className="tags has-addons are-medium">
-                                                        <span className="tag has-text-weight-semibold is-dark">
-                                                            {ens.name}
-                                                        </span>
-                                                        <span
-                                                            className={"tag " + (userIsMod ? "is-info" : "is-dark")}
-                                                            dangerouslySetInnerHTML={{__html: (userIsMod ? "Mod" : "&nbsp;")}}
-                                                        >
-                                                        </span>
-                                                    </div>
-                                                </Link>
-                                            </span>
-                                        })
-                                        :
-                                        <div>No Ensembles</div>
-                                    }
-                                </div>
+                                {this.state.requests.map((req, i) => {
+                                    console.log(req);
+                                    return <Request
+                                        userPhoto={req.userPhoto}
+                                        text={req.text}
+                                        requestType={req.requestType}
+                                        typeId={req.typeId}
+                                        jwt={this._jwt}
+                                        filterRequests={this.filterRequests}
+                                        key={i}
+                                    />
+                                })}
                             </div>
                         }
+                        {/* Notifications - Full width box, if there are any */}
+                        {this.state.notifications.length > 0 &&
+                        <div className="box">
+                            {this.state.notifications.map((n, i) => {
+                                console.log(n);
+                                return <Link
+                                    to={n.url}
+                                    key={i}
+                                >
+                                    {n.displayMessage}
+                                </Link>
+                            })}
+                        </div>
+                        }
+                        {
+                            performances.length > 0 &&
+                            <div className="box">
+                                <span className="is-size-3">Upcoming Performances</span>
+                                <UpcomingPerformancesTable performances={performances} jwt={this._jwt} />
+                            </div>
+                        }
+                        <div className="columns">
+                            <div className="column">
+                                <div className="box">
+                                    <div>
+                                        <span className="is-size-3">Ensembles</span>
+                                        <Link to="/newEnsemble" className="is-pulled-right">New</Link>
+                                    </div>
+                                    <div className="field is-grouped is-grouped-multiline section">
+                                        {ensembles.length > 0 ?
+                                            ensembles.map((ens, i) => {
+                                                const userIsMod = ens.userIsMod;
+                                                return <span className="control" key={i}>
+                                                    <Link to={"/ensemble/" + ens.ensembleId}>
+                                                        <div className="tags has-addons are-medium">
+                                                            <span className="tag has-text-weight-semibold is-dark">
+                                                                {ens.name}
+                                                            </span>
+                                                            <span
+                                                                className={"tag " + (userIsMod ? "is-info" : "is-dark")}
+                                                                dangerouslySetInnerHTML={{__html: (userIsMod ? "Mod" : "&nbsp;")}}
+                                                            >
+                                                            </span>
+                                                        </div>
+                                                    </Link>
+                                                </span>
+                                            })
+                                            :
+                                            <div>No Ensembles</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="column">
+                                <div className="box">
+                                    <div>
+                                        <span className="is-size-3">Events</span>
+                                        <Link to="/newEvent" className="is-pulled-right">New</Link>
+                                        {
+                                            events.map((event, i) => {
+                                                return <div key={i}>
+                                                    <Link to={`/event/${event.eventId}`} key={i}>
+                                                        <h4 className="is-size-4">{event.name}</h4>
+                                                    </Link>
+                                                    <span className="is-size-5">{moment(event.dateAndTime).format("MMM D")}, </span>
+                                                    <span className="is-size-6">{event.location}</span>
+                                                </div>
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="column">
-                    {
-                        <DisplayCase
-                            labelLeft={"Events"}
-                            labelRight={
-                                "/newEvent"
-                            }
-                        >
-                            {/*{!this.state.isLoading && this.state.events.length > 0 ?*/}
-                            {/*    this.state.events.map((ev, i) => {*/}
-                            {/*        return <UpcomingEventsTable*/}
-                            {/*            {...ev}*/}
-                            {/*            key={i}*/}
-                            {/*        />*/}
-                            {/*    })*/}
-                            {/*    :*/}
-                            {/*    <div style={{display: "flex", justifyContent: "center", padding: "20px"}}>*/}
-                            {/*        No events*/}
-                            {/*    </div>*/}
-                            {/*}*/}
-                        </DisplayCase>
-                    }
-                    </div>
-                </div>
-            {/* put upcoming performances down here */}
+                }
             </div>
         )
     }

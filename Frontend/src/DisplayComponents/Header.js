@@ -6,7 +6,7 @@ import Constants from "../Constants/Constants";
 import UserSearch from "../FormComponents/UserSearch";
 import EnsembleSearch from "../FormComponents/EnsembleSearch";
 import DisplayCase from "./Containers/DisplayCase";
-import UpcomingEventsTable from "./UpcomingEventsTable";
+import UpcomingPerformancesTable from "./UpcomingPerformancesTable";
 
 export default class Header extends React.Component {
     // Reusable header
@@ -194,7 +194,7 @@ export default class Header extends React.Component {
                                     >
                                         {
                                             this.props.events.map((event, i) => {
-                                                return <UpcomingEventsTable
+                                                return <UpcomingPerformancesTable
                                                     {...event}
                                                     redirect={this.props.redirect}
                                                     userIsMod={this.props.userIsMod}

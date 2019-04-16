@@ -14,6 +14,8 @@ namespace MyGigApi.DTOs
 
         public DateTime DateAndTime { get; set; }
 
+        public int EnsembleId { get; set; }
+
         public string EnsembleName { get; set; }
 
         public bool UserIsMod { get; set; }

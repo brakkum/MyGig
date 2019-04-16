@@ -3,7 +3,7 @@ import JsPDF from "jspdf";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
-export default class UpcomingEventsTable extends React.Component {
+export default class UpcomingPerformancesTable extends React.Component {
 
     _jwt = null;
 
@@ -87,7 +87,7 @@ export default class UpcomingEventsTable extends React.Component {
                         const userIsMod = perf.userIsMod;
                         return <tr key={i}>
                             <td>{moment(perf.dateAndTime).format("MMM D, h:mm A")}</td>
-                            <td>{perf.ensembleName}</td>
+                            <td><Link to={`/ensemble/${perf.ensembleId}`}>{perf.ensembleName}</Link></td>
                             <td>{perf.eventLocation}</td>
                             <td>{userIsMod && <Link to={"/editSetlist/" + perf.bookingId} >Edit Set</Link>}</td>
                             <td>{perf.setlist ? <a className="" onClick={() => this.downloadSetlist(perf.bookingId)}>Download Setlist</a> : "No Setlist"}</td>

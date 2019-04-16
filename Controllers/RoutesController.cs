@@ -74,6 +74,7 @@ namespace MyGigApi.Controllers
                     EventName = b.Event.Name,
                     EventLocation = b.Event.Location,
                     EnsembleName = b.Ensemble.Name,
+                    EnsembleId = b.EnsembleId,
                     EventId = b.EventId,
                     DateAndTime = b.Event.DateAndTime,
                     UserIsMod = ensemblesAsMod.Contains(b.EnsembleId),
@@ -90,6 +91,7 @@ namespace MyGigApi.Controllers
                 .Where(e => eventIds.Contains(e.EventId))
                 .Select(e => new EventDto
                 {
+                    EventId = e.EventId,
                     Name = e.Name,
                     DateAndTime = e.DateAndTime,
                     Location = e.Location
