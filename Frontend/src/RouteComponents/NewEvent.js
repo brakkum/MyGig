@@ -104,9 +104,9 @@ export default withRouter(
                             Event Name
                         </label>
                         <input
-                        value={this.state.name}
-                        className={"input " + (!this.state.nameValid && "is-danger")}
-                        onChange={e => this.updateValue("name", e)}
+                            value={this.state.name}
+                            className={"input " + (!this.state.nameValid && "is-danger")}
+                            onChange={e => this.updateValue("name", e)}
                         />
                     </div>
                     <div className="field">

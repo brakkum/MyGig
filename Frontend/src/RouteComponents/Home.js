@@ -16,7 +16,8 @@ export default class Home extends React.Component {
         notifications: [],
         requests: [],
         performances: [],
-        events: []
+        events: [],
+        hideEvents: true
     };
 
     componentDidMount() {
@@ -118,7 +119,7 @@ export default class Home extends React.Component {
                                 </div>
                         }
                         {
-                            <div className="columns is-vcentered">
+                            <div className="columns">
                                 <div className="column is-6">
                                     <div className="box">
                                         <div>
@@ -157,22 +158,35 @@ export default class Home extends React.Component {
                                         <div>
                                             <span className="is-size-3">Events</span>
                                             <Link to="/newEvent" className="is-pulled-right">New</Link>
-                                            {events.length > 0 ?
-                                                events.map((event, i) => {
-                                                    return <div key={i}>
-                                                        <Link to={`/event/${event.eventId}`} key={i}>
-                                                            <h4 className="is-size-4">{event.name}</h4>
-                                                        </Link>
-                                                        <span
-                                                            className="is-size-5">{moment(event.dateAndTime).format("MMM D")}, </span>
-                                                        <span className="is-size-6">{event.location}</span>
+                                            <div>
+                                                {events.length > 0 ?
+                                                    events.map((event, i) => {
+                                                        return <div className={i >= 2 && this.state.hideEvents ? "is-hidden" : ""} key={i}>
+                                                            <Link to={`/event/${event.eventId}`} key={i}>
+                                                                <h4 className="is-size-4">{event.name}</h4>
+                                                            </Link>
+                                                            <span
+                                                                className="is-size-5">{moment(event.dateAndTime).format("MMM D")}, </span>
+                                                            <span className="is-size-6">{event.location}</span>
+                                                        </div>
+                                                    })
+                                                    :
+                                                    <div>
+                                                        No Events
                                                     </div>
-                                                })
-                                                :
-                                                <div>
-                                                    No Events
-                                                </div>
-                                            }
+                                                }
+                                                {
+                                                    events.length > 2 &&
+                                                        <div className="has-text-centered">
+                                                            <a
+                                                                href="#events"
+                                                                onClick={() => this.setState({hideEvents: !this.state.hideEvents})}
+                                                            >
+                                                                {this.state.hideEvents ? "More" : "Less"}
+                                                            </a>
+                                                        </div>
+                                                }
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
