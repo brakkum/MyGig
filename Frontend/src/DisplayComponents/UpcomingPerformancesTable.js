@@ -90,7 +90,7 @@ export default class UpcomingPerformancesTable extends React.Component {
                             <td><Link to={`/ensemble/${perf.ensembleId}`}>{perf.ensembleName}</Link></td>
                             <td>{perf.eventLocation}</td>
                             <td>{userIsMod && <Link to={"/editSetlist/" + perf.bookingId} >Edit Set</Link>}</td>
-                            <td>{perf.setlist ? <a className="" onClick={() => this.downloadSetlist(perf.bookingId)}>Download Setlist</a> : "No Setlist"}</td>
+                            <td>{perf.setlist ? <a href={`#getsetlist-${perf.bookingId}`} onClick={() => this.downloadSetlist(perf.bookingId)}>Download Setlist</a> : "No Setlist"}</td>
                         </tr>
                     })
                 }

@@ -209,19 +209,19 @@ export default class Account extends React.Component {
                                         className={this.state.currentTab === "info" ? "is-active" : ""}
                                         onClick={() => this.setState({currentTab: "info"})}
                                     >
-                                        <a>Info</a>
+                                        <a href="#info">Info</a>
                                     </li>
                                     <li
                                         className={this.state.currentTab === "password" ? "is-active" : ""}
                                         onClick={() => this.setState({currentTab: "password"})}
                                     >
-                                        <a>Change Password</a>
+                                        <a href="#pass">Change Password</a>
                                     </li>
                                     <li
                                         className={this.state.currentTab === "photo" ? "is-active" : ""}
                                         onClick={() => this.setState({currentTab: "photo"})}
                                     >
-                                        <a>Change Photo</a>
+                                        <a href="#photo">Change Photo</a>
                                     </li>
                                 </ul>
                             </div>

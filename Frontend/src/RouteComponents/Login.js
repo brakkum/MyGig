@@ -77,7 +77,7 @@ export default withRouter(
                                             }
                                             onClick={() => this.setState({visibleForm: "login"})}
                                         >
-                                            <a>
+                                            <a href="#login">
                                                 Login
                                             </a>
                                         </li>
@@ -88,7 +88,7 @@ export default withRouter(
                                             }
                                             onClick={() => this.setState({visibleForm: "signup"})}
                                         >
-                                            <a>
+                                            <a href="#signup">
                                                 Sign Up
                                             </a>
                                         </li>
