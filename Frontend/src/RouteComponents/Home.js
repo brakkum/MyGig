@@ -112,9 +112,9 @@ export default class Home extends React.Component {
                                         <span className="is-size-3">Ensembles</span>
                                         <Link to="/newEnsemble" className="is-pulled-right">New</Link>
                                     </div>
-                                    <div className="field is-grouped is-grouped-multiline section">
-                                        {ensembles.length > 0 ?
-                                            ensembles.map((ens, i) => {
+                                    {ensembles.length > 0 ?
+                                        <div className="field is-grouped is-grouped-multiline">
+                                            {ensembles.map((ens, i) => {
                                                 const userIsMod = ens.userIsMod;
                                                 return <span className="control" key={i}>
                                                     <Link to={"/ensemble/" + ens.ensembleId}>
@@ -130,11 +130,13 @@ export default class Home extends React.Component {
                                                         </div>
                                                     </Link>
                                                 </span>
-                                            })
-                                            :
-                                            <div>No Ensembles</div>
-                                        }
-                                    </div>
+                                            })}
+                                        </div>
+                                        :
+                                        <div>
+                                            No Ensembles
+                                        </div>
+                                    }
                                 </div>
                             </div>
                             <div className="column">
@@ -142,7 +144,7 @@ export default class Home extends React.Component {
                                     <div>
                                         <span className="is-size-3">Events</span>
                                         <Link to="/newEvent" className="is-pulled-right">New</Link>
-                                        {
+                                        {events.length > 0 ?
                                             events.map((event, i) => {
                                                 return <div key={i}>
                                                     <Link to={`/event/${event.eventId}`} key={i}>
@@ -152,6 +154,10 @@ export default class Home extends React.Component {
                                                     <span className="is-size-6">{event.location}</span>
                                                 </div>
                                             })
+                                            :
+                                            <div>
+                                                No Events
+                                            </div>
                                         }
                                     </div>
                                 </div>
