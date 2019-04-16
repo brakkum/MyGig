@@ -39,7 +39,7 @@ export default class Account extends React.Component {
             }
         }).then(res => res.json())
             .then(json => {
-                if (json.success) {
+                if (this._isMounted && json.success) {
                     const user = json.user;
                     this.setState({
                         fullName: user.fullName,
@@ -175,7 +175,6 @@ export default class Account extends React.Component {
                         photoUrl: json.url,
                         sendingRequest: false
                     });
-                    this.props.updateUserPhoto(json.url);
                 } else {
                     this.setState({
                         fileError: json.error,
@@ -241,20 +240,18 @@ export default class Account extends React.Component {
                                                 {!(this.state.numEnsembles === 1) && "s"}
                                             </h3>
                                         </div>
-                                        <div className="column">
-                                            <div>
-                                                <img
-                                                    src={this.state.photoUrl}
-                                                    alt={this.state.fullName}
-                                                    className="image"
-                                                    style={{
-                                                        maxWidth: "450px",
-                                                        margin: "auto",
-                                                        border: "1px solid lightgrey",
-                                                        borderRadius: "5px"
-                                                    }}
-                                                />
-                                            </div>
+                                        <div className="column is-flex">
+                                            <img
+                                                src={this.state.photoUrl || "/static/userphotos/default.png"}
+                                                alt={this.state.fullName}
+                                                className="image"
+                                                style={{
+                                                    maxWidth: "450px",
+                                                    margin: "auto",
+                                                    border: "1px solid lightgrey",
+                                                    borderRadius: "5px"
+                                                }}
+                                            />
                                         </div>
                                     </div>
                             }

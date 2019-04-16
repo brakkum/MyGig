@@ -4,4 +4,6 @@ obj/
 appsettings*
 .idea/*
 MyGigApi.sln.DotSettings.user
-static/*
+/static/userphotos/*
+!/static/userphotos/default.png
+

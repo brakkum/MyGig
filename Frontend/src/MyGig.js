@@ -25,8 +25,6 @@ export default class MyGig extends Component {
         // and then be reset to null
         loggedIn: false,
         redirect: null,
-        // showBuffer: true,
-        photoUrl: null
     };
 
     // this is called from login page
@@ -43,12 +41,6 @@ export default class MyGig extends Component {
             });
         }, 1000);
         this.setJwtInLocalStorage(data.jwt);
-    };
-
-    updateUserPhoto = url => {
-        this.setState({
-            photoUrl: url
-        });
     };
 
     // clear user info on logout
