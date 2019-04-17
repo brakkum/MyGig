@@ -123,7 +123,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/newconnection")]
+        [Route(RoutePrefix + "/newConnection")]
         public OkObjectResult RequestNewConnection([FromBody] ConnectionDto request)
         {
             var userId = GetUserId();

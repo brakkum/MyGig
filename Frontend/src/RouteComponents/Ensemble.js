@@ -1,5 +1,7 @@
 import React from "react";
 import UpcomingPerformancesDisplay from "../DisplayComponents/UpcomingPerformancesDisplay";
+import TimeSince from "../HelperComponents/TimeSince";
+import ConnectToUserButton from "../FormComponents/ConnectToUserButton";
 
 export default class Ensemble extends React.Component {
     // top level route component for /ensemble/{ensemble_id}
@@ -210,7 +212,49 @@ export default class Ensemble extends React.Component {
                             }
                             {this.state.currentTag === "comments" &&
                                 <div>
-
+                                    <div>
+                                        input
+                                    </div>
+                                    <div>
+                                        {this.state.comments.map((comment, i) => {
+                                            const user = comment.user;
+                                            console.log(comment)
+                                            return <article className="message is-dark" key={i}>
+                                                <div className="message-header">
+                                                    <span>{user.fullName}</span>
+                                                    <span><TimeSince time={comment.timestamp} /></span>
+                                                </div>
+                                                <div className="message-body columns">
+                                                    <div className="column is-10">
+                                                        {comment.text}
+                                                    </div>
+                                                    <div className="column">
+                                                        <div className="has-text-centered">
+                                                            <img
+                                                                className="image is-centered"
+                                                                style={{
+                                                                    border: "1px solid lightgrey",
+                                                                    borderRadius: "5px",
+                                                                    margin: "0 auto 10px auto"
+                                                                }}
+                                                                width="100px"
+                                                                src={user.photoUrl || "/static/userphotos/default.png"}
+                                                                alt={user.fullName}
+                                                            />
+                                                            {!user.connectedToUser &&
+                                                                <div className="is-hoverable">
+                                                                    <ConnectToUserButton
+                                                                        jwt={this._jwt}
+                                                                        id={user.userId}
+                                                                    />
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        })}
+                                    </div>
                                 </div>
                             }
                             {this.state.currentTag === "members" &&
@@ -228,19 +272,6 @@ export default class Ensemble extends React.Component {
                                     remove members
                                 </div>
                             }
-                            {/*<Header*/}
-                            {/*    jwt={this._jwt}*/}
-                            {/*    id={this._ensembleId}*/}
-                            {/*    redirect={this.props.redirect}*/}
-                            {/*    {...this.state.ensemble}*/}
-                            {/*/>*/}
-                            {/*<CommentSection*/}
-                            {/*    id={this._ensembleId}*/}
-                            {/*    jwt={this._jwt}*/}
-                            {/*    comments={this.state.ensemble.comments}*/}
-                            {/*    submitUrl={"/api/ensembles/newensemblecomment"}*/}
-                            {/*    getUrl={"/api/ensembles/getcomments"}*/}
-                            {/*/>*/}
                         </div>
                     </div>
                 }
