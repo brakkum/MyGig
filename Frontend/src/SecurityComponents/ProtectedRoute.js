@@ -7,10 +7,10 @@ export default function ProtectedRoute({component: Component, userData, loggedIn
     return(
         <Route
             {...rest}
-            render={(props) =>
+            render={(props) => {
                 // check that there is a user
                 // and that they're logged in
-                loggedIn ? (
+                return loggedIn ? (
                     // if so, take them to what they requested
                     // (more security will occur in the component)
                     <Component
@@ -23,8 +23,8 @@ export default function ProtectedRoute({component: Component, userData, loggedIn
                 ) : (
                     // if they're not logged in, redirect to login
                     // include requested route
-                    <Redirect to={{pathname: "/login", state: { from: props.location.pathname } }} />
-                )
+                    <Redirect to={{pathname: "/login", state: { from: props.location.pathname + props.location.hash } }} />
+                )}
             }
         />
     )

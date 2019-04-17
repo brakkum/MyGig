@@ -10,6 +10,7 @@ export default class Event extends React.Component {
     _jwt = null;
 
     state = {
+        pageLoading: true,
         event: null
     };
 
@@ -29,12 +30,10 @@ export default class Event extends React.Component {
             })
         }).then(res => res.json())
             .then(json => {
-                if (json.success && this._isMounted) {
+                if (this._isMounted && json.success) {
                     this.setState({event: json.ev});
-                    this.props.pageLoaded();
                 } else {
                     console.log("event fetch fail");
-                    this.props.pageLoaded();
                 }
             })
             .catch(e => console.log(e));
@@ -46,7 +45,9 @@ export default class Event extends React.Component {
 
     render() {
         return(
-            this.state.event &&
+            this.state.pageLoading ?
+                <progress className="progress"/>
+                :
                 <div>
                     <Header
                         jwt={this._jwt}

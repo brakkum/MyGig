@@ -1,5 +1,4 @@
 import React from "react";
-import res from "../MockData/ConnectionsMockData";
 import ConnectionsDisplay from "../DisplayComponents/ConnectionsDisplay";
 
 export default class Connections extends React.Component {
@@ -28,10 +27,6 @@ export default class Connections extends React.Component {
     };
 
     componentDidMount() {
-        this.setState({
-            requests: res.data.requests,
-            connections: res.data.connections
-        });
         this._isMounted = true;
         setTimeout(() => {
             this.props.pageLoaded();

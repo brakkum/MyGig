@@ -94,7 +94,6 @@ export default class Header extends React.Component {
     };
 
     render() {
-        console.log(this.props);
         let memOpacity = this.state.showMemberAdd ? "1" : "0";
         let memHeight = this.state.showMemberAdd ? "300px" : "0px";
         let ensOpacity = this.state.showEnsembleAdd ? "1" : "0";

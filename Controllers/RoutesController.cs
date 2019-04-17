@@ -309,7 +309,8 @@ namespace MyGigApi.Controllers
                     EventLocation = b.Event.Location,
                     DateAndTime = b.Event.DateAndTime,
                     BookingId = b.BookingId,
-                    Setlist = b.Setlist
+                    Setlist = b.Setlist,
+                    UserIsMod = validMod
                 }).ToList() as ICollection<EnsembleBookingDto>;
 
             var userConnectionIds = GetUserConnections(userId);
@@ -319,7 +320,7 @@ namespace MyGigApi.Controllers
                 .OrderByDescending(ec => ec.Timestamp)
                 .Select(ec => new EnsembleCommentDto
                 {
-                    Id = ec.EnsembleCommentId,
+                    EnsembleId = ec.EnsembleCommentId,
                     Text = ec.Text,
                     Timestamp = ec.Timestamp,
                     User = new MemberDto
@@ -349,8 +350,8 @@ namespace MyGigApi.Controllers
                     Name = e.Name,
                     Members = members,
                     Comments = comments,
-                    Events = events,
-                    UserIsMod = ensMods.Contains(userId)
+                    Performances = events,
+                    UserIsMod = validMod
                 })
                 .FirstOrDefault(e => e.EnsembleId == dto.EnsembleId);
 

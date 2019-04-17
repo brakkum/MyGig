@@ -12,7 +12,7 @@ namespace MyGigApi.DTOs
 
         public ICollection<MemberDto> Members { get; set; }
 
-        public ICollection<EnsembleBookingDto> Events { get; set; }
+        public ICollection<EnsembleBookingDto> Performances { get; set; }
 
         public ICollection<EnsembleCommentDto> Comments { get; set; }
     }

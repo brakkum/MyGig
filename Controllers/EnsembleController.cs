@@ -223,13 +223,13 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/newensemblecomment")]
+        [Route(RoutePrefix + "/newComment")]
         public OkObjectResult AddEnsembleModerator([FromBody] EnsembleCommentDto dto)
         {
             var userId = GetUserId();
 
             var validMem = _context.EnsembleMembers
-                .Any(em => em.EnsembleId == dto.Id &&
+                .Any(em => em.EnsembleId == dto.EnsembleId &&
                            em.UserIdRecipient == userId &&
                            em.Status == RequestStatus.Accepted);
 
@@ -240,7 +240,7 @@ namespace MyGigApi.Controllers
 
             _context.EnsembleComments.Add(new EnsembleComment
             {
-                EnsembleId = dto.Id,
+                EnsembleId = dto.EnsembleId,
                 UserId = userId,
                 Text = dto.Text,
                 Timestamp = DateTime.Now
@@ -252,19 +252,19 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/getcomments")]
+        [Route(RoutePrefix + "/getComments")]
         public OkObjectResult GetEnsembleComments([FromBody] EnsembleCommentDto dto)
         {
             var userId = GetUserId();
 
             var eventModIds = _context.EnsembleModerators
-                .Where(em => em.EnsembleId == dto.Id &&
+                .Where(em => em.EnsembleId == dto.EnsembleId &&
                              em.Status == RequestStatus.Accepted)
                 .Select(em => em.UserIdRecipient)
                 .ToArray();
 
             var ensembleMemberIds = _context.EnsembleMembers
-                .Where(e => e.EnsembleId == dto.Id &&
+                .Where(e => e.EnsembleId == dto.EnsembleId &&
                             e.Status == RequestStatus.Accepted)
                 .Select(b => b.UserIdRecipient)
                 .ToArray();
@@ -281,7 +281,7 @@ namespace MyGigApi.Controllers
 
             var comments = _context.EnsembleComments
                 .Include(c => c.User)
-                .Where(c => c.EnsembleId == dto.Id)
+                .Where(c => c.EnsembleId == dto.EnsembleId)
                 .OrderByDescending(c => c.Timestamp)
                 .Select(c => new EnsembleCommentDto
                 {

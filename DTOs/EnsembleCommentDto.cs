@@ -11,6 +11,6 @@ namespace MyGigApi.DTOs
         public MemberDto User { get; set; }
 
         // Ensemble Id
-        public int Id { get; set; }
+        public int EnsembleId { get; set; }
     }
 }
