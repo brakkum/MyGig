@@ -18,7 +18,8 @@ export default class Ensemble extends React.Component {
         members: [],
         comments: [],
         performances: [],
-        newComment: ""
+        newComment: "",
+        sendingRequest: false
     };
 
     addComment = () => {
@@ -61,9 +62,6 @@ export default class Ensemble extends React.Component {
     };
 
     repopulateComments = () => {
-        this.setState({
-            sendingRequest: true
-        });
 
         fetch("/api/ensembles/getComments", {
             method: "post",
@@ -212,14 +210,36 @@ export default class Ensemble extends React.Component {
                             }
                             {this.state.currentTag === "comments" &&
                                 <div>
-                                    <div>
-                                        input
+                                    <div className="columns is-vcentered">
+                                        <div
+                                            className="column"
+                                        >
+                                            <textarea
+                                                className="textarea"
+                                                rows="3"
+                                                value={this.state.newComment}
+                                                onChange={e => this.setState({newComment: e.target.value})}
+                                            />
+                                        </div>
+                                        <div className="column field is-3 is-grouped is-grouped-centered">
+                                            <button
+                                                className={"button is-info" +
+                                                (this.state.sendingRequest ? " is-loading" : "")}
+                                                onClick={() => this.addComment()}
+                                            >
+                                                Add Comment
+                                            </button>
+                                        </div>
                                     </div>
                                     <div>
                                         {this.state.comments.map((comment, i) => {
                                             const user = comment.user;
-                                            console.log(comment)
-                                            return <article className="message is-dark" key={i}>
+                                            console.log(comment);
+                                            return <article
+                                                className="message is-dark"
+                                                key={i}
+                                                style={{border: "1px solid lightgrey", borderTop: "0"}}
+                                            >
                                                 <div className="message-header">
                                                     <span>{user.fullName}</span>
                                                     <span><TimeSince time={comment.timestamp} /></span>
