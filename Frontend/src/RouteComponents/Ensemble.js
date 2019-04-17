@@ -217,6 +217,7 @@ export default class Ensemble extends React.Component {
                                             <textarea
                                                 className="textarea"
                                                 rows="3"
+                                                placeholder="Add a new comment"
                                                 value={this.state.newComment}
                                                 onChange={e => this.setState({newComment: e.target.value})}
                                             />
