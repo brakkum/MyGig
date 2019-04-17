@@ -328,7 +328,7 @@ namespace MyGigApi.Controllers
                         FullName = ec.User.FullName,
                         PhotoUrl = ec.User.PhotoUrl,
                         UserId = ec.UserId,
-                        ConnectedToUser = validMod
+                        ConnectedToUser = userConnectionIds.Contains(ec.User.UserId)
                     }
                 })
                 .ToList() as ICollection<EnsembleCommentDto>;
@@ -340,7 +340,8 @@ namespace MyGigApi.Controllers
                     FullName = e.UserRecipient.FullName,
                     PhotoUrl = e.UserRecipient.PhotoUrl,
                     UserId = e.UserRecipient.UserId,
-                    ConnectedToUser = userConnectionIds.Contains(e.UserIdRecipient)
+                    ConnectedToUser = userConnectionIds.Contains(e.UserIdRecipient),
+                    MemberSince = e.ConfirmedAt
                 }).ToList() as ICollection<MemberDto>;
 
             var ensemble = _context.Ensembles

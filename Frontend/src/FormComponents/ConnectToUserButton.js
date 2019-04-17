@@ -2,10 +2,20 @@ import React from "react";
 
 export default class ConnectToUserButton extends React.Component {
 
+    _isMounted = false;
+
     state = {
         sendingRequest: false,
         requestSent: false
     };
+
+    componentDidMount() {
+        this._isMounted = true;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
 
     sendConnectionRequest = id => {
         this.setState({sendingRequest: true});
@@ -20,7 +30,7 @@ export default class ConnectToUserButton extends React.Component {
             })
         }).then(res => res.json())
             .then(json => {
-                if (json.success){
+                if (this._isMounted && json.success){
                     console.log("requested ", json);
                     this.setState({
                         requestSent: true

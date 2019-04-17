@@ -1,3 +1,5 @@
+using System;
+
 namespace MyGigApi.DTOs
 {
     public class MemberDto
@@ -9,5 +11,7 @@ namespace MyGigApi.DTOs
         public string PhotoUrl { get; set; }
 
         public bool ConnectedToUser { get; set; }
+
+        public DateTime? MemberSince { get; set; }
     }
 }

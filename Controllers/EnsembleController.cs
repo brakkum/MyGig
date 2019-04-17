@@ -21,7 +21,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/newensemble")]
+        [Route(RoutePrefix + "/newEnsemble")]
         public OkObjectResult NewEnsemble([FromBody] EnsembleDto dto)
         {
             var userId = GetUserId();
@@ -39,7 +39,8 @@ namespace MyGigApi.Controllers
                 UserIdRecipient = userId,
                 UserIdRequester = userId,
                 EnsembleId = ensemble.EnsembleId,
-                Status = RequestStatus.Accepted
+                Status = RequestStatus.Accepted,
+                ConfirmedAt = DateTime.Now
             };
             _context.EnsembleModerators.Add(mod);
             // Make ensemble creator Member
@@ -48,7 +49,8 @@ namespace MyGigApi.Controllers
                 EnsembleId = ensemble.EnsembleId,
                 UserIdRecipient = userId,
                 UserIdRequester = userId,
-                Status = RequestStatus.Accepted
+                Status = RequestStatus.Accepted,
+                ConfirmedAt = DateTime.Now
             };
             _context.EnsembleMembers.Add(mem);
 

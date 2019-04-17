@@ -2,6 +2,8 @@ import React from "react";
 import UpcomingPerformancesDisplay from "../DisplayComponents/UpcomingPerformancesDisplay";
 import TimeSince from "../HelperComponents/TimeSince";
 import ConnectToUserButton from "../FormComponents/ConnectToUserButton";
+import MemberEnsembleDisplay from "../DisplayComponents/MemberEnsembleDisplay";
+import MemberPicture from "../DisplayComponents/MemberPicture";
 
 export default class Ensemble extends React.Component {
     // top level route component for /ensemble/{ensemble_id}
@@ -235,41 +237,40 @@ export default class Ensemble extends React.Component {
                                     <div>
                                         {this.state.comments.map((comment, i) => {
                                             const user = comment.user;
-                                            console.log(comment);
                                             return <article
                                                 className="message is-dark"
                                                 key={i}
                                                 style={{border: "1px solid lightgrey", borderTop: "0"}}
                                             >
-                                                <div className="message-header">
-                                                    <span>{user.fullName}</span>
-                                                    <span><TimeSince time={comment.timestamp} /></span>
-                                                </div>
-                                                <div className="message-body columns">
-                                                    <div className="column is-10">
-                                                        {comment.text}
-                                                    </div>
-                                                    <div className="column">
-                                                        <div className="has-text-centered">
-                                                            <img
-                                                                className="image is-centered"
-                                                                style={{
-                                                                    border: "1px solid lightgrey",
-                                                                    borderRadius: "5px",
-                                                                    margin: "0 auto 10px auto"
-                                                                }}
-                                                                width="100px"
-                                                                src={user.photoUrl || "/static/userphotos/default.png"}
-                                                                alt={user.fullName}
-                                                            />
-                                                            {!user.connectedToUser &&
-                                                                <div className="is-hoverable">
-                                                                    <ConnectToUserButton
-                                                                        jwt={this._jwt}
-                                                                        id={user.userId}
-                                                                    />
-                                                                </div>
-                                                            }
+                                                <div className="message-body">
+                                                    <div className="columns">
+                                                        <div className="column is-10" style={{position: "relative"}}>
+                                                            <div>{comment.text}</div>
+                                                            <div
+                                                                className="is-hidden-mobile"
+                                                                style={{position: "absolute", bottom: "0"}}
+                                                            >
+                                                                <TimeSince time={comment.timestamp} />
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            className="column is-hidden-desktop is-hidden-tablet"
+                                                        >
+                                                            <TimeSince time={comment.timestamp} />
+                                                        </div>
+                                                        <div className="column">
+                                                            <div className="has-text-centered">
+                                                                <h5 className="is-size-5">{user.fullName}</h5>
+                                                                <MemberPicture {...user} />
+                                                                {!user.connectedToUser &&
+                                                                    <div className="is-hoverable">
+                                                                        <ConnectToUserButton
+                                                                            jwt={this._jwt}
+                                                                            id={user.userId}
+                                                                        />
+                                                                    </div>
+                                                                }
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -280,7 +281,13 @@ export default class Ensemble extends React.Component {
                             }
                             {this.state.currentTag === "members" &&
                                 <div>
-                                    members
+                                    {this.state.members.map((member, i) => {
+                                        return <MemberEnsembleDisplay
+                                            {...member}
+                                            jwt={this._jwt}
+                                            key={i}
+                                        />
+                                    })}
                                 </div>
                             }
                             {this.state.userIsMod && this.state.currentTag === "addMembers" &&

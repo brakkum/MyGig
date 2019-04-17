@@ -76,6 +76,9 @@ namespace MyGigApi.Context
             modelBuilder.Entity<EnsembleMember>()
                 .HasOne(em => em.Ensemble)
                 .WithMany(m => m.Members);
+            modelBuilder.Entity<EnsembleMember>()
+                .Property(em => em.Timestamp)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // EnsembleModerator
             modelBuilder.Entity<EnsembleModerator>()
                 .Property(em => em.Status)
@@ -83,6 +86,9 @@ namespace MyGigApi.Context
             modelBuilder.Entity<EnsembleModerator>()
                 .HasOne(em => em.Ensemble)
                 .WithMany(e => e.Moderators);
+            modelBuilder.Entity<EnsembleModerator>()
+                .Property(em => em.Timestamp)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // Event
             modelBuilder.Entity<Event>()
                 .Property(e => e.CreatedOn)
