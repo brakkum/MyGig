@@ -68,7 +68,7 @@ namespace MyGigApi.Controllers
                 .ToArray();
 
             var performances = _context.Bookings
-                .Where(b => eventsFromEnsemblesIds.Contains(b.EventId))
+                .Where(b => eventsFromEnsemblesIds.Contains(b.EventId) && ensemblesAsMember.Contains(b.EnsembleId))
                 .Select(b => new EnsembleBookingDto
                 {
                     EventName = b.Event.Name,
@@ -228,7 +228,10 @@ namespace MyGigApi.Controllers
                 .Where(b => b.EventId == dto.EventId && b.Status == RequestStatus.Accepted)
                 .Select(b => new EnsembleDto
                 {
+                    EnsembleId = b.EnsembleId,
+                    BookingId = b.BookingId,
                     Name = b.Ensemble.Name,
+                    ConfirmedAt = b.ConfirmedAt,
                     Members = b.Ensemble.Members
                         .Select(m => new MemberDto
                         {

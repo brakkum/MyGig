@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace MyGigApi.DTOs
@@ -9,6 +10,10 @@ namespace MyGigApi.DTOs
         public int EnsembleId { get; set; }
 
         public bool UserIsMod { get; set; }
+
+        public int BookingId { get; set; }
+
+        public DateTime ?ConfirmedAt { get; set; }
 
         public ICollection<MemberDto> Members { get; set; }
 

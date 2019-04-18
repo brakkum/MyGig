@@ -1,7 +1,6 @@
-import React from "react";
-import Constants from "../Constants/Constants";
-import MemberSearchDisplay from "./MemberSearchDisplay";
 import EnsembleSearchDisplay from "./EnsembleSearchDisplay";
+import Constants from "../Constants/Constants";
+import React from "react";
 
 export default class SearchEnsembles extends React.Component {
 

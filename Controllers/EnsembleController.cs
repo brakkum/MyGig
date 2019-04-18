@@ -324,53 +324,6 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/requestBooking")]
-        public OkObjectResult RequestBooking([FromBody] BookingDto dto)
-        {
-            var userId = GetUserId();
-
-            var validMod = _context.EventModerators
-                .Any(em => em.EventId == dto.EventId &&
-                           em.UserIdRecipient == userId &&
-                           em.Status == RequestStatus.Accepted);
-
-            if (!validMod)
-            {
-                return new OkObjectResult(new {success = false, error = "Not a valid event mod"});
-            }
-
-            var ensembleMod = _context.EnsembleModerators
-                .FirstOrDefault(em => em.EnsembleId == dto.EnsembleId &&
-                                      em.Status == RequestStatus.Accepted);
-
-            if (ensembleMod == null)
-            {
-                return new OkObjectResult(new {success = false, error = "No group mod"});
-            }
-
-            // if user is default ensemble mod, immediate accept
-            var status = ensembleMod.UserIdRecipient == userId ? RequestStatus.Accepted : RequestStatus.Pending;
-            var user = _context.Users.Find(userId);
-            var ensemble = _context.Ensembles.Find(dto.EnsembleId);
-            var ev = _context.Events.Find(dto.EventId);
-
-            _context.Bookings.Add(new Booking
-            {
-                EnsembleId = dto.EnsembleId,
-                EventId = dto.EventId,
-                UserIdRecipient = ensembleMod.UserIdRecipient,
-                UserIdRequester = userId,
-                Status = status,
-                Text = $"{user.FullName} would like your ensemble {ensemble.Name} to perform at the event {ev.Name}"
-            });
-
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true});
-        }
-
-        [HttpPost]
-        [Authorize]
         [Route(RoutePrefix + "/getSetlist")]
         public OkObjectResult EditSetlist([FromBody] BookingDto dto)
         {
@@ -398,7 +351,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/updatesetlist")]
+        [Route(RoutePrefix + "/updateSetlist")]
         public OkObjectResult UpdateSetlist([FromBody] BookingDto dto)
         {
             var userId = GetUserId();

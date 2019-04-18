@@ -1,5 +1,5 @@
 import UpcomingPerformancesDisplay from "../DisplayComponents/UpcomingPerformancesDisplay";
-import MemberEnsembleDisplay from "../DisplayComponents/MemberEnsembleDisplay";
+import EnsembleMemberDisplay from "../DisplayComponents/EnsembleMemberDisplay";
 import EnsembleMemberDelete from "../DisplayComponents/EnsembleMemberDelete";
 import SearchConnections from "../DisplayComponents/SearchConnections";
 import MemberComment from "../DisplayComponents/MemberComment";
@@ -265,7 +265,7 @@ export default class Ensemble extends React.Component {
                             {this.state.currentTag === "members" &&
                                 <div>
                                     {this.state.members.map((member, i) => {
-                                        return <MemberEnsembleDisplay
+                                        return <EnsembleMemberDisplay
                                             {...member}
                                             jwt={this.state.jwt}
                                             key={i}

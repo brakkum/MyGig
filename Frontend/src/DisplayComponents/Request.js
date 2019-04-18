@@ -80,9 +80,9 @@ export default class Request extends React.Component {
                         />
                     </div>
                     <div className="column">
-                        <h4 className="is-size-4 has-text-centered">
+                        <h5 className="is-size-5 has-text-centered">
                             {this.props.text}
-                        </h4>
+                        </h5>
                     </div>
                     <div className="column">
                         <div className="buttons is-flex is-centered">

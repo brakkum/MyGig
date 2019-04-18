@@ -193,53 +193,77 @@ namespace MyGigApi.Controllers
             return new OkObjectResult(new {success = true, comments});
         }
 
-//        [HttpPost]
-//        [Authorize]
-//        [Route(RoutePrefix + "/newbooking")]
-//        public OkObjectResult NewBooking([FromBody] BookingDto dto)
-//        {
-//            var userId = GetUserId();
-//            var user = _context.Users.Find(userId);
-//
-//            var validMod = _context.EventModerators
-//                .Any(em => em.UserIdRecipient == userId &&
-//                           em.EventId == dto.EventId &&
-//                           em.Status == RequestStatus.Accepted);
-//
-//            if (!validMod)
-//            {
-//                return new OkObjectResult(new {success = false, error = "Not valid mod"});
-//            }
-//
-//            var firstEnsMod = _context.EnsembleModerators
-//                .Where(em => em.EnsembleId == dto.EnsembleId &&
-//                             em.Status == RequestStatus.Accepted)
-//                .Select(em => em.UserRecipient)
-//                .FirstOrDefault();
-//
-//            if (firstEnsMod == null)
-//            {
-//                return new OkObjectResult(new {success = false, error = "Could not find mod of ensemble"});
-//            }
-//
-//            var ev = _context.Events.Find(dto.EventId);
-//            var en = _context.Ensembles.Find(dto.EnsembleId);
-//
-//            var booking = new Booking
-//            {
-//                EnsembleId = dto.EnsembleId,
-//                UserIdRecipient = firstEnsMod.UserId,
-//                UserIdRequester = userId,
-//                EventId = dto.EventId,
-//                Text = $"{user.FullName} has asked {en.Name} to perform at {ev.Name}"
-//            };
-//
-//            _context.Bookings.Add(booking);
-//            _context.SaveChanges();
-//
-//            return new OkObjectResult(new {success = true});
-//        }
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/requestBooking")]
+        public OkObjectResult RequestBooking([FromBody] BookingDto dto)
+        {
+            var userId = GetUserId();
 
+            var validMod = _context.EventModerators
+                .Any(em => em.EventId == dto.EventId &&
+                           em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
+            {
+                return new OkObjectResult(new {success = false, error = "Not a valid event mod"});
+            }
+
+            var ensembleMod = _context.EnsembleModerators
+                .FirstOrDefault(em => em.EnsembleId == dto.EnsembleId &&
+                                      em.Status == RequestStatus.Accepted);
+
+            if (ensembleMod == null)
+            {
+                return new OkObjectResult(new {success = false, error = "No group mod"});
+            }
+
+            // if user is default ensemble mod, immediate accept
+            var status = ensembleMod.UserIdRecipient == userId ? RequestStatus.Accepted : RequestStatus.Pending;
+            var user = _context.Users.Find(userId);
+            var ensemble = _context.Ensembles.Find(dto.EnsembleId);
+            var ev = _context.Events.Find(dto.EventId);
+
+            _context.Bookings.Add(new Booking
+            {
+                EnsembleId = dto.EnsembleId,
+                EventId = dto.EventId,
+                UserIdRecipient = ensembleMod.UserIdRecipient,
+                UserIdRequester = userId,
+                Status = status,
+                Text = $"{user.FullName} would like your ensemble {ensemble.Name} to perform at the event {ev.Name}"
+            });
+
+            _context.SaveChanges();
+
+            return new OkObjectResult(new {success = true});
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/removeBooking")]
+        public OkObjectResult RemoveBooking([FromBody] BookingDto dto)
+        {
+            var userId = GetUserId();
+
+            var validMod = _context.EventModerators
+                .Any(em => em.EventId == dto.EventId &&
+                           em.UserIdRecipient == userId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!validMod)
+            {
+                return new OkObjectResult(new {success = false, error = "Not a valid event mod"});
+            }
+
+            var booking = _context.Bookings.Find(dto.BookingId);
+
+            _context.Bookings.Remove(booking);
+            _context.SaveChanges();
+
+            return new OkObjectResult(new {success = true});
+        }
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/updatesetlist")]

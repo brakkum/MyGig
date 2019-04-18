@@ -20,7 +20,7 @@ export default class RequestEnsembleForEvent extends React.Component {
     sendEnsembleRequest = () => {
         console.log(this.props)
         this.setState({sendingRequest: true});
-        fetch("/api/ensembles/requestBooking", {
+        fetch("/api/events/requestBooking", {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",

@@ -1,9 +1,10 @@
-import MemberEnsembleDisplay from "../DisplayComponents/MemberEnsembleDisplay";
-import EnsembleMemberDelete from "../DisplayComponents/EnsembleMemberDelete";
+import EnsembleMemberDisplay from "../DisplayComponents/EnsembleMemberDisplay";
 import SearchEnsembles from "../DisplayComponents/SearchEnsembles";
 import MemberComment from "../DisplayComponents/MemberComment";
 import moment from "moment";
 import React from "react";
+import EnsembleBookingDelete from "../DisplayComponents/EnsembleBookingDelete";
+import EventEnsembleDisplay from "../DisplayComponents/EventEnsembleDisplay";
 
 export default class Event extends React.Component {
     // top level route component for /event/{event_id}
@@ -97,21 +98,20 @@ export default class Event extends React.Component {
         )
     };
 
-    // TODO: make ensemble filter
-    // filterOutMember = userId => {
-    //     let members = this.state.members;
-    //     let newMembers = members.filter(mem => mem.userId !== userId);
-    //     this.setState({
-    //         members: []
-    //     });
-    //     this.setState({
-    //         members: newMembers
-    //     });
-    // };
+    filterOutEnsemble = ensembleId => {
+        let ensembles = this.state.ensembles;
+        let newEnsembles = ensembles.filter(ens => ens.ensembleId !== ensembleId);
+        this.setState({
+            ensembles: []
+        });
+        this.setState({
+            ensembles: newEnsembles
+        });
+    };
 
     componentDidMount() {
         const jwt = this.props.userData.jwt;
-        const eventId = this.props.match.params.eventId;
+        const eventId = parseInt(this.props.match.params.eventId);
         this._isMounted = true;
         this.setState({
             jwt: jwt,
@@ -157,7 +157,6 @@ export default class Event extends React.Component {
     }
 
     render() {
-        console.log(this.state);
         const event = this.state.event;
         const ensembles = this.state.ensembles;
         return(
@@ -253,8 +252,9 @@ export default class Event extends React.Component {
                                     <div>
                                         {this.state.comments.map((comment, i) => {
                                             return <MemberComment
-                                                {...comment}
+                                                eventId={this.state.eventId}
                                                 jwt={this.state.jwt}
+                                                {...comment}
                                                 key={i}
                                             />
                                         })}
@@ -263,10 +263,10 @@ export default class Event extends React.Component {
                             }
                             {this.state.currentTag === "ensembles" &&
                                 <div>
-                                    {this.state.members.map((member, i) => {
-                                        return <MemberEnsembleDisplay
-                                            {...member}
+                                    {ensembles.map((ensemble, i) => {
+                                        return <EventEnsembleDisplay
                                             jwt={this.state.jwt}
+                                            {...ensemble}
                                             key={i}
                                         />
                                     })}
@@ -282,13 +282,14 @@ export default class Event extends React.Component {
                             }
                             {this.state.userIsMod && this.state.currentTag === "removeEnsembles" &&
                                 <div className="section">
-                                    {this.state.ensembles.map((member, i) => {
-                                        return <EnsembleMemberDelete
-                                            key={i}
-                                            {...member}
-                                            filterOutMember={this.filterOutMember}
-                                            jwt={this.state.jwt}
+                                    {ensembles.map((ensemble, i) => {
+                                        return <EnsembleBookingDelete
+                                            filterOutEnsemble={this.filterOutEnsemble}
                                             ensembleId={this.state.ensembleId}
+                                            eventId={this.state.eventId}
+                                            jwt={this.state.jwt}
+                                            {...ensemble}
+                                            key={i}
                                         />
                                     })}
                                 </div>
