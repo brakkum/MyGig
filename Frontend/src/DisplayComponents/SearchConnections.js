@@ -38,7 +38,6 @@ export default class SearchConnections extends React.Component {
                 ).then(res => res.json())
                     .then(json => {
                         if (json.success){
-                            console.log(json.users);
                             let users = json.users;
                             this.setState({
                                 users: []
@@ -46,8 +45,6 @@ export default class SearchConnections extends React.Component {
                             this.setState({
                                 users: users
                             });
-                        } else {
-                            console.log("search fail");
                         }
                         this.setState({
                             isSearching: false

@@ -52,14 +52,11 @@ export default class SearchPage extends React.Component {
                 ).then(res => res.json())
                     .then(json => {
                         if (this._isMounted && json.success){
-                            console.log(json.users);
                             let users = json.users;
                             this.setState({
                                 users: users,
                                 isSearching: false
                             });
-                        } else {
-                            console.log("search fail");
                         }
                     }).catch(e => console.log(e));
             }, Constants.searchTimeout)

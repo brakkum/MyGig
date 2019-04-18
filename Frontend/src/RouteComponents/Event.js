@@ -48,16 +48,13 @@ export default class Event extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (json.success) {
-                    console.log("comment submitted");
                     this.repopulateComments();
                 } else {
-                    console.log("bad comment request ", json);
                     this.setState({
                         sendingRequest: false
                     });
                 }
             }).catch(e => {
-                console.log(e);
                 this.setState({
                     sendingRequest: false
                 });
@@ -82,15 +79,11 @@ export default class Event extends React.Component {
                         comments: json.comments,
                         newComment: ""
                     });
-                    console.log("retrieved comments ", json)
-                } else {
-                    console.log("comments not retrieved ", json)
                 }
                 this.setState({
                     sendingRequest: false
                 });
             }).catch(e => {
-                console.log(e);
                 this.setState({
                     sendingRequest: false
                 });
@@ -145,8 +138,6 @@ export default class Event extends React.Component {
                         pageLoading: false,
                         event: event
                     });
-                } else {
-                    console.log("event fetch fail");
                 }
             })
             .catch(e => console.log(e));

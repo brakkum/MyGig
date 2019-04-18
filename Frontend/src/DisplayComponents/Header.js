@@ -54,10 +54,8 @@ export default class Header extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (json.success){
-                    console.log("requested");
                     success = true;
                 } else {
-                    console.log("fail, ", json);
                     success = false
                 }
             }).catch(e => console.log(e));

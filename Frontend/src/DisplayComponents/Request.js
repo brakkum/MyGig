@@ -12,7 +12,6 @@ export default class Request extends React.Component {
         let typeId = this.props.typeId;
         let jwt = this.props.jwt;
 
-        console.log("accepting");
         this.setState({sendingRequest: true});
         fetch("/api/requests/confirm", {
             method: "post",
@@ -33,7 +32,6 @@ export default class Request extends React.Component {
                         sendingRequest: false
                     })
                 }
-                console.log(json)
             }
         ).catch(e => console.log(e));
     };
@@ -43,7 +41,6 @@ export default class Request extends React.Component {
         let typeId = this.props.typeId;
         let jwt = this.props.jwt;
 
-        console.log("denying");
         this.setState({sendingRequest: true});
         fetch("/api/requests/deny", {
             method: "post",
@@ -69,7 +66,6 @@ export default class Request extends React.Component {
     };
 
     render() {
-        console.log(this.props)
         return(
             <div>
                 <div className="columns is-vcentered">

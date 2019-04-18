@@ -29,18 +29,12 @@ export default withRouter(
             }).then(res => res.json())
                 .then(json => {
                     if (json.success) {
-                        console.log("ensemble removed");
                         this.props.filterOutEnsemble(this.props.ensembleId);
-                    } else {
-                        console.log("ensemble not removed ", json);
                     }
-                }).catch(e => {
-                console.log(e);
-            })
+                }).catch(e => {console.log(e);})
         };
 
         render() {
-            console.log(this.props);
             return(
                 <div
                     className="notification"

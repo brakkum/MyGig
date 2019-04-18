@@ -28,7 +28,6 @@ export default withRouter(
             let jwt = this.getJwtInLocalStorage();
 
             if (!jwt) {
-                console.log("no jwt in storage");
                 this.setState({
                     showLoginPage: true
                 });
@@ -50,12 +49,9 @@ export default withRouter(
                         json.jwt = jwt;
                         this.props.loginUser(json);
                         this.redirectOnLogin();
-                    } else {
-                        console.log("validation by jwt failed: ", json);
                     }
                 }
             ).catch(e => {
-                console.log("no response from back ", e);
                 this.setState({
                     showLoginPage: true
                 });

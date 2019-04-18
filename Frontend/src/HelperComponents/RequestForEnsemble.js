@@ -32,12 +32,9 @@ export default class RequestForEnsemble extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (this._isMounted && json.success){
-                    console.log("requested ", json);
                     this.setState({
                         requestSent: true
                     })
-                } else {
-                    console.log("fail, ", json);
                 }
                 this.setState({
                     sendingRequest: false

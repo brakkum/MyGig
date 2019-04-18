@@ -47,16 +47,13 @@ export default class Ensemble extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (json.success) {
-                    console.log("comment submitted");
                     this.repopulateComments();
                 } else {
-                    console.log("bad comment request ", json);
                     this.setState({
                         sendingRequest: false
                     });
                 }
             }).catch(e => {
-                console.log(e);
                 this.setState({
                     sendingRequest: false
                 });
@@ -92,15 +89,11 @@ export default class Ensemble extends React.Component {
                         comments: json.comments,
                         newComment: ""
                     });
-                    console.log("retrieved comments ", json)
-                } else {
-                    console.log("comments not retrieved ", json)
                 }
                 this.setState({
                     sendingRequest: false
                 });
             }).catch(e => {
-                console.log(e);
                 this.setState({
                     sendingRequest: false
                 });
@@ -144,8 +137,6 @@ export default class Ensemble extends React.Component {
                         performances: ensemble.performances,
                         pageLoading: false
                     });
-                } else {
-                    console.log("ensemble fetch fail, ", json);
                 }
             })
             .catch(e => console.log(e));
@@ -156,7 +147,6 @@ export default class Ensemble extends React.Component {
     }
 
     render() {
-        !this.state.pageLoading && console.log(this.state);
         const ensemble = this.state.ensemble;
         const performances = this.state.performances;
         return(

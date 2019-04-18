@@ -31,13 +31,11 @@ export default class ConnectToUserButton extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (this._isMounted && json.success){
-                    console.log("requested ", json);
                     this.setState({
                         requestSent: true,
                         sendingRequest: false
                     })
                 } else {
-                    console.log("fail, ", json);
                     this.setState({sendingRequest: false});
                 }
             }).catch(e => console.log(e));

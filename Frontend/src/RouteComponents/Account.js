@@ -50,7 +50,6 @@ export default class Account extends React.Component {
                         pageLoaded: true
                     })
                 } else {
-                    console.log("failed ", json);
                     this.props.history.push("/");
                 }
             }).catch(e => console.log("user get error ", e));
@@ -62,7 +61,7 @@ export default class Account extends React.Component {
 
     updatePassword = event => {
         event.preventDefault();
-        console.log(this.state);
+
         let oldPass = this.state.oldPassword;
         let oldPassConf = this.state.oldPasswordConfirm;
         let newPass = this.state.newPassword;
@@ -132,8 +131,6 @@ export default class Account extends React.Component {
         event.preventDefault();
         let file = this.state.file;
 
-        console.log(file);
-
         if (!file) {
             this.setState({
                 fileError: "File required"
@@ -182,7 +179,6 @@ export default class Account extends React.Component {
                         sendingRequest: false
                     });
                 }
-                console.log(json);
         }).catch(e => console.log("photo fail ", e));
     };
 

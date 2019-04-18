@@ -62,8 +62,6 @@ export default class UpcomingPerformancesDisplay extends React.Component {
             .then(json => {
                 if (json.success) {
                     this.outputPdf(json.setlist);
-                } else {
-                    console.log("setlist fetch fail ", json);
                 }
             })
             .catch(e => console.log("setlist fail ", e));

@@ -29,10 +29,7 @@ export default withRouter(
             }).then(res => res.json())
                 .then(json => {
                     if (json.success) {
-                        console.log("user removed");
                         this.props.filterOutMember(userId);
-                    } else {
-                        console.log("user not removed ", json);
                     }
                 }).catch(e => {
                 console.log(e);

@@ -66,11 +66,9 @@ export default class LoginForm extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (json.success){
-                    console.log("login successful");
                     this.props.loginUser(json);
                     this.props.redirectOnLogin();
                 } else {
-                    console.log("login failed: ", json);
                     this.setState({
                         sendingRequest: false,
                         loginError: "Invalid login."
@@ -78,7 +76,6 @@ export default class LoginForm extends React.Component {
                 }
             }
         ).catch(e => {
-            console.log(e);
             this.setState({sendingRequest: false});
         });
     };

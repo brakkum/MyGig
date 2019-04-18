@@ -13,7 +13,7 @@ export default class EventEnsembleDisplay extends React.Component {
                 <div className="message-body">
                     <div>
                         {members.map((member, i) => {
-                            return <div className="columns is-vcentered">
+                            return <div className="columns is-vcentered" key={i}>
                                 <div className="column has-text-centered">
                                     <h3 className="is-size-3">
                                         {member.fullName}
@@ -24,7 +24,6 @@ export default class EventEnsembleDisplay extends React.Component {
                                         jwt={this.props.jwt}
                                         width={"150px"}
                                         {...member}
-                                        key={i}
                                     />
                                 </div>
                             </div>

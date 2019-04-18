@@ -33,10 +33,7 @@ export default withRouter(
             }).then(res => res.json())
                 .then(json => {
                     if (json.success) {
-                        console.log("setlist update success");
                         this.props.redirect(`/ensemble/${this._ensembleId}`, `/editsetlist/${this._bookingId}`)
-                    } else {
-                        console.log("setlist update not successful ", json);
                     }
                 })
                 .catch(e => console.log("setlist update fail ", e));
@@ -66,7 +63,6 @@ export default withRouter(
                         });
                         this._ensembleId = json.ensembleId;
                     } else {
-                        console.log("setlist fetch fail ", json);
                         this.props.history.push("/");
                     }
                 }).catch(e => console.log(e));

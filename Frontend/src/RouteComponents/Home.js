@@ -75,7 +75,6 @@ export default class Home extends React.Component {
                                 <div className="column is-12">
                                     <div className="box">
                                         {this.state.requests.map((req, i) => {
-                                            console.log(req);
                                             return <Request
                                                 {...req}
                                                 jwt={this._jwt}
