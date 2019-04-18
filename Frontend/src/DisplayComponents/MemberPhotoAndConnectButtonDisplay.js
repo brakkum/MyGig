@@ -1,13 +1,13 @@
+import ConnectToUserButton from "../Buttons/ConnectToUserButton";
+import MemberPictureDisplay from "./MemberPictureDisplay";
 import React from "react";
-import MemberPicture from "./MemberPicture";
-import ConnectToUserButton from "../FormComponents/ConnectToUserButton";
 
-export default class MemberPhotoAndConnect extends React.Component {
+export default class MemberPhotoAndConnectButtonDisplay extends React.Component {
 
     render() {
         return(
             <div>
-                <MemberPicture {...this.props} />
+                <MemberPictureDisplay {...this.props} />
                 {!this.props.connectedToUser &&
                     <div className="is-hoverable">
                         <ConnectToUserButton

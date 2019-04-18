@@ -1,14 +1,13 @@
+import { Link } from "react-router-dom";
+import moment from "moment";
 import React from "react";
 import JsPDF from "jspdf";
-import moment from "moment";
-import { Link } from "react-router-dom";
 
 export default class UpcomingPerformancesDisplay extends React.Component {
 
-    _jwt = null;
-
     state = {
-        hidePerformances: true
+        hidePerformances: true,
+        jwt: ""
     };
 
     outputPdf = data => {
@@ -53,7 +52,7 @@ export default class UpcomingPerformancesDisplay extends React.Component {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${this._jwt}`
+                "Authorization": `Bearer ${this.state.jwt}`
             }),
             body: JSON.stringify({
                 BookingId: bookingId
@@ -68,7 +67,9 @@ export default class UpcomingPerformancesDisplay extends React.Component {
     };
 
     componentDidMount() {
-        this._jwt = this.props.jwt;
+        this.setState({
+            jwt: this.props.jwt
+        });
     }
 
     render() {

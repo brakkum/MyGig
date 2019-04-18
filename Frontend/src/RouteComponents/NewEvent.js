@@ -71,7 +71,7 @@ export default withRouter(
             }
 
             this.setState({sendingRequest: true});
-            let jwt = this.props.userData.jwt;
+            const jwt = this.props.jwt;
 
             fetch("/api/events/newevent", {
                 method: "post",
@@ -87,7 +87,7 @@ export default withRouter(
             }).then(res => res.json())
                 .then(json => {
                     if (json.success) {
-                        this.props.redirect(`/event/${json.eventId}`);
+                        this.props.history.push(`/event/${json.eventId}`);
                     } else {
                         this.setState({sendingRequest: false});
                     }

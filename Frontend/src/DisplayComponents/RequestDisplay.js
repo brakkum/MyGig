@@ -1,32 +1,34 @@
+import MemberPictureDisplay from "./MemberPictureDisplay";
 import React from "react";
-import MemberPicture from "./MemberPicture";
 
-export default class Request extends React.Component {
+export default class RequestDisplay extends React.Component {
 
     state = {
         sendingRequest: false,
+        requestType: null,
+        typeId: null,
+        jwt: ""
     };
 
     acceptRequest = () => {
-        let requestType = this.props.requestType;
-        let typeId = this.props.typeId;
-        let jwt = this.props.jwt;
-
         this.setState({sendingRequest: true});
         fetch("/api/requests/confirm", {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
+                "Authorization": `Bearer ${this.state.jwt}`
             }),
             body: JSON.stringify({
-                RequestType: requestType,
-                TypeId: typeId
+                RequestType: this.state.requestType,
+                TypeId: this.state.typeId
             })
         }).then(res => res.json())
             .then(json => {
                 if (json.success) {
-                    this.props.filterRequests(requestType, typeId);
+                    this.props.filterRequests(
+                        this.state.requestType,
+                        this.state.typeId
+                    );
                 } else {
                     this.setState({
                         sendingRequest: false
@@ -37,25 +39,24 @@ export default class Request extends React.Component {
     };
 
     denyRequest = () => {
-        let reqType = this.props.requestType;
-        let typeId = this.props.typeId;
-        let jwt = this.props.jwt;
-
         this.setState({sendingRequest: true});
         fetch("/api/requests/deny", {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${jwt}`
+                "Authorization": `Bearer ${this.state.jwt}`
             }),
             body: JSON.stringify({
-                RequestType: reqType,
-                TypeId: typeId
+                RequestType: this.state.requestType,
+                TypeId: this.state.typeId
             })
         }).then(res => res.json())
             .then(json => {
                     if (json.success) {
-                        this.props.filterRequests(reqType, typeId);
+                        this.props.filterRequests(
+                            this.state.requestType,
+                            this.state.typeId
+                        );
                     } else {
                         this.setState({
                             sendingRequest: false
@@ -65,12 +66,20 @@ export default class Request extends React.Component {
             ).catch(e => console.log(e));
     };
 
+    componentDidMount() {
+        this.setState({
+            requestType: this.props.requestType,
+            typeId: this.props.typeId,
+            jwt: this.props.jwt
+        })
+    }
+
     render() {
         return(
             <div>
                 <div className="columns is-vcentered">
                     <div className="column">
-                        <MemberPicture
+                        <MemberPictureDisplay
                             photoUrl={this.props.userPhoto}
                             width={"100px"}
                         />

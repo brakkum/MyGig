@@ -1,13 +1,13 @@
-import EnsembleSearchDisplay from "./EnsembleSearchDisplay";
+import MemberSearchDisplay from "../DisplayComponents/MemberSearchDisplay";
 import Constants from "../Constants/Constants";
 import React from "react";
 
-export default class SearchEnsembles extends React.Component {
+export default class SearchConnections extends React.Component {
 
     state = {
         search: "",
         timeOut: 0,
-        ensembles: [],
+        users: [],
         isSearching: false
     };
 
@@ -23,7 +23,7 @@ export default class SearchEnsembles extends React.Component {
                     return;
                 }
                 this.setState({isSearching: true});
-                fetch("/api/ensembles/searchEnsemblesNotOnEvent",
+                fetch("/api/users/searchConnectionsNotInEnsemble",
                     {
                         method: "post",
                         headers: new Headers({
@@ -32,18 +32,18 @@ export default class SearchEnsembles extends React.Component {
                         }),
                         body: JSON.stringify({
                             Search: text,
-                            EventId: this.props.eventId
+                            EnsembleId: this.props.ensembleId
                         })
                     }
                 ).then(res => res.json())
                     .then(json => {
                         if (json.success){
-                            let ensembles = json.ensembles;
+                            let users = json.users;
                             this.setState({
-                                ensembles: []
+                                users: []
                             });
                             this.setState({
-                                ensembles: ensembles
+                                users: users
                             });
                         }
                         this.setState({
@@ -54,8 +54,9 @@ export default class SearchEnsembles extends React.Component {
         });
     };
 
+
     render() {
-        const ensembles = this.state.ensembles;
+        const users = this.state.users;
         return(
             <div className="section">
                 <div className="field" style={{maxWidth: "600px", margin: "auto"}}>
@@ -67,20 +68,21 @@ export default class SearchEnsembles extends React.Component {
                     />
                     <div className="section">
                         <div className="box">
-                        {this.state.isSearching ?
-                            <div>Searching...</div>
-                            :
-                            ensembles.length > 0 ?
-                                ensembles.map((ensemble, i) => {
-                                    return <EnsembleSearchDisplay
-                                        eventId={this.props.eventId}
+                            {users.length > 0 ?
+                                users.map((user, i) => {
+                                    return <MemberSearchDisplay
+                                        {...user}
+                                        type="ensembleMember"
                                         jwt={this.props.jwt}
-                                        {...ensemble}
+                                        ensembleId={this.props.ensembleId}
                                         key={i}
                                     />
                                 })
                                 :
-                                <div>No Ensembles Found</div>
+                                this.state.isSearching ?
+                                    <div>Searching...</div>
+                                    :
+                                    <div>No Users Found</div>
                             }
                         </div>
                     </div>

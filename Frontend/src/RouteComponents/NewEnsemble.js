@@ -1,5 +1,5 @@
-import React from "react";
 import { withRouter } from "react-router-dom";
+import React from "react";
 
 export default withRouter(
     class NewEnsemble extends React.Component {
@@ -31,7 +31,7 @@ export default withRouter(
 
             if (valid) {
                 this.setState({sendingRequest: true});
-                let jwt = this.props.userData.jwt;
+                const jwt = this.props.jwt;
 
                 fetch("/api/ensembles/newEnsemble", {
                     method: "post",
@@ -45,7 +45,7 @@ export default withRouter(
                 }).then(res => res.json())
                     .then(json => {
                         if (json.success) {
-                            this.props.redirect(`/ensemble/${json.ensembleId}`);
+                            this.props.history.push(`/ensemble/${json.ensembleId}`);
                         } else {
                             this.setState({sendingRequest: false});
                         }

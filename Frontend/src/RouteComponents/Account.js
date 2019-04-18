@@ -1,11 +1,9 @@
-import React from "react";
+import MemberPictureDisplay from "../DisplayComponents/MemberPictureDisplay";
 import moment from "moment";
-import MemberPicture from "../DisplayComponents/MemberPicture";
+import React from "react";
 
 export default class Account extends React.Component {
-    // top level route component for /account
 
-    _jwt = null;
     _isMounted = false;
 
     state = {
@@ -25,18 +23,23 @@ export default class Account extends React.Component {
         photoHide: true,
         file: "",
         fileError: "",
-        sendingRequest: false
+        sendingRequest: false,
+        jwt: ""
     };
 
     componentDidMount() {
         this._isMounted = true;
-        this._jwt = this.props.userData.jwt;
+        const jwt = this.props.jwt;
+
+        this.setState({
+            jwt: jwt
+        });
 
         fetch("/api/users/getuserinfo", {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${this._jwt}`
+                Authorization: `Bearer ${jwt}`
             }
         }).then(res => res.json())
             .then(json => {
@@ -100,7 +103,7 @@ export default class Account extends React.Component {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${this._jwt}`
+                Authorization: `Bearer ${this.state.jwt}`
             },
             body: JSON.stringify({
                 OldPassword: oldPass,
@@ -151,7 +154,7 @@ export default class Account extends React.Component {
         let options = {
             method: "post",
             headers: {
-                "Authorization": `Bearer ${this._jwt}`
+                "Authorization": `Bearer ${this.state.jwt}`
             },
             body: form
         };
@@ -238,7 +241,7 @@ export default class Account extends React.Component {
                                             </h3>
                                         </div>
                                         <div className="column is-flex">
-                                            <MemberPicture {...this.state} />
+                                            <MemberPictureDisplay {...this.state} />
                                         </div>
                                     </div>
                             }

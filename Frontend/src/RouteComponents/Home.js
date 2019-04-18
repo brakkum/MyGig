@@ -1,14 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Request from "../DisplayComponents/Request";
 import UpcomingPerformancesDisplay from "../DisplayComponents/UpcomingPerformancesDisplay";
+import RequestDisplay from "../DisplayComponents/RequestDisplay";
+import { Link } from "react-router-dom";
 import moment from "moment";
+import React from "react";
 
 export default class Home extends React.Component {
-    // top level route component for /
 
     _isMounted = false;
-    _jwt = null;
 
     state = {
         isLoading: true,
@@ -18,18 +16,23 @@ export default class Home extends React.Component {
         performances: [],
         events: [],
         hideEnsembles: true,
-        hideEvents: true
+        hideEvents: true,
+        jwt: ""
     };
 
     componentDidMount() {
         this._isMounted = true;
-        this._jwt = this.props.userData.jwt;
+        const jwt = this.props.jwt;
+
+        this.setState({
+            jwt: jwt
+        });
 
         fetch("/api/routes/home", {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${this._jwt}`
+                "Authorization": `Bearer ${jwt}`
             })
         }).then(res => res.json())
             .then(json => {
@@ -42,8 +45,6 @@ export default class Home extends React.Component {
                         performances: json.performances,
                         events: json.events
                     });
-                } else {
-                    console.log("fail, ", json);
                 }
             }).catch(e => console.log(e));
     }
@@ -75,9 +76,9 @@ export default class Home extends React.Component {
                                 <div className="column is-12">
                                     <div className="box">
                                         {this.state.requests.map((req, i) => {
-                                            return <Request
+                                            return <RequestDisplay
                                                 {...req}
-                                                jwt={this._jwt}
+                                                jwt={this.state.jwt}
                                                 filterRequests={this.filterRequests}
                                                 key={i}
                                             />
@@ -110,7 +111,7 @@ export default class Home extends React.Component {
                                     <div className="column is-12">
                                         <div className="box">
                                             <span className="is-size-3">Upcoming Performances</span>
-                                            <UpcomingPerformancesDisplay performances={performances} jwt={this._jwt} />
+                                            <UpcomingPerformancesDisplay performances={performances} jwt={this.state.jwt} />
                                         </div>
                                     </div>
                                 </div>

@@ -1,11 +1,10 @@
-import React from "react";
+import Constants from "../Constants/Constants";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
-import Constants from "../Constants/Constants";
+import React from "react";
 
 export default withRouter(
     class NavBar extends React.Component {
-        // MyGig page top navbar
 
         navStyle = {
             width: "100%",
@@ -22,7 +21,7 @@ export default withRouter(
                                 MyGig
                             </div>
                         </div>
-                        {this.props.userData &&
+                        {this.props.user !== null &&
                             <div>
                                 <div className="navbar-brand is-pulled-left">
                                     <Link to="/" className="navbar-item">
@@ -48,4 +47,3 @@ export default withRouter(
         }
     }
 );
-

@@ -1,12 +1,11 @@
 import UpcomingPerformancesDisplay from "../DisplayComponents/UpcomingPerformancesDisplay";
 import EnsembleMemberDisplay from "../DisplayComponents/EnsembleMemberDisplay";
-import EnsembleMemberDelete from "../DisplayComponents/EnsembleMemberDelete";
-import SearchConnections from "../DisplayComponents/SearchConnections";
-import MemberComment from "../DisplayComponents/MemberComment";
+import EnsembleMemberDelete from "../DisplayComponents/EnsembleMemberDeleteDisplay";
+import SearchConnections from "../FormComponents/SearchConnections";
+import MemberCommentDisplay from "../DisplayComponents/MemberCommentDisplay";
 import React from "react";
 
 export default class Ensemble extends React.Component {
-    // top level route component for /ensemble/{ensemble_id}
 
     _isMounted = false;
 
@@ -103,8 +102,8 @@ export default class Ensemble extends React.Component {
 
     componentDidMount() {
         const ensembleId = parseInt(this.props.match.params.ensembleId);
-        const jwt = this.props.userData.jwt;
-        const userId = this.props.userData.userId;
+        const jwt = this.props.jwt;
+        const userId = this.props.user.userId;
         this.setState({
             ensembleId: ensembleId,
             jwt: jwt,
@@ -243,7 +242,7 @@ export default class Ensemble extends React.Component {
                                     </div>
                                     <div>
                                         {this.state.comments.map((comment, i) => {
-                                            return <MemberComment
+                                            return <MemberCommentDisplay
                                                 {...comment}
                                                 jwt={this.state.jwt}
                                                 key={i}

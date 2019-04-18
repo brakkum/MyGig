@@ -94,7 +94,6 @@ export default class SignUpForm extends React.Component {
             return;
         }
 
-        // if it's valid, send it off
         this.setState({
             sendingRequest: true
         });

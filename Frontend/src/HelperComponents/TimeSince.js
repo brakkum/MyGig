@@ -1,10 +1,7 @@
-import React from "react";
 import moment from "moment";
+import React from "react";
 
 export default class TimeSince extends React.Component {
-    // shows formatted time since something occurred
-    // props:
-    // time: the event that happened
 
     formatTime = () => {
         let time = this.props.time;

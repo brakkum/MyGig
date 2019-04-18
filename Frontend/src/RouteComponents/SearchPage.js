@@ -1,6 +1,6 @@
-import React from "react";
-import Constants from "../Constants/Constants";
 import MemberSearchDisplay from "../DisplayComponents/MemberSearchDisplay";
+import Constants from "../Constants/Constants";
+import React from "react";
 
 export default class SearchPage extends React.Component {
 
@@ -18,7 +18,7 @@ export default class SearchPage extends React.Component {
         this._isMounted = true;
 
         this.setState({
-            jwt: this.props.userData.jwt
+            jwt: this.props.jwt
         });
     }
 

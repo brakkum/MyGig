@@ -1,7 +1,7 @@
+import RequestUserForEnsembleButton from "../Buttons/RequestUserForEnsembleButton";
+import ConnectToUserButton from "../Buttons/ConnectToUserButton";
+import MemberPictureDisplay from "./MemberPictureDisplay";
 import React from "react";
-import MemberPicture from "../DisplayComponents/MemberPicture";
-import ConnectToUserButton from "../FormComponents/ConnectToUserButton";
-import RequestForEnsemble from "../HelperComponents/RequestForEnsemble";
 
 export default class MemberSearchDisplay extends React.Component {
 
@@ -10,7 +10,7 @@ export default class MemberSearchDisplay extends React.Component {
             <div>
                 <div className="columns">
                     <div className="column">
-                        <MemberPicture
+                        <MemberPictureDisplay
                             photoUrl={this.props.photoUrl}
                             width={"150px"}
                         />
@@ -27,7 +27,7 @@ export default class MemberSearchDisplay extends React.Component {
                             : ""
                         }
                         {this.props.type === "ensembleMember" ?
-                            <RequestForEnsemble
+                            <RequestUserForEnsembleButton
                                 userId={this.props.userId}
                                 jwt={this.props.jwt}
                                 ensembleId={this.props.ensembleId}

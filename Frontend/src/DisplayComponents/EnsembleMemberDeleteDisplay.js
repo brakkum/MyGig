@@ -1,9 +1,9 @@
-import React from "react";
-import moment from "moment";
 import { withRouter } from "react-router-dom";
+import moment from "moment";
+import React from "react";
 
 export default withRouter(
-    class EnsembleBookingDelete extends React.Component {
+    class EnsembleMemberDeleteDisplay extends React.Component {
 
         state = {
             showConfirm: false
@@ -16,22 +16,24 @@ export default withRouter(
         };
 
         removeMember = userId => {
-            fetch("/api/events/removeBooking", {
+            fetch("/api/ensembles/removeMember", {
                 method: "post",
                 headers: new Headers({
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${this.props.jwt}`
                 }),
                 body: JSON.stringify({
-                    BookingId: this.props.bookingId,
-                    EventId: this.props.eventId
+                    UserIdRecipient: userId,
+                    EnsembleId: this.props.ensembleId
                 })
             }).then(res => res.json())
                 .then(json => {
                     if (json.success) {
-                        this.props.filterOutEnsemble(this.props.ensembleId);
+                        this.props.filterOutMember(userId);
                     }
-                }).catch(e => {console.log(e);})
+                }).catch(e => {
+                console.log(e);
+            })
         };
 
         render() {
@@ -42,25 +44,20 @@ export default withRouter(
                     <div>
                         <div className="columns is-vcentered">
                             <div className="column is-size-4">
-                                {this.props.name}
+                                {this.props.fullName}
                             </div>
                             <div className="column">
                                 {this.state.showConfirm ?
                                     <div>
                                         <button
                                             className="button is-danger"
-                                            onClick={() => this.removeMember(this.props.bookingId)}
+                                            onClick={() => this.removeMember(this.props.userId)}
                                         >
-                                            Confirm Booking Removal
+                                            Confirm Member Removal
                                         </button>
                                     </div>
                                     :
-                                    <span>
-                                        Confirmed booking on {
-                                            moment(this.props.memberSince)
-                                                .format("MMMM D, YYYY")
-                                        }
-                                    </span>
+                                    <span>Member since {moment(this.props.memberSince).format("MMMM D, YYYY")}</span>
                                 }
                             </div>
                         </div>

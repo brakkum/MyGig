@@ -1,4 +1,4 @@
-import RequestEnsembleForEvent from "../HelperComponents/RequestEnsembleForEvent";
+import RequestEnsembleForEventButton from "../Buttons/RequestEnsembleForEventButton";
 import React from "react";
 
 export default class EnsembleSearchDisplay extends React.Component {
@@ -13,7 +13,7 @@ export default class EnsembleSearchDisplay extends React.Component {
                         </h3>
                     </div>
                     <div className="column">
-                        <RequestEnsembleForEvent
+                        <RequestEnsembleForEventButton
                             ensembleId={this.props.ensembleId}
                             eventId={this.props.eventId}
                             jwt={this.props.jwt}

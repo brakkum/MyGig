@@ -1,10 +1,9 @@
-import EnsembleMemberDisplay from "../DisplayComponents/EnsembleMemberDisplay";
-import SearchEnsembles from "../DisplayComponents/SearchEnsembles";
-import MemberComment from "../DisplayComponents/MemberComment";
+import EnsembleBookingDelete from "../DisplayComponents/EnsembleBookingDeleteDisplay";
+import EventEnsembleDisplay from "../DisplayComponents/EventEnsembleDisplay";
+import SearchEnsembles from "../FormComponents/SearchEnsembles";
+import MemberCommentDisplay from "../DisplayComponents/MemberCommentDisplay";
 import moment from "moment";
 import React from "react";
-import EnsembleBookingDelete from "../DisplayComponents/EnsembleBookingDelete";
-import EventEnsembleDisplay from "../DisplayComponents/EventEnsembleDisplay";
 
 export default class Event extends React.Component {
     // top level route component for /event/{event_id}
@@ -103,7 +102,7 @@ export default class Event extends React.Component {
     };
 
     componentDidMount() {
-        const jwt = this.props.userData.jwt;
+        const jwt = this.props.jwt;
         const eventId = parseInt(this.props.match.params.eventId);
         this._isMounted = true;
         this.setState({
@@ -242,7 +241,7 @@ export default class Event extends React.Component {
                                     </div>
                                     <div>
                                         {this.state.comments.map((comment, i) => {
-                                            return <MemberComment
+                                            return <MemberCommentDisplay
                                                 eventId={this.state.eventId}
                                                 jwt={this.state.jwt}
                                                 {...comment}

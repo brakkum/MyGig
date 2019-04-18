@@ -1,9 +1,9 @@
-import React from "react";
+import ConnectToUserButton from "../Buttons/ConnectToUserButton";
 import TimeSince from "../HelperComponents/TimeSince";
-import MemberPicture from "./MemberPicture";
-import ConnectToUserButton from "../FormComponents/ConnectToUserButton";
+import MemberPictureDisplay from "./MemberPictureDisplay";
+import React from "react";
 
-export default class MemberComment extends React.Component {
+export default class MemberCommentDisplay extends React.Component {
 
     state = {
         jwt: ""
@@ -41,7 +41,7 @@ export default class MemberComment extends React.Component {
                         <div className="column">
                             <div className="has-text-centered">
                                 <h5 className="is-size-5">{user.fullName}</h5>
-                                <MemberPicture {...user} />
+                                <MemberPictureDisplay {...user} />
                                 {!user.connectedToUser &&
                                     <div className="is-hoverable">
                                         <ConnectToUserButton

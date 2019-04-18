@@ -1,7 +1,7 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
-import LoginForm from "../FormComponents/LoginForm";
 import SignUpForm from "../FormComponents/SignUpForm";
+import LoginForm from "../FormComponents/LoginForm";
+import { withRouter } from "react-router-dom";
+import React from "react";
 
 export default withRouter(
     class Login extends React.Component {
@@ -13,10 +13,9 @@ export default withRouter(
         };
 
         redirectOnLogin = () => {
-            // they logged in, now redirect
-            // if no redirect value, take back home
-            let to = (this.props.location && this.props.location.state) ? this.props.location.state.from : "/";
-            // this.props.redirect(to, this.props.location.pathname);
+            // 'to' is the requested url, or '/' if hitting default route
+            let to = (this.props.location && this.props.location.state) ?
+                this.props.location.state.from : "/";
             this.props.history.push(to, this.props.location.pathname);
         };
 
@@ -25,7 +24,7 @@ export default withRouter(
         };
 
         componentDidMount() {
-            let jwt = this.getJwtInLocalStorage();
+            const jwt = this.getJwtInLocalStorage();
 
             if (!jwt) {
                 this.setState({
@@ -46,8 +45,7 @@ export default withRouter(
             }).then(res => res.json())
                 .then(json => {
                     if (json.success){
-                        json.jwt = jwt;
-                        this.props.loginUser(json);
+                        this.props.loginUser(json.user, jwt);
                         this.redirectOnLogin();
                     }
                 }

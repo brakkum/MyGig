@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class MemberPicture extends React.Component {
+export default class MemberPictureDisplay extends React.Component {
 
     render() {
         return (

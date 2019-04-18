@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class RequestForEnsemble extends React.Component {
+export default class RequestEnsembleForEventButton extends React.Component {
 
     _isMounted = false;
 
@@ -19,15 +19,15 @@ export default class RequestForEnsemble extends React.Component {
 
     sendEnsembleRequest = () => {
         this.setState({sendingRequest: true});
-        fetch("/api/ensembles/newMember", {
+        fetch("/api/events/requestBooking", {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${this.props.jwt}`
             }),
             body: JSON.stringify({
-                UserIdRecipient: this.props.userId,
-                EnsembleId: this.props.ensembleId
+                EnsembleId: this.props.ensembleId,
+                EventId: this.props.eventId
             })
         }).then(res => res.json())
             .then(json => {
@@ -57,7 +57,7 @@ export default class RequestForEnsemble extends React.Component {
                     }
                     onClick={() => this.sendEnsembleRequest()}
                 >
-                    {this.state.requestSent ? "Requested" : "Add to Ensemble"}
+                    {this.state.requestSent ? "Requested" : "Request Ensemble for Event"}
                 </button>
             </div>
         )

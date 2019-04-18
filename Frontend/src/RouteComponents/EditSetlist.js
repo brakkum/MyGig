@@ -1,39 +1,36 @@
-import React from "react";
-import Input from "../HelperComponents/Input";
-import Button from "../HelperComponents/Button";
 import { withRouter } from "react-router-dom";
+import React from "react";
 
 export default withRouter(
     class EditSetlist extends React.Component {
 
         _isMounted = false;
-        _jwt = null;
-        _bookingId = null;
-        _ensembleId = null;
 
         state = {
-            setlist: "",
             sendingRequest: false,
-            setlistLoading: true
+            setlistLoading: true,
+            ensembleId: null,
+            bookingId: null,
+            eventId: null,
+            setlist: ""
         };
 
         updateSetlist = () => {
-            const setlist = this.state.setlist;
 
-            fetch("/api/ensembles/updatesetlist", {
+            fetch("/api/ensembles/updateSetlist", {
                 method: "post",
                 headers: new Headers({
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${this._jwt}`
+                    "Authorization": `Bearer ${this.state.jwt}`
                 }),
                 body: JSON.stringify({
-                    BookingId: this._bookingId,
-                    Setlist: setlist
+                    BookingId: this.state.bookingId,
+                    Setlist: this.state.setlist
                 })
             }).then(res => res.json())
                 .then(json => {
                     if (json.success) {
-                        this.props.redirect(`/ensemble/${this._ensembleId}`, `/editsetlist/${this._bookingId}`)
+                        this.props.history.push(`/ensemble/${this.props.ensembleId}`);
                     }
                 })
                 .catch(e => console.log("setlist update fail ", e));
@@ -41,27 +38,33 @@ export default withRouter(
 
         componentDidMount() {
             this._isMounted = true;
-            this._jwt = this.props.userData.jwt;
-            this._bookingId = this.props.match.params.bookingId;
+            const jwt = this.props.jwt;
+            const bookingId = parseInt(this.props.match.params.bookingId);
+
+            this.setState({
+                jwt: jwt,
+                bookingId: bookingId
+            });
 
             // fetch
             fetch("/api/ensembles/getSetlist",{
                 method: "post",
                 headers: new Headers({
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${this._jwt}`
+                    "Authorization": `Bearer ${jwt}`
                 }),
                 body: JSON.stringify({
-                    BookingId: this._bookingId
+                    BookingId: this.state.bookingId
                 })
             }).then(res => res.json())
                 .then(json => {
                     if (json.success && this._isMounted) {
                         this.setState({
+                            bookingId: json.bookingId,
+                            setlistLoading: false,
                             setlist: json.setlist,
-                            setlistLoading: false
+                            eventId: json.eventId
                         });
-                        this._ensembleId = json.ensembleId;
                     } else {
                         this.props.history.push("/");
                     }
@@ -84,26 +87,25 @@ export default withRouter(
                     {!this.state.setlistLoading ?
                         <div>
                             <span>One song per line</span>
-                            <Input
-                                type={"textarea"}
+                            <textarea
+                                style={{resize: "vertical"}}
                                 value={this.state.setlist}
                                 onChange={this.onChange}
-                                height={"400px"}
-                                sendingRequest={this.state.sendingRequest}
-                                resizeable={true}
+                                className="textarea"
+                                rows="15"
                             />
-                            <Button
-                                type={"submit"}
-                                color={"success"}
-                                preClickText={"Update Setlist"}
+                            <button
+                                className="button is-success"
                                 onClick={this.updateSetlist}
-                            />
-                            <Button
-                                type={"submit"}
-                                color={"danger"}
-                                preClickText={"Cancel"}
-                                onClick={() => this.props.history.push(`/ensemble/${this._ensembleId}`)}
-                            />
+                            >
+                                Update Setlist
+                            </button>
+                            <button
+                                className="button"
+                                onClick={() => this.props.history.push(`/ensemble/${this.state.ensembleId}`)}
+                            >
+                                Cancel
+                            </button>
                         </div>
                         :
                         <progress className="progress"/>

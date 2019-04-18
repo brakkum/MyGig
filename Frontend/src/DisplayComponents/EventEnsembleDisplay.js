@@ -1,5 +1,5 @@
+import MemberPhotoAndConnectButtonDisplay from "./MemberPhotoAndConnectButtonDisplay";
 import React from "react";
-import MemberPhotoAndConnect from "./MemberPhotoAndConnect";
 
 export default class EventEnsembleDisplay extends React.Component {
 
@@ -20,7 +20,7 @@ export default class EventEnsembleDisplay extends React.Component {
                                     </h3>
                                 </div>
                                 <div className="column">
-                                    <MemberPhotoAndConnect
+                                    <MemberPhotoAndConnectButtonDisplay
                                         jwt={this.props.jwt}
                                         width={"150px"}
                                         {...member}

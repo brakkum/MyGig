@@ -1,4 +1,4 @@
-import MemberPhotoAndConnect from "./MemberPhotoAndConnect";
+import MemberPhotoAndConnectButtonDisplay from "./MemberPhotoAndConnectButtonDisplay";
 import moment from "moment";
 import React from "react";
 
@@ -16,7 +16,7 @@ export default class EnsembleMemberDisplay extends React.Component {
                             Member since {moment(this.props.memberSince).format("MMMM D, YYYY")}
                         </div>
                         <div className="column is-3">
-                            <MemberPhotoAndConnect
+                            <MemberPhotoAndConnectButtonDisplay
                                 {...this.props}
                             />
                         </div>

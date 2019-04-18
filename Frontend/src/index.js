@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import MyGig from './MyGig';
+import MyGig from './FrontFacingComponents/MyGig';
 import * as serviceWorker from './serviceWorker';
+import ReactDOM from 'react-dom';
+import React from 'react';
+import './index.css';
 
 ReactDOM.render(<MyGig />, document.getElementById('root'));
 

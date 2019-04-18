@@ -1,10 +1,6 @@
 import React from "react";
 
 export default class LoginForm extends React.Component {
-    // login form for /login
-    // attemptLogin tries to verify user input
-    // on successful login, props.handleLogin
-    // TODO: tell user what password requirements are
 
     state = {
         email: "",
@@ -53,7 +49,7 @@ export default class LoginForm extends React.Component {
             sendingRequest: true,
             loginError: ""
         });
-        // login call
+
         fetch("/api/users/login", {
             method: "post",
             headers: {

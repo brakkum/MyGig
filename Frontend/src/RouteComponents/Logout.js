@@ -1,5 +1,5 @@
-import React from "react";
 import withRouter from "react-router/es/withRouter";
+import React from "react";
 
 export default withRouter(
     class Logout extends React.Component {
