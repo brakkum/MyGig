@@ -9,7 +9,7 @@ namespace MyGigApi.DTOs
         public string Text { get; set; }
 
         // Event Id
-        public int Id { get; set; }
+        public int EventId { get; set; }
 
         public MemberDto User { get; set; }
     }

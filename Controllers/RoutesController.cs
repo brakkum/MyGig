@@ -94,7 +94,8 @@ namespace MyGigApi.Controllers
                     EventId = e.EventId,
                     Name = e.Name,
                     DateAndTime = e.DateAndTime,
-                    Location = e.Location
+                    Location = e.Location,
+                    UserIsMod = eventsModeratedIds.Contains(e.EventId)
                 });
 
             var notifications = _context.Notifications

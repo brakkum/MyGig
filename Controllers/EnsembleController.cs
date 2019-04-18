@@ -302,11 +302,11 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/ensemblesnotonevent")]
+        [Route(RoutePrefix + "/searchEnsemblesNotOnEvent")]
         public OkObjectResult SearchEnsemblesNotOnEvent([FromBody] SearchDto dto)
         {
             var ensemblesRequestedIds = _context.Bookings
-                .Where(b => b.EventId == dto.EnsembleId)
+                .Where(b => b.EventId == dto.EventId)
                 .Select(b => b.EnsembleId)
                 .ToArray();
 
@@ -348,6 +348,8 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "No group mod"});
             }
 
+            // if user is default ensemble mod, immediate accept
+            var status = ensembleMod.UserIdRecipient == userId ? RequestStatus.Accepted : RequestStatus.Pending;
             var user = _context.Users.Find(userId);
             var ensemble = _context.Ensembles.Find(dto.EnsembleId);
             var ev = _context.Events.Find(dto.EventId);
@@ -358,6 +360,7 @@ namespace MyGigApi.Controllers
                 EventId = dto.EventId,
                 UserIdRecipient = ensembleMod.UserIdRecipient,
                 UserIdRequester = userId,
+                Status = status,
                 Text = $"{user.FullName} would like your ensemble {ensemble.Name} to perform at the event {ev.Name}"
             });
 

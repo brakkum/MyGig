@@ -20,7 +20,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/newevent")]
+        [Route(RoutePrefix + "/newEvent")]
         public OkObjectResult NewEvent([FromBody] EventDto dto)
         {
             var userId = GetUserId();
@@ -48,7 +48,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/newmod")]
+        [Route(RoutePrefix + "/newMod")]
         public OkObjectResult NewEventModerator([FromBody] EventModeratorDto dto)
         {
             var userId = GetUserId();
@@ -114,31 +114,29 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/neweventcomment")]
+        [Route(RoutePrefix + "/newComment")]
         public OkObjectResult NewPrivateEventComment([FromBody] EventCommentDto dto)
         {
             var userId = GetUserId();
 
             var ensembles = _context.Bookings
-                .Where(ev => ev.EventId == dto.Id)
-                .Select(ev => ev.Ensemble);
+                .Where(ev => ev.EventId == dto.EventId &&
+                             ev.Status == RequestStatus.Accepted)
+                .Select(ev => ev.EnsembleId);
 
-            var validUser = ensembles.Any(en =>
-                en.Members.Any(u => u.UserIdRecipient == userId &&
-                                    u.Status == RequestStatus.Accepted));
-
-            var validMod = _context.EventModerators
-                .Any(em => em.UserIdRecipient == userId &&
+            var userIsInValidEnsemble = _context.EnsembleMembers
+                .Any(em => ensembles.Contains(em.EnsembleId) &&
+                           em.UserIdRecipient == userId &&
                            em.Status == RequestStatus.Accepted);
 
-            if (!(validUser || validMod))
+            if (!userIsInValidEnsemble)
             {
                 return new OkObjectResult(new {success = false, error = "Not valid member or mod"});
             }
 
             var comment = new EventComment
             {
-                EventId = dto.Id,
+                EventId = dto.EventId,
                 Text = dto.Text,
                 UserId = userId
             };
@@ -151,13 +149,13 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/getcomments")]
+        [Route(RoutePrefix + "/getComments")]
         public OkObjectResult GetEventComments([FromBody] EventCommentDto dto)
         {
             var userId = GetUserId();
 
             var ensembles = _context.Bookings
-                .Where(ev => ev.EventId == dto.Id)
+                .Where(ev => ev.EventId == dto.EventId)
                 .Select(ev => ev.Ensemble);
 
             var validUser = ensembles.Any(en =>
@@ -177,7 +175,7 @@ namespace MyGigApi.Controllers
 
             var comments = _context.EventComments
                 .Include(c => c.User)
-                .Where(c => c.EventId == dto.Id)
+                .Where(c => c.EventId == dto.EventId)
                 .OrderByDescending(c => c.Timestamp)
                 .Select(c => new EventCommentDto
                 {
@@ -195,52 +193,52 @@ namespace MyGigApi.Controllers
             return new OkObjectResult(new {success = true, comments});
         }
 
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/newbooking")]
-        public OkObjectResult NewBooking([FromBody] BookingDto dto)
-        {
-            var userId = GetUserId();
-            var user = _context.Users.Find(userId);
-
-            var validMod = _context.EventModerators
-                .Any(em => em.UserIdRecipient == userId &&
-                           em.EventId == dto.EventId &&
-                           em.Status == RequestStatus.Accepted);
-
-            if (!validMod)
-            {
-                return new OkObjectResult(new {success = false, error = "Not valid mod"});
-            }
-
-            var firstEnsMod = _context.EnsembleModerators
-                .Where(em => em.EnsembleId == dto.EnsembleId &&
-                             em.Status == RequestStatus.Accepted)
-                .Select(em => em.UserRecipient)
-                .FirstOrDefault();
-
-            if (firstEnsMod == null)
-            {
-                return new OkObjectResult(new {success = false, error = "Could not find mod of ensemble"});
-            }
-
-            var ev = _context.Events.Find(dto.EventId);
-            var en = _context.Ensembles.Find(dto.EnsembleId);
-
-            var booking = new Booking
-            {
-                EnsembleId = dto.EnsembleId,
-                UserIdRecipient = firstEnsMod.UserId,
-                UserIdRequester = userId,
-                EventId = dto.EventId,
-                Text = $"{user.FullName} has asked {en.Name} to perform at {ev.Name}"
-            };
-
-            _context.Bookings.Add(booking);
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true});
-        }
+//        [HttpPost]
+//        [Authorize]
+//        [Route(RoutePrefix + "/newbooking")]
+//        public OkObjectResult NewBooking([FromBody] BookingDto dto)
+//        {
+//            var userId = GetUserId();
+//            var user = _context.Users.Find(userId);
+//
+//            var validMod = _context.EventModerators
+//                .Any(em => em.UserIdRecipient == userId &&
+//                           em.EventId == dto.EventId &&
+//                           em.Status == RequestStatus.Accepted);
+//
+//            if (!validMod)
+//            {
+//                return new OkObjectResult(new {success = false, error = "Not valid mod"});
+//            }
+//
+//            var firstEnsMod = _context.EnsembleModerators
+//                .Where(em => em.EnsembleId == dto.EnsembleId &&
+//                             em.Status == RequestStatus.Accepted)
+//                .Select(em => em.UserRecipient)
+//                .FirstOrDefault();
+//
+//            if (firstEnsMod == null)
+//            {
+//                return new OkObjectResult(new {success = false, error = "Could not find mod of ensemble"});
+//            }
+//
+//            var ev = _context.Events.Find(dto.EventId);
+//            var en = _context.Ensembles.Find(dto.EnsembleId);
+//
+//            var booking = new Booking
+//            {
+//                EnsembleId = dto.EnsembleId,
+//                UserIdRecipient = firstEnsMod.UserId,
+//                UserIdRequester = userId,
+//                EventId = dto.EventId,
+//                Text = $"{user.FullName} has asked {en.Name} to perform at {ev.Name}"
+//            };
+//
+//            _context.Bookings.Add(booking);
+//            _context.SaveChanges();
+//
+//            return new OkObjectResult(new {success = true});
+//        }
 
         [HttpPost]
         [Authorize]

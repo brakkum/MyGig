@@ -161,6 +161,7 @@ export default class Home extends React.Component {
                                             <div>
                                                 {events.length > 0 ?
                                                     events.map((event, i) => {
+                                                        const userIsMod = event.userIsMod;
                                                         return <div className={i >= 2 && this.state.hideEvents ? "is-hidden" : ""} key={i}>
                                                             <Link to={`/event/${event.eventId}`} key={i}>
                                                                 <span className="is-size-4">{event.name}</span>
@@ -173,6 +174,8 @@ export default class Home extends React.Component {
                                                             <span className="is-size-6">
                                                                 {event.location}
                                                             </span>
+                                                            &nbsp;
+                                                            <span className="is-size-6 has-text-grey-light">{userIsMod && "Moderator"}</span>
                                                         </div>
                                                     })
                                                     :

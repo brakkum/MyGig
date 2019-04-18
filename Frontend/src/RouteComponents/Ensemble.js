@@ -1,10 +1,9 @@
 import UpcomingPerformancesDisplay from "../DisplayComponents/UpcomingPerformancesDisplay";
 import MemberEnsembleDisplay from "../DisplayComponents/MemberEnsembleDisplay";
+import EnsembleMemberDelete from "../DisplayComponents/EnsembleMemberDelete";
+import SearchConnections from "../DisplayComponents/SearchConnections";
 import MemberComment from "../DisplayComponents/MemberComment";
 import React from "react";
-import SearchConnections from "../DisplayComponents/SearchConnections";
-import moment from "moment";
-import EnsembleMemberDelete from "../DisplayComponents/EnsembleMemberDelete";
 
 export default class Ensemble extends React.Component {
     // top level route component for /ensemble/{ensemble_id}
