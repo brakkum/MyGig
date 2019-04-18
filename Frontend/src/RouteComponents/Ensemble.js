@@ -3,6 +3,8 @@ import MemberEnsembleDisplay from "../DisplayComponents/MemberEnsembleDisplay";
 import MemberComment from "../DisplayComponents/MemberComment";
 import React from "react";
 import SearchConnections from "../DisplayComponents/SearchConnections";
+import moment from "moment";
+import EnsembleMemberDelete from "../DisplayComponents/EnsembleMemberDelete";
 
 export default class Ensemble extends React.Component {
     // top level route component for /ensemble/{ensemble_id}
@@ -12,6 +14,7 @@ export default class Ensemble extends React.Component {
     state = {
         ensembleId: null,
         jwt: null,
+        userId: null,
         pageLoading: true,
         userIsMod: false,
         currentTag: "info",
@@ -62,6 +65,17 @@ export default class Ensemble extends React.Component {
         )
     };
 
+    filterOutMember = userId => {
+        let members = this.state.members;
+        let newMembers = members.filter(mem => mem.userId !== userId);
+        this.setState({
+            members: []
+        });
+        this.setState({
+            members: newMembers
+        });
+    };
+
     repopulateComments = () => {
         fetch("/api/ensembles/getComments", {
             method: "post",
@@ -98,9 +112,11 @@ export default class Ensemble extends React.Component {
     componentDidMount() {
         const ensembleId = parseInt(this.props.match.params.ensembleId);
         const jwt = this.props.userData.jwt;
+        const userId = this.props.userData.userId;
         this.setState({
             ensembleId: ensembleId,
-            jwt: jwt
+            jwt: jwt,
+            userId: userId
         });
         this._isMounted = true;
         const hash = window.location.hash;
@@ -267,8 +283,19 @@ export default class Ensemble extends React.Component {
                                 </div>
                             }
                             {this.state.userIsMod && this.state.currentTag === "removeMembers" &&
-                                <div>
-                                    remove members
+                                <div className="section">
+                                    {this.state.members.map((member, i) => {
+                                        if (member.userId === this.state.userId) {
+                                            return;
+                                        }
+                                        return <EnsembleMemberDelete
+                                            key={i}
+                                            {...member}
+                                            filterOutMember={this.filterOutMember}
+                                            jwt={this.state.jwt}
+                                            ensembleId={this.state.ensembleId}
+                                        />
+                                    })}
                                 </div>
                             }
                         </div>

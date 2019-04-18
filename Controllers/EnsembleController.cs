@@ -127,8 +127,8 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/inactivatemembership")]
-        public OkObjectResult InactivateEnsembleMembership([FromBody] EnsembleMemberDto dto)
+        [Route(RoutePrefix + "/removeMember")]
+        public OkObjectResult RemoveEnsembleMember([FromBody] EnsembleMemberDto dto)
         {
             var userId = GetUserId();
 
@@ -151,8 +151,7 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "No member found"});
             }
 
-            mem.Status = RequestStatus.Inactive;
-            _context.EnsembleMembers.Update(mem);
+            _context.EnsembleMembers.Remove(mem);
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
@@ -160,7 +159,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/addmod")]
+        [Route(RoutePrefix + "/addMod")]
         public OkObjectResult AddEnsembleModerator([FromBody] EnsembleModeratorDto dto)
         {
             var userId = GetUserId();
