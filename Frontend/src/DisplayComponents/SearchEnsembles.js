@@ -33,7 +33,7 @@ export default class SearchEnsembles extends React.Component {
                         }),
                         body: JSON.stringify({
                             Search: text,
-                            EventId: this.props.ensembleId
+                            EventId: this.props.eventId
                         })
                     }
                 ).then(res => res.json())
@@ -71,7 +71,10 @@ export default class SearchEnsembles extends React.Component {
                     />
                     <div className="section">
                         <div className="box">
-                            {ensembles.length > 0 ?
+                        {this.state.isSearching ?
+                            <div>Searching...</div>
+                            :
+                            ensembles.length > 0 ?
                                 ensembles.map((ensemble, i) => {
                                     return <EnsembleSearchDisplay
                                         eventId={this.props.eventId}
@@ -81,10 +84,7 @@ export default class SearchEnsembles extends React.Component {
                                     />
                                 })
                                 :
-                                this.state.isSearching ?
-                                    <div>Searching...</div>
-                                    :
-                                    <div>No Ensembles Found</div>
+                                <div>No Ensembles Found</div>
                             }
                         </div>
                     </div>
