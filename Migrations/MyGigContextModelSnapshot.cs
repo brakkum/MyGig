@@ -149,7 +149,9 @@ namespace MyGigApi.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<DateTime>("Timestamp");
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
                     b.Property<int>("UserIdRecipient");
 
@@ -181,7 +183,9 @@ namespace MyGigApi.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<DateTime>("Timestamp");
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
                     b.Property<int>("UserIdRecipient");
 
@@ -321,6 +325,10 @@ namespace MyGigApi.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(20);
+
+                    b.Property<DateTime>("JoinedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
                     b.Property<string>("LastName")
                         .IsRequired()

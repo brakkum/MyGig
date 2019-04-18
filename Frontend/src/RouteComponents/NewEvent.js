@@ -72,7 +72,7 @@ export default withRouter(
 
             this.setState({sendingRequest: true});
             let jwt = this.props.userData.jwt;
-            console.log(this.state)
+
             fetch("/api/events/newevent", {
                 method: "post",
                 headers: new Headers({

@@ -39,16 +39,13 @@ export default class CommentSection extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (json.success) {
-                    console.log("comment submitted");
                     this.repopulateComments();
                 } else {
-                    console.log("bad comment request ", json);
                     this.setState({
                         sendingRequest: false
                     });
                 }
             }).catch(e => {
-                console.log(e);
                 this.setState({
                     sendingRequest: false
                 });

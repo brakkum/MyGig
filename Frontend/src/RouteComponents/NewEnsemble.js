@@ -33,7 +33,7 @@ export default withRouter(
                 this.setState({sendingRequest: true});
                 let jwt = this.props.userData.jwt;
 
-                fetch("/api/ensembles/newensemble", {
+                fetch("/api/ensembles/newEnsemble", {
                     method: "post",
                     headers: new Headers({
                         "Content-Type": "application/json",

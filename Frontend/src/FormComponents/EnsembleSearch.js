@@ -50,7 +50,6 @@ export default class EnsembleSearch extends React.Component {
                 ).then(res => res.json())
                     .then(json => {
                         if (json.success){
-                            console.log(json.ensembles);
                             let ensembles = json.ensembles;
                             this.setState({
                                 ensembles: []
@@ -58,8 +57,6 @@ export default class EnsembleSearch extends React.Component {
                             this.setState({
                                 ensembles: ensembles
                             });
-                        } else {
-                            console.log("search fail");
                         }
                     }).catch(e => console.log(e));
             }, Constants.searchTimeout)

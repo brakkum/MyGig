@@ -9,7 +9,7 @@ using MyGigApi.Context;
 namespace MyGigApi.Migrations
 {
     [DbContext(typeof(MyGigContext))]
-    [Migration("20190404213613_Init")]
+    [Migration("20190417222227_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -151,7 +151,9 @@ namespace MyGigApi.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<DateTime>("Timestamp");
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
                     b.Property<int>("UserIdRecipient");
 
@@ -183,7 +185,9 @@ namespace MyGigApi.Migrations
 
                     b.Property<string>("Text");
 
-                    b.Property<DateTime>("Timestamp");
+                    b.Property<DateTime>("Timestamp")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
                     b.Property<int>("UserIdRecipient");
 
@@ -323,6 +327,10 @@ namespace MyGigApi.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(20);
+
+                    b.Property<DateTime>("JoinedOn")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
                     b.Property<string>("LastName")
                         .IsRequired()

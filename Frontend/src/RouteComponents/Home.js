@@ -75,12 +75,8 @@ export default class Home extends React.Component {
                                 <div className="column is-12">
                                     <div className="box">
                                         {this.state.requests.map((req, i) => {
-                                            console.log(req);
                                             return <Request
-                                                userPhoto={req.userPhoto}
-                                                text={req.text}
-                                                requestType={req.requestType}
-                                                typeId={req.typeId}
+                                                {...req}
                                                 jwt={this._jwt}
                                                 filterRequests={this.filterRequests}
                                                 key={i}
@@ -164,6 +160,7 @@ export default class Home extends React.Component {
                                             <div>
                                                 {events.length > 0 ?
                                                     events.map((event, i) => {
+                                                        const userIsMod = event.userIsMod;
                                                         return <div className={i >= 2 && this.state.hideEvents ? "is-hidden" : ""} key={i}>
                                                             <Link to={`/event/${event.eventId}`} key={i}>
                                                                 <span className="is-size-4">{event.name}</span>
@@ -176,6 +173,8 @@ export default class Home extends React.Component {
                                                             <span className="is-size-6">
                                                                 {event.location}
                                                             </span>
+                                                            &nbsp;
+                                                            <span className="is-size-6 has-text-grey-light">{userIsMod && "Moderator"}</span>
                                                         </div>
                                                     })
                                                     :

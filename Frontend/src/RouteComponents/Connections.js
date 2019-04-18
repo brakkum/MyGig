@@ -21,9 +21,7 @@ export default class Connections extends React.Component {
             this.setState({
                 requests: result
             });
-            console.log(accept ? "confirmed " : "denied ", id);
         }
-        // TODO: on success, update connections display
     };
 
     componentDidMount() {

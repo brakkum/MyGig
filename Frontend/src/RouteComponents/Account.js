@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+import MemberPicture from "../DisplayComponents/MemberPicture";
 
 export default class Account extends React.Component {
     // top level route component for /account
@@ -49,7 +50,6 @@ export default class Account extends React.Component {
                         pageLoaded: true
                     })
                 } else {
-                    console.log("failed ", json);
                     this.props.history.push("/");
                 }
             }).catch(e => console.log("user get error ", e));
@@ -61,7 +61,7 @@ export default class Account extends React.Component {
 
     updatePassword = event => {
         event.preventDefault();
-        console.log(this.state);
+
         let oldPass = this.state.oldPassword;
         let oldPassConf = this.state.oldPasswordConfirm;
         let newPass = this.state.newPassword;
@@ -131,8 +131,6 @@ export default class Account extends React.Component {
         event.preventDefault();
         let file = this.state.file;
 
-        console.log(file);
-
         if (!file) {
             this.setState({
                 fileError: "File required"
@@ -181,7 +179,6 @@ export default class Account extends React.Component {
                         sendingRequest: false
                     });
                 }
-                console.log(json);
         }).catch(e => console.log("photo fail ", e));
     };
 
@@ -241,17 +238,7 @@ export default class Account extends React.Component {
                                             </h3>
                                         </div>
                                         <div className="column is-flex">
-                                            <img
-                                                src={this.state.photoUrl || "/static/userphotos/default.png"}
-                                                alt={this.state.fullName}
-                                                className="image"
-                                                style={{
-                                                    maxWidth: "450px",
-                                                    margin: "auto",
-                                                    border: "1px solid lightgrey",
-                                                    borderRadius: "5px"
-                                                }}
-                                            />
+                                            <MemberPicture {...this.state} />
                                         </div>
                                     </div>
                             }

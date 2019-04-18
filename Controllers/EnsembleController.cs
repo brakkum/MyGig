@@ -21,7 +21,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/newensemble")]
+        [Route(RoutePrefix + "/newEnsemble")]
         public OkObjectResult NewEnsemble([FromBody] EnsembleDto dto)
         {
             var userId = GetUserId();
@@ -39,7 +39,8 @@ namespace MyGigApi.Controllers
                 UserIdRecipient = userId,
                 UserIdRequester = userId,
                 EnsembleId = ensemble.EnsembleId,
-                Status = RequestStatus.Accepted
+                Status = RequestStatus.Accepted,
+                ConfirmedAt = DateTime.Now
             };
             _context.EnsembleModerators.Add(mod);
             // Make ensemble creator Member
@@ -48,7 +49,8 @@ namespace MyGigApi.Controllers
                 EnsembleId = ensemble.EnsembleId,
                 UserIdRecipient = userId,
                 UserIdRequester = userId,
-                Status = RequestStatus.Accepted
+                Status = RequestStatus.Accepted,
+                ConfirmedAt = DateTime.Now
             };
             _context.EnsembleMembers.Add(mem);
 
@@ -85,7 +87,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/getensembles")]
+        [Route(RoutePrefix + "/getEnsembles")]
         public OkObjectResult GetEnsembles()
         {
             return new OkObjectResult(new {success = true, _context.Ensembles});
@@ -93,7 +95,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/newmember")]
+        [Route(RoutePrefix + "/newMember")]
         public OkObjectResult NewEnsembleMember([FromBody] EnsembleMember dto)
         {
             var userId = GetUserId();
@@ -125,8 +127,8 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/inactivatemembership")]
-        public OkObjectResult InactivateEnsembleMembership([FromBody] EnsembleMemberDto dto)
+        [Route(RoutePrefix + "/removeMember")]
+        public OkObjectResult RemoveEnsembleMember([FromBody] EnsembleMemberDto dto)
         {
             var userId = GetUserId();
 
@@ -149,8 +151,7 @@ namespace MyGigApi.Controllers
                 return new OkObjectResult(new {success = false, error = "No member found"});
             }
 
-            mem.Status = RequestStatus.Inactive;
-            _context.EnsembleMembers.Update(mem);
+            _context.EnsembleMembers.Remove(mem);
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
@@ -158,7 +159,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/addmod")]
+        [Route(RoutePrefix + "/addMod")]
         public OkObjectResult AddEnsembleModerator([FromBody] EnsembleModeratorDto dto)
         {
             var userId = GetUserId();
@@ -257,7 +258,7 @@ namespace MyGigApi.Controllers
         {
             var userId = GetUserId();
 
-            var eventModIds = _context.EnsembleModerators
+            var ensembleModIds = _context.EnsembleModerators
                 .Where(em => em.EnsembleId == dto.EnsembleId &&
                              em.Status == RequestStatus.Accepted)
                 .Select(em => em.UserIdRecipient)
@@ -270,7 +271,7 @@ namespace MyGigApi.Controllers
                 .ToArray();
 
             var validMem = ensembleMemberIds.Contains(userId);
-            var validMod = eventModIds.Contains(userId);
+            var validMod = ensembleModIds.Contains(userId);
 
             if (!(validMem || validMod))
             {
@@ -301,11 +302,11 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/ensemblesnotonevent")]
+        [Route(RoutePrefix + "/searchEnsemblesNotOnEvent")]
         public OkObjectResult SearchEnsemblesNotOnEvent([FromBody] SearchDto dto)
         {
             var ensemblesRequestedIds = _context.Bookings
-                .Where(b => b.EventId == dto.Id)
+                .Where(b => b.EventId == dto.EventId)
                 .Select(b => b.EnsembleId)
                 .ToArray();
 
@@ -319,50 +320,6 @@ namespace MyGigApi.Controllers
                 });
 
             return new OkObjectResult(new {success = true, ensembles});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/requestbooking")]
-        public OkObjectResult RequestBooking([FromBody] BookingDto dto)
-        {
-            var userId = GetUserId();
-
-            var validMod = _context.EventModerators
-                .Any(em => em.EventId == dto.EventId &&
-                           em.UserIdRecipient == userId &&
-                           em.Status == RequestStatus.Accepted);
-
-            if (!validMod)
-            {
-                return new OkObjectResult(new {success = false, error = "Not a valid event mod"});
-            }
-
-            var ensembleMod = _context.EnsembleModerators
-                .FirstOrDefault(em => em.EnsembleId == dto.EnsembleId &&
-                                      em.Status == RequestStatus.Accepted);
-
-            if (ensembleMod == null)
-            {
-                return new OkObjectResult(new {success = false, error = "No group mod"});
-            }
-
-            var user = _context.Users.Find(userId);
-            var ensemble = _context.Ensembles.Find(dto.EnsembleId);
-            var ev = _context.Events.Find(dto.EventId);
-
-            _context.Bookings.Add(new Booking
-            {
-                EnsembleId = dto.EnsembleId,
-                EventId = dto.EventId,
-                UserIdRecipient = ensembleMod.UserIdRecipient,
-                UserIdRequester = userId,
-                Text = $"{user.FullName} would like your ensemble {ensemble.Name} to perform at the event {ev.Name}"
-            });
-
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true});
         }
 
         [HttpPost]
@@ -394,7 +351,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/updatesetlist")]
+        [Route(RoutePrefix + "/updateSetlist")]
         public OkObjectResult UpdateSetlist([FromBody] BookingDto dto)
         {
             var userId = GetUserId();

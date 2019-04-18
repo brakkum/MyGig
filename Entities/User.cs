@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -47,6 +48,8 @@ namespace MyGigApi.Entities
         public string PhotoUrl { get; set; }
 
         public UserStatus Status { get; set; }
+
+        public DateTime JoinedOn { get; set; }
     }
 
     public enum UserStatus

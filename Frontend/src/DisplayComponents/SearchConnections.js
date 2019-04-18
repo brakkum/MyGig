@@ -1,30 +1,15 @@
 import React from "react";
 import Constants from "../Constants/Constants";
-import MemberSearchDisplay from "../DisplayComponents/MemberSearchDisplay";
+import MemberSearchDisplay from "./MemberSearchDisplay";
 
-export default class SearchPage extends React.Component {
-
-    _isMounted = false;
+export default class SearchConnections extends React.Component {
 
     state = {
-        jwt: "",
         search: "",
-        users: [],
         timeOut: 0,
+        users: [],
         isSearching: false
     };
-
-    componentDidMount() {
-        this._isMounted = true;
-
-        this.setState({
-            jwt: this.props.userData.jwt
-        });
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
 
     onSearchChange = text => {
         if (this.state.timeOut) {
@@ -38,30 +23,37 @@ export default class SearchPage extends React.Component {
                     return;
                 }
                 this.setState({isSearching: true});
-                fetch("/api/users/search",
+                fetch("/api/users/searchConnectionsNotInEnsemble",
                     {
                         method: "post",
                         headers: new Headers({
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${this.state.jwt}`
+                            "Authorization": `Bearer ${this.props.jwt}`
                         }),
                         body: JSON.stringify({
-                            Search: this.state.search
+                            Search: text,
+                            EnsembleId: this.props.ensembleId
                         })
                     }
                 ).then(res => res.json())
                     .then(json => {
-                        if (this._isMounted && json.success){
+                        if (json.success){
                             let users = json.users;
                             this.setState({
-                                users: users,
-                                isSearching: false
+                                users: []
+                            });
+                            this.setState({
+                                users: users
                             });
                         }
+                        this.setState({
+                            isSearching: false
+                        });
                     }).catch(e => console.log(e));
             }, Constants.searchTimeout)
         });
     };
+
 
     render() {
         const users = this.state.users;
@@ -80,8 +72,9 @@ export default class SearchPage extends React.Component {
                                 users.map((user, i) => {
                                     return <MemberSearchDisplay
                                         {...user}
-                                        type="connection"
-                                        jwt={this.state.jwt}
+                                        type="ensembleMember"
+                                        jwt={this.props.jwt}
+                                        ensembleId={this.props.ensembleId}
                                         key={i}
                                     />
                                 })

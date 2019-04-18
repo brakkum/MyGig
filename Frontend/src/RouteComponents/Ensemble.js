@@ -1,16 +1,19 @@
-import React from "react";
 import UpcomingPerformancesDisplay from "../DisplayComponents/UpcomingPerformancesDisplay";
-import TimeSince from "../HelperComponents/TimeSince";
-import ConnectToUserButton from "../FormComponents/ConnectToUserButton";
+import EnsembleMemberDisplay from "../DisplayComponents/EnsembleMemberDisplay";
+import EnsembleMemberDelete from "../DisplayComponents/EnsembleMemberDelete";
+import SearchConnections from "../DisplayComponents/SearchConnections";
+import MemberComment from "../DisplayComponents/MemberComment";
+import React from "react";
 
 export default class Ensemble extends React.Component {
     // top level route component for /ensemble/{ensemble_id}
 
     _isMounted = false;
-    _ensembleId = null;
-    _jwt = null;
 
     state = {
+        ensembleId: null,
+        jwt: null,
+        userId: null,
         pageLoading: true,
         userIsMod: false,
         currentTag: "info",
@@ -35,25 +38,22 @@ export default class Ensemble extends React.Component {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${this._jwt}`
+                "Authorization": `Bearer ${this.state.jwt}`
             }),
             body: JSON.stringify({
                 Text: this.state.newComment,
-                EnsembleId: this._ensembleId
+                EnsembleId: this.state.ensembleId
             })
         }).then(res => res.json())
             .then(json => {
                 if (json.success) {
-                    console.log("comment submitted");
                     this.repopulateComments();
                 } else {
-                    console.log("bad comment request ", json);
                     this.setState({
                         sendingRequest: false
                     });
                 }
             }).catch(e => {
-                console.log(e);
                 this.setState({
                     sendingRequest: false
                 });
@@ -61,16 +61,26 @@ export default class Ensemble extends React.Component {
         )
     };
 
-    repopulateComments = () => {
+    filterOutMember = userId => {
+        let members = this.state.members;
+        let newMembers = members.filter(mem => mem.userId !== userId);
+        this.setState({
+            members: []
+        });
+        this.setState({
+            members: newMembers
+        });
+    };
 
+    repopulateComments = () => {
         fetch("/api/ensembles/getComments", {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${this._jwt}`
+                "Authorization": `Bearer ${this.state.jwt}`
             }),
             body: JSON.stringify({
-                EnsembleId: this._ensembleId
+                EnsembleId: this.state.ensembleId
             })
         }).then(res => res.json())
             .then(json => {
@@ -79,15 +89,11 @@ export default class Ensemble extends React.Component {
                         comments: json.comments,
                         newComment: ""
                     });
-                    console.log("retrieved comments ", json)
-                } else {
-                    console.log("comments not retrieved ", json)
                 }
                 this.setState({
                     sendingRequest: false
                 });
             }).catch(e => {
-                console.log(e);
                 this.setState({
                     sendingRequest: false
                 });
@@ -96,8 +102,14 @@ export default class Ensemble extends React.Component {
     };
 
     componentDidMount() {
-        this._ensembleId = this.props.match.params.ensembleId;
-        this._jwt = this.props.userData.jwt;
+        const ensembleId = parseInt(this.props.match.params.ensembleId);
+        const jwt = this.props.userData.jwt;
+        const userId = this.props.userData.userId;
+        this.setState({
+            ensembleId: ensembleId,
+            jwt: jwt,
+            userId: userId
+        });
         this._isMounted = true;
         const hash = window.location.hash;
         if (hash) {
@@ -108,10 +120,10 @@ export default class Ensemble extends React.Component {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${this._jwt}`
+                "Authorization": `Bearer ${jwt}`
             }),
             body: JSON.stringify({
-                EnsembleId: this._ensembleId
+                EnsembleId: ensembleId
             })
         }).then(res => res.json())
             .then(json => {
@@ -125,8 +137,6 @@ export default class Ensemble extends React.Component {
                         performances: ensemble.performances,
                         pageLoading: false
                     });
-                } else {
-                    console.log("ensemble fetch fail, ", json);
                 }
             })
             .catch(e => console.log(e));
@@ -137,7 +147,6 @@ export default class Ensemble extends React.Component {
     }
 
     render() {
-        !this.state.pageLoading && console.log(this.state);
         const ensemble = this.state.ensemble;
         const performances = this.state.performances;
         return(
@@ -202,9 +211,9 @@ export default class Ensemble extends React.Component {
                                 <div>
                                     <span className="is-size-3">Upcoming Performances</span>
                                     {performances.length > 0 ?
-                                        <UpcomingPerformancesDisplay performances={performances} jwt={this._jwt} />
+                                        <UpcomingPerformancesDisplay performances={performances} jwt={this.state.jwt} />
                                         :
-                                        <h3 className="is-size-3">No upcoming performances</h3>
+                                        <h4 className="is-size-4">No upcoming performances</h4>
                                     }
                                 </div>
                             }
@@ -217,6 +226,7 @@ export default class Ensemble extends React.Component {
                                             <textarea
                                                 className="textarea"
                                                 rows="3"
+                                                placeholder="Add a new comment"
                                                 value={this.state.newComment}
                                                 onChange={e => this.setState({newComment: e.target.value})}
                                             />
@@ -233,63 +243,48 @@ export default class Ensemble extends React.Component {
                                     </div>
                                     <div>
                                         {this.state.comments.map((comment, i) => {
-                                            const user = comment.user;
-                                            console.log(comment);
-                                            return <article
-                                                className="message is-dark"
+                                            return <MemberComment
+                                                {...comment}
+                                                jwt={this.state.jwt}
                                                 key={i}
-                                                style={{border: "1px solid lightgrey", borderTop: "0"}}
-                                            >
-                                                <div className="message-header">
-                                                    <span>{user.fullName}</span>
-                                                    <span><TimeSince time={comment.timestamp} /></span>
-                                                </div>
-                                                <div className="message-body columns">
-                                                    <div className="column is-10">
-                                                        {comment.text}
-                                                    </div>
-                                                    <div className="column">
-                                                        <div className="has-text-centered">
-                                                            <img
-                                                                className="image is-centered"
-                                                                style={{
-                                                                    border: "1px solid lightgrey",
-                                                                    borderRadius: "5px",
-                                                                    margin: "0 auto 10px auto"
-                                                                }}
-                                                                width="100px"
-                                                                src={user.photoUrl || "/static/userphotos/default.png"}
-                                                                alt={user.fullName}
-                                                            />
-                                                            {!user.connectedToUser &&
-                                                                <div className="is-hoverable">
-                                                                    <ConnectToUserButton
-                                                                        jwt={this._jwt}
-                                                                        id={user.userId}
-                                                                    />
-                                                                </div>
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </article>
+                                            />
                                         })}
                                     </div>
                                 </div>
                             }
                             {this.state.currentTag === "members" &&
                                 <div>
-                                    members
+                                    {this.state.members.map((member, i) => {
+                                        return <EnsembleMemberDisplay
+                                            {...member}
+                                            jwt={this.state.jwt}
+                                            key={i}
+                                        />
+                                    })}
                                 </div>
                             }
                             {this.state.userIsMod && this.state.currentTag === "addMembers" &&
                                 <div>
-                                    add members
+                                    <SearchConnections
+                                        jwt={this.state.jwt}
+                                        ensembleId={this.state.ensembleId}
+                                    />
                                 </div>
                             }
                             {this.state.userIsMod && this.state.currentTag === "removeMembers" &&
-                                <div>
-                                    remove members
+                                <div className="section">
+                                    {this.state.members.map((member, i) => {
+                                        if (member.userId === this.state.userId) {
+                                            return;
+                                        }
+                                        return <EnsembleMemberDelete
+                                            key={i}
+                                            {...member}
+                                            filterOutMember={this.filterOutMember}
+                                            jwt={this.state.jwt}
+                                            ensembleId={this.state.ensembleId}
+                                        />
+                                    })}
                                 </div>
                             }
                         </div>

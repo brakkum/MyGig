@@ -4,6 +4,8 @@ namespace MyGigApi.DTOs
     {
         public string Search { get; set; }
 
-        public int Id { get; set; }
+        public int EnsembleId { get; set; }
+
+        public int EventId { get; set; }
     }
 }

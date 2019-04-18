@@ -68,7 +68,7 @@ namespace MyGigApi.Controllers
                 .ToArray();
 
             var performances = _context.Bookings
-                .Where(b => eventsFromEnsemblesIds.Contains(b.EventId))
+                .Where(b => eventsFromEnsemblesIds.Contains(b.EventId) && ensemblesAsMember.Contains(b.EnsembleId))
                 .Select(b => new EnsembleBookingDto
                 {
                     EventName = b.Event.Name,
@@ -94,7 +94,8 @@ namespace MyGigApi.Controllers
                     EventId = e.EventId,
                     Name = e.Name,
                     DateAndTime = e.DateAndTime,
-                    Location = e.Location
+                    Location = e.Location,
+                    UserIsMod = eventsModeratedIds.Contains(e.EventId)
                 });
 
             var notifications = _context.Notifications
@@ -227,7 +228,10 @@ namespace MyGigApi.Controllers
                 .Where(b => b.EventId == dto.EventId && b.Status == RequestStatus.Accepted)
                 .Select(b => new EnsembleDto
                 {
+                    EnsembleId = b.EnsembleId,
+                    BookingId = b.BookingId,
                     Name = b.Ensemble.Name,
+                    ConfirmedAt = b.ConfirmedAt,
                     Members = b.Ensemble.Members
                         .Select(m => new MemberDto
                         {
@@ -328,7 +332,7 @@ namespace MyGigApi.Controllers
                         FullName = ec.User.FullName,
                         PhotoUrl = ec.User.PhotoUrl,
                         UserId = ec.UserId,
-                        ConnectedToUser = validMod
+                        ConnectedToUser = userConnectionIds.Contains(ec.User.UserId)
                     }
                 })
                 .ToList() as ICollection<EnsembleCommentDto>;
@@ -340,7 +344,8 @@ namespace MyGigApi.Controllers
                     FullName = e.UserRecipient.FullName,
                     PhotoUrl = e.UserRecipient.PhotoUrl,
                     UserId = e.UserRecipient.UserId,
-                    ConnectedToUser = userConnectionIds.Contains(e.UserIdRecipient)
+                    ConnectedToUser = userConnectionIds.Contains(e.UserIdRecipient),
+                    MemberSince = e.ConfirmedAt
                 }).ToList() as ICollection<MemberDto>;
 
             var ensemble = _context.Ensembles

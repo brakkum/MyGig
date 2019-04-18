@@ -114,11 +114,9 @@ export default class SignUpForm extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (json.success){
-                    console.log("signup successful");
                     this.props.loginUser(json);
                     this.props.redirectOnLogin();
                 } else {
-                    console.log("signup failed: ", json);
                     alert("Something went wrong, please try again.");
                     this.setState({
                         sendingRequest: false
@@ -126,7 +124,6 @@ export default class SignUpForm extends React.Component {
                 }
             }
         ).catch(e => {
-            console.log(e);
             this.setState({sendingRequest: false});
         });
 

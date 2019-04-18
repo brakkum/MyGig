@@ -1,30 +1,15 @@
-import React from "react";
+import EnsembleSearchDisplay from "./EnsembleSearchDisplay";
 import Constants from "../Constants/Constants";
-import MemberSearchDisplay from "../DisplayComponents/MemberSearchDisplay";
+import React from "react";
 
-export default class SearchPage extends React.Component {
-
-    _isMounted = false;
+export default class SearchEnsembles extends React.Component {
 
     state = {
-        jwt: "",
         search: "",
-        users: [],
         timeOut: 0,
+        ensembles: [],
         isSearching: false
     };
-
-    componentDidMount() {
-        this._isMounted = true;
-
-        this.setState({
-            jwt: this.props.userData.jwt
-        });
-    }
-
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
 
     onSearchChange = text => {
         if (this.state.timeOut) {
@@ -38,33 +23,39 @@ export default class SearchPage extends React.Component {
                     return;
                 }
                 this.setState({isSearching: true});
-                fetch("/api/users/search",
+                fetch("/api/ensembles/searchEnsemblesNotOnEvent",
                     {
                         method: "post",
                         headers: new Headers({
                             "Content-Type": "application/json",
-                            "Authorization": `Bearer ${this.state.jwt}`
+                            "Authorization": `Bearer ${this.props.jwt}`
                         }),
                         body: JSON.stringify({
-                            Search: this.state.search
+                            Search: text,
+                            EventId: this.props.eventId
                         })
                     }
                 ).then(res => res.json())
                     .then(json => {
-                        if (this._isMounted && json.success){
-                            let users = json.users;
+                        if (json.success){
+                            let ensembles = json.ensembles;
                             this.setState({
-                                users: users,
-                                isSearching: false
+                                ensembles: []
+                            });
+                            this.setState({
+                                ensembles: ensembles
                             });
                         }
+                        this.setState({
+                            isSearching: false
+                        });
                     }).catch(e => console.log(e));
             }, Constants.searchTimeout)
         });
     };
 
     render() {
-        const users = this.state.users;
+        const ensembles = this.state.ensembles;
         return(
             <div className="section">
                 <div className="field" style={{maxWidth: "600px", margin: "auto"}}>
@@ -76,20 +67,20 @@ export default class SearchPage extends React.Component {
                     />
                     <div className="section">
                         <div className="box">
-                            {users.length > 0 ?
-                                users.map((user, i) => {
-                                    return <MemberSearchDisplay
-                                        {...user}
-                                        type="connection"
-                                        jwt={this.state.jwt}
+                        {this.state.isSearching ?
+                            <div>Searching...</div>
+                            :
+                            ensembles.length > 0 ?
+                                ensembles.map((ensemble, i) => {
+                                    return <EnsembleSearchDisplay
+                                        eventId={this.props.eventId}
+                                        jwt={this.props.jwt}
+                                        {...ensemble}
                                         key={i}
                                     />
                                 })
                                 :
-                                this.state.isSearching ?
-                                    <div>Searching...</div>
-                                    :
-                                    <div>No Users Found</div>
+                                <div>No Ensembles Found</div>
                             }
                         </div>
                     </div>
