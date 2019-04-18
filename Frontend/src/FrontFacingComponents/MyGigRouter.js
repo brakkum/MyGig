@@ -23,6 +23,7 @@ export default withRouter(
                         exact
                         path="/"
                         user={this.props.user}
+                        jwt={this.props.jwt}
                         component={
                             Home
                         }
@@ -30,6 +31,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/account"
                         user={this.props.user}
+                        jwt={this.props.jwt}
                         component={
                             Account
                         }
@@ -37,6 +39,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/connections"
                         user={this.props.user}
+                        jwt={this.props.jwt}
                         component={
                             Connections
                         }
@@ -44,6 +47,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/event/:eventId"
                         user={this.props.user}
+                        jwt={this.props.jwt}
                         component={
                             Event
                         }
@@ -51,6 +55,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/ensemble/:ensembleId"
                         user={this.props.user}
+                        jwt={this.props.jwt}
                         component={
                             Ensemble
                         }
@@ -58,6 +63,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/search"
                         user={this.props.user}
+                        jwt={this.props.jwt}
                         component={
                             SearchPage
                         }
@@ -65,6 +71,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/newEvent"
                         user={this.props.user}
+                        jwt={this.props.jwt}
                         component={
                             NewEvent
                         }
@@ -72,6 +79,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/newEnsemble"
                         user={this.props.user}
+                        jwt={this.props.jwt}
                         component={
                             NewEnsemble
                         }
@@ -79,6 +87,7 @@ export default withRouter(
                     <ProtectedRoute
                         path="/editSetlist/:bookingId"
                         user={this.props.user}
+                        jwt={this.props.jwt}
                         component={
                             EditSetlist
                         }

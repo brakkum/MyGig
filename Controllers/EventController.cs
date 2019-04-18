@@ -264,35 +264,6 @@ namespace MyGigApi.Controllers
 
             return new OkObjectResult(new {success = true});
         }
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/updatesetlist")]
-        public OkObjectResult AddSetlistToBooking([FromBody] BookingDto dto)
-        {
-            var userId = GetUserId();
-            var booking = _context.Bookings.Find(dto.BookingId);
-
-            var ensembleId = _context.Bookings
-                .Where(b => b.EventId == booking.EventId &&
-                            b.EnsembleId == booking.EnsembleId)
-                .Select(b => b.EnsembleId)
-                .FirstOrDefault();
-
-            var validMod = _context.EnsembleModerators
-                .Any(em => em.UserIdRecipient == userId &&
-                           em.EnsembleId == ensembleId &&
-                           em.Status == RequestStatus.Accepted);
-
-            if (!validMod)
-            {
-                return new OkObjectResult(new {success = false, error = "Not valid mod"});
-            }
-
-            booking.Setlist = dto.Setlist;
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true});
-        }
 
         public int[] GetUserConnections(int userId)
         {

@@ -56,7 +56,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [Route(RoutePrefix + "/newuser")]
+        [Route(RoutePrefix + "/newUser")]
         public OkObjectResult NewUser([FromBody] User user)
         {
             // Main sign up point for new users
@@ -167,7 +167,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/getuserfromtoken")]
+        [Route(RoutePrefix + "/getUserFromToken")]
         public OkObjectResult GetUserFromToken()
         {
             var userId = User.Claims

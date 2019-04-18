@@ -274,7 +274,7 @@ export default class Ensemble extends React.Component {
                                 <div className="section">
                                     {this.state.members.map((member, i) => {
                                         if (member.userId === this.state.userId) {
-                                            return;
+                                            return null;
                                         }
                                         return <EnsembleMemberDelete
                                             key={i}

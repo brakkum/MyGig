@@ -26,25 +26,25 @@ export default withRouter(
         componentDidMount() {
             const jwt = this.getJwtInLocalStorage();
 
-            if (!jwt) {
+            if (!jwt || jwt === "undefined") {
                 this.setState({
                     showLoginPage: true
                 });
                 return;
             }
 
-            fetch("/api/users/getuserfromtoken", {
+            fetch("/api/users/getUserFromToken", {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": "Bearer " + jwt
+                    "Authorization": `Bearer ${jwt}`
                 },
                 body: JSON.stringify({
                     Jwt: jwt
                 })
             }).then(res => res.json())
                 .then(json => {
-                    if (json.success){
+                    if (json.success) {
                         this.props.loginUser(json.user, jwt);
                         this.redirectOnLogin();
                     }

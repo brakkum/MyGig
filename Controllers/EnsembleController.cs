@@ -345,8 +345,9 @@ namespace MyGigApi.Controllers
             }
 
             var setlist = booking.Setlist;
+            var bookingId = booking.BookingId;
 
-            return new OkObjectResult(new {success = true, setlist, ensembleId});
+            return new OkObjectResult(new {success = true, setlist, bookingId, ensembleId});
         }
 
         [HttpPost]

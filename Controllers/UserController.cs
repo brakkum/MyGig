@@ -128,8 +128,6 @@ namespace MyGigApi.Controllers
         {
             var userId = GetUserId();
             var user = _context.Users.Find(userId);
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(userId + " " + request.UserIdRecipient);
 
             var existingRequest = _context.Connections
                 .FirstOrDefault(c => c.UserIdRecipient == userId &&
@@ -307,11 +305,11 @@ namespace MyGigApi.Controllers
         public int[] GetUserConnections(int userId)
         {
             var connA = _context.Connections
-                .Where(c => c.UserIdRecipient == userId)
+                .Where(c => c.UserIdRecipient == userId && c.Status == RequestStatus.Accepted)
                 .Select(c => c.UserIdRequester)
                 .ToArray();
             var connB = _context.Connections
-                .Where(c => c.UserIdRequester == userId)
+                .Where(c => c.UserIdRequester == userId && c.Status == RequestStatus.Accepted)
                 .Select(c => c.UserIdRecipient)
                 .ToArray();
 

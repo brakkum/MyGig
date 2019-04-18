@@ -46,7 +46,7 @@ export default class MemberCommentDisplay extends React.Component {
                                     <div className="is-hoverable">
                                         <ConnectToUserButton
                                             jwt={this.state.jwt}
-                                            id={user.userId}
+                                            userId={user.userId}
                                         />
                                     </div>
                                 }

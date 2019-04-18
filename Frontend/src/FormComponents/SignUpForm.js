@@ -113,7 +113,7 @@ export default class SignUpForm extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (json.success){
-                    this.props.loginUser(json);
+                    this.props.loginUser(json.user, json.jwt);
                     this.props.redirectOnLogin();
                 } else {
                     alert("Something went wrong, please try again.");

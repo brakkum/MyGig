@@ -62,7 +62,7 @@ export default class LoginForm extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (json.success){
-                    this.props.loginUser(json);
+                    this.props.loginUser(json.user, json.jwt);
                     this.props.redirectOnLogin();
                 } else {
                     this.setState({

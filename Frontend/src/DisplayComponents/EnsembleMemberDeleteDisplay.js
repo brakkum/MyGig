@@ -63,9 +63,10 @@ export default withRouter(
                         </div>
                     </div>
                     <a
+                        href="#removeMember"
                         className="delete"
                         onClick={() => this.toggleShowConfirm()}
-                    />
+                    >x</a>
                 </div>
             )
         }

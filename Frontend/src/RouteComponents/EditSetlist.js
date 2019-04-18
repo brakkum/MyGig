@@ -16,7 +16,6 @@ export default withRouter(
         };
 
         updateSetlist = () => {
-
             fetch("/api/ensembles/updateSetlist", {
                 method: "post",
                 headers: new Headers({
@@ -30,7 +29,7 @@ export default withRouter(
             }).then(res => res.json())
                 .then(json => {
                     if (json.success) {
-                        this.props.history.push(`/ensemble/${this.props.ensembleId}`);
+                        this.props.history.push(`/ensemble/${this.state.ensembleId}`);
                     }
                 })
                 .catch(e => console.log("setlist update fail ", e));
@@ -54,7 +53,7 @@ export default withRouter(
                     "Authorization": `Bearer ${jwt}`
                 }),
                 body: JSON.stringify({
-                    BookingId: this.state.bookingId
+                    BookingId: bookingId
                 })
             }).then(res => res.json())
                 .then(json => {
@@ -62,8 +61,9 @@ export default withRouter(
                         this.setState({
                             bookingId: json.bookingId,
                             setlistLoading: false,
-                            setlist: json.setlist,
-                            eventId: json.eventId
+                            setlist: json.setlist || "",
+                            eventId: json.eventId,
+                            ensembleId: json.ensembleId
                         });
                     } else {
                         this.props.history.push("/");
@@ -84,31 +84,38 @@ export default withRouter(
         render() {
             return(
                 <div className="section">
-                    {!this.state.setlistLoading ?
+                    {this.state.setlistLoading ?
+                        <progress className="progress"/>
+                        :
                         <div>
                             <span>One song per line</span>
-                            <textarea
-                                style={{resize: "vertical"}}
-                                value={this.state.setlist}
-                                onChange={this.onChange}
-                                className="textarea"
-                                rows="15"
-                            />
-                            <button
-                                className="button is-success"
-                                onClick={this.updateSetlist}
-                            >
-                                Update Setlist
-                            </button>
-                            <button
-                                className="button"
-                                onClick={() => this.props.history.push(`/ensemble/${this.state.ensembleId}`)}
-                            >
-                                Cancel
-                            </button>
+                            <div className="field">
+                                <textarea
+                                    style={{resize: "vertical"}}
+                                    value={this.state.setlist}
+                                    onChange={e => this.onChange(e.target.value)}
+                                    className="textarea"
+                                    placeholder="setlist"
+                                    rows="15"
+                                />
+                            </div>
+                            <div className="field">
+                                <div className="buttons is-pulled-right">
+                                    <button
+                                        className="button is-success"
+                                        onClick={this.updateSetlist}
+                                    >
+                                        Update Setlist
+                                    </button>
+                                    <button
+                                        className="button"
+                                        onClick={() => this.props.history.push(`/ensemble/${this.state.ensembleId}`)}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        :
-                        <progress className="progress"/>
                     }
                 </div>
             )
