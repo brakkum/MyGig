@@ -1,6 +1,6 @@
 import React from "react";
 
-export default class ConnectToUserButton extends React.Component {
+export default class RequestForEnsemble extends React.Component {
 
     _isMounted = false;
 
@@ -17,29 +17,31 @@ export default class ConnectToUserButton extends React.Component {
         this._isMounted = false;
     }
 
-    sendConnectionRequest = () => {
+    sendEnsembleRequest = () => {
         this.setState({sendingRequest: true});
-        fetch("/api/users/newConnection", {
+        fetch("/api/ensembles/newMember", {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${this.props.jwt}`
             }),
             body: JSON.stringify({
-                UserIdRecipient: this.props.userId
+                UserIdRecipient: this.props.userId,
+                EnsembleId: this.props.ensembleId
             })
         }).then(res => res.json())
             .then(json => {
                 if (this._isMounted && json.success){
                     console.log("requested ", json);
                     this.setState({
-                        requestSent: true,
-                        sendingRequest: false
+                        requestSent: true
                     })
                 } else {
                     console.log("fail, ", json);
-                    this.setState({sendingRequest: false});
                 }
+                this.setState({
+                    sendingRequest: false
+                });
             }).catch(e => console.log(e));
     };
 
@@ -56,9 +58,9 @@ export default class ConnectToUserButton extends React.Component {
                         (this.state.sendingRequest ? "is-loading " : "") +
                         (this.state.requestSent ? "is-success " : "is-info ")
                     }
-                    onClick={() => this.sendConnectionRequest()}
+                    onClick={() => this.sendEnsembleRequest()}
                 >
-                    {this.state.requestSent ? "Requested" : "Connect"}
+                    {this.state.requestSent ? "Requested" : "Add to Ensemble"}
                 </button>
             </div>
         )

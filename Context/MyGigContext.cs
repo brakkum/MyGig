@@ -125,6 +125,9 @@ namespace MyGigApi.Context
             modelBuilder.Entity<User>()
                 .Property(u => u.Status)
                 .HasDefaultValue(UserStatus.Active);
+            modelBuilder.Entity<User>()
+                .Property(u => u.JoinedOn)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
         }
     }
 }

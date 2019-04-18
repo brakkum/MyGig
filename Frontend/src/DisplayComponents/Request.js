@@ -1,6 +1,5 @@
 import React from "react";
 import MemberPicture from "./MemberPicture";
-import Button from "../HelperComponents/Button";
 
 export default class Request extends React.Component {
 
@@ -8,18 +7,12 @@ export default class Request extends React.Component {
         sendingRequest: false,
     };
 
-    requestStyle = {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        margin: "10px"
-    };
-
     acceptRequest = () => {
         let requestType = this.props.requestType;
         let typeId = this.props.typeId;
         let jwt = this.props.jwt;
-        console.log("accept");
+
+        console.log("accepting");
         this.setState({sendingRequest: true});
         fetch("/api/requests/confirm", {
             method: "post",
@@ -50,6 +43,7 @@ export default class Request extends React.Component {
         let typeId = this.props.typeId;
         let jwt = this.props.jwt;
 
+        console.log("denying");
         this.setState({sendingRequest: true});
         fetch("/api/requests/deny", {
             method: "post",
@@ -75,34 +69,37 @@ export default class Request extends React.Component {
     };
 
     render() {
+        console.log(this.props)
         return(
-            <div style={this.requestStyle}>
-                <div style={{maxWidth: "15%"}}>
-                    <MemberPicture photoUrl={this.props.userPhoto} />
-                </div>
-                <span style={{fontSize: "12px", textAlign: "center"}}>
-                    {this.props.text}
-                </span>
-                <div style={{minWidth: "150px"}}>
-                    {
-                        !this.state.sendingRequest ?
-                            <div>
-                                <Button
-                                    preClickText={"Accept"}
-                                    onClick={this.acceptRequest}
-                                    colorType={"success"}
-                                />
-                                <Button
-                                    preClickText={"Deny"}
-                                    onClick={this.denyRequest}
-                                    colorType={"danger"}
-                                />
-                            </div>
-                            :
-                            <div>
-                                One moment..
-                            </div>
-                    }
+            <div>
+                <div className="columns is-vcentered">
+                    <div className="column">
+                        <MemberPicture
+                            photoUrl={this.props.userPhoto}
+                            width={"100px"}
+                        />
+                    </div>
+                    <div className="column">
+                        <h4 className="is-size-4 has-text-centered">
+                            {this.props.text}
+                        </h4>
+                    </div>
+                    <div className="column">
+                        <div className="buttons is-flex is-centered">
+                            <button
+                                className="button is-success"
+                                onClick={this.acceptRequest}
+                            >
+                                Accept
+                            </button>
+                            <button
+                                className="button is-danger"
+                                onClick={this.denyRequest}
+                            >
+                                Deny
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         )

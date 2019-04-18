@@ -77,10 +77,7 @@ export default class Home extends React.Component {
                                         {this.state.requests.map((req, i) => {
                                             console.log(req);
                                             return <Request
-                                                userPhoto={req.userPhoto}
-                                                text={req.text}
-                                                requestType={req.requestType}
-                                                typeId={req.typeId}
+                                                {...req}
                                                 jwt={this._jwt}
                                                 filterRequests={this.filterRequests}
                                                 key={i}

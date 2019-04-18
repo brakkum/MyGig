@@ -1,18 +1,17 @@
-import React from "react";
 import UpcomingPerformancesDisplay from "../DisplayComponents/UpcomingPerformancesDisplay";
-import TimeSince from "../HelperComponents/TimeSince";
-import ConnectToUserButton from "../FormComponents/ConnectToUserButton";
 import MemberEnsembleDisplay from "../DisplayComponents/MemberEnsembleDisplay";
-import MemberPicture from "../DisplayComponents/MemberPicture";
+import MemberComment from "../DisplayComponents/MemberComment";
+import React from "react";
+import SearchConnections from "../DisplayComponents/SearchConnections";
 
 export default class Ensemble extends React.Component {
     // top level route component for /ensemble/{ensemble_id}
 
     _isMounted = false;
-    _ensembleId = null;
-    _jwt = null;
 
     state = {
+        ensembleId: null,
+        jwt: null,
         pageLoading: true,
         userIsMod: false,
         currentTag: "info",
@@ -37,11 +36,11 @@ export default class Ensemble extends React.Component {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${this._jwt}`
+                "Authorization": `Bearer ${this.state.jwt}`
             }),
             body: JSON.stringify({
                 Text: this.state.newComment,
-                EnsembleId: this._ensembleId
+                EnsembleId: this.state.ensembleId
             })
         }).then(res => res.json())
             .then(json => {
@@ -64,15 +63,14 @@ export default class Ensemble extends React.Component {
     };
 
     repopulateComments = () => {
-
         fetch("/api/ensembles/getComments", {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${this._jwt}`
+                "Authorization": `Bearer ${this.state.jwt}`
             }),
             body: JSON.stringify({
-                EnsembleId: this._ensembleId
+                EnsembleId: this.state.ensembleId
             })
         }).then(res => res.json())
             .then(json => {
@@ -98,8 +96,12 @@ export default class Ensemble extends React.Component {
     };
 
     componentDidMount() {
-        this._ensembleId = this.props.match.params.ensembleId;
-        this._jwt = this.props.userData.jwt;
+        const ensembleId = parseInt(this.props.match.params.ensembleId);
+        const jwt = this.props.userData.jwt;
+        this.setState({
+            ensembleId: ensembleId,
+            jwt: jwt
+        });
         this._isMounted = true;
         const hash = window.location.hash;
         if (hash) {
@@ -110,10 +112,10 @@ export default class Ensemble extends React.Component {
             method: "post",
             headers: new Headers({
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${this._jwt}`
+                "Authorization": `Bearer ${jwt}`
             }),
             body: JSON.stringify({
-                EnsembleId: this._ensembleId
+                EnsembleId: ensembleId
             })
         }).then(res => res.json())
             .then(json => {
@@ -204,9 +206,9 @@ export default class Ensemble extends React.Component {
                                 <div>
                                     <span className="is-size-3">Upcoming Performances</span>
                                     {performances.length > 0 ?
-                                        <UpcomingPerformancesDisplay performances={performances} jwt={this._jwt} />
+                                        <UpcomingPerformancesDisplay performances={performances} jwt={this.state.jwt} />
                                         :
-                                        <h3 className="is-size-3">No upcoming performances</h3>
+                                        <h4 className="is-size-4">No upcoming performances</h4>
                                     }
                                 </div>
                             }
@@ -236,45 +238,11 @@ export default class Ensemble extends React.Component {
                                     </div>
                                     <div>
                                         {this.state.comments.map((comment, i) => {
-                                            const user = comment.user;
-                                            return <article
-                                                className="message is-dark"
+                                            return <MemberComment
+                                                {...comment}
+                                                jwt={this.state.jwt}
                                                 key={i}
-                                                style={{border: "1px solid lightgrey", borderTop: "0"}}
-                                            >
-                                                <div className="message-body">
-                                                    <div className="columns">
-                                                        <div className="column is-10" style={{position: "relative"}}>
-                                                            <div>{comment.text}</div>
-                                                            <div
-                                                                className="is-hidden-mobile"
-                                                                style={{position: "absolute", bottom: "0"}}
-                                                            >
-                                                                <TimeSince time={comment.timestamp} />
-                                                            </div>
-                                                        </div>
-                                                        <div
-                                                            className="column is-hidden-desktop is-hidden-tablet"
-                                                        >
-                                                            <TimeSince time={comment.timestamp} />
-                                                        </div>
-                                                        <div className="column">
-                                                            <div className="has-text-centered">
-                                                                <h5 className="is-size-5">{user.fullName}</h5>
-                                                                <MemberPicture {...user} />
-                                                                {!user.connectedToUser &&
-                                                                    <div className="is-hoverable">
-                                                                        <ConnectToUserButton
-                                                                            jwt={this._jwt}
-                                                                            id={user.userId}
-                                                                        />
-                                                                    </div>
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </article>
+                                            />
                                         })}
                                     </div>
                                 </div>
@@ -284,7 +252,7 @@ export default class Ensemble extends React.Component {
                                     {this.state.members.map((member, i) => {
                                         return <MemberEnsembleDisplay
                                             {...member}
-                                            jwt={this._jwt}
+                                            jwt={this.state.jwt}
                                             key={i}
                                         />
                                     })}
@@ -292,7 +260,10 @@ export default class Ensemble extends React.Component {
                             }
                             {this.state.userIsMod && this.state.currentTag === "addMembers" &&
                                 <div>
-                                    add members
+                                    <SearchConnections
+                                        jwt={this.state.jwt}
+                                        ensembleId={this.state.ensembleId}
+                                    />
                                 </div>
                             }
                             {this.state.userIsMod && this.state.currentTag === "removeMembers" &&

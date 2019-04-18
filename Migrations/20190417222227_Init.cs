@@ -34,7 +34,8 @@ namespace MyGigApi.Migrations
                     Password = table.Column<string>(nullable: false),
                     Email = table.Column<string>(maxLength: 50, nullable: false),
                     PhotoUrl = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false, defaultValue: 1)
+                    Status = table.Column<int>(nullable: false, defaultValue: 1),
+                    JoinedOn = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()")
                 },
                 constraints: table =>
                 {
@@ -108,7 +109,7 @@ namespace MyGigApi.Migrations
                     UserIdRequester = table.Column<int>(nullable: false),
                     UserIdRecipient = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false, defaultValue: 0),
-                    Timestamp = table.Column<DateTime>(nullable: false),
+                    Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
                     Text = table.Column<string>(nullable: true),
                     ConfirmedAt = table.Column<DateTime>(nullable: true),
                     EnsembleId = table.Column<int>(nullable: false)
@@ -145,7 +146,7 @@ namespace MyGigApi.Migrations
                     UserIdRequester = table.Column<int>(nullable: false),
                     UserIdRecipient = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false, defaultValue: 0),
-                    Timestamp = table.Column<DateTime>(nullable: false),
+                    Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
                     Text = table.Column<string>(nullable: true),
                     ConfirmedAt = table.Column<DateTime>(nullable: true),
                     EnsembleId = table.Column<int>(nullable: false)

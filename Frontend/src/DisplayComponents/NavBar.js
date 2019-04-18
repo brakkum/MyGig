@@ -31,6 +31,9 @@ export default withRouter(
                                     <Link to="/account" className="navbar-item">
                                         Account
                                     </Link>
+                                    <Link to="/search" className="navbar-item">
+                                        Find Users
+                                    </Link>
                                 </div>
                                 <div className="navbar-brand is-pulled-right">
                                     <Link to="/logout" className="navbar-item">

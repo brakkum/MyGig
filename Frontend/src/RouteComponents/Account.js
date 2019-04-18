@@ -1,5 +1,6 @@
 import React from "react";
 import moment from "moment";
+import MemberPicture from "../DisplayComponents/MemberPicture";
 
 export default class Account extends React.Component {
     // top level route component for /account
@@ -241,17 +242,7 @@ export default class Account extends React.Component {
                                             </h3>
                                         </div>
                                         <div className="column is-flex">
-                                            <img
-                                                src={this.state.photoUrl || "/static/userphotos/default.png"}
-                                                alt={this.state.fullName}
-                                                className="image"
-                                                style={{
-                                                    maxWidth: "450px",
-                                                    margin: "auto",
-                                                    border: "1px solid lightgrey",
-                                                    borderRadius: "5px"
-                                                }}
-                                            />
+                                            <MemberPicture {...this.state} />
                                         </div>
                                     </div>
                             }

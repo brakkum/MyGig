@@ -87,7 +87,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/getensembles")]
+        [Route(RoutePrefix + "/getEnsembles")]
         public OkObjectResult GetEnsembles()
         {
             return new OkObjectResult(new {success = true, _context.Ensembles});
@@ -95,7 +95,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/newmember")]
+        [Route(RoutePrefix + "/newMember")]
         public OkObjectResult NewEnsembleMember([FromBody] EnsembleMember dto)
         {
             var userId = GetUserId();
@@ -259,7 +259,7 @@ namespace MyGigApi.Controllers
         {
             var userId = GetUserId();
 
-            var eventModIds = _context.EnsembleModerators
+            var ensembleModIds = _context.EnsembleModerators
                 .Where(em => em.EnsembleId == dto.EnsembleId &&
                              em.Status == RequestStatus.Accepted)
                 .Select(em => em.UserIdRecipient)
@@ -272,7 +272,7 @@ namespace MyGigApi.Controllers
                 .ToArray();
 
             var validMem = ensembleMemberIds.Contains(userId);
-            var validMod = eventModIds.Contains(userId);
+            var validMod = ensembleModIds.Contains(userId);
 
             if (!(validMem || validMod))
             {
@@ -307,7 +307,7 @@ namespace MyGigApi.Controllers
         public OkObjectResult SearchEnsemblesNotOnEvent([FromBody] SearchDto dto)
         {
             var ensemblesRequestedIds = _context.Bookings
-                .Where(b => b.EventId == dto.Id)
+                .Where(b => b.EventId == dto.EnsembleId)
                 .Select(b => b.EnsembleId)
                 .ToArray();
 
@@ -325,7 +325,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/requestbooking")]
+        [Route(RoutePrefix + "/requestBooking")]
         public OkObjectResult RequestBooking([FromBody] BookingDto dto)
         {
             var userId = GetUserId();

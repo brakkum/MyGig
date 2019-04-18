@@ -128,6 +128,8 @@ namespace MyGigApi.Controllers
         {
             var userId = GetUserId();
             var user = _context.Users.Find(userId);
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(userId + " " + request.UserIdRecipient);
 
             var existingRequest = _context.Connections
                 .FirstOrDefault(c => c.UserIdRecipient == userId &&
@@ -185,7 +187,8 @@ namespace MyGigApi.Controllers
                 {
                     UserId = us.UserId,
                     FullName = us.FullName,
-                    PhotoUrl = us.PhotoUrl
+                    PhotoUrl = us.PhotoUrl,
+                    MemberSince = us.JoinedOn
                 });
 
             return new OkObjectResult(new {success = true, users});
@@ -194,7 +197,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/searchconnections")]
+        [Route(RoutePrefix + "/searchConnections")]
         public OkObjectResult SearchConnections([FromBody] SearchDto dto)
         {
             var userId = GetUserId();
@@ -215,7 +218,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/connsnotinensemble")]
+        [Route(RoutePrefix + "/searchConnectionsNotInEnsemble")]
         public OkObjectResult SearchConnsNotInEnsemble([FromBody] SearchDto dto)
         {
             var userId = GetUserId();
@@ -223,8 +226,7 @@ namespace MyGigApi.Controllers
             var userConnectionIds = GetUserConnections(userId);
 
             var ensembleMembersIds = _context.EnsembleMembers
-                .Where(em => em.EnsembleId == dto.Id &&
-                             em.Status == RequestStatus.Accepted)
+                .Where(em => em.EnsembleId == dto.EnsembleId)
                 .Select(m => m.UserIdRecipient)
                 .ToArray();
 
@@ -266,7 +268,7 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/getuserinfo")]
+        [Route(RoutePrefix + "/getUserInfo")]
         public OkObjectResult GetUserInfo()
         {
             var userId = GetUserId();

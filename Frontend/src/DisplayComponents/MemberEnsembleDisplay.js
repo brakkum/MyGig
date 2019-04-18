@@ -5,14 +5,17 @@ import MemberPicture from "./MemberPicture";
 
 export default class MemberEnsembleDisplay extends React.Component {
 
-    _jwt = null;
+    state = {
+        jwt: ""
+    };
 
     componentDidMount() {
-        this._jwt = this.props.jwt;
+        this.setState({
+            jwt: this.props.jwt
+        });
     }
 
     render() {
-        console.log(this.props);
         return(
             <article className="message is-dark">
                 <div className="message-header">
@@ -28,7 +31,7 @@ export default class MemberEnsembleDisplay extends React.Component {
                             {!this.props.connectedToUser &&
                                 <div className="is-hoverable">
                                     <ConnectToUserButton
-                                        jwt={this._jwt}
+                                        jwt={this.state.jwt}
                                         id={this.props.userId}
                                     />
                                 </div>
