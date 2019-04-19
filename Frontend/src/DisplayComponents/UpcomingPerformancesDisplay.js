@@ -140,7 +140,7 @@ export default class UpcomingPerformancesDisplay extends React.Component {
                                 </div>
                             </div>
                             {i !== performances.length - 1 &&
-                                <hr style={{margin: "0 0 20px 0"}} />
+                                <hr style={{margin: "0 0 20px 0"}} className={this.state.hidePerformances && i >= 1 ? " is-hidden" : ""} />
                             }
                         </div>
                     })
