@@ -15,6 +15,7 @@ export default class Home extends React.Component {
         requests: [],
         performances: [],
         events: [],
+        hideRequests: true,
         hideEnsembles: true,
         hideEvents: true,
         jwt: ""
@@ -51,7 +52,7 @@ export default class Home extends React.Component {
 
     filterRequests = (requestType, typeId) => {
         let reqs = this.state.requests;
-        let newReqs = reqs.filter(req => req.requestType !== requestType && req.typeId !== typeId);
+        let newReqs = reqs.filter(req => req.requestType !== requestType || req.typeId !== typeId);
         this.setState({requests: []});
         this.setState({requests: newReqs});
     };
@@ -61,6 +62,7 @@ export default class Home extends React.Component {
     }
 
     render() {
+        const requests = this.state.requests;
         const ensembles = this.state.ensembles;
         const performances = this.state.performances;
         const events = this.state.events;
@@ -75,14 +77,29 @@ export default class Home extends React.Component {
                             <div className="columns">
                                 <div className="column is-12">
                                     <div className="box">
-                                        {this.state.requests.map((req, i) => {
-                                            return <RequestDisplay
-                                                {...req}
-                                                jwt={this.state.jwt}
-                                                filterRequests={this.filterRequests}
+                                        {requests.map((req, i) => {
+                                            return <div
+                                                className={this.state.hideRequests && i >= 2 ? "is-hidden" : ""}
                                                 key={i}
-                                            />
+                                            >
+                                                <RequestDisplay
+                                                    {...req}
+                                                    jwt={this.state.jwt}
+                                                    filterRequests={this.filterRequests}
+                                                    key={i}
+                                                />
+                                            </div>
                                         })}
+                                        {requests.length > 2 &&
+                                            <div className="has-text-centered">
+                                                <a
+                                                    href="#requests"
+                                                    onClick={() => this.setState({hideRequests: !this.state.hideRequests})}
+                                                >
+                                                    {this.state.hideRequests ? "More" : "Less"}
+                                                </a>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -142,14 +159,14 @@ export default class Home extends React.Component {
                                         }
                                         {
                                             ensembles.length >= 3 &&
-                                            <div className="has-text-centered">
-                                                <a
-                                                    href="#ensembles"
-                                                    onClick={() => this.setState({hideEnsembles: !this.state.hideEnsembles})}
-                                                >
-                                                    {this.state.hideEnsembles ? "More" : "Less"}
-                                                </a>
-                                            </div>
+                                                <div className="has-text-centered">
+                                                    <a
+                                                        href="#ensembles"
+                                                        onClick={() => this.setState({hideEnsembles: !this.state.hideEnsembles})}
+                                                    >
+                                                        {this.state.hideEnsembles ? "More" : "Less"}
+                                                    </a>
+                                                </div>
                                         }
                                     </div>
                                 </div>
