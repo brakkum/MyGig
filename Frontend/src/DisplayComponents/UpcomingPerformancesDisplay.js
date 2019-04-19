@@ -80,7 +80,7 @@ export default class UpcomingPerformancesDisplay extends React.Component {
                     performances.map((perf, i) => {
                         const userIsMod = perf.userIsMod;
                         return <div key={i}>
-                            <div className={"columns" + (this.state.hidePerformances && i >= 3 ? " is-hidden" : "")}>
+                            <div className={"columns" + (this.state.hidePerformances && i >= 2 ? " is-hidden" : "")}>
                                 <div className="column">
                                     <h4 className="is-size-5">
                                         {moment(perf.dateAndTime).format("MMM D, h:mm A")}
@@ -146,7 +146,7 @@ export default class UpcomingPerformancesDisplay extends React.Component {
                     })
                 }
                 {
-                    this.props.performances.length >= 3 &&
+                    this.props.performances.length > 2 &&
                         <div className="has-text-centered">
                             <a href="#performances" onClick={() => this.setState({hidePerformances: !this.state.hidePerformances})}>
                                 {this.state.hidePerformances ? "More" : "Less"}
