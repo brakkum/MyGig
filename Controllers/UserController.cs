@@ -106,7 +106,9 @@ namespace MyGigApi.Controllers
 
             if (oldPhoto != null)
             {
-                System.IO.File.Delete(oldPhoto);
+                // remove leading slash
+                var photoLocation = oldPhoto.Remove(0, 1);
+                System.IO.File.Delete(photoLocation);
             }
 
             using (var fs = System.IO.File.Create(url))

@@ -12,7 +12,7 @@ export default class Account extends React.Component {
         photoUrl: null,
         joinDate: null,
         numEnsembles: null,
-        currentTab: "info",
+        currentTag: "info",
         oldPassword: "",
         oldPasswordError: false,
         oldPasswordConfirm: "",
@@ -30,6 +30,10 @@ export default class Account extends React.Component {
     componentDidMount() {
         this._isMounted = true;
         const jwt = this.props.jwt;
+        const hash = window.location.hash;
+        if (hash) {
+            this.setState({currentTag: hash.replace("#", "")});
+        }
 
         this.setState({
             jwt: jwt
@@ -95,6 +99,14 @@ export default class Account extends React.Component {
             return;
         }
 
+        if (newPass.length < 6) {
+            this.setState({
+                passwordError: "Password must be at least 6 characters",
+                newPasswordError: true
+            });
+            return;
+        }
+
         this.setState({
             sendingRequest: true
         });
@@ -114,7 +126,7 @@ export default class Account extends React.Component {
             .then(json => {
                 if (json.success) {
                     this.setState({
-                        currentTab: "info",
+                        currentTag: "info",
                         oldPassword: "",
                         oldPasswordConfirm: "",
                         newPassword: "",
@@ -170,7 +182,7 @@ export default class Account extends React.Component {
             .then(json => {
                 if (json.success) {
                     this.setState({
-                        currentTab: "info",
+                        currentTag: "info",
                         fileError: "",
                         file: "",
                         photoUrl: json.url,
@@ -206,27 +218,27 @@ export default class Account extends React.Component {
                             <div className="tabs">
                                 <ul>
                                     <li
-                                        className={this.state.currentTab === "info" ? "is-active" : ""}
-                                        onClick={() => this.setState({currentTab: "info"})}
+                                        className={this.state.currentTag === "info" ? "is-active" : ""}
+                                        onClick={() => this.setState({currentTag: "info"})}
                                     >
                                         <a href="#info">Info</a>
                                     </li>
                                     <li
-                                        className={this.state.currentTab === "password" ? "is-active" : ""}
-                                        onClick={() => this.setState({currentTab: "password"})}
+                                        className={this.state.currentTag === "password" ? "is-active" : ""}
+                                        onClick={() => this.setState({currentTag: "password"})}
                                     >
-                                        <a href="#pass">Change Password</a>
+                                        <a href="#password">Change Password</a>
                                     </li>
                                     <li
-                                        className={this.state.currentTab === "photo" ? "is-active" : ""}
-                                        onClick={() => this.setState({currentTab: "photo"})}
+                                        className={this.state.currentTag === "photo" ? "is-active" : ""}
+                                        onClick={() => this.setState({currentTag: "photo"})}
                                     >
                                         <a href="#photo">Change Photo</a>
                                     </li>
                                 </ul>
                             </div>
                             {
-                                this.state.currentTab === "info" &&
+                                this.state.currentTag === "info" &&
                                     <div className="columns">
                                         <div className="column">
                                             <h1 className="is-size-1">
@@ -246,7 +258,7 @@ export default class Account extends React.Component {
                                     </div>
                             }
                             {
-                                this.state.currentTab === "password" &&
+                                this.state.currentTag === "password" &&
                                     <div>
                                         <div className="field">
                                             <label className="label">
@@ -300,7 +312,7 @@ export default class Account extends React.Component {
                                                                 oldPassword: "",
                                                                 oldPasswordConfirm: "",
                                                                 newPassword: "",
-                                                                currentTab: "info"
+                                                                currentTag: "info"
                                                             })}
                                                         >
                                                             Cancel
@@ -312,7 +324,7 @@ export default class Account extends React.Component {
                                     </div>
                             }
                             {
-                                this.state.currentTab === "photo" &&
+                                this.state.currentTag === "photo" &&
                                     <div>
                                         <div className="field">
                                             <div className="file is-centered has-name is-boxed">
@@ -349,7 +361,7 @@ export default class Account extends React.Component {
                                                             onClick={() => this.setState({
                                                                 file: "",
                                                                 fileError: "",
-                                                                currentTab: "info"
+                                                                currentTag: "info"
                                                             })}
                                                         >
                                                             Cancel

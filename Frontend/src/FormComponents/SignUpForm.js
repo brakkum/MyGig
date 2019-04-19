@@ -77,7 +77,7 @@ export default class SignUpForm extends React.Component {
                     passwordValid: false,
                     passwordConfirmValid: false
                 });
-                errors.push("Password too short");
+                errors.push("Password must be at least 6 characters");
                 valid = false;
             } else {
                 this.setState({
