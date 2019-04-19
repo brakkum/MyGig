@@ -44,7 +44,11 @@ export default class ConnectionDisplay extends React.Component {
                     <h5 className="is-size-5">
                         {this.props.fullName}
                     </h5>
-                    <a className="delete" onClick={() => this.setState({showConfirm: !this.state.showConfirm})}>
+                    <a
+                        className="delete"
+                        href="#connections"
+                        onClick={() => this.setState({showConfirm: !this.state.showConfirm})}
+                    >
                         x
                     </a>
                 </div>
