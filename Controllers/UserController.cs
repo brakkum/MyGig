@@ -182,7 +182,8 @@ namespace MyGigApi.Controllers
             var userConnectionIds = GetUserConnections(userId);
 
             var users = _context.Users
-                .Where(u => u.FullName.Contains(dto.Search) && !userConnectionIds.Contains(u.UserId))
+                .Where(u => u.FullName.ToLower().Contains(dto.Search.ToLower()) &&
+                            !userConnectionIds.Contains(u.UserId))
                 .Select(us => new MemberDto
                 {
                     UserId = us.UserId,
@@ -205,7 +206,8 @@ namespace MyGigApi.Controllers
             var userConnectionIds = GetUserConnections(userId);
 
             var users = _context.Users
-                .Where(u => u.FullName.Contains(dto.Search) && userConnectionIds.Contains(u.UserId))
+                .Where(u => u.FullName.ToLower().Contains(dto.Search.ToLower()) &&
+                            userConnectionIds.Contains(u.UserId))
                 .Select(us => new MemberDto
                 {
                     UserId = us.UserId,
@@ -231,7 +233,7 @@ namespace MyGigApi.Controllers
                 .ToArray();
 
             var users = _context.Users
-                .Where(u => u.FullName.Contains(dto.Search) &&
+                .Where(u => u.FullName.ToLower().Contains(dto.Search.ToLower()) &&
                             userConnectionIds.Contains(u.UserId) &&
                             !ensembleMembersIds.Contains(u.UserId))
                 .Select(us => new MemberDto

@@ -311,7 +311,7 @@ namespace MyGigApi.Controllers
                 .ToArray();
 
             var ensembles = _context.Ensembles
-                .Where(e => e.Name.Contains(dto.Search) &&
+                .Where(e => e.Name.ToLower().Contains(dto.Search.ToLower()) &&
                             !ensemblesRequestedIds.Contains(e.EnsembleId))
                 .Select(e => new EnsembleDto
                 {
@@ -427,7 +427,7 @@ namespace MyGigApi.Controllers
         public OkObjectResult SearchUsers([FromBody] SearchDto dto)
         {
             var ensembles = _context.Ensembles
-                .Where(e => e.Name.Contains(dto.Search))
+                .Where(e => e.Name.ToLower().Contains(dto.Search.ToLower()))
                 .Select(e => new EnsembleDto
                 {
                     EnsembleId = e.EnsembleId,
