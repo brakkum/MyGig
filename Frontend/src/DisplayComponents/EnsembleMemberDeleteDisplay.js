@@ -31,9 +31,7 @@ export default withRouter(
                     if (json.success) {
                         this.props.filterOutMember(userId);
                     }
-                }).catch(e => {
-                console.log(e);
-            })
+                }).catch(e => {console.log(e);});
         };
 
         render() {

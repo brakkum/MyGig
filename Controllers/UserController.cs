@@ -304,6 +304,39 @@ namespace MyGigApi.Controllers
             });
         }
 
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/getAllConnections")]
+        public OkObjectResult GetAllConnections()
+        {
+            var userId = GetUserId();
+
+            var connA = _context.Connections
+                .Where(c => c.UserIdRecipient == userId &&
+                            c.UserIdRequester != userId &&
+                            c.Status == RequestStatus.Accepted)
+                .Select(c => new MemberDto
+                {
+                    FullName = c.UserRequester.FullName,
+                    PhotoUrl = c.UserRequester.PhotoUrl,
+                    ConfirmedAt = c.ConfirmedAt
+                });
+            var connB = _context.Connections
+                .Where(c => c.UserIdRequester == userId &&
+                            c.UserIdRecipient != userId &&
+                            c.Status == RequestStatus.Accepted)
+                .Select(c => new MemberDto
+                {
+                    FullName = c.UserRecipient.FullName,
+                    PhotoUrl = c.UserRecipient.PhotoUrl,
+                    ConfirmedAt = c.ConfirmedAt
+                });
+
+            var connections = connA.Concat(connB).ToArray();
+
+            return new OkObjectResult(new {success = true, connections});
+        }
+
         public int[] GetUserConnections(int userId)
         {
             var connA = _context.Connections

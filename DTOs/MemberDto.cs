@@ -13,5 +13,7 @@ namespace MyGigApi.DTOs
         public bool ConnectedToUser { get; set; }
 
         public DateTime? MemberSince { get; set; }
+
+        public DateTime? ConfirmedAt { get; set; }
     }
 }

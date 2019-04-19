@@ -7,7 +7,7 @@ export default class Account extends React.Component {
     _isMounted = false;
 
     state = {
-        pageLoaded: false,
+        pageLoading: true,
         fullName: "",
         photoUrl: null,
         joinDate: null,
@@ -54,7 +54,7 @@ export default class Account extends React.Component {
                         photoUrl: user.photoUrl,
                         joinedOn: user.joinedOn,
                         numEnsembles: user.numEnsembles,
-                        pageLoaded: true
+                        pageLoading: false
                     })
                 } else {
                     this.props.history.push("/");
@@ -213,7 +213,9 @@ export default class Account extends React.Component {
         return(
             <div className={"section"}>
                 {
-                    this.state.pageLoaded ?
+                    this.state.pageLoading ?
+                        <progress className="progress" />
+                        :
                         <div className="box">
                             <div className="tabs">
                                 <ul>
@@ -372,8 +374,7 @@ export default class Account extends React.Component {
                                         </div>
                                     </div>
                             }
-                        </div> :
-                        <progress className="progress" />
+                        </div>
                     }
             </div>
         )

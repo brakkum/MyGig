@@ -1,5 +1,6 @@
 import MemberSearchDisplay from "../DisplayComponents/MemberSearchDisplay";
 import Constants from "../Constants/Constants";
+import { Link } from "react-router-dom";
 import React from "react";
 
 export default class SearchPage extends React.Component {
@@ -67,6 +68,11 @@ export default class SearchPage extends React.Component {
         const users = this.state.users;
         return(
             <div className="section">
+                <div className="field has-text-right">
+                    <Link to="/connections">
+                        View all connections
+                    </Link>
+                </div>
                 <div className="field" style={{maxWidth: "600px", margin: "auto"}}>
                     <input
                         className="input"

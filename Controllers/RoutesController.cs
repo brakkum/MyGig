@@ -233,6 +233,7 @@ namespace MyGigApi.Controllers
                     Name = b.Ensemble.Name,
                     ConfirmedAt = b.ConfirmedAt,
                     Members = b.Ensemble.Members
+                        .Where(m => m.Status == RequestStatus.Accepted)
                         .Select(m => new MemberDto
                         {
                             FullName = m.UserRecipient.FullName,
