@@ -319,7 +319,8 @@ namespace MyGigApi.Controllers
                 {
                     FullName = c.UserRequester.FullName,
                     PhotoUrl = c.UserRequester.PhotoUrl,
-                    ConfirmedAt = c.ConfirmedAt
+                    ConfirmedAt = c.ConfirmedAt,
+                    UserId = c.UserIdRequester
                 });
             var connB = _context.Connections
                 .Where(c => c.UserIdRequester == userId &&
@@ -329,12 +330,37 @@ namespace MyGigApi.Controllers
                 {
                     FullName = c.UserRecipient.FullName,
                     PhotoUrl = c.UserRecipient.PhotoUrl,
-                    ConfirmedAt = c.ConfirmedAt
+                    ConfirmedAt = c.ConfirmedAt,
+                    UserId = c.UserIdRecipient
                 });
 
             var connections = connA.Concat(connB).ToArray();
 
             return new OkObjectResult(new {success = true, connections});
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/deleteConnection")]
+        public OkObjectResult DeleteConnection([FromBody] MemberDto dto)
+        {
+            var userId = GetUserId();
+            var memberId = dto.UserId;
+
+            var conn = _context.Connections
+                .FirstOrDefault(c => ((c.UserIdRecipient == userId && c.UserIdRequester == memberId) ||
+                                      (c.UserIdRecipient == memberId && c.UserIdRequester == userId)) &&
+                                       c.Status == RequestStatus.Accepted);
+
+            if (conn == null)
+            {
+                return new OkObjectResult(new {success = false, error = "no connection found"});
+            }
+
+            _context.Connections.Remove(conn);
+            _context.SaveChanges();
+
+            return new OkObjectResult(new {success = true});
         }
 
         public int[] GetUserConnections(int userId)

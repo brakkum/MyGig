@@ -1,6 +1,7 @@
 import MemberPictureDisplay from "../DisplayComponents/MemberPictureDisplay";
 import moment from "moment";
 import React from "react";
+import Connections from "./Connections";
 
 export default class Account extends React.Component {
 
@@ -237,6 +238,12 @@ export default class Account extends React.Component {
                                     >
                                         <a href="#photo">Change Photo</a>
                                     </li>
+                                    <li
+                                        className={this.state.currentTag === "connections" ? "is-active" : ""}
+                                        onClick={() => this.setState({currentTag: "connections"})}
+                                    >
+                                        <a href="#connections">Connections</a>
+                                    </li>
                                 </ul>
                             </div>
                             {
@@ -373,6 +380,10 @@ export default class Account extends React.Component {
                                             </div>
                                         </div>
                                     </div>
+                            }
+                            {
+                                this.state.currentTag === "connections" &&
+                                    <Connections {...this.props} />
                             }
                         </div>
                     }

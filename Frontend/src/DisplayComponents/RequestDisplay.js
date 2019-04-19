@@ -90,20 +90,24 @@ export default class RequestDisplay extends React.Component {
                         </h5>
                     </div>
                     <div className="column">
-                        <div className="buttons is-flex is-centered">
-                            <button
-                                className="button is-success"
-                                onClick={this.acceptRequest}
-                            >
-                                Accept
-                            </button>
-                            <button
-                                className="button is-danger"
-                                onClick={this.denyRequest}
-                            >
-                                Deny
-                            </button>
-                        </div>
+                        {this.state.sendingRequest ?
+                            <progress className="progress" />
+                            :
+                            <div className="buttons is-flex is-centered">
+                                <button
+                                    className="button is-success"
+                                    onClick={this.acceptRequest}
+                                >
+                                    Accept
+                                </button>
+                                <button
+                                    className="button is-danger"
+                                    onClick={this.denyRequest}
+                                >
+                                    Deny
+                                </button>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
-import React from "react";
 import ConnectionDisplay from "../DisplayComponents/ConnectionDisplay";
+import React from "react";
 
 export default class Connections extends React.Component {
 
@@ -35,7 +35,13 @@ export default class Connections extends React.Component {
                     this.props.history.push("/");
                 }
             }).catch(e => console.log(e));
+    };
 
+    filterConnections = userId => {
+        const connections = this.state.connections;
+        const newConnections = connections.filter(c => c.userId !== userId);
+        this.setState({connections: []});
+        this.setState({connections: newConnections});
     };
 
     componentWillUnmount() {
@@ -51,7 +57,12 @@ export default class Connections extends React.Component {
                     :
                     <div>
                         {connections.map((connection, i) => {
-                            return <ConnectionDisplay {...connection} key={i} />
+                            return <ConnectionDisplay
+                                filterConnections={this.filterConnections}
+                                jwt={this.state.jwt}
+                                {...connection}
+                                key={i}
+                            />
                         })}
                     </div>
                 }

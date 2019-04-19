@@ -67,6 +67,8 @@ export default class LoginForm extends React.Component {
                 } else {
                     this.setState({
                         sendingRequest: false,
+                        passwordValid: false,
+                        emailValid: false,
                         loginError: "Invalid login."
                     });
                 }
