@@ -27,5 +27,5 @@ for user in users:
                "lastName": lastName,
                "password": password,
                "passwordConfirm": password}
-    r = requests.post(url=base_url+"/api/users/newUser", verify=False, json=userObj).json()
+    requests.post(url=base_url+"/api/users/newUser", verify=False, json=userObj)
     print("{0} {1} created".format(firstName, lastName))
