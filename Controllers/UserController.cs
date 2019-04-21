@@ -179,7 +179,7 @@ namespace MyGigApi.Controllers
         {
             var userId = GetUserId();
 
-            var userConnectionIds = GetUserConnections(userId);
+            var userConnectionIds = GetUserConnectionsAnyStatus(userId);
 
             var users = _context.Users
                 .Where(u => u.FullName.ToLower().Contains(dto.Search.ToLower()) &&
@@ -225,7 +225,7 @@ namespace MyGigApi.Controllers
         {
             var userId = GetUserId();
 
-            var userConnectionIds = GetUserConnections(userId);
+            var userConnectionIds = GetUserConnectionsAnyStatus(userId);
 
             var ensembleMembersIds = _context.EnsembleMembers
                 .Where(em => em.EnsembleId == dto.EnsembleId)
@@ -373,6 +373,20 @@ namespace MyGigApi.Controllers
                 .ToArray();
             var connB = _context.Connections
                 .Where(c => c.UserIdRequester == userId && c.Status == RequestStatus.Accepted)
+                .Select(c => c.UserIdRecipient)
+                .ToArray();
+
+            return connA.Concat(connB).ToArray();
+        }
+
+        public int[] GetUserConnectionsAnyStatus(int userId)
+        {
+            var connA = _context.Connections
+                .Where(c => c.UserIdRecipient == userId)
+                .Select(c => c.UserIdRequester)
+                .ToArray();
+            var connB = _context.Connections
+                .Where(c => c.UserIdRequester == userId)
                 .Select(c => c.UserIdRecipient)
                 .ToArray();
 
