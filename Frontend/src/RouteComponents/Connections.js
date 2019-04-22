@@ -56,14 +56,19 @@ export default class Connections extends React.Component {
                     <progress className="progress" />
                     :
                     <div>
-                        {connections.map((connection, i) => {
-                            return <ConnectionDisplay
-                                filterConnections={this.filterConnections}
-                                jwt={this.state.jwt}
-                                {...connection}
-                                key={i}
-                            />
-                        })}
+                        {connections.length > 0 ?
+                            connections.map((connection, i) => {
+                                return <ConnectionDisplay
+                                    filterConnections={this.filterConnections}
+                                    jwt={this.state.jwt}
+                                    {...connection}
+                                    key={i}
+                                />
+                            }) :
+                            <div className="columns is-vcentered" style={{height: "40vh"}}>
+                                <h2 className="is-size-2 has-text-centered column">No connections yet</h2>
+                            </div>
+                        }
                     </div>
                 }
             </div>

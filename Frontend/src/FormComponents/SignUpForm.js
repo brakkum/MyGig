@@ -212,7 +212,7 @@ export default class SignUpForm extends React.Component {
                             {this.state.signUpError[0]}
                         </span>
                     </div>
-                    <div className="column">
+                    <div className="column" style={{overflow: "auto"}}>
                         <button
                             onClick={this.attemptLogin}
                             className={

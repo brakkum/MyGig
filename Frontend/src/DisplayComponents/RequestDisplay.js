@@ -25,6 +25,7 @@ export default class RequestDisplay extends React.Component {
         }).then(res => res.json())
             .then(json => {
                 if (json.success) {
+                    this.props.updateState(this.state.jwt);
                     this.props.filterRequests(
                         this.state.requestType,
                         this.state.typeId
@@ -53,6 +54,7 @@ export default class RequestDisplay extends React.Component {
         }).then(res => res.json())
             .then(json => {
                     if (json.success) {
+                        this.props.updateState(this.state.jwt);
                         this.props.filterRequests(
                             this.state.requestType,
                             this.state.typeId

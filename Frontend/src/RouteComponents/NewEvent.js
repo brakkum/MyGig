@@ -131,22 +131,24 @@ export default withRouter(
                         />
                     </div>
                     <div className="field columns">
-                        <div className="column">
+                        <div className="column is-three-fifths">
                             {this.state.formError}
                         </div>
-                        <div className="column buttons is-pulled-right">
-                            <button
-                                onClick={this.makeEvent}
-                                className={"button is-info " + (this.state.sendingRequest && "is-loading")}
-                            >
-                                Create Event
-                            </button>
-                            <button
-                                className="button is-warning"
-                                onClick={() => this.props.history.push("/")}
-                            >
-                                Cancel
-                            </button>
+                        <div className="column" style={{overflow: "auto"}}>
+                            <div className="buttons is-pulled-right">
+                                <button
+                                    onClick={this.makeEvent}
+                                    className={"button is-info " + (this.state.sendingRequest && "is-loading")}
+                                >
+                                    Create Event
+                                </button>
+                                <button
+                                    className="button"
+                                    onClick={() => this.props.history.push("/")}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

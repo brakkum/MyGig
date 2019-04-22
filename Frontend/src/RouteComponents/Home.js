@@ -29,6 +29,10 @@ export default class Home extends React.Component {
             jwt: jwt
         });
 
+        this.updateState(jwt);
+    }
+
+    updateState = jwt => {
         fetch("/api/routes/home", {
             method: "post",
             headers: new Headers({
@@ -48,7 +52,7 @@ export default class Home extends React.Component {
                     });
                 }
             }).catch(e => console.log(e));
-    }
+    };
 
     filterRequests = (requestType, typeId) => {
         let reqs = this.state.requests;
@@ -85,6 +89,7 @@ export default class Home extends React.Component {
                                                 <RequestDisplay
                                                     {...req}
                                                     jwt={this.state.jwt}
+                                                    updateState={this.updateState}
                                                     filterRequests={this.filterRequests}
                                                     key={i}
                                                 />

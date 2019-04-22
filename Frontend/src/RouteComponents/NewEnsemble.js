@@ -81,7 +81,7 @@ export default withRouter(
                                 Create Ensemble
                             </button>
                             <button
-                                className="button is-warning"
+                                className="button"
                                 onClick={() => this.props.history.push("/")}
                             >
                                 Cancel

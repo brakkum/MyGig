@@ -47,6 +47,10 @@ export default withRouter(
                     if (json.success) {
                         this.props.loginUser(json.user, jwt);
                         this.redirectOnLogin();
+                    } else {
+                        this.setState({
+                            showLoginPage: true
+                        });
                     }
                 }
             ).catch(e => {
@@ -58,9 +62,9 @@ export default withRouter(
 
         render() {
             return(
-                <div className="section">
+                <div className="section columns is-vcentered">
                     {this.state.showLoginPage ?
-                        <div>
+                        <div className="column">
                             <div className="box">
                                 <div className="tabs">
                                     <ul>

@@ -45,7 +45,7 @@ export default class MyGig extends React.Component {
                     <div>
                         <NavBar user={this.state.user} />
                         <div>
-                            <div style={{maxWidth: Constants.maxBodyWidth, margin: "auto"}}>
+                            <div style={{width: "100%", maxWidth: Constants.maxBodyWidth, margin: "auto"}}>
                                 <MyGigRouter
                                     logoutUser={this.logoutUser}
                                     loginUser={this.loginUser}

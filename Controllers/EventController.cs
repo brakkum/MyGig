@@ -129,7 +129,12 @@ namespace MyGigApi.Controllers
                            em.UserIdRecipient == userId &&
                            em.Status == RequestStatus.Accepted);
 
-            if (!userIsInValidEnsemble)
+            var userIsEventMod = _context.EventModerators
+                .Any(em => em.UserIdRecipient == userId &&
+                           em.EventId == dto.EventId &&
+                           em.Status == RequestStatus.Accepted);
+
+            if (!(userIsInValidEnsemble || userIsEventMod))
             {
                 return new OkObjectResult(new {success = false, error = "Not valid member or mod"});
             }

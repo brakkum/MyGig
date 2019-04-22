@@ -123,7 +123,7 @@ export default class LoginForm extends React.Component {
                             {this.state.loginError}
                         </span>
                     </div>
-                    <div className="column">
+                    <div className="column" style={{overflow: "auto"}}>
                         <button
                             onClick={this.attemptLogin}
                             className={
