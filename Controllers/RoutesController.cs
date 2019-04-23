@@ -93,6 +93,7 @@ namespace MyGigApi.Controllers
 
             var events = _context.Events
                 .Where(e => eventIds.Contains(e.EventId))
+                .OrderBy(e => e.DateAndTime)
                 .Select(e => new EventDto
                 {
                     EventId = e.EventId,
