@@ -26,48 +26,6 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
-        [Route(RoutePrefix + "/inactivateuser")]
-        public OkObjectResult InactivateUser()
-        {
-            var userId = GetUserId();
-
-            var user = _context.Users.Find(userId);
-
-            user.Status = UserStatus.Inactive;
-            _context.SaveChanges();
-
-            return new OkObjectResult(new {success = true, user});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/getuser")]
-        public OkObjectResult GetUser([FromBody] JObject body)
-        {
-            var requestedUserId = (int)body["UserId"];
-            var userId = GetUserId();
-
-            var userConnectionIds = GetUserConnections(userId);
-
-            var requestedUser = _context.Users
-                .Select(us => new MemberDto
-                {
-                    UserId = us.UserId,
-                    FullName = us.FullName,
-                    PhotoUrl = us.PhotoUrl,
-                    ConnectedToUser = userConnectionIds.Contains(us.UserId)
-                }).SingleOrDefault(us => us.UserId == requestedUserId);
-
-            if (requestedUser == null)
-            {
-                return new OkObjectResult(new {success = false, error = "No user found"});
-            }
-
-            return new OkObjectResult(new {success = true, user = requestedUser});
-        }
-
-        [HttpPost]
-        [Authorize]
         [DisableRequestSizeLimit]
         [Route(RoutePrefix + "/newUserPhoto")]
         public async Task<IActionResult> NewUserPhoto([FromForm] IFormFile file)
@@ -202,29 +160,6 @@ namespace MyGigApi.Controllers
             return new OkObjectResult(new {success = true, users});
         }
 
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/searchConnections")]
-        public OkObjectResult SearchConnections([FromBody] SearchDto dto)
-        {
-            var userId = GetUserId();
-
-            var userConnectionIds = GetUserConnections(userId);
-
-            var users = _context.Users
-                .Where(u => u.FullName.ToLower().Contains(dto.Search.ToLower()) &&
-                            userConnectionIds.Contains(u.UserId))
-                .Select(us => new MemberDto
-                {
-                    UserId = us.UserId,
-                    FullName = us.FullName,
-                    PhotoUrl = us.PhotoUrl
-                });
-
-            return new OkObjectResult(new {success = true, users});
-        }
-
         [HttpPost]
         [Authorize]
         [Route(RoutePrefix + "/searchConnectionsNotInEnsemble")]
@@ -273,44 +208,6 @@ namespace MyGigApi.Controllers
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/getUserInfo")]
-        public OkObjectResult GetUserInfo()
-        {
-            var userId = GetUserId();
-            var user = _context.Users.Find(userId);
-            var userConn = _context.Connections
-                .FirstOrDefault(c => c.UserIdRecipient == userId &&
-                                     c.UserIdRequester == userId);
-            var ensembleMemberCount = _context.EnsembleMembers
-                .Count(em => em.UserIdRecipient == userId &&
-                             em.Status == RequestStatus.Accepted);
-
-            if (userConn == null)
-            {
-                return new OkObjectResult(new
-                {
-                    success = false,
-                    error = "bad user request"
-                });
-            }
-
-            var accountDto = new AccountDto
-            {
-                FullName = user.FullName,
-                PhotoUrl = user.PhotoUrl,
-                JoinedOn = userConn.Timestamp,
-                NumEnsembles = ensembleMemberCount
-            };
-
-            return new OkObjectResult(new
-            {
-                success = true,
-                user = accountDto
-            });
         }
 
         [HttpPost]

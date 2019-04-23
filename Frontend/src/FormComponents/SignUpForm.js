@@ -98,7 +98,7 @@ export default class SignUpForm extends React.Component {
             sendingRequest: true
         });
 
-        fetch("/api/users/newuser", {
+        fetch("/api/users/newUser", {
             method: "post",
             headers: {
                 "Content-Type": "application/json"
