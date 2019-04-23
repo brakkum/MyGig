@@ -55,6 +55,9 @@ export default class SearchPage extends React.Component {
                         if (this._isMounted && json.success){
                             let users = json.users;
                             this.setState({
+                                users: []
+                            });
+                            this.setState({
                                 users: users,
                                 isSearching: false
                             });

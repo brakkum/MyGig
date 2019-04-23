@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
@@ -108,7 +107,15 @@ namespace MyGigApi.Controllers
             {
                 // remove leading slash
                 var photoLocation = oldPhoto.Remove(0, 1);
-                System.IO.File.Delete(photoLocation);
+                if (System.IO.File.Exists(photoLocation))
+                {
+                    System.IO.File.Delete(photoLocation);
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("photo gone");
+                }
             }
 
             using (var fs = System.IO.File.Create(url))
