@@ -6,4 +6,5 @@ appsettings*
 MyGigApi.sln.DotSettings.user
 /static/userphotos/*
 !/static/userphotos/default.png
+/venv
 

@@ -1,9 +1,7 @@
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 
 namespace MyGigApi.Entities
 {
@@ -39,8 +37,6 @@ namespace MyGigApi.Entities
         public ICollection<Booking> Ensembles { get; set; }
 
         public ICollection<EventComment> EventComments { get; set; }
-
-//        public ICollection<BookingSetlist> EventSetlists { get; set; }
 
         public ICollection<EventModerator> Moderators { get; set; }
     }
