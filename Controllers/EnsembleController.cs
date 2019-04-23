@@ -305,9 +305,17 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/searchEnsemblesNotOnEvent")]
         public OkObjectResult SearchEnsemblesNotOnEvent([FromBody] SearchDto dto)
         {
+            var userId = GetUserId();
+
             var ensemblesRequestedIds = _context.Bookings
                 .Where(b => b.EventId == dto.EventId)
                 .Select(b => b.EnsembleId)
+                .ToArray();
+
+            var ensemblesModeratedIds = _context.EnsembleModerators
+                .Where(em => em.UserIdRecipient == userId &&
+                             em.Status == RequestStatus.Accepted)
+                .Select(em => em.EnsembleId)
                 .ToArray();
 
             var ensembles = _context.Ensembles
@@ -316,7 +324,8 @@ namespace MyGigApi.Controllers
                 .Select(e => new EnsembleDto
                 {
                     EnsembleId = e.EnsembleId,
-                    Name = e.Name
+                    Name = e.Name,
+                    UserIsMod = ensemblesModeratedIds.Contains(e.EnsembleId)
                 });
 
             return new OkObjectResult(new {success = true, ensembles});
@@ -419,22 +428,6 @@ namespace MyGigApi.Controllers
             };
 
             return new OkObjectResult(new { success = true, setlist});
-        }
-
-        [HttpPost]
-        [Authorize]
-        [Route(RoutePrefix + "/search")]
-        public OkObjectResult SearchUsers([FromBody] SearchDto dto)
-        {
-            var ensembles = _context.Ensembles
-                .Where(e => e.Name.ToLower().Contains(dto.Search.ToLower()))
-                .Select(e => new EnsembleDto
-                {
-                    EnsembleId = e.EnsembleId,
-                    Name = e.Name
-                });
-
-            return new OkObjectResult(new {success = true, ensembles});
         }
 
         public int[] GetUserConnections(int userId)

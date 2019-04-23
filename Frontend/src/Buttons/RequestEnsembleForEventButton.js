@@ -34,7 +34,10 @@ export default class RequestEnsembleForEventButton extends React.Component {
                 if (this._isMounted && json.success){
                     this.setState({
                         requestSent: true
-                    })
+                    });
+                    if (this.props.userIsMod) {
+                        this.props.populateState(this.props.jwt, this.props.eventId);
+                    }
                 }
                 this.setState({
                     sendingRequest: false

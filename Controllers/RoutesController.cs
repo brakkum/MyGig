@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
@@ -57,18 +58,21 @@ namespace MyGigApi.Controllers
 
             var eventsModeratedIds = _context.EventModerators
                 .Where(em => em.UserIdRecipient == userId &&
-                             em.Status == RequestStatus.Accepted)
+                             em.Status == RequestStatus.Accepted &&
+                             em.Event.DateAndTime > DateTime.Now)
                 .Select(em => em.EventId)
                 .ToArray();
 
             var eventsFromEnsemblesIds = _context.Bookings
                 .Where(b => ensembleIds.Contains(b.EnsembleId) &&
-                            b.Status == RequestStatus.Accepted)
+                            b.Status == RequestStatus.Accepted &&
+                            b.Event.DateAndTime > DateTime.Now)
                 .Select(b => b.EventId)
                 .ToArray();
 
             var performances = _context.Bookings
-                .Where(b => eventsFromEnsemblesIds.Contains(b.EventId) && ensemblesAsMember.Contains(b.EnsembleId))
+                .Where(b => eventsFromEnsemblesIds.Contains(b.EventId) &&
+                            ensemblesAsMember.Contains(b.EnsembleId))
                 .Select(b => new EnsembleBookingDto
                 {
                     EventName = b.Event.Name,

@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp2.2</TargetFramework>
-        <!--<RuntimeIdentifier>osx-x64</RuntimeIdentifier>-->
-        <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
+        <RuntimeIdentifier>osx-x64</RuntimeIdentifier>
+        <!--<RuntimeIdentifier>linux-x64</RuntimeIdentifier>-->
         <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
         <SpaRoot>Frontend\</SpaRoot>
         <!--<DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>=-->

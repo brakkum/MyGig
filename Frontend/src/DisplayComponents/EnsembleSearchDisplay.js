@@ -14,9 +14,7 @@ export default class EnsembleSearchDisplay extends React.Component {
                     </div>
                     <div className="column">
                         <RequestEnsembleForEventButton
-                            ensembleId={this.props.ensembleId}
-                            eventId={this.props.eventId}
-                            jwt={this.props.jwt}
+                            {...this.props}
                         />
                     </div>
                 </div>

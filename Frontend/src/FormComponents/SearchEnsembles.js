@@ -62,7 +62,7 @@ export default class SearchEnsembles extends React.Component {
                     <input
                         className="input"
                         value={this.state.search}
-                        placeholder="Search Users"
+                        placeholder="Search Ensembles"
                         onChange={search => this.onSearchChange(search.target.value)}
                     />
                     <div className="section">
@@ -73,6 +73,7 @@ export default class SearchEnsembles extends React.Component {
                             ensembles.length > 0 ?
                                 ensembles.map((ensemble, i) => {
                                     return <EnsembleSearchDisplay
+                                        populateState={this.props.populateState}
                                         eventId={this.props.eventId}
                                         jwt={this.props.jwt}
                                         {...ensemble}

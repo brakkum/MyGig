@@ -114,6 +114,10 @@ export default class Event extends React.Component {
             this.setState({currentTag: hash.replace("#", "")});
         }
 
+        this.populateState(jwt, eventId);
+    }
+
+    populateState = (jwt, eventId) => {
         fetch("/api/routes/event", {
             method: "post",
             headers: new Headers({
@@ -140,7 +144,7 @@ export default class Event extends React.Component {
                 }
             })
             .catch(e => console.log(e));
-    }
+    };
 
     componentWillUnmount() {
         this._isMounted = false;
@@ -267,6 +271,7 @@ export default class Event extends React.Component {
                                     <SearchEnsembles
                                         jwt={this.state.jwt}
                                         eventId={this.state.eventId}
+                                        populateState={this.populateState}
                                     />
                                 </div>
                             }
