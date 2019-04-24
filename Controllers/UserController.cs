@@ -139,6 +139,44 @@ namespace MyGigApi.Controllers
 
         [HttpPost]
         [Authorize]
+        [Route(RoutePrefix + "/getUserInfo")]
+        public OkObjectResult GetUserInfo()
+        {
+            var userId = GetUserId();
+            var user = _context.Users.Find(userId);
+            var userConn = _context.Connections
+                .FirstOrDefault(c => c.UserIdRecipient == userId &&
+                                     c.UserIdRequester == userId);
+            var ensembleMemberCount = _context.EnsembleMembers
+                .Count(em => em.UserIdRecipient == userId &&
+                             em.Status == RequestStatus.Accepted);
+
+            if (userConn == null)
+            {
+                return new OkObjectResult(new
+                {
+                    success = false,
+                    error = "bad user request"
+                });
+            }
+
+            var accountDto = new AccountDto
+            {
+                FullName = user.FullName,
+                PhotoUrl = user.PhotoUrl,
+                JoinedOn = userConn.Timestamp,
+                NumEnsembles = ensembleMemberCount
+            };
+
+            return new OkObjectResult(new
+            {
+                success = true,
+                user = accountDto
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
         [Route(RoutePrefix + "/search")]
         public OkObjectResult SearchUsers([FromBody] SearchDto dto)
         {

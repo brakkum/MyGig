@@ -42,7 +42,7 @@ export default withRouter(
                 jwt: jwt
             });
 
-            fetch("/api/users/getuserinfo", {
+            fetch("/api/users/getUserInfo", {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",

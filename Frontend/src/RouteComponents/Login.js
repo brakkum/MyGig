@@ -62,52 +62,54 @@ export default withRouter(
 
         render() {
             return(
-                <div className="section columns is-vcentered">
+                <div className="section">
                     {this.state.showLoginPage ?
-                        <div className="column">
-                            <div className="box">
-                                <div className="tabs">
-                                    <ul>
-                                        <li
-                                            className={
-                                                this.state.visibleForm === "login" ?
-                                                    "is-active" : ""
-                                            }
-                                            onClick={() => this.setState({visibleForm: "login"})}
-                                        >
-                                            <a href="#login">
-                                                Login
-                                            </a>
-                                        </li>
-                                        <li
-                                            className={
-                                                this.state.visibleForm === "signup" ?
-                                                    "is-active" : ""
-                                            }
-                                            onClick={() => this.setState({visibleForm: "signup"})}
-                                        >
-                                            <a href="#signup">
-                                                Sign Up
-                                            </a>
-                                        </li>
-                                    </ul>
+                        <div className="columns is-vcentered">
+                            <div className="column">
+                                <div className="box">
+                                    <div className="tabs">
+                                        <ul>
+                                            <li
+                                                className={
+                                                    this.state.visibleForm === "login" ?
+                                                        "is-active" : ""
+                                                }
+                                                onClick={() => this.setState({visibleForm: "login"})}
+                                            >
+                                                <a href="#login">
+                                                    Login
+                                                </a>
+                                            </li>
+                                            <li
+                                                className={
+                                                    this.state.visibleForm === "signup" ?
+                                                        "is-active" : ""
+                                                }
+                                                onClick={() => this.setState({visibleForm: "signup"})}
+                                            >
+                                                <a href="#signup">
+                                                    Sign Up
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {
+                                        this.state.visibleForm === "login" ?
+                                            <div className="">
+                                                <LoginForm
+                                                    redirectOnLogin={this.redirectOnLogin}
+                                                    loginUser={this.props.loginUser}
+                                                />
+                                            </div>
+                                            :
+                                            <div className="">
+                                                <SignUpForm
+                                                    redirectOnLogin={this.redirectOnLogin}
+                                                    loginUser={this.props.loginUser}
+                                                />
+                                            </div>
+                                    }
                                 </div>
-                                {
-                                    this.state.visibleForm === "login" ?
-                                        <div className="">
-                                            <LoginForm
-                                                redirectOnLogin={this.redirectOnLogin}
-                                                loginUser={this.props.loginUser}
-                                            />
-                                        </div>
-                                        :
-                                        <div className="">
-                                            <SignUpForm
-                                                redirectOnLogin={this.redirectOnLogin}
-                                                loginUser={this.props.loginUser}
-                                            />
-                                        </div>
-                                }
                             </div>
                         </div>
                         :

@@ -73,6 +73,7 @@ namespace MyGigApi.Controllers
             var performances = _context.Bookings
                 .Where(b => eventsFromEnsemblesIds.Contains(b.EventId) &&
                             ensemblesAsMember.Contains(b.EnsembleId))
+                .OrderBy(b => b.Event.DateAndTime)
                 .Select(b => new EnsembleBookingDto
                 {
                     EventName = b.Event.Name,
