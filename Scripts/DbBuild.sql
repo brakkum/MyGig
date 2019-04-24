@@ -90,16 +90,6 @@ CREATE TABLE `Events` (
     CONSTRAINT `FK_Events_CreatedByUserId_Ref_Users_UserId` FOREIGN KEY (`CreatedByUserId`) REFERENCES `Users` (`UserId`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE TABLE `Notifications` (
-    `Url` varchar(100) NOT NULL,
-    `UserId` int NOT NULL,
-    `Text` varchar(100) NOT NULL,
-    `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    `Status` int NOT NULL DEFAULT 0,
-    CONSTRAINT `PK_Notifications` PRIMARY KEY (`UserId`, `Url`),
-    CONSTRAINT `FK_Notifications_UserId_Ref_Users_UserId` FOREIGN KEY (`UserId`) REFERENCES `Users` (`UserId`) ON DELETE CASCADE
-) ENGINE=InnoDB;
-
 CREATE TABLE `Bookings` (
     `BookingId` int NOT NULL AUTO_INCREMENT,
     `UserIdRequester` int NOT NULL,

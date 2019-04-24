@@ -11,7 +11,6 @@ export default class Home extends React.Component {
     state = {
         isLoading: true,
         ensembles: [],
-        notifications: [],
         requests: [],
         performances: [],
         events: [],
@@ -45,7 +44,6 @@ export default class Home extends React.Component {
                     this.setState({
                         isLoading: false,
                         ensembles: json.ensembles,
-                        notifications: json.notifications,
                         requests: json.requests,
                         performances: json.performances,
                         events: json.events
@@ -105,24 +103,6 @@ export default class Home extends React.Component {
                                                 </a>
                                             </div>
                                         }
-                                    </div>
-                                </div>
-                            </div>
-                        }
-                        {/* Notifications - Full width box, if there are any */}
-                        {this.state.notifications.length > 0 &&
-                            <div className="columns">
-                                <div className="column is-12">
-                                    <div className="box">
-                                        {this.state.notifications.map((n, i) => {
-                                            console.log(n);
-                                            return <Link
-                                                to={n.url}
-                                                key={i}
-                                            >
-                                                {n.displayMessage}
-                                            </Link>
-                                        })}
                                     </div>
                                 </div>
                             </div>

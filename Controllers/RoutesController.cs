@@ -104,16 +104,6 @@ namespace MyGigApi.Controllers
                     UserIsMod = eventsModeratedIds.Contains(e.EventId)
                 });
 
-            var notifications = _context.Notifications
-                .Where(n => n.UserId == userId &&
-                            n.Status == NotificationStatus.Unseen)
-                .Select(n => new NotificationDto
-                {
-                    Url = n.Url,
-                    DisplayMessage = n.Text,
-                    Timestamp = n.Timestamp
-                });
-
             // Requests extravaganza
             var bookings = _context.Bookings
                 .Where(b => b.UserIdRecipient == userId
@@ -185,7 +175,6 @@ namespace MyGigApi.Controllers
             {
                 success = true,
                 ensembles,
-                notifications,
                 requests = requests
                     .OrderBy(r => r.Timestamp),
                 performances,
