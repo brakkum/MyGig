@@ -18,7 +18,9 @@ export default withRouter(
                     <div style={this.navStyle}>
                         <div className="navbar-brand is-pulled-left">
                             <div className="navbar-item has-text-weight-bold">
-                                MyGig
+                                <a href="https://github.com/brakkum/MyGig" className="has-text-white">
+                                    MyGig
+                                </a>
                             </div>
                         </div>
                         {this.props.user !== null &&
