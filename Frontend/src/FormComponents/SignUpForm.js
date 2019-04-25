@@ -116,9 +116,9 @@ export default class SignUpForm extends React.Component {
                     this.props.loginUser(json.user, json.jwt);
                     this.props.redirectOnLogin();
                 } else {
-                    alert("Something went wrong, please try again.");
                     this.setState({
-                        sendingRequest: false
+                        sendingRequest: false,
+                        signUpError: [json.error]
                     });
                 }
             }

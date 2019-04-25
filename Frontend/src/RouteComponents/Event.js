@@ -257,13 +257,21 @@ export default class Event extends React.Component {
                             }
                             {this.state.currentTag === "ensembles" &&
                                 <div>
-                                    {ensembles.map((ensemble, i) => {
-                                        return <EventEnsembleDisplay
-                                            jwt={this.state.jwt}
-                                            {...ensemble}
-                                            key={i}
-                                        />
-                                    })}
+                                    {ensembles.length > 0 ?
+                                        ensembles.map((ensemble, i) => {
+                                            return <EventEnsembleDisplay
+                                                jwt={this.state.jwt}
+                                                {...ensemble}
+                                                key={i}
+                                            />
+                                        })
+                                        :
+                                        <div>
+                                            <h3 className="is-size-3 has-text-centered">
+                                                No ensembles yet
+                                            </h3>
+                                        </div>
+                                    }
                                 </div>
                             }
                             {this.state.userIsMod && this.state.currentTag === "addEnsembles" &&

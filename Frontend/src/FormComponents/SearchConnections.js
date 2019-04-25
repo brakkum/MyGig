@@ -63,7 +63,7 @@ export default class SearchConnections extends React.Component {
                     <input
                         className="input"
                         value={this.state.search}
-                        placeholder="Search Users"
+                        placeholder="Search Your Connections"
                         onChange={search => this.onSearchChange(search.target.value)}
                     />
                     <div className="section">
