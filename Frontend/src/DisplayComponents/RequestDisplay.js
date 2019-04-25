@@ -1,5 +1,6 @@
 import MemberPictureDisplay from "./MemberPictureDisplay";
 import React from "react";
+import Progress from "./Progress";
 
 export default class RequestDisplay extends React.Component {
 
@@ -93,7 +94,7 @@ export default class RequestDisplay extends React.Component {
                     </div>
                     <div className="column">
                         {this.state.sendingRequest ?
-                            <progress className="progress" />
+                            <Progress />
                             :
                             <div className="buttons is-flex is-centered">
                                 <button

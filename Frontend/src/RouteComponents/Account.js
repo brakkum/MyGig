@@ -3,6 +3,7 @@ import Connections from "./Connections";
 import { withRouter } from "react-router-dom";
 import moment from "moment";
 import React from "react";
+import Progress from "../DisplayComponents/Progress";
 
 export default withRouter(
     class Account extends React.Component {
@@ -217,7 +218,7 @@ export default withRouter(
                 <div className={"section"}>
                     {
                         this.state.pageLoading ?
-                            <progress className="progress" />
+                            <Progress />
                             :
                             <div className="box">
                                 <div className="tabs">

@@ -2,6 +2,7 @@ import SignUpForm from "../FormComponents/SignUpForm";
 import LoginForm from "../FormComponents/LoginForm";
 import { withRouter } from "react-router-dom";
 import React from "react";
+import Progress from "../DisplayComponents/Progress";
 
 export default withRouter(
     class Login extends React.Component {
@@ -113,7 +114,7 @@ export default withRouter(
                             </div>
                         </div>
                         :
-                        <progress className="progress" />
+                        <Progress />
                     }
                 </div>
             )

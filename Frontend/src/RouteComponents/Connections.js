@@ -1,6 +1,7 @@
 import ConnectionDisplay from "../DisplayComponents/ConnectionDisplay";
 import { withRouter } from "react-router-dom";
 import React from "react";
+import Progress from "../DisplayComponents/Progress";
 
 export default withRouter(
     class Connections extends React.Component {
@@ -55,7 +56,7 @@ export default withRouter(
             return(
                 <div className="section">
                     {this.state.pageLoading ?
-                        <progress className="progress" />
+                        <Progress />
                         :
                         <div>
                             {connections.length > 0 ?

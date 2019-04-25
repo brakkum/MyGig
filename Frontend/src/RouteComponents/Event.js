@@ -4,6 +4,7 @@ import SearchEnsembles from "../FormComponents/SearchEnsembles";
 import MemberCommentDisplay from "../DisplayComponents/MemberCommentDisplay";
 import moment from "moment";
 import React from "react";
+import Progress from "../DisplayComponents/Progress";
 
 export default class Event extends React.Component {
     // top level route component for /event/{event_id}
@@ -156,7 +157,7 @@ export default class Event extends React.Component {
         return(
             <div className="section">
                 {this.state.pageLoading ?
-                    <progress className="progress" />
+                    <Progress />
                     :
                     <div>
                         <h2 className="is-size-2">{event.name}</h2>

@@ -4,6 +4,7 @@ import EnsembleMemberDelete from "../DisplayComponents/EnsembleMemberDeleteDispl
 import SearchConnections from "../FormComponents/SearchConnections";
 import MemberCommentDisplay from "../DisplayComponents/MemberCommentDisplay";
 import React from "react";
+import Progress from "../DisplayComponents/Progress";
 
 export default class Ensemble extends React.Component {
 
@@ -151,7 +152,7 @@ export default class Ensemble extends React.Component {
         return(
             <div className="section">
                 {this.state.pageLoading ?
-                    <progress className="progress" />
+                    <Progress />
                     :
                     <div>
                         <h2 className="is-size-2">{ensemble.name}</h2>

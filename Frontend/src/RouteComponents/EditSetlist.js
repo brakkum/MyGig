@@ -1,5 +1,6 @@
 import { withRouter } from "react-router-dom";
 import React from "react";
+import Progress from "../DisplayComponents/Progress";
 
 export default withRouter(
     class EditSetlist extends React.Component {
@@ -85,7 +86,7 @@ export default withRouter(
             return(
                 <div className="section">
                     {this.state.setlistLoading ?
-                        <progress className="progress"/>
+                        <Progress />
                         :
                         <div>
                             <span>One song per line</span>

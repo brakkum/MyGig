@@ -1,5 +1,6 @@
 import withRouter from "react-router/es/withRouter";
 import React from "react";
+import Progress from "../DisplayComponents/Progress";
 
 export default withRouter(
     class Logout extends React.Component {
@@ -12,7 +13,7 @@ export default withRouter(
         render() {
             return(
                 <div className="section">
-                    <progress className="progress" />
+                    <Progress />
                 </div>
             )
         }

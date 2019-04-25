@@ -3,6 +3,7 @@ import RequestDisplay from "../DisplayComponents/RequestDisplay";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import React from "react";
+import Progress from "../DisplayComponents/Progress";
 
 export default class Home extends React.Component {
 
@@ -71,7 +72,7 @@ export default class Home extends React.Component {
         return(
             <div className="section">
                 {this.state.isLoading ?
-                    <progress className="progress" />
+                    <Progress />
                 :
                     <div>
                         {/* Requests - Full width box, if there are any */}
