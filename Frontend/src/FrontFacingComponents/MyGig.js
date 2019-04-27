@@ -44,6 +44,10 @@ export default class MyGig extends React.Component {
                 <Router>
                     <div>
                         <NavBar user={this.state.user} />
+                        <div
+                            className="is-hidden-mobile"
+                            style={{height: "80px"}}
+                        />
                         <div>
                             <div style={{width: "100%", maxWidth: Constants.maxBodyWidth, margin: "auto"}}>
                                 <MyGigRouter
