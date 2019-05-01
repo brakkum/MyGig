@@ -5,9 +5,6 @@ import NavBar from "./NavBar";
 import "bulma/css/bulma.css";
 import React from "react";
 
-const html = document.getElementsByTagName("html")[0];
-html.style.backgroundColor = Constants.backgroundColor;
-
 export default class MyGig extends React.Component {
 
     state = {
