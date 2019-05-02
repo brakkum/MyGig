@@ -2,7 +2,6 @@ import SignUpForm from "../FormComponents/SignUpForm";
 import LoginForm from "../FormComponents/LoginForm";
 import { withRouter } from "react-router-dom";
 import React from "react";
-import Progress from "../DisplayComponents/Progress";
 
 export default withRouter(
     class Login extends React.Component {
@@ -62,9 +61,11 @@ export default withRouter(
         }
 
         render() {
+            const showLoginPage = this.state.showLoginPage;
+            const visibleForm = this.state.visibleForm;
             return(
                 <div className="section">
-                    {this.state.showLoginPage ?
+                    {showLoginPage &&
                         <div className="columns is-vcentered">
                             <div className="column">
                                 <div className="box">
@@ -72,7 +73,7 @@ export default withRouter(
                                         <ul>
                                             <li
                                                 className={
-                                                    this.state.visibleForm === "login" ?
+                                                    visibleForm === "login" ?
                                                         "is-active" : ""
                                                 }
                                                 onClick={() => this.setState({visibleForm: "login"})}
@@ -83,7 +84,7 @@ export default withRouter(
                                             </li>
                                             <li
                                                 className={
-                                                    this.state.visibleForm === "signup" ?
+                                                    visibleForm === "signup" ?
                                                         "is-active" : ""
                                                 }
                                                 onClick={() => this.setState({visibleForm: "signup"})}
@@ -95,7 +96,7 @@ export default withRouter(
                                         </ul>
                                     </div>
                                     {
-                                        this.state.visibleForm === "login" ?
+                                        visibleForm === "login" ?
                                             <div className="">
                                                 <LoginForm
                                                     redirectOnLogin={this.redirectOnLogin}
@@ -113,8 +114,6 @@ export default withRouter(
                                 </div>
                             </div>
                         </div>
-                        :
-                        <Progress />
                     }
                 </div>
             )

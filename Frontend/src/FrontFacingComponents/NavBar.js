@@ -13,34 +13,31 @@ export default withRouter(
         };
 
         render() {
+            const userIsLoggedIn = this.props.user !== null;
             return (
                 <nav className="navbar is-dark">
                     <div style={this.navStyle}>
-                        <div className="navbar-brand is-pulled-left">
+                        <div className={"navbar-brand is-pulled-left " + (userIsLoggedIn ? "is-hidden-mobile" : "")}>
                             <div className="navbar-item has-text-weight-bold">
                                 <a href="https://github.com/brakkum/MyGig" className="has-text-white">
                                     MyGig
                                 </a>
                             </div>
                         </div>
-                        {this.props.user !== null &&
-                            <div>
-                                <div className="navbar-brand is-pulled-left">
-                                    <Link to="/" className="navbar-item">
-                                        Home
-                                    </Link>
-                                    <Link to="/account" className="navbar-item">
-                                        Account
-                                    </Link>
-                                    <Link to="/search" className="navbar-item">
-                                        Find Users
-                                    </Link>
-                                </div>
-                                <div className="navbar-brand is-pulled-right">
-                                    <Link to="/logout" className="navbar-item">
-                                        Logout
-                                    </Link>
-                                </div>
+                        {userIsLoggedIn &&
+                            <div className="navbar-brand">
+                                <Link to="/" className="navbar-item">
+                                    Home
+                                </Link>
+                                <Link to="/account" className="navbar-item">
+                                    Account
+                                </Link>
+                                <Link to="/search" className="navbar-item">
+                                    Find Users
+                                </Link>
+                                <Link to="/logout" className="navbar-item">
+                                    Logout
+                                </Link>
                             </div>
                         }
                     </div>
