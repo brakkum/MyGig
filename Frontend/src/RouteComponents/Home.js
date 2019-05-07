@@ -125,7 +125,7 @@ export default class Home extends React.Component {
                                     <div className="box">
                                         <div>
                                             <span className="is-size-3">Ensembles</span>
-                                            <Link to="/newEnsemble" className="is-pulled-right">New</Link>
+                                            <Link to="/newEnsemble" className="is-pulled-right">New Ensemble</Link>
                                         </div>
                                         {ensembles.length > 0 ?
                                             ensembles.map((ens, i) => {
@@ -160,7 +160,7 @@ export default class Home extends React.Component {
                                     <div className="box">
                                         <div>
                                             <span className="is-size-3">Events</span>
-                                            <Link to="/newEvent" className="is-pulled-right">New</Link>
+                                            <Link to="/newEvent" className="is-pulled-right">New Event</Link>
                                             <div>
                                                 {events.length > 0 ?
                                                     events.map((event, i) => {
