@@ -116,7 +116,8 @@ namespace MyGigApi.Controllers
                 {
                     UserId = user.UserId,
                     FullName = user.FullName,
-                    PhotoUrl = null
+                    PhotoUrl = null,
+                    Email = user.Email
                 },
                 jwt = jwtToken
             });
@@ -159,7 +160,8 @@ namespace MyGigApi.Controllers
                 {
                     FullName = user.FullName,
                     UserId = user.UserId,
-                    PhotoUrl = user.PhotoUrl
+                    PhotoUrl = user.PhotoUrl,
+                    Email = user.Email
                 },
                 jwt = jwtToken
             });
@@ -194,7 +196,8 @@ namespace MyGigApi.Controllers
                 {
                     UserId = userObj.UserId,
                     PhotoUrl = userObj.PhotoUrl,
-                    FullName = userObj.FullName
+                    FullName = userObj.FullName,
+                    Email = userObj.Email
                 }
             });
         }

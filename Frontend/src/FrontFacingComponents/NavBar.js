@@ -14,8 +14,9 @@ export default withRouter(
 
         render() {
             const userIsLoggedIn = this.props.user !== null;
+            const isDunwoodyEmail = userIsLoggedIn && new RegExp(/@dunwoody\.edu$/).test(this.props.user.email);
             return (
-                <nav className="navbar is-dark">
+                <nav className={"navbar is-dark " + (isDunwoodyEmail ? "dunwoody-nav" : "")}>
                     <div style={this.navStyle}>
                         <div className={"navbar-brand is-pulled-left " + (userIsLoggedIn ? "is-hidden-mobile" : "")}>
                             <div className="navbar-item has-text-weight-bold">
