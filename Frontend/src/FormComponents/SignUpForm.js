@@ -123,7 +123,7 @@ export default class SignUpForm extends React.Component {
                 }
             }
         ).catch(e => {
-            this.setState({sendingRequest: false});
+            this.setState({sendingRequest: false, signUpError: ["MyGig is experiencing problems, please try again later."]});
         });
 
     };

@@ -69,12 +69,12 @@ export default class LoginForm extends React.Component {
                         sendingRequest: false,
                         passwordValid: false,
                         emailValid: false,
-                        loginError: "Invalid login."
+                        loginError: "Invalid login"
                     });
                 }
             }
         ).catch(e => {
-            this.setState({sendingRequest: false});
+            this.setState({sendingRequest: false, loginError: "MyGig is experiencing problems, please try again later"});
         });
     };
 
