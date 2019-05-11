@@ -15,17 +15,10 @@ namespace MyGigApi.DbInterceptors
             // Append ENGINE=INNODB so constraints work properly
             var dbString = new Regex(@"^CREATE TABLE");
             var cmdString = command.CommandText;
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.WriteLine(cmdString);
             if (dbString.IsMatch(cmdString))
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(cmdString);
                 int place = cmdString.LastIndexOf(";", StringComparison.Ordinal);
-
                 command.CommandText = cmdString.Remove(place, ";".Length).Insert(place, " ENGINE=INNODB;");
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine(command.CommandText);
             }
         }
     }
