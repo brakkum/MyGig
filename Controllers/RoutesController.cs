@@ -25,7 +25,6 @@ namespace MyGigApi.Controllers
         [Route(RoutePrefix + "/home")]
         public OkObjectResult GetHomePage()
         {
-            // TODO: Clean up entire method
             var userId = GetUserId();
 
             var userExists = _context.Users.Any(u => u.UserId == userId);
