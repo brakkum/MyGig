@@ -257,7 +257,7 @@ export default withRouter(
                                                     {this.state.fullName}
                                                 </h1>
                                                 <h3 className="is-size-3">
-                                                    Joined on {moment(this.state.joinedOn).format("MMMM D, YYYY")}
+                                                    Joined on {moment.utc(this.state.joinedOn).local().format("MMMM D, YYYY")}
                                                 </h3>
                                                 <h3 className="is-size-3">
                                                     Member of {this.state.numEnsembles} ensemble

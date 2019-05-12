@@ -55,7 +55,7 @@ export default withRouter(
                                         </button>
                                     </div>
                                     :
-                                    <span>Member since {moment(this.props.memberSince).format("MMMM D, YYYY")}</span>
+                                    <span>Member since {moment.utc(this.props.memberSince).local().format("MMMM D, YYYY")}</span>
                                 }
                             </div>
                         </div>

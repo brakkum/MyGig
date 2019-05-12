@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -159,7 +160,8 @@ namespace MyGigApi.Controllers
             }
 
             // if user is default ensemble mod, immediate accept
-            var status = ensembleMod.UserIdRecipient == userId ? RequestStatus.Accepted : RequestStatus.Pending;
+            var userIsEnsMod = ensembleMod.UserIdRecipient == userId;
+            var status = userIsEnsMod ? RequestStatus.Accepted : RequestStatus.Pending;
             var user = _context.Users.Find(userId);
             var ensemble = _context.Ensembles.Find(dto.EnsembleId);
             var ev = _context.Events.Find(dto.EventId);
@@ -171,6 +173,7 @@ namespace MyGigApi.Controllers
                 UserIdRecipient = ensembleMod.UserIdRecipient,
                 UserIdRequester = userId,
                 Status = status,
+                ConfirmedAt = userIsEnsMod ? DateTime.Now : (DateTime?)null,
                 Text = $"{user.FullName} would like your ensemble {ensemble.Name} to perform at the event {ev.Name}"
             });
 

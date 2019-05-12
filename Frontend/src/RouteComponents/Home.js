@@ -171,7 +171,7 @@ export default class Home extends React.Component {
                                                             </Link>
                                                             &nbsp;
                                                             <span className="is-size-6">
-                                                                {moment(event.dateAndTime).format("MMM D")},
+                                                                {moment.utc(event.dateAndTime).local().format("MMM D")},
                                                             </span>
                                                             &nbsp;
                                                             <span className="is-size-6">

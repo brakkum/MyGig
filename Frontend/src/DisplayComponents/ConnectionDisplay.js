@@ -56,7 +56,7 @@ export default class ConnectionDisplay extends React.Component {
                     <div className="columns">
                         <div className="column">
                             <h4 className="is-size-4">
-                                Connected since {moment(this.props.confirmedAt).format("MMMM D, YYYY")}
+                                Connected since {moment.utc(this.props.confirmedAt).local().format("MMMM D, YYYY")}
                             </h4>
                             {this.state.showConfirm &&
                                 <div className="">

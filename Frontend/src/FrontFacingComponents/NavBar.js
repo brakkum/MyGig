@@ -20,7 +20,7 @@ export default withRouter(
                     <div style={this.navStyle}>
                         <div className={"navbar-brand is-pulled-left " + (userIsLoggedIn ? "is-hidden-mobile" : "")}>
                             <div className="navbar-item has-text-weight-bold">
-                                <a href="https://github.com/brakkum/MyGig" target="_blank" className="has-text-white">
+                                <a href="https://github.com/brakkum/MyGig" target="_blank" rel="noopener noreferrer" className="has-text-white">
                                     MyGig
                                 </a>
                             </div>

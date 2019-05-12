@@ -15,7 +15,7 @@ export default class UpcomingPerformancesDisplay extends React.Component {
         const ensName = data.ensembleName;
         const eventLoc = data.eventLocation;
         const eventName = data.eventName;
-        const date = moment(data.dateAndTime).format("LL");
+        const date = moment.utc(data.dateAndTime).local().format("LL");
         const songs = data.setlist.split("\n");
         const title = `${date}-${ensName}.pdf`;
 
@@ -83,7 +83,7 @@ export default class UpcomingPerformancesDisplay extends React.Component {
                             <div className={"columns" + (this.state.hidePerformances && i >= 2 ? " is-hidden" : "")}>
                                 <div className="column">
                                     <h4 className="is-size-5">
-                                        {moment(perf.dateAndTime).format("MMM D, h:mm A")}
+                                        {moment.utc(perf.dateAndTime).local().format("MMM D, h:mm A")}
                                     </h4>
                                     <h5 className="is-size-5">
                                         <Link to={`/ensemble/${perf.ensembleId}`}>

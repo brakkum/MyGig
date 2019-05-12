@@ -216,7 +216,7 @@ export default class Event extends React.Component {
                                 <div>
                                     <h4 className="is-size-4">Details</h4>
                                     <h3 className="is-size-3">{this.state.eventName}</h3>
-                                    <h3 className="is-size-3">{moment(this.state.dateAndTime).format("MMMM D, YYYY, H:MM A")}</h3>
+                                    <h3 className="is-size-3">{moment.utc(this.state.dateAndTime).local().format("MMMM D, YYYY, h:mm A")}</h3>
                                     <h3 className="is-size-3">{this.state.location}</h3>
                                 </div>
                             }

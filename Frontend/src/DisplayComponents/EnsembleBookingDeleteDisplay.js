@@ -57,8 +57,8 @@ export default withRouter(
                                     :
                                     <span>
                                         Confirmed booking on {
-                                            moment(this.props.memberSince)
-                                                .format("MMMM D, YYYY")
+                                            moment.utc(this.props.memberSince)
+                                                .local().format("MMMM D, YYYY")
                                         }
                                     </span>
                                 }

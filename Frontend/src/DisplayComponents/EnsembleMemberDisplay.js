@@ -13,7 +13,7 @@ export default class EnsembleMemberDisplay extends React.Component {
                 <div className="message-body">
                     <div className="columns">
                         <div className="column">
-                            Member since {moment(this.props.memberSince).format("MMMM D, YYYY")}
+                            Member since {moment.utc(this.props.memberSince).local().format("MMMM D, YYYY")}
                         </div>
                         <div className="column is-3">
                             <MemberPhotoAndConnectButtonDisplay
