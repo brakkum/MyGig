@@ -1,10 +1,4 @@
 ﻿
-CREATE TABLE IF NOT EXISTS `__EFMigrationsHistory` (
-    `MigrationId` varchar(95) NOT NULL,
-    `ProductVersion` varchar(32) NOT NULL,
-    CONSTRAINT `PK___EFMigrationsHistory` PRIMARY KEY (`MigrationId`)
-) ENGINE=InnoDB;
-
 CREATE TABLE `Ensembles` (
     `EnsembleId` int NOT NULL AUTO_INCREMENT,
     `Name` varchar(500) NOT NULL,
@@ -174,5 +168,3 @@ CREATE INDEX `IX_EventModerators_UserIdRequester` ON `EventModerators` (`UserIdR
 
 CREATE INDEX `IX_Events_CreatedByUserId` ON `Events` (`CreatedByUserId`);
 
-INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
-VALUES ('20190420012641_Init', '2.2.1-servicing-10028');
