@@ -1,6 +1,6 @@
+import Progress from "../DisplayComponents/Progress";
 import { withRouter } from "react-router-dom";
 import React from "react";
-import Progress from "../DisplayComponents/Progress";
 
 export default withRouter(
     class EditSetlist extends React.Component {
@@ -66,7 +66,8 @@ export default withRouter(
                             eventId: json.eventId,
                             ensembleId: json.ensembleId
                         });
-                    } else {
+                    } else if (!json.success) {
+                        alert("Looks like you're not allowed to do that.");
                         this.props.history.push("/");
                     }
                 }).catch(e => console.log(e));

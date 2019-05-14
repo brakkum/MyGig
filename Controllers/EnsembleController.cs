@@ -240,6 +240,12 @@ namespace MyGigApi.Controllers
             var userId = GetUserId();
 
             var booking = _context.Bookings.Find(dto.BookingId);
+
+            if (booking == null)
+            {
+                return new OkObjectResult(new {success = false});
+            }
+
             var ensembleId = booking.EnsembleId;
             var ensembleModIds = _context.EnsembleModerators
                 .Where(em => em.EnsembleId == ensembleId &&

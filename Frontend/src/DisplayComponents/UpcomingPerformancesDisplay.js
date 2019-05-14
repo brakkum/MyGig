@@ -106,12 +106,12 @@ export default class UpcomingPerformancesDisplay extends React.Component {
                                     </h5>
                                     <h5 className="is-size-5 is-hidden-tablet">
                                         {userIsMod &&
-                                        <Link
-                                            to={"/editSetlist/" + perf.bookingId}
-                                            className="has-text-danger"
-                                        >
-                                            Edit Setlist
-                                        </Link>
+                                            <Link
+                                                to={"/editSetlist/" + perf.bookingId}
+                                                className="has-text-danger"
+                                            >
+                                                Edit Setlist
+                                            </Link>
                                         }
                                     </h5>
                                 </div>
