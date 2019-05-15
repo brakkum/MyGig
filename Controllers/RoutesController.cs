@@ -103,6 +103,19 @@ namespace MyGigApi.Controllers
                     UserIsMod = eventsModeratedIds.Contains(e.EventId)
                 });
 
+            var notifications = _context.Notifications
+                .Where(n => n.UserId == userId &&
+                            n.Status == NotificationStatus.Unseen)
+                .Select(n => new NotificationDto
+                {
+                    NotificationId = n.NotificationId,
+                    Text = n.Text,
+                    Url = n.Url,
+                    Timestamp = n.Timestamp
+                })
+                .OrderBy(n => n.Timestamp)
+                .ToArray();
+
             // Requests extravaganza
             var bookings = _context.Bookings
                 .Where(b => b.UserIdRecipient == userId
@@ -177,8 +190,20 @@ namespace MyGigApi.Controllers
                 requests = requests
                     .OrderBy(r => r.Timestamp),
                 performances,
-                events
+                events,
+                notifications
             });
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route(RoutePrefix + "/notificationSeen")]
+        public void MarkNotificationSeen([FromBody] NotificationDto dto)
+        {
+            var notification = _context.Notifications.Find(dto.NotificationId);
+            notification.Status = NotificationStatus.Seen;
+            _context.Update(notification);
+            _context.SaveChanges();
         }
 
         [HttpPost]

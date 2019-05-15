@@ -15,6 +15,7 @@ export default class Home extends React.Component {
         requests: [],
         performances: [],
         events: [],
+        notifications: [],
         hideRequests: true,
         hideEnsembles: true,
         hideEvents: true,
@@ -47,10 +48,26 @@ export default class Home extends React.Component {
                         ensembles: json.ensembles,
                         requests: json.requests,
                         performances: json.performances,
-                        events: json.events
+                        events: json.events,
+                        notifications: json.notifications
                     });
                 }
             }).catch(e => console.log(e));
+    };
+
+    notificationSeen = notificationId => {
+        const jwt = this.state.jwt;
+
+        fetch("/api/routes/notificationSeen", {
+            method: "post",
+            headers: new Headers({
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
+            }),
+            body: JSON.stringify({
+                notificationId: notificationId
+            })
+        })
     };
 
     filterRequests = (requestType, typeId) => {
@@ -69,14 +86,32 @@ export default class Home extends React.Component {
         const ensembles = this.state.ensembles;
         const performances = this.state.performances;
         const events = this.state.events;
+        const notifications = this.state.notifications;
         return(
             <div className="section">
                 {this.state.isLoading ?
                     <Progress />
                 :
                     <div>
+                        {notifications.length > 0 &&
+                            <div className="columns">
+                                <div className="column">
+                                    <div className="box">
+                                        {notifications.map((notification, i) => {
+                                            return <div key={i}>
+                                                <Link to={notification.url} onClick={() => this.notificationSeen(notification.notificationId)}>
+                                                    <h4 className="is-size-4">
+                                                        {notification.text}
+                                                    </h4>
+                                                </Link>
+                                            </div>
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+                        }
                         {/* Requests - Full width box, if there are any */}
-                        {this.state.requests.length > 0 &&
+                        {requests.length > 0 &&
                             <div className="columns">
                                 <div className="column is-12">
                                     <div className="box">

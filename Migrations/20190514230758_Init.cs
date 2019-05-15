@@ -201,15 +201,17 @@ namespace MyGigApi.Migrations
                 name: "Notifications",
                 columns: table => new
                 {
-                    Url = table.Column<string>(maxLength: 100, nullable: false),
-                    UserId = table.Column<int>(nullable: false),
-                    Text = table.Column<string>(maxLength: 100, nullable: false),
+                    NotificationId = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Text = table.Column<string>(nullable: false),
+                    Url = table.Column<string>(nullable: false),
+                    Status = table.Column<int>(nullable: false, defaultValue: 0),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "CURRENT_TIMESTAMP()"),
-                    Status = table.Column<int>(nullable: false, defaultValue: 0)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Notifications", x => new { x.UserId, x.Url });
+                    table.PrimaryKey("PK_Notifications", x => x.NotificationId);
                     table.ForeignKey(
                         name: "FK_Notifications_Users_UserId",
                         column: x => x.UserId,
@@ -427,6 +429,11 @@ namespace MyGigApi.Migrations
                 name: "IX_Events_CreatedByUserId",
                 table: "Events",
                 column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_UserId",
+                table: "Notifications",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -139,6 +140,15 @@ namespace MyGigApi.Controllers
             {
                 return new OkObjectResult(new {success = false, error = "Not a valid member"});
             }
+            var user = _context.Users.Find(userId);
+            var ensemble = _context.Ensembles.Find(dto.EnsembleId);
+
+            NotifyEnsembleMembers(
+                userId,
+                dto.EnsembleId,
+                $"{user.FullName} commented on the {ensemble.Name} page",
+                $"/ensemble/{ensemble.EnsembleId}#comments"
+            );
 
             _context.EnsembleComments.Add(new EnsembleComment
             {
@@ -150,6 +160,43 @@ namespace MyGigApi.Controllers
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
+        }
+
+        public void NotifyEnsembleMembers(int userId, int ensembleId, string text, string url)
+        {
+            var memberIds = _context.EnsembleMembers
+                .Where(em => em.EnsembleId == ensembleId &&
+                             em.Status == RequestStatus.Accepted)
+                .Select(em => em.UserIdRecipient)
+                .ToArray();
+
+            foreach (var memberId in memberIds)
+            {
+                if (userId == memberId)
+                {
+                    continue;
+                }
+
+                var oldNotification = _context.Notifications
+                    .FirstOrDefault(n => n.UserId == memberId &&
+                                         n.Url == url);
+                if (oldNotification != null)
+                {
+                    oldNotification.Status = NotificationStatus.Unseen;
+                    oldNotification.Text = text;
+                    oldNotification.Timestamp = DateTime.Now;
+                    _context.Update(oldNotification);
+                }
+                else
+                {
+                    _context.Notifications.Add(new Notification
+                    {
+                        UserId = memberId,
+                        Text = text,
+                        Url = url
+                    });
+                }
+            }
         }
 
         [HttpPost]

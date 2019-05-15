@@ -81,10 +81,63 @@ namespace MyGigApi.Controllers
                 UserId = userId
             };
 
+            var user = _context.Users.Find(userId);
+            var e = _context.Events.Find(dto.EventId);
+
+            NotifyEventParticipants(
+                userId,
+                dto.EventId,
+                $"{user.FullName} commented on the {e.Name} page",
+                $"/event/{e.EventId}#comments"
+            );
+
             _context.EventComments.Add(comment);
             _context.SaveChanges();
 
             return new OkObjectResult(new {success = true});
+        }
+
+        public void NotifyEventParticipants(int userId, int eventId, string text, string url)
+        {
+            var ensemblesInvolvedIds = _context.Bookings
+                .Where(b => b.EventId == eventId &&
+                            b.Status == RequestStatus.Accepted)
+                .Select(b => b.EnsembleId)
+                .ToArray();
+
+            var membersOfEnsemblesInEventIds = _context.EnsembleMembers
+                .Where(em => ensemblesInvolvedIds.Contains(em.EnsembleId) &&
+                             em.Status == RequestStatus.Accepted)
+                .Select(em => em.UserIdRecipient)
+                .ToArray();
+
+            foreach (var memberId in membersOfEnsemblesInEventIds)
+            {
+                if (userId == memberId)
+                {
+                    continue;
+                }
+
+                var oldNotification = _context.Notifications
+                    .FirstOrDefault(n => n.UserId == memberId &&
+                                         n.Url == url);
+                if (oldNotification != null)
+                {
+                    oldNotification.Status = NotificationStatus.Unseen;
+                    oldNotification.Text = text;
+                    oldNotification.Timestamp = DateTime.Now;
+                    _context.Update(oldNotification);
+                }
+                else
+                {
+                    _context.Notifications.Add(new Notification
+                    {
+                        UserId = memberId,
+                        Text = text,
+                        Url = url
+                    });
+                }
+            }
         }
 
         [HttpPost]

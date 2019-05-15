@@ -1,4 +1,5 @@
-﻿
+﻿-- noinspection SqlDialectInspectionForFile
+
 CREATE TABLE `Ensembles` (
     `EnsembleId` int NOT NULL AUTO_INCREMENT,
     `Name` varchar(500) NOT NULL,
@@ -128,6 +129,17 @@ CREATE TABLE `EventModerators` (
     CONSTRAINT `FK_EventModerators_UserIdRequester_Ref_Users_UserId` FOREIGN KEY (`UserIdRequester`) REFERENCES `Users` (`UserId`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE TABLE `Notifications` (
+    `NotificationId` int NOT NULL AUTO_INCREMENT,
+    `Text` longtext NOT NULL,
+    `Url` longtext NOT NULL,
+    `Status` int NOT NULL DEFAULT 0,
+    `Timestamp` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    `UserId` int NOT NULL,
+    CONSTRAINT `PK_Notifications` PRIMARY KEY (`NotificationId`),
+    CONSTRAINT `FK_Notifications_UserId_Ref_Users_UserId` FOREIGN KEY (`UserId`) REFERENCES `Users` (`UserId`) ON DELETE CASCADE
+);
+
 CREATE INDEX `IX_Bookings_EnsembleId` ON `Bookings` (`EnsembleId`);
 
 CREATE INDEX `IX_Bookings_EventId` ON `Bookings` (`EventId`);
@@ -168,3 +180,4 @@ CREATE INDEX `IX_EventModerators_UserIdRequester` ON `EventModerators` (`UserIdR
 
 CREATE INDEX `IX_Events_CreatedByUserId` ON `Events` (`CreatedByUserId`);
 
+CREATE INDEX `IX_Notifications_UserId` ON `Notifications` (`UserId`);

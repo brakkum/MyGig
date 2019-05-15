@@ -290,24 +290,28 @@ namespace MyGigApi.Migrations
 
             modelBuilder.Entity("MyGigApi.Entities.Notification", b =>
                 {
-                    b.Property<int>("UserId");
-
-                    b.Property<string>("Url")
-                        .HasMaxLength(100);
+                    b.Property<int>("NotificationId")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<int>("Status")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValue(0);
 
                     b.Property<string>("Text")
-                        .IsRequired()
-                        .HasMaxLength(100);
+                        .IsRequired();
 
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("CURRENT_TIMESTAMP()");
 
-                    b.HasKey("UserId", "Url");
+                    b.Property<string>("Url")
+                        .IsRequired();
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("NotificationId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notifications");
                 });

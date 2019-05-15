@@ -23,6 +23,7 @@ namespace MyGigApi.Context
         public DbSet<Event> Events { get; set; }
         public DbSet<EventModerator> EventModerators { get; set; }
         public DbSet<EventComment> EventComments { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         public DbSet<User> Users { get; set; }
 
         // Configure Entity properties, keys, etc.
@@ -91,6 +92,13 @@ namespace MyGigApi.Context
             modelBuilder.Entity<EventModerator>()
                 .HasOne(em => em.Event)
                 .WithMany(e => e.Moderators);
+            // Notification
+            modelBuilder.Entity<Notification>()
+                .Property(n => n.Status)
+                .HasDefaultValue(NotificationStatus.Unseen);
+            modelBuilder.Entity<Notification>()
+                .Property(n => n.Timestamp)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP()");
             // User
             modelBuilder.Entity<User>()
                 .Property(u => u.Status)
