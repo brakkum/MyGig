@@ -1,18 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
         <!--<RuntimeIdentifier>osx-x64</RuntimeIdentifier>-->
         <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
         <!--<RuntimeIdentifier>win-x64</RuntimeIdentifier>-->
-        <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+        <!--<AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>-->
         <SpaRoot>Frontend\</SpaRoot>
         <!--<DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>=-->
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="BCrypt.Net-Core" Version="1.6.0" />
-        <PackageReference Include="Microsoft.AspNetCore.App" />
+        <!--<PackageReference Include="Microsoft.AspNetCore.App" />-->
+        <PackageReference Include="Microsoft.AspNetCore.All" />
         <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
         <PackageReference Include="Microsoft.Extensions.DiagnosticAdapter" Version="2.2.0" />
         <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.15" />
